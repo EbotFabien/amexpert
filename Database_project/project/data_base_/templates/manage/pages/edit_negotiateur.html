@@ -1,0 +1,231 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Negociateur</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-6 col-lg-6 mx-auto">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold is-gray"><i class="fa fa-pen"></i> <small>{{client.nom}}</small></h6>
+                    <a href="{{url_for('users.negotiateur', id=client.id)}}" class="button is-black is-small pull-right">Tous les negotiateurs</a>            
+	        </div>
+	        <div class="card-body">
+	            <div class="row">
+                    <div class="col-lg-9 mx-auto">
+                        <div class=""> <!--class = p-5 -->
+                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                                <form class="user" method="POST" action="{{url_for('users.update_negotiateur', id=client.id)}}">
+                                {{ form.hidden_tag() }}
+                                <fieldset class="form-group">
+                                <div class="form-group row">
+                                    {# <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{form.Numero_de_compte.label(class="form-control-label")}}
+                    
+                                        {% if form.Numero_de_compte.errors %}
+                                        {{form.Numero_de_compte(class="input is-small
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Numero_de_compte.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.Numero_de_compte(class="input is-small")}}
+                                    {% endif %}
+                                    </div> #}
+                                    <div class="col-sm-12 pb-1">
+                                       
+                                        {{form.NOM.label(class="form-control-label")}}
+                                       
+                                       
+                                        {% if form.NOM.errors %}
+                                            {{ form.NOM(class="input is-small is-invalid", value=client.nom) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.NOM.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.NOM(class="input is-small", value=client.nom)}}
+                                            {% endif %}
+                                       
+                                    </div>
+
+                                     <div class="col-sm-12 pb-1">
+                                        {{form.Sexe.label(class="form-control-label")}}
+
+                                        {% if form.Sexe.errors %}
+                                            {{ form.Sexe(class="input is-small is-invalid", value=client.sexe) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Sexe.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Sexe(class="input is-small", value=client.sexe)}}
+                                        {% endif %}
+                                    </div>
+                                   
+                                    <div class="col-sm-12 pb-1">
+                                    {{form.Type.label(class="form-control-label")}}
+ 
+                                    {% if form.Type.errors %}
+                                        {{ form.Type(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Type.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.Type(class="input is-small")}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Societe.label(class="form-control-label")}}
+                                                                       
+
+                                        {% if form.Societe.errors %}
+                                            {{ form.Societe(class="input is-small is-invalid", value=client.societe) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Societe.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Societe(class="input is-small", value=client.societe)}}
+                                            {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.email.label(class="form-control-label")}}
+                                    
+                                        {% if form.email.errors %}
+                                            {{ form.email(class="input is-small is-invalid", value=client.email) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.email.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.email(class="input is-small", value=client.email)}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Numero.label(class="form-control-label")}}
+
+                                        {% if form.Numero.errors %}
+                                            {{ form.Numero(class="input is-small is-invalid", value=client.numero) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Numero.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Numero(class="input is-small", value=client.numero)}}
+                                        {% endif %}
+                                    </div>
+
+                                   
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Pays.label(class="form-control-label")}}
+
+                                        {% if form.Pays.errors %}
+                                            {{ form.Pays(class="input is-small is-invalid", value=history.pays) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Pays.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Pays(class="input is-small", value=history.pays)}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.Ville.label(class="form-control-label")}}
+
+                                        {% if form.Ville.errors %}
+                                            {{ form.Ville(class="input is-small is-invalid", value=history.ville) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Ville.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Ville(class="input is-small", value=history.ville)}}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.CP.label(class="form-control-label")}}
+
+                                        {% if form.CP.errors %}
+                                            {{ form.CP(class="input is-small is-invalid", value=history.cp) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.CP.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.CP(class="input is-small", value=history.cp)}}
+                                        {% endif %}
+                                    </div>
+
+
+
+                                    <div class="col-sm-12 pb-1">
+                                         {{form.Adresse.label(class="form-control-label")}}
+                                    
+                                        {% if form.Adresse.errors %}
+                                            {{ form.Adresse(class="input is-small is-invalid", value=history.adresse) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Adresse2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                                {{form.Adresse(class="input is-small", value=history.adresse)}}
+                                        {% endif %}
+                                    </div>
+
+                                    </div>  
+                                    <div class="form-group">
+                                        {{form.submit(class="button is-small is-fullwidth is-success")}}   
+                                    </div>
+                            <fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock%}
+
+
+
+                            

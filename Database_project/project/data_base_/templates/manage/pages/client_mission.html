@@ -1,0 +1,49 @@
+{% extends 'manage/index.html'%}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">La mission du client</h2>
+      <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR ,Type='client')}}" title="ajouter une facture" class="button is-primary is-small"><span class="is-warning">Ajouter une facture</span></a>
+    </div>
+
+   
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa fa-users"></i></span>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
+              <span class="icon is-small is-right">
+                <i class="fas fa-search"></i>  
+              </span>
+            </div>
+          </div>
+          <div class="table-container" style="overflow-x: scroll;position: relative;">
+            <table class="table is-striped" style="overflow-x: scroll;min-width: 800px;">
+	                    <thead class="">
+	                	<tr>
+		                    <th scope="col">N° Mission</th>
+		                    <th scope="col">Date de realisation de la mission</th>
+							
+		                    
+		                    
+
+	                	</tr>
+	            	</thead>
+		            <tbody>
+		                {%for mission in missions %}
+		                    <tr>
+		                        <td scope="col">{{mission.id}}</td>
+		                        <td>{{mission.DATE_REALISE_EDL}}</td>
+                              
+		                    </tr>
+		                {%endfor%}                               
+		            </tbody>         
+	             </table>
+	            </div>
+	        </div>
+	    </section>
+	    </div>
+	
+{% endblock %}
