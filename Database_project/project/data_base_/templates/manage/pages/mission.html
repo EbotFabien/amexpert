@@ -1,0 +1,105 @@
+{% extends 'manage/index.html'%}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Missions</h2>
+      <a href="/ajouter/mission" class="button is-primary is-small" title="Ajouter une mission"><i class="fa fa-plus"></i></a>
+    </div>
+
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa fa-users"></i></span>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
+              <span class="icon is-small is-right">
+                <i class="fas fa-search"></i>  
+              </span>
+            </div>
+          </div>
+          <div class="table-container" style="overflow-x: scroll;position: relative;">
+            {% with messages = get_flashed_messages(with_categories=true)%}
+                {% if messages %}
+                    {%for category,message in messages%}
+                    <div class="alert alert-{{category}} p-1">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <table class="table" style="overflow-x: scroll;min-width: 800px;"> 
+	                    <thead class="">
+	                	<tr>
+                            <th scope="col">Reference_BAILLEUR</th>  	 
+                            <th scope="col">ID_CONCESS</th>	  
+                            <th scope="col">DATE_REALISE_EDL</th>  	
+                            <th scope="col">PRIX_HT_EDL</th>	  	     	
+                            <th scope="col">DATE_FACTURE</th>  	  		
+                            <th></th>	
+                            <th></th>
+                            <th></th>
+	                	</tr>
+	            	</thead>
+		            <tbody>
+		                {%for mission_ in Mission.items %}
+		                    <tr>
+                                <td>{{mission_.Bailleur__data.reference}}</td>     	   
+                                <td>{{mission_.AS__data.nom}}</td> 	  
+                                <td>{{mission_.DATE_REALISE_EDL.strftime('%d. %m. %Y') }}</td>  	
+                                <td>{{mission_.PRIX_HT_EDL}}</td> 	    
+                                <td>{{mission_.DATE_FACTURE}}</td>   	 	  	  
+                                <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
+                                <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
+                                <td style="">
+                                    <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                    
+                                </td>
+		                    </tr>
+		                {%endfor%}                               
+		            </tbody>         
+	             </table>
+	            </div>
+                 <!-- Pagination Links-->
+              <div style="display: flex; justify-content: space-between;">
+                 <p class="text-right mt-3">
+                   Showing page {{ Mission.page }} of {{ Mission.pages }}
+                </p>        
+                <div class="text-right pagination">
+                    <a href="{{ url_for('users.mission', page=Mission.prev_num) }}"
+                       class="btn btn-outline-dark 
+                       {% if Mission.page == 1 %}disabled{% endif %}">
+                        &laquo;
+                    </a>
+                <!-- Loop through the number of pages to display a link for each-->
+                    {% for page_num in Mission.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                <!-- Check for the active page and set the link to "Active"-->
+                            {% if Mission.page == page_num %}
+                            <a href="{{ url_for('users.mission', page=page_num) }}"
+                               class="is-current pagination-link">
+                                {{ page_num }}
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('users.mission', page=page_num) }}"
+                               class="btn pagination-link">
+                                {{ page_num }}
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{{ url_for('users.mission', page=Mission.next_num) }}"
+                       class="btn btn-outline-dark 
+                       {% if Mission.page == Mission.pages %}disabled{% endif %}">
+                        &raquo;
+                    </a>
+                </div>
+               
+            </div>
+            <!-- / fin de la pagination -->
+	        </div>
+        </section>
+	    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Expert</h2>
+    </div>
+ 	<section class="tile" style="margin-top: 10px;">
+    <div class="box" style="  width: -webkit-fill-available;">
+      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      	{% if expert.sexe == "monsieur" %}
+        	<span><i class="fas fa-male"></i></span>
+        {% else %}
+        	<span><i class="fas fa-female"></i></span>
+        {% endif %}
+        <div class="control has-icons-left has-icons-right">
+         	{{expert.TYPE}}
+        </div>
+      </div>
+      <div class='columns'>
+	  <div class='container profile'>
+	    <div class='section profile-heading'>
+	      <div class='columns is-mobile is-multiline'>
+	        <div class='column is-2'>
+	          <span class='header-icon user-profile-image'>
+	            <img alt='' src='https://via.placeholder.com/75/000/ffffff?Text=WebsiteBuilders.com'>
+	          </span>
+	        </div>
+	        <div class='column is-4-tablet is-10-mobile name'>
+	          <p>
+	            <span class='title is-bold' style="font-size: larger;">{{expert.nom}}</span>
+	            <br>
+	            <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>
+	              Modifier
+	            </a>
+	            <br>
+	          </p>
+	          <p class='tagline'>
+	            {{history.adresse1}} C.P {{expert.cp}}
+	          </p>
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	          <p class='stat-val'>{{expert.numero}}</p>
+	          <p class='stat-key'>Tel</p>
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	          <p class='stat-val'>{{expert.siret}}</p>
+	          <p class='stat-key'>Siret</p>
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	          <p class='stat-val'>{{expert.email}}</p>
+	          <p class='stat-key'>Email</p>
+	        </div>
+	      </div>
+
+	      <div>
+	      	<strong>actif/parti:</strong> <strong><small>{{history.actif_parti}}</small></strong>
+			<p><strong>type_certification: </strong> <small>{{history.type_certification}}</small><br>  
+			<strong>trigramme:</strong> {{expert.trigramme}}<br> 
+			<strong>Genre:</strong> {{expert.genre}}<br> 
+			<strong>ville:</strong> <small>{{history.ville}}</small> <br>
+	    	<strong>Adresse2 :</strong> <small>{{history.adresse2}}</small> <br> 
+            <strong>Code Postal:</strong> {{history.cp}} <br> 
+            <strong>login_backof:</strong> {{history.login_backof}} <br> 
+            <strong>pwd_backof:</strong> {{history.pwd_backof}} <br> 
+            <strong>pwd_backof:</strong> {{history.pwd_backof}} <br> 
+            <strong>pwd_extranet:</strong> {{history.pwd_extranet}} <br> 
+            <strong>pwd_gsuite:</strong> {{history.pwd_gsuite}} <br> 
+            <strong>observations_de_suivi:</strong> {{history.observations_de_suivi}} <br>
+            <strong>date_historique:</strong> {{history.date}}<br></p>	
+	      </div>
+
+	    </div>
+	  </div>
+	</div>
+				
+		</div>
+	</section>
+</div>
+{%endblock%}
+	

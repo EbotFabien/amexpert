@@ -1,0 +1,21 @@
+<div id="search-area">
+  <div class="form-container">
+    <form class="searh-contianer" method="GET" action="/search">
+        <div class="w-">
+          <div class="select is-small is-fullwidth">
+            <select name="table">
+              <option value="client">Client</option>
+              <option value="expert">Expert</option>
+              <!-- <option value="mission">Mission</option> -->
+            </select>
+          </div>
+        </div>
+      <div class="w-">
+          <input type="text" name="keyword" required class="w-100 input is-small is-white" placeholder="mot clé" style="border: 1px solid #efefef;" />
+      </div>
+      <div class="w-">
+          <input type="submit" class="w-100 button is-small is-primary" value="Rechercher"/>
+      </div>
+    </form>
+  </div>
+</div>
