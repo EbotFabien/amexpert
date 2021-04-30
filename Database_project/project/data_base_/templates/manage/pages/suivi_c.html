@@ -7,7 +7,7 @@
        {% if legend == "prospect" %}
             <a href="{{url_for('users.ajouter_suivip', id=ID)}}" title="ajouter un suivi client" class="button is-small is-primary pull-right"><span class="is-warning"><i class="fa fa-user-plus"></i></span></a>
         {% elif legend == "client" %}
-             <a href="{{url_for('users.ajouter_suivic', id=ID)}}" title="ajouter un suivi client" class="button is-small is-primary pull-right"><span class="is-warning"><i class="fa fa-user-plus"></i></span></a>
+             <a href="{{url_for('users.ajouter_suivic', id=ID)}}" title="ajouter un suivi client" class="button is-small is-primary pull-right"><span class="is-warning"><i class="fa fa-plus"></i></span></a>
         {% endif %}
     </div>
     <section class="tile" style="margin-top: 10px;">
@@ -51,8 +51,13 @@
                                     <td>{{suivi.suivi__data.nom}}</td>
                                     <td>{{suivi.responsable__data.nom}}</td>
                                     <td>{{suivi.commentaire}}</td>
-                                    <td>{{suivi.date_creation}}</td>
-                                    <td>{{suivi.date_modif}}</td>
+                                    <td>{{suivi.date_creation.strftime('%d. %m. %Y')}}</td>
+                                    <td> {% if (suivi.date_creation != None) %}          
+                                            {{ suivi.date_creation.strftime('%d. %m. %Y')}}
+                                        {% else %}
+                                            {{ suivi.date_creation}}
+                                        {% endif %}
+                                    </td>
                                     {% if legend == "client" %}
                                         <td> <a href="{{url_for('users.edit_suivi', id=suivi.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                         <td> <a href="{{url_for('users.delete_suivi', id=suivi.id)}}" onclick="return confirm('Voulez vous supprimer?')" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>

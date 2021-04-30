@@ -63,7 +63,7 @@
                  <!-- Pagination Links-->
               <div style="display: flex; justify-content: space-between;">
                  <p class="text-right mt-3">
-                   Showing page {{ Mission.page }} of {{ Mission.pages }}
+                   Afficher la page {{ Mission.page }} sur {{ Mission.pages }}
                 </p>        
                 <div class="text-right pagination">
                     <a href="{{ url_for('users.mission', page=Mission.prev_num) }}"

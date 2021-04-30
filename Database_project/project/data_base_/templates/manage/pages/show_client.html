@@ -8,11 +8,7 @@
 	<section class="tile" style="margin-top: 10px;">
     <div class="box" style="  width: -webkit-fill-available;">
       <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-      	{% if client.titre == "monsieur" %}
-        	<span><i class="fas fa-male"></i></span>
-        {% else %}
-        	<span><i class="fas fa-female"></i></span>
-        {% endif %}
+        <span><i class="fas fa-user"></i></span>
         <div class="control has-icons-left has-icons-right">
          	{{client.TYPE}}
         </div>
@@ -137,7 +133,7 @@
 		  		<a href="{{url_for('users.tarifs', id=client.id)}}" title="modifier" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Tarifs</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Factures</a>
+		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Factures</a>
 		  	</div>
 		</div>
 	{% endif %}

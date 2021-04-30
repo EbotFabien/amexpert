@@ -4,17 +4,17 @@
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
         <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Suivi</h2>
-        {% if legend == "prospect" %}
-            <a href="{{url_for('users.suivi_prospect_', id=ID)}}" class="button is-primary is-small pull-right"> les suivi du prospects</a>
-        {% endif %}
-        {% if legend == "client" %}
-            <a href="{{url_for('users.suivi_client_', id=ID)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>
-        {% endif %}
+        
+        <a href="{{url_for('users.suivi_client_', id=ID)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>
+        
     </div>
       <div class="table-container" style="">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
             <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;">
                 <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+                <div class="card-header-title">
+                  <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+                </div>
             </header>
                 <div class="">
                     {% with messages = get_flashed_messages(with_categories=true)%}
@@ -26,7 +26,7 @@
                     {% endfor %}
                     {% endif %}
                     {% endwith %}
-                    <form method="POST" class="user" style="padding: 5px;">
+                    <form method="POST" class="user form-padding">
                         {{ form.hidden_tag() }}
                          <div class="field is-horizontal">
                           <div class="field-label is-normal">
@@ -61,16 +61,7 @@
                                   </div>
                                 </div>
 
-                                <div class="field-body">
-                                  <div class="field">
-                                    <div class="control">
-                                        <a onclick="window.history.back()" class="button is-danger is-small">       
-                                        Annuler
-                                        </a>
-                                     
-                                    </div>
-                                  </div>
-                                </div>
+                               
                             </div>
                     </form>
                 </div>

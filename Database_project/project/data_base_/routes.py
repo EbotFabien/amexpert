@@ -16,16 +16,30 @@ app= create_app()
 
 PER_PAGE = 10
 
-@users.route('/client')
+@users.route('/client', methods=['GET', 'POST'])
 @login_required
 def client():
+    global PER_PAGE
+    global Ord
+    Ord="a"
     db.create_all()
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        client_=Client.query.filter_by(visibility=True).paginate(page=page, per_page=10)
+        if request.method == 'POST':
+            form_data = request.form
+            order = request.form.get('order')
+            f = request.form.get('filter')
+            if f is not None:
+                PER_PAGE = int(f)
+                Ord =order
+        print(Ord)
+        if Ord == "asc":
+            client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
+        if Ord == "desc":
+            client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
+        else:
+            client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         return render_template('manage/pages/client.html',cli_ent=client_,legend="client", highlight='client')
-
-    
     return redirect(url_for('users.main'))
  
 @users.route('/ajouter/client',methods=['GET','POST'])
@@ -166,7 +180,7 @@ def update_client(id):
         client.TYPE = request.form['Type']
         client.nom = request.form['NOM']
         db.session.commit()
-        flash(f'Les donnes du client a été modifiées','success')
+        flash(f'Informations client modifiées','success')
         return redirect(url_for('users.client', id=id))
     return redirect(url_for('users.edit_client', id=id))
        
@@ -1526,7 +1540,7 @@ def update_suivip(id):
 
 
 
-@users.route("/upload", methods=['GET','POST'])
+@users.route("/televeser", methods=['GET','POST'])
 #@login_required
 def up():
     

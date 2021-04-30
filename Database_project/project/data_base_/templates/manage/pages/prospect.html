@@ -63,7 +63,7 @@
           <!-- Pagination Links-->
           <div style="display: flex; justify-content: space-between;">
              <p class="text-right mt-3">
-               Showing page {{ Client.page }} of {{ Client.pages }}
+               Afficher la page {{ Client.page }} sur {{ Client.pages }}
             </p>        
             <div class="text-right pagination">
                 <a href="{{ url_for('users.prospect_', page=Client.prev_num) }}"

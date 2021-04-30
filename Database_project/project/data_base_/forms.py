@@ -520,13 +520,13 @@ class Facturation_Form(FlaskForm):
 class Client_Form(FlaskForm):
        
     Type=SelectField('Type',
-                             choices=[('BAILLEUR', 'Bailleur'), ('LOCATAIRE', 'Locataire')])
+                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
 
     Societe =StringField('Societe',
                            validators=[DataRequired()])
 
     Sexe=SelectField('Titre',
-                             choices=[('femelle', 'femelle'), ('male', 'male')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Noms',
                            validators=[DataRequired()])

@@ -383,7 +383,7 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 600px;
+  max-width: 800px; /** 600px **/
   margin: 0 auto;
 }
 .searh-contianer > div {
@@ -1629,7 +1629,7 @@ input[type='radio']:checked:after {
   margin-bottom: 20px; 
 }
 
-.form-padding{
+.form-padding {
   padding: 10px;
 }
 
@@ -1648,4 +1648,12 @@ input[type='radio']:checked:after {
   background: transparent;left: 100;
   width: 20px;
   box-shadow: 1px 3px 10px rgba(0,0,0,.3); 
+}
+
+select:not(.not) {
+  appearance: none!important;
+  background-image: url(../assets/select-arrow.png)!important;
+  background-position: calc(100% - 15px) 50%!important;
+  background-repeat: no-repeat!important;
+  background-size: 16px 8px!important;
 }

@@ -10,7 +10,17 @@
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <span><i class="fa fa-users"></i></span>
+            <div class="display-flex">
+                <span><i class="fa fa-users"></i></span>
+                <form style="margin-left: 5px; display: flex" method="post" action="/client">
+                    <input type="number" min="1" class="input" name="filter" style="width: 60px; height: 30px">
+                    <select class="input" name="order" style="margin-left: 5px; display: flex;width: 100px;
+    height: 30px; padding-top: 2px">
+                        <option value="desc">Desc</option>
+                        <option value="asc">Asc</option>
+                    </select>
+                </form>
+            </div>
             <div class="control has-icons-left has-icons-right">
               <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
               <span class="icon is-small is-right">
@@ -78,7 +88,7 @@
             <!-- Pagination Links-->
               <div style="display: flex; justify-content: space-between;">
                  <p class="text-right mt-3">
-                   Showing page {{ cli_ent.page }} of {{ cli_ent.pages }}
+                   Afficher la page {{ cli_ent.page }} sur {{ cli_ent.pages }}
                 </p>        
                 <div class="text-right pagination">
                     <a href="{{ url_for('users.client', page=cli_ent.prev_num) }}"

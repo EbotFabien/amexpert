@@ -1,13 +1,16 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
- <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Suivi Client prospect </h1>
-        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Suivi</h2>
+        {% if legend == "prospect" %}
+            <a href="{{url_for('users.suivi_prospect_', id=ID)}}" class="button is-primary is-small pull-right"> les suivi du prospects</a>
+        {% endif %}
+        {% if legend == "client" %}
+            <a href="{{url_for('users.suivi_client_', id=ID)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>
+        {% endif %}
     </div>
-    <!-- Content Row -->
 
     <div class="row">
         <!-- Area Chart -->
