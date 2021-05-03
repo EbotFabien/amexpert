@@ -202,14 +202,10 @@ ALTER SEQUENCE public."Client_id_seq" OWNED BY public."Client".id;
 CREATE TABLE public."Client_negotiateur" (
     id integer NOT NULL,
     client_id integer,
-    reference character varying,
-    "TYPE" character varying,
-    societe character varying,
     sexe character varying,
     nom character varying,
     email character varying,
     numero character varying,
-    siret character varying,
     date_creation timestamp without time zone,
     visibility boolean
 );
@@ -1129,7 +1125,8 @@ COPY public."Client_History" (id, client_id, adresse1, adresse2, etat_client, cp
 -- Data for Name: Client_negotiateur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Client_negotiateur" (id, client_id, reference, "TYPE", societe, sexe, nom, email, numero, siret, date_creation, visibility) FROM stdin;
+COPY public."Client_negotiateur" (id, client_id, sexe, nom, email, numero, date_creation, visibility) FROM stdin;
+1	1	Monsieur	Fabien1	fabien25@gmail.com	77650899	2021-05-01 10:52:15.603059	t
 \.
 
 
@@ -1368,6 +1365,8 @@ COPY public."Mission" (id, "Reference_BAILLEUR", old, "NRO_FACTURE", "ABONNEMENT
 --
 
 COPY public."Negotiateur_History" (id, negotiateur_id, adresse, etat_client, cp, ville, pays, abonnement, date, visibility) FROM stdin;
+1	1	SImbock	t	87500.0	Yaounde	France	\N	2021-05-01 10:52:15.657027	t
+2	1	\N	t	\N	\N	\N	\N	2021-05-01 10:58:36.946564	t
 \.
 
 
@@ -1376,6 +1375,21 @@ COPY public."Negotiateur_History" (id, negotiateur_id, adresse, etat_client, cp,
 --
 
 COPY public."Tarif_base" (id, pav_appartement, "Type", surface, "Prix_EDL", visibility) FROM stdin;
+1	APPT	STD	20	0	t
+2	PAV	T2	60	0	t
+3	APPT	F1	30	15	t
+4	PAV	T3	70	25	t
+5	APPT	F2	40	20	t
+6	PAV	T4	90	25	t
+7	APPT	F3	50	20	t
+8	PAV	T5	120	25	t
+9	APPT	F4	60	25	t
+10	PAV	T6	150	35	t
+11	APPT	F5	80	25	t
+12	PAV	T7	200	35	t
+13	APPT	F6	90	30	t
+14	PAV	T8	250	35	t
+15	PAV	T1	0	0	t
 \.
 
 
@@ -1543,7 +1557,7 @@ SELECT pg_catalog.setval('public."Client_id_seq"', 5, true);
 -- Name: Client_negotiateur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Client_negotiateur_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Client_negotiateur_id_seq"', 1, true);
 
 
 --
@@ -1585,14 +1599,14 @@ SELECT pg_catalog.setval('public."Mission_id_seq"', 471, true);
 -- Name: Negotiateur_History_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Negotiateur_History_id_seq"', 2, true);
 
 
 --
 -- Name: Tarif_base_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tarif_base_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Tarif_base_id_seq"', 15, true);
 
 
 --

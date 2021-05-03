@@ -14,7 +14,7 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between d-flex align-items-center">
-	            <h6 class="m-0 font-weight-bold d-inline"><small>{{tarif.id}}</small></h6>
+	            <h6 class="m-0 font-weight-bold d-inline"><small>{{expert.id}}</small></h6>
                 <a href="/tarifs" class="button is-small is-black">Tous les tarif <!--<i class="fa fa-euro"></i>--></a>
 	        </div>
 	        <div class="card-body">
@@ -30,315 +30,715 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST" action="{{url_for('users.update_tarif', id=tarif.id)}}">
+                            <form class="user" method="POST" action="{{url_for('users.update_tarif', id=expert.id)}}">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.type_maison.label(class="form-control-label")}}
-                    
-                                        {% if form.type_maison.errors %}
-                                        {{form.type_maison(class="input is-small is-invalid", value=tarif.type_maison) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.type_maison.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{form.type_maison(class="input is-small", value=tarif.type_maison)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.maison_appartement.label(class="form-control-label")}}
-                    
-                                        {% if form.maison_appartement.errors %}
-                                        {{form.maison_appartement(class="input is-small is-invalid", value=tarif.maison_appartement) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.maison_appartement.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{form.maison_appartement(class="input is-small", value=tarif.maison_appartement)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Prix_EDL.label(class="form-control-label")}}
-
-                                    {% if form.Prix_EDL.errors %}
-                                        {{ form.Prix_EDL(class="input is-small is-invalid", value=tarif.Prix_EDL)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Prix_EDL.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_prix_std.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_prix_std.errors %}
+                                            {{form.edl_prix_std(class="input is-small is-invalid" , value=expert.edl_prix_std) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_prix_std.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
                                         {% else %}
-                                            {{form.Prix_EDL(class="input is-small", value=tarif.Prix_EDL)}}
+                                            {{form.edl_prix_std(class="input is-small pt-2" , value=expert.edl_prix_std)}}
                                         {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Prix_Chiffrage.label(class="form-control-label")}}
-
-                                    {% if form.Prix_Chiffrage.errors %}
-                                        {{ form.Prix_Chiffrage(class="input is-small is-invalid", value=tarif.Prix_Chiffrage)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Prix_Chiffrage.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
+                                        </div> 
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f1.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f1.errors %}
+                                            {{form.edl_appt_prix_f1(class="input is-small is-invalid" , value=expert.edl_appt_prix_f1) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
                                         {% else %}
-                                            {{form.Prix_Chiffrage(class="input is-small", value=tarif.Prix_Chiffrage)}}
+                                            {{form.edl_appt_prix_f1(class="input is-small pt-2" , value=expert.edl_appt_prix_f1)}}
                                         {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.code_tva.label(class="form-control-label")}}
-                    
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f2.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f2.errors %}
+                                            {{form.edl_appt_prix_f2(class="input is-small is-invalid" , value=expert.edl_appt_prix_f2) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.edl_appt_prix_f2(class="input is-small pt-2" , value=expert.edl_appt_prix_f2)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f3.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f3.errors %}
+                                            {{form.edl_appt_prix_f3(class="input is-small is-invalid", value=expert.edl_appt_prix_f3) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f3.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.edl_appt_prix_f3(class="input is-small pt-2" , value=expert.edl_appt_prix_f3)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f4.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f4.errors %}
+                                            {{form.edl_appt_prix_f4(class="input is-small is-invalid" , value=expert.edl_appt_prix_f4) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f4.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.edl_appt_prix_f4(class="input is-small pt-2" , value=expert.edl_appt_prix_f4)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f5.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f5.errors %}
+                                            {{form.edl_appt_prix_f5(class="input is-small is-invalid" , value=expert.edl_appt_prix_f5) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f5.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.edl_appt_prix_f5(class="input is-small pt-2" , value=expert.edl_appt_prix_f5)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.edl_appt_prix_f6.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.edl_appt_prix_f6.errors %}
+                                            {{form.edl_appt_prix_f6(class="input is-small is-invalid" , value=expert.edl_appt_prix_f6) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_appt_prix_f6.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.edl_appt_prix_f6(class="input is-small pt-2" , value=expert.edl_appt_prix_f6)}}
+                                        {% endif %}
+                                        </div>a
+                                        
+                                        b<div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t1.errors %}
+                                            {{ form.edl_pav_villa_prix_t1(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t1) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t1(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t1)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t2.errors %}
+                                            {{ form.edl_pav_villa_prix_t2(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t2) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t2(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t2)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t3.errors %}
+                                            {{ form.edl_pav_villa_prix_t3(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t3) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t3.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t3(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t3)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t4.errors %}
+                                            {{ form.edl_pav_villa_prix_t4(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t4) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t4.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t4(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t4)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t5.errors %}
+                                            {{ form.edl_pav_villa_prix_t5(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t5) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t5.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t5(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t5)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t6.errors %}
+                                            {{ form.edl_pav_villa_prix_t6(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t6) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t6.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t6(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t6)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t7.errors %}
+                                            {{ form.edl_pav_villa_prix_t7(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t7) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t7.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t7(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t7)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.edl_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.edl_pav_villa_prix_t8.errors %}
+                                            {{ form.edl_pav_villa_prix_t8(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t8) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.edl_pav_villa_prix_t8.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.edl_pav_villa_prix_t8(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t8)}}
+                                            {% endif %}
+                                        </div>
+                                        a<div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_stu.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_stu.errors %}
+                                            {{form.chif_appt_prix_stu(class="input is-small is-invalid" , value=expert.chif_appt_prix_stu) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_stu.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_stu(class="input is-small pt-2" , value=expert.chif_appt_prix_stu)}}
+                                        {% endif %}
+                                        </div> 
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_f1.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f1.errors %}
+                                            {{form.chif_appt_prix_f1(class="input is-small is-invalid" , value=expert.chif_appt_prix_f1) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f1(class="input is-small pt-2" , value=expert.chif_appt_prix_f1)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_f2.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f2.errors %}
+                                            {{form.chif_appt_prix_f2(class="input is-small is-invalid" , value=expert.chif_appt_prix_f2) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f2(class="input is-small pt-2" , value=expert.chif_appt_prix_f2)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_f3.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f3.errors %}
+                                            {{form.chif_appt_prix_f3(class="input is-small is-invalid" , value=expert.chif_appt_prix_f3) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f3.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f3(class="input is-small pt-2" , value=expert.chif_appt_prix_f3)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_f4.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f4.errors %}
+                                            {{form.chif_appt_prix_f4(class="input is-small is-invalid" , value=expert.chif_appt_prix_f4) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f4.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f4(class="input is-small pt-2" , value=expert.chif_appt_prix_f4)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {{form.chif_appt_prix_f5.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f5.errors %}
+                                            {{form.chif_appt_prix_f5(class="input is-small is-invalid" , value=expert.chif_appt_prix_f5) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f5.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f5(class="input is-small pt-2" , value=expert.chif_appt_prix_f5)}}
+                                        {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            {#{{form.chif_appt_prix_f6.label(class="form-control-label pt-2")}}
+                        
+                                            {% if form.chif_appt_prix_f6.errors %}
+                                            {{form.chif_appt_prix_f6(class="input is-small is-invalid" , value=expert.chif_appt_prix_f6) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_appt_prix_f6.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.chif_appt_prix_f6(class="input is-small pt-2" , value=expert.chif_appt_prix_f6)}}
+                                        {% endif %}#}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t1.errors %}
+                                            {{ form.chif_pav_villa_prix_t1(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t1) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t1(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t1)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t2.errors %}
+                                            {{ form.chif_pav_villa_prix_t2(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t2) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t2(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t2)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t3.errors %}
+                                            {{ form.chif_pav_villa_prix_t3(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t3) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t3.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t3(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t3)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t4.errors %}
+                                            {{ form.chif_pav_villa_prix_t4(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t4) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t4.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t4(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t4)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t5.errors %}
+                                            {{ form.chif_pav_villa_prix_t5(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t5) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t5.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t5(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t5)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t6.errors %}
+                                            {{ form.chif_pav_villa_prix_t6(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t6) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t6.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t6(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t6)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t7.errors %}
+                                            {{ form.chif_pav_villa_prix_t7(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t7) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t7.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t7(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t7)}}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.chif_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
+    
+                                        {% if form.chif_pav_villa_prix_t8.errors %}
+                                            {{ form.chif_pav_villa_prix_t8(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t8) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.chif_pav_villa_prix_t8.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.chif_pav_villa_prix_t8(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t8)}}
+                                            {% endif %}
+                                        </div>b
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.prix_autre.label(class="form-control-label")}}
+    
+                                        {% if form.prix_autre.errors %}
+                                            {{ form.prix_autre(class="input is-small is-invalid" , value=expert.prix_autre) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.prix_autre.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.prix_autre(class="input is-small" , value=expert.prix_autre)}}
+                                            {% endif %}
+                                        </div>
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.code_tva.label(class="form-control-label")}}
+    
                                         {% if form.code_tva.errors %}
-                                        {{form.code_tva(class="input is-small is-invalid", value=tarif.code_tva) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.code_tva.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.code_tva(class="input is-small is-invalid" , value=expert.code_tva) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.code_tva.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.code_tva(class="input is-small" , value=expert.code_tva)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.code_tva(class="input is-small", value=tarif.code_tva)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.ID_Cell_AS_referent_client.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_AS_referent_client.label(class="form-control-label")}}
+    
                                         {% if form.ID_Cell_AS_referent_client.errors %}
-                                        {{form.ID_Cell_AS_referent_client(class="input is-small is-invalid", value=tarif.ID_Cell_AS_referent_client) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_AS_referent_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.ID_Cell_AS_referent_client(class="input is-small is-invalid" , value=expert.ID_Cell_AS_referent_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_AS_referent_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_AS_referent_client(class="input is-small", value=expert.ID_Cell_AS_referent_client)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.ID_Cell_AS_referent_client(class="input is-small", value=tarif.ID_Cell_AS_referent_client)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Cell_AS_referent_client_taux_com.label(class="form-control-label")}}
-
-                                    {% if form.Cell_AS_referent_client_taux_com.errors %}
-                                        {{ form.Cell_AS_referent_client_taux_com(class="input is-small is-invalid", value=tarif.Cell_AS_referent_client_taux_com)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_AS_referent_client_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_AS_referent_client_taux_com.label(class="form-control-label")}}
+    
+                                        {% if form.Cell_AS_referent_client_taux_com.errors %}
+                                            {{ form.Cell_AS_referent_client_taux_com(class="input is-small is-invalid", value=expert.Cell_AS_referent_client_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_AS_referent_client_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_AS_referent_client_taux_com(class="input is-small", value=expert.Cell_AS_referent_client_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.Cell_AS_referent_client_taux_com(class="input is-small", value=tarif.Cell_AS_referent_client_taux_com)}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.ID_Cell_devel_client.label(class="form-control-label")}}
-
-                                    {% if form.ID_Cell_devel_client.errors %}
-                                        {{ form.ID_Cell_devel_client(class="input is-small is-invalid", value=tarif.ID_Cell_devel_client)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_devel_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_devel_client.label(class="form-control-label")}}
+    
+                                        {% if form.ID_Cell_devel_client.errors %}
+                                            {{ form.ID_Cell_devel_client(class="input is-small is-invalid", value=expert.ID_Cell_devel_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_devel_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_devel_client(class="input is-small", value=expert.ID_Cell_devel_client)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.ID_Cell_devel_client(class="input is-small", value=tarif.ID_Cell_devel_client)}}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Cell_devel_respon_client_taux_com.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_devel_respon_client_taux_com.label(class="form-control-label")}}
+    
                                         {% if form.Cell_devel_respon_client_taux_com.errors %}
-                                        {{form.Cell_devel_respon_client_taux_com(class="input is-small is-invalid", value=tarif.Cell_devel_respon_client_taux_com) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_devel_respon_client_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.Cell_devel_respon_client_taux_com(class="input is-small is-invalid", value=expert.Cell_devel_respon_client_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_devel_respon_client_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_devel_respon_client_taux_com(class="input is-small", value=expert.Cell_devel_respon_client_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.Cell_devel_respon_client_taux_com(class="input is-small", value=tarif.Cell_devel_respon_client_taux_com)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.ID_Cell_devel_agent_suivi_client.label(class="form-control-label")}}
-                    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_devel_agent_suivi_client.label(class="form-control-label")}}
+    
                                         {% if form.ID_Cell_devel_agent_suivi_client.errors %}
-                                        {{form.ID_Cell_devel_agent_suivi_client(class="input is-small is-invalid", value=tarif.ID_Cell_devel_agent_suivi_client) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_devel_agent_suivi_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.ID_Cell_devel_agent_suivi_client(class="input is-small is-invalid", value=expert.ID_Cell_devel_agent_suivi_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_devel_agent_suivi_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_devel_agent_suivi_client(class="input is-small", value=expert.ID_Cell_devel_agent_suivi_client)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.ID_Cell_devel_agent_suivi_client(class="input is-small", value=tarif.ID_Cell_devel_agent_suivi_client)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Cell_devel_agent_suivi_client_taux_com.label(class="form-control-label")}}
-
-                                    {% if form.Cell_devel_agent_suivi_client_taux_com.errors %}
-                                        {{ form.Cell_devel_agent_suivi_client_taux_com(class="input is-small is-invalid", value=tarif.Cell_devel_agent_suivi_client_taux_com)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_devel_agent_suivi_client_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_devel_agent_suivi_client_taux_com.label(class="form-control-label")}}
+    
+                                        {% if form.Cell_devel_agent_suivi_client_taux_com.errors %}
+                                            {{ form.Cell_devel_agent_suivi_client_taux_com(class="input is-small is-invalid", value=expert.Cell_devel_agent_suivi_client_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_devel_agent_suivi_client_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_devel_agent_suivi_client_taux_com(class="input is-small" , value=expert.Cell_devel_agent_suivi_client_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.Cell_devel_agent_suivi_client_taux_com(class="input is-small", value=tarif.Cell_devel_agent_suivi_client_taux_com)}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.ID_Cell_tech_Ref_agent_suivi_client.label(class="form-control-label")}}
-
-                                    {% if form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
-                                        {{ form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small is-invalid", value=tarif.ID_Cell_tech_Ref_agent_suivi_client)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_tech_Ref_agent_suivi_client.label(class="form-control-label")}}
+    
+                                        {% if form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
+                                            {{ form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small is-invalid", value=expert.ID_Cell_tech_Ref_agent_suivi_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small", value=expert.ID_Cell_tech_Ref_agent_suivi_client)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small", value=tarif.ID_Cell_tech_Ref_agent_suivi_client)}}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Cell_tech_Ref_respon_suivi_client_taux_com.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_tech_Ref_respon_suivi_client_taux_com.label(class="form-control-label")}}
+    
                                         {% if form.Cell_tech_Ref_respon_suivi_client_taux_com.errors %}
-                                        {{form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small is-invalid", value=tarif.Cell_tech_Ref_respon_suivi_client_taux_com) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_tech_Ref_respon_suivi_client_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small is-invalid", value=expert.Cell_tech_Ref_respon_suivi_client_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_tech_Ref_respon_suivi_client_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small", value=expert.Cell_tech_Ref_respon_suivi_client_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small", value=tarif.Cell_tech_Ref_respon_suivi_client_taux_com)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.ID_Cell_tech_Ref_suiveur_client.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_tech_Ref_suiveur_client.label(class="form-control-label")}}
+    
                                         {% if form.ID_Cell_tech_Ref_suiveur_client.errors %}
-                                        {{form.ID_Cell_tech_Ref_suiveur_client(class="input is-small is-invalid", value=tarif.ID_Cell_tech_Ref_suiveur_client) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_tech_Ref_suiveur_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.ID_Cell_tech_Ref_suiveur_client(class="input is-small is-invalid", value=expert.ID_Cell_tech_Ref_suiveur_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_tech_Ref_suiveur_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_tech_Ref_suiveur_client(class="input is-small", value=expert.ID_Cell_tech_Ref_suiveur_client)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.ID_Cell_tech_Ref_suiveur_client(class="input is-small", value=tarif.ID_Cell_tech_Ref_suiveur_client)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Cell_tech_Ref_suiveur_taux_com.label(class="form-control-label")}}
-
-                                    {% if form.Cell_tech_Ref_suiveur_taux_com.errors %}
-                                        {{ form.Cell_tech_Ref_suiveur_taux_com(class="input is-small is-invalid", value=tarif.Cell_tech_Ref_suiveur_taux_com)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_tech_Ref_suiveur_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_tech_Ref_suiveur_taux_com.label(class="form-control-label")}}
+    
+                                        {% if form.Cell_tech_Ref_suiveur_taux_com.errors %}
+                                            {{ form.Cell_tech_Ref_suiveur_taux_com(class="input is-small is-invalid", value=expert.Cell_tech_Ref_suiveur_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_tech_Ref_suiveur_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_tech_Ref_suiveur_taux_com(class="input is-small", value=expert.Cell_tech_Ref_suiveur_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.Cell_tech_Ref_suiveur_taux_com(class="input is-small", value=tarif.Cell_tech_Ref_suiveur_taux_com)}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.ID_Cell_Planif_Ref_respon_client.label(class="form-control-label")}}
-
-                                    {% if form.ID_Cell_Planif_Ref_respon_client.errors %}
-                                        {{ form.ID_Cell_Planif_Ref_respon_client(class="input is-small is-invalid", value=tarif.ID_Cell_Planif_Ref_respon_client)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_Planif_Ref_respon_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_Planif_Ref_respon_client.label(class="form-control-label")}}
+    
+                                        {% if form.ID_Cell_Planif_Ref_respon_client.errors %}
+                                            {{ form.ID_Cell_Planif_Ref_respon_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_respon_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_Planif_Ref_respon_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_Planif_Ref_respon_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_respon_client)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.ID_Cell_Planif_Ref_respon_client(class="input is-small", value=tarif.ID_Cell_Planif_Ref_respon_client)}}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Cell_Planif_Ref_respon_taux_com.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_Planif_Ref_respon_taux_com.label(class="form-control-label")}}
+    
                                         {% if form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                        {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small is-invalid", value=tarif.Cell_Planif_Ref_respon_taux_com) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.Cell_Planif_Ref_respon_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_respon_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_Planif_Ref_respon_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_respon_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small", value=tarif.Cell_Planif_Ref_respon_taux_com)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.ID_Cell_Planif_Ref_suiveur_client.label(class="form-control-label")}}
-                    
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_Planif_Ref_suiveur_client.label(class="form-control-label")}}
+    
                                         {% if form.ID_Cell_Planif_Ref_suiveur_client.errors %}
-                                        {{form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small is-invalid", value=tarif.ID_Cell_Planif_Ref_suiveur_client) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_Planif_Ref_suiveur_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+                                            {{ form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_suiveur_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_Planif_Ref_suiveur_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_suiveur_client)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small", value=tarif.ID_Cell_Planif_Ref_suiveur_client)}}
-                                    {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.Cell_Planif_Ref_suiveur_taux_com.label(class="form-control-label")}}
-
-                                    {% if form.Cell_Planif_Ref_suiveur_taux_com.errors %}
-                                        {{ form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small is-invalid", value=tarif.Cell_Planif_Ref_suiveur_taux_com)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_Planif_Ref_suiveur_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_Planif_Ref_suiveur_taux_com.label(class="form-control-label")}}
+    
+                                        {% if form.Cell_Planif_Ref_suiveur_taux_com.errors %}
+                                            {{ form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_suiveur_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_Planif_Ref_suiveur_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_suiveur_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small", value=tarif.Cell_Planif_Ref_suiveur_taux_com)}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-12">
-                                        {{form.ID_Cell_Planif_Ref_agent_client.label(class="form-control-label")}}
-
-                                    {% if form.ID_Cell_Planif_Ref_agent_client.errors %}
-                                        {{ form.ID_Cell_Planif_Ref_agent_client(class="input is-small is-invalid", value=tarif.ID_Cell_Planif_Ref_agent_client)}}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_Cell_Planif_Ref_agent_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.ID_Cell_Planif_Ref_agent_client.label(class="form-control-label")}}
+    
+                                        {% if form.ID_Cell_Planif_Ref_agent_client.errors %}
+                                            {{ form.ID_Cell_Planif_Ref_agent_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_agent_client) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.ID_Cell_Planif_Ref_agent_client.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.ID_Cell_Planif_Ref_agent_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_agent_client)}}
+                                            {% endif %}
                                         </div>
-                                        {% else %}
-                                            {{form.ID_Cell_Planif_Ref_agent_client(class="input is-small", value=tarif.ID_Cell_Planif_Ref_agent_client)}}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Cell_Planif_Ref_respon_taux_com.label(class="form-control-label")}}
-                    
-                                        {% if form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                        {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small is-invalid", value=tarif.Cell_Planif_Ref_respon_taux_com) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.Cell_Planif_Ref_agent_taux_com.label(class="form-control-label")}}
+    
+                                        {% if form.Cell_Planif_Ref_agent_taux_com.errors %}
+                                            {{ form.Cell_Planif_Ref_agent_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_agent_taux_com) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Cell_Planif_Ref_agent_taux_com.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Cell_Planif_Ref_agent_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_agent_taux_com)}}
+                                            {% endif %}
                                         </div>
-                                    {% else %}
-                                        {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small", value=tarif.Cell_Planif_Ref_respon_taux_com)}}
-                                    {% endif %}
+    
+                                        <div class="col-sm-12 pb-1">
+                                            {{form.commentaire_libre.label(class="form-control-label")}}
+    
+                                        {% if form.commentaire_libre.errors %}
+                                            {{ form.commentaire_libre(class="input is-small is-invalid", value=expert.commentaire_libre) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.commentaire_libre.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.commentaire_libre(class="input is-small", value=expert.sexe)}}
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
                                 <div class="form-group">
                                     {{form.modifier(class="button is-small is-fullwidth is-success")}}   
                                 </div>

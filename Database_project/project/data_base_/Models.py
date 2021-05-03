@@ -123,28 +123,21 @@ class Client_negotiateur(db.Model):
     client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     client__nego=db.relationship("Client", 
             primaryjoin=(client_id == Client.id),
-            backref=db.backref('client__nego',  uselist=False),  uselist=False)
-    reference = db.Column(db.String) 	
-    TYPE = db.Column(db.String) 
-    societe = db.Column(db.String) 	
+            backref=db.backref('client__nego',  uselist=False),  uselist=False) 	
     sexe = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String,unique=True)
     numero = db.Column(db.String)
-    siret=db.Column(db.String)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
 
 
-    def __init__(self,client_id,TYPE,societe,sexe,nom,email,numero,siret):
+    def __init__(self,client_id,sexe,nom,email,numero):
         self.client_id=client_id
-        self.TYPE=TYPE
-        self.societe= societe
         self.sexe = sexe
         self.nom = nom
         self.email=email
         self.numero=numero
-        self.siret=siret
 
     def __repr__(self):
         return '<Client_negotiateur %r>' %self.id
@@ -464,7 +457,7 @@ class Tarifs(db.Model):
     chif_appt_prix_f2 =db.Column(Float) 
     chif_appt_prix_f3 =db.Column(Float) 
     chif_appt_prix_f4 =db.Column(Float) 
-    chif_appt_prix_f5 =db.Column(Float) 
+    chif_appt_prix_f5 =db.Column(Float) #f6
     chif_pav_villa_prix_t1=db.Column(Float) 
     chif_pav_villa_prix_t2=db.Column(Float) 
     chif_pav_villa_prix_t3=db.Column(Float) 

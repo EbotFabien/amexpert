@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form)
+from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client,fix_mission,Base,reset
 from Database_project.project.data_base_.utils import send_reset_email
@@ -936,13 +936,16 @@ def ajouter_tarif(id):
         form = Tarif_Form()
         client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            tarif = Tarifs(reference_client=client.id,maison_appartement=form.maison_appartement.data,type_maison=form.type_maison.data,Prix_EDL=form.Prix_EDL.data,Prix_Chiffrage=form.Prix_Chiffrage.data,code_tva=form.code_tva.data,Cell_AS_referent_client=form.ID_Cell_AS_referent_client.data,
+            tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
+            ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
+            chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
+            chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data,chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data,chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data,code_tva=form.code_tva.data,Cell_AS_referent_client=form.ID_Cell_AS_referent_client.data,prix_autre=form.prix_autre.data,
             Cell_AS_referent_client_taux_com=form.Cell_AS_referent_client_taux_com.data,Cell_devel_client=form.ID_Cell_devel_client.data,Cell_devel_respon_client_taux_com=form.Cell_devel_respon_client_taux_com.data,Cell_devel_agent_suivi_client=form.ID_Cell_devel_agent_suivi_client.data,Cell_devel_agent_suivi_client_taux_com=form.Cell_devel_agent_suivi_client_taux_com.data,
             Cell_tech_Ref_agent_suivi_client=form.ID_Cell_tech_Ref_agent_suivi_client.data,Cell_tech_Ref_respon_suivi_client_taux_com=form.Cell_tech_Ref_respon_suivi_client_taux_com.data,Cell_tech_Ref_suiveur_client=form.ID_Cell_tech_Ref_suiveur_client.data,Cell_tech_Ref_suiveur_taux_com=form.Cell_tech_Ref_suiveur_taux_com.data,Cell_Planif_Ref_respon_client=form.ID_Cell_Planif_Ref_respon_client.data,
             Cell_Planif_Ref_respon_taux_com=form.Cell_Planif_Ref_respon_taux_com.data,Cell_Planif_Ref_suiveur_client=form.ID_Cell_Planif_Ref_suiveur_client.data,Cell_Planif_Ref_suiveur_taux_com=form.Cell_Planif_Ref_suiveur_taux_com.data,Cell_Planif_Ref_agent_client=form.ID_Cell_Planif_Ref_agent_client.data,Cell_Planif_Ref_agent_taux_com=form.Cell_Planif_Ref_agent_taux_com.data,
-            commentaire_libre=form.commentaire_libre.data)
+            commentaire_libre=form.commentaire_libre.data)#,chif_appt_prix_f6=form.chif_appt_prix_f6.data
             db.session.add(tarif)
-            db.session.commit()
+            #db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
             return redirect(url_for('users.tarifs',id=id))
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert", highlight='tarif')
@@ -965,17 +968,81 @@ def edit_tarif(id):
     if current_user.TYPE == "Admin":
         form = Tarif_Form()
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_tarif.html', tarif=tarif,form=form, highlight='tarif')
+        return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
 
 @users.route('/update/<int:id>/tarif', methods=['POST', 'PUT'])
 @login_required
 def update_tarif(id):
     if current_user.TYPE == 'Admin':
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        tarif.reference_client=request.form['ID_client']
-        tarif.remise = request.form['remise']
-        tarif.Prix = request.form['prix']
-        tarif.type_maison = request.form['type_de_maison']
+        tarif.edl_prix_std=request.form['edl_prix_std']    
+        tarif.edl_appt_prix_f1=request.form['edl_appt_prix_f1']
+        tarif.edl_appt_prix_f2=request.form['edl_appt_prix_f2']
+        tarif.edl_appt_prix_f3=request.form['edl_appt_prix_f3']
+        tarif.edl_appt_prix_f4 =request.form['edl_appt_prix_f4']
+        tarif.edl_appt_prix_f5=request.form['edl_appt_prix_f5']
+        tarif.edl_appt_prix_f6=request.form['edl_appt_prix_f6']
+        tarif.edl_pav_villa_prix_t1=request.form['edl_pav_villa_prix_t1']
+        tarif.edl_pav_villa_prix_t2=request.form['edl_pav_villa_prix_t2']
+        tarif.edl_pav_villa_prix_t3=request.form['edl_pav_villa_prix_t3']
+        tarif.edl_pav_villa_prix_t4=request.form['edl_pav_villa_prix_t4']
+        tarif.edl_pav_villa_prix_t5=request.form['edl_pav_villa_prix_t5']
+        tarif.edl_pav_villa_prix_t6=request.form['edl_pav_villa_prix_t6']
+        tarif.edl_pav_villa_prix_t7=request.form['edl_pav_villa_prix_t7']
+        tarif.edl_pav_villa_prix_t8=request.form['edl_pav_villa_prix_t8']
+        tarif.chif_appt_prix_stu=request.form['chif_appt_prix_stu']
+        tarif.chif_appt_prix_f1 =request.form['chif_appt_prix_f1']
+        tarif.chif_appt_prix_f2  =request.form['chif_appt_prix_f2']
+        tarif.chif_appt_prix_f3  =request.form['chif_appt_prix_f3']
+        tarif.chif_appt_prix_f4  =request.form['chif_appt_prix_f4']
+        tarif.chif_appt_prix_f5=request.form['chif_appt_prix_f5']
+        #tarif.chif_appt_prix_f6  =request.form['chif_appt_prix_f6']
+        tarif.chif_pav_villa_prix_t1=request.form['chif_pav_villa_prix_t1']
+        tarif.chif_pav_villa_prix_t2 =request.form['chif_pav_villa_prix_t2']
+        tarif.chif_pav_villa_prix_t3=request.form['chif_pav_villa_prix_t3']
+        tarif.chif_pav_villa_prix_t4=request.form['chif_pav_villa_prix_t4']
+        tarif.chif_pav_villa_prix_t5=request.form['chif_pav_villa_prix_t5']
+        tarif.chif_pav_villa_prix_t6=request.form['chif_pav_villa_prix_t6']
+        tarif.chif_pav_villa_prix_t7=request.form['chif_pav_villa_prix_t7']
+        tarif.chif_pav_villa_prix_t8=request.form['chif_pav_villa_prix_t8']
+        tarif.prix_autre=request.form['prix_autre']
+
+        tarif.code_tva=request.form['code_tva']
+
+        tarif.ID_Cell_AS_referent_client=request.form['ID_Cell_AS_referent_client']
+
+        tarif.Cell_AS_referent_client_taux_com=request.form['Cell_AS_referent_client_taux_com']
+
+        tarif.ID_Cell_devel_client =request.form['ID_Cell_devel_client']
+
+        tarif.Cell_devel_respon_client_taux_com=request.form['Cell_devel_respon_client_taux_com'] 
+
+        tarif.ID_Cell_devel_agent_suivi_client =request.form['ID_Cell_devel_agent_suivi_client']
+
+        tarif.Cell_devel_agent_suivi_client_taux_com =request.form['Cell_devel_agent_suivi_client_taux_com']
+
+        tarif.ID_Cell_tech_Ref_agent_suivi_client =request.form['ID_Cell_tech_Ref_agent_suivi_client']
+
+        tarif.Cell_tech_Ref_respon_suivi_client_taux_com =request.form['Cell_tech_Ref_respon_suivi_client_taux_com']
+
+        tarif.ID_Cell_tech_Ref_suiveur_client =request.form['ID_Cell_tech_Ref_suiveur_client']
+
+        tarif.Cell_tech_Ref_suiveur_taux_com =request.form['Cell_tech_Ref_suiveur_taux_com']
+
+        tarif.ID_Cell_Planif_Ref_respon_client =request.form['ID_Cell_Planif_Ref_respon_client']
+
+        tarif.Cell_Planif_Ref_respon_taux_com =request.form['Cell_Planif_Ref_respon_taux_com']
+
+        tarif.ID_Cell_Planif_Ref_suiveur_client =request.form['ID_Cell_Planif_Ref_suiveur_client']
+
+        tarif.Cell_Planif_Ref_suiveur_taux_com =request.form['Cell_Planif_Ref_suiveur_taux_com']
+
+        tarif.ID_Cell_Planif_Ref_agent_client =request.form['ID_Cell_Planif_Ref_agent_client']
+
+        tarif.Cell_Planif_Ref_agent_taux_com  =request.form['Cell_Planif_Ref_agent_taux_com']
+
+        tarif.commentaire_libre =request.form['commentaire_libre']
+        
         db.session.commit()
         flash(f'Les donnes du tarif a été modifiées','success')
         return redirect(url_for('users.tarifs'))
@@ -1274,10 +1341,9 @@ def main():
 @login_required
 def negotiateur(id):
     if current_user.TYPE == "Admin":
-        client_=list(Client_negotiateur.query.filter(and_(Client_negotiateur.client_id == id ,Client_negotiateur.visibility == True)).all())
-        for c in client_:
-            print(c.id)
-        return render_template('manage/pages/negotiateur.html',Client=client_,ID=id,legend="negotiateur", highlight="client")
+        client_=list(Client_negotiateur.query.filter(and_(Client_negotiateur.client_id == id ,Client_negotiateur.visibility == True)).order_by(asc(Client_negotiateur.id)).all())
+        cli=Client.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/negotiateur.html',Client=client_,ID=id,legend="negotiateur", highlight="client",cli=cli)
     
     return redirect(url_for('users.main'))
 
@@ -1302,10 +1368,10 @@ def delete_negotiateur(id):
 @login_required
 def ajouter_negotiateur(id):
     if current_user.TYPE == "Admin":
-        form=Client_Form()
+        form=Negotiateur_Form()
         client=Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            user=Client_negotiateur(client.id,form.Type.data,form.Societe.data,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data,form.Siret.data)
+            user=Client_negotiateur(client.id,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data)
             db.session.add(user)
             db.session.commit()
             user_history=Client_negotiateur.query.filter(or_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.NOM.data)).first()
@@ -1315,7 +1381,7 @@ def ajouter_negotiateur(id):
             flash(f'Negotiateur créé avec succès','success')
             return redirect(url_for('users.negotiateur', id=id)) #id check
         print("didn't validate on submit")    
-        return render_template('manage/pages/ajouter_client.html',ID=id,form=form,legend="negociateur", highlight='client')
+        return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
     else:
         return redirect(url_for('users.main'))
 
@@ -1327,14 +1393,14 @@ def show_negotiateur(id):
     if current_user.TYPE == "Admin":
         client = Client_negotiateur.query.filter_by(id=id).first_or_404()
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
-        return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="negotiateur")
+        return render_template('manage/pages/show_nego.html', client=client,history=client_history,legend="negotiateur")
 
 
 @users.route('/edit/<int:id>/negotiateur', methods=['GET'])
 @login_required
 def edit_negotiateur(id):
     if current_user.TYPE == "Admin":
-        form = Client_Form()
+        form = Negotiateur_Form()
         client = Client_negotiateur.query.filter_by(id=id).first_or_404()
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
@@ -1356,10 +1422,8 @@ def update_negotiateur(id):
             db.session.commit()
 
         client.email = request.form['email']
-        client.societe = request.form['Societe']
         client.numero = request.form['Numero']
         client.sexe = request.form['Sexe']
-        client.TYPE = request.form['Type']
         client.nom = request.form['NOM']
 
         db.session.commit()
@@ -1379,7 +1443,7 @@ def update_negotiateur(id):
 def prospect_():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        client_=prospect.query.filter_by(visibility=True).paginate(page=page, per_page=10)
+        client_=prospect.query.filter_by(visibility=True).order_by(asc(Client_negotiateur.id)).paginate(page=page, per_page=10)
         return render_template('manage/pages/prospect.html',Client=client_,legend="client", highlight='prospect')
 
     
@@ -1593,11 +1657,11 @@ def uploader_():
             #insert_client('professionelle',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
-            Missions(loc) #learn how to check a whole row for this tables
-            fix_mission()
-            fix_mission()
-            fix_mission()
-           # Base(loc)
+            #Missions(loc) #learn how to check a whole row for this tables
+            #fix_mission()
+            #fix_mission()
+            #fix_mission()
+            #Base(loc)
             #reset()
             #tarif_client(loc)
             #mission_date()

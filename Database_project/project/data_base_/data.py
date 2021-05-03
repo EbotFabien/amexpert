@@ -332,9 +332,19 @@ def fix_mission():
             db.session.commit()
 
         if len(i.TYPE_LOGEMENT[0:4]) < 3 :
-            i.coherent = False 
-            i.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(i.TYPE_LOGEMENT)
-            db.session.commit()
+            if len(i.TYPE_LOGEMENT[0:2]) == 2:
+                if i.TYPE_LOGEMENT[0] == "T":
+                    B="PAV-"+str(i.TYPE_LOGEMENT) 
+                    i.TYPE_LOGEMENT = B
+                    db.session.commit()
+                if i.TYPE_LOGEMENT[0] == "F":
+                    B="APPT-"+str(i.TYPE_LOGEMENT)
+                    i.TYPE_LOGEMENT = B
+                    db.session.commit() 
+            else:
+                i.coherent = False 
+                i.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(i.TYPE_LOGEMENT)
+                db.session.commit()
         
 
 
@@ -354,6 +364,10 @@ def Base(loc):
     for i in A:
         base_appt=Tarif_base(pav_appartement='APPT',Type=sheet[i][24].value,surface=sheet[i][25].value,Prix_EDL=sheet[i][26].value)
         base_pav=Tarif_base(pav_appartement='PAV',Type=sheet[i][28].value,surface=sheet[i][29].value,Prix_EDL=sheet[i][30].value)
+        if sheet[i][28].value == 'T2':
+            base_pav1=Tarif_base(pav_appartement='PAV',Type='T1',surface=0,Prix_EDL=0)
+            db.session.add(base_pav1)
+            db.session.commit()
         db.session.add(base_appt)
         db.session.add(base_pav)
         db.session.commit()

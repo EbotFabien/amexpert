@@ -34,75 +34,439 @@
                                 {{ form.hidden_tag() }}
                                
                                 <div class="form-group row">
-                                    {# <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.ID_client.label(class="form-control-label pt-2")}}
-                    
-                                        {% if form.ID_client.errors %}
-                                        {{form.ID_client(class="input is-small is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.ID_client.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{form.ID_client(class="input is-small pt-2")}}
-                                    {% endif %}
-                                    </div> #}
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.type_maison.label(class="form-control-label pt-2")}}
+                                        {{form.edl_prix_std.label(class="form-control-label pt-2")}}
                     
-                                        {% if form.type_maison.errors %}
-                                        {{form.type_maison(class="input is-small is-invalid") }}
+                                        {% if form.edl_prix_std.errors %}
+                                        {{form.edl_prix_std(class="input is-small is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.type_maison.errors %}
+                                            {% for error in form.edl_prix_std.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{form.type_maison(class="input is-small pt-2")}}
+                                        {{form.edl_prix_std(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div> 
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f1.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f1.errors %}
+                                        {{form.edl_appt_prix_f1(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_appt_prix_f1.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f1(class="input is-small pt-2")}}
                                     {% endif %}
                                     </div>
-                                    <div class="col-sm-12 pb-1">
-                                        {{form.maison_appartement.label(class="form-control-label pt-2")}}
-
-                                    {% if form.maison_appartement.errors %}
-                                        {{ form.maison_appartement(class="is-small input is-invalid") }}
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f2.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f2.errors %}
+                                        {{form.edl_appt_prix_f2(class="input is-small is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.maison_appartement.errors %}
+                                            {% for error in form.edl_appt_prix_f2.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f2(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f3.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f3.errors %}
+                                        {{form.edl_appt_prix_f3(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_appt_prix_f3.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f3(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f4.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f4.errors %}
+                                        {{form.edl_appt_prix_f4(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_appt_prix_f4.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f4(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f5.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f5.errors %}
+                                        {{form.edl_appt_prix_f5(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_appt_prix_f5.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f5(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.edl_appt_prix_f6.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.edl_appt_prix_f6.errors %}
+                                        {{form.edl_appt_prix_f6(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_appt_prix_f6.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.edl_appt_prix_f6(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>a
+                                    
+                                    b<div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t1.errors %}
+                                        {{ form.edl_pav_villa_prix_t1(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t1.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.maison_appartement(class="input is-small pt-2")}}
+                                            {{form.edl_pav_villa_prix_t1(class="input is-small pt-2")}}
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-12 pb-1">
-                                        {{form.Prix_EDL.label(class="form-control-label")}}
+                                        {{form.edl_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
 
-                                    {% if form.Prix_EDL.errors %}
-                                        {{ form.Prix_EDL(class="input is-small is-invalid") }}
+                                    {% if form.edl_pav_villa_prix_t2.errors %}
+                                        {{ form.edl_pav_villa_prix_t2(class="is-small input is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.Prix_EDL.errors %}
+                                            {% for error in form.edl_pav_villa_prix_t2.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.Prix_EDL(class="input is-small")}}
+                                            {{form.edl_pav_villa_prix_t2(class="input is-small pt-2")}}
                                         {% endif %}
                                     </div>
-
                                     <div class="col-sm-12 pb-1">
-                                        {{form.Prix_Chiffrage.label(class="form-control-label")}}
+                                        {{form.edl_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
 
-                                    {% if form.Prix_Chiffrage.errors %}
-                                        {{ form.Prix_Chiffrage(class="input is-small is-invalid") }}
+                                    {% if form.edl_pav_villa_prix_t3.errors %}
+                                        {{ form.edl_pav_villa_prix_t3(class="is-small input is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.Prix_Chiffrage.errors %}
+                                            {% for error in form.edl_pav_villa_prix_t3.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.Prix_Chiffrage(class="input is-small")}}
+                                            {{form.edl_pav_villa_prix_t3(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t4.errors %}
+                                        {{ form.edl_pav_villa_prix_t4(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t4.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.edl_pav_villa_prix_t4(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t5.errors %}
+                                        {{ form.edl_pav_villa_prix_t5(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t5.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.edl_pav_villa_prix_t5(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t6.errors %}
+                                        {{ form.edl_pav_villa_prix_t6(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t6.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.edl_pav_villa_prix_t6(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t7.errors %}
+                                        {{ form.edl_pav_villa_prix_t7(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t7.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.edl_pav_villa_prix_t7(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.edl_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
+
+                                    {% if form.edl_pav_villa_prix_t8.errors %}
+                                        {{ form.edl_pav_villa_prix_t8(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.edl_pav_villa_prix_t8.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.edl_pav_villa_prix_t8(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    a<div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_stu.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_stu.errors %}
+                                        {{form.chif_appt_prix_stu(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_stu.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_stu(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div> 
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_f1.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f1.errors %}
+                                        {{form.chif_appt_prix_f1(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f1.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f1(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_f2.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f2.errors %}
+                                        {{form.chif_appt_prix_f2(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f2.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f2(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_f3.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f3.errors %}
+                                        {{form.chif_appt_prix_f3(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f3.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f3(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_f4.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f4.errors %}
+                                        {{form.chif_appt_prix_f4(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f4.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f4(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.chif_appt_prix_f5.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f5.errors %}
+                                        {{form.chif_appt_prix_f5(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f5.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f5(class="input is-small pt-2")}}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                       {# {{form.chif_appt_prix_f6.label(class="form-control-label pt-2")}}
+                    
+                                        {% if form.chif_appt_prix_f6.errors %}
+                                        {{form.chif_appt_prix_f6(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_appt_prix_f6.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{form.chif_appt_prix_f6(class="input is-small pt-2")}}
+                                    {% endif %} #}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t1.errors %}
+                                        {{ form.chif_pav_villa_prix_t1(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t1.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t1(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t2.errors %}
+                                        {{ form.chif_pav_villa_prix_t2(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t2.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t2(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t3.errors %}
+                                        {{ form.chif_pav_villa_prix_t3(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t3.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t3(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t4.errors %}
+                                        {{ form.chif_pav_villa_prix_t4(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t4.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t4(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t5.errors %}
+                                        {{ form.chif_pav_villa_prix_t5(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t5.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t5(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t6.errors %}
+                                        {{ form.chif_pav_villa_prix_t6(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t6.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t6(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t7.errors %}
+                                        {{ form.chif_pav_villa_prix_t7(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t7.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t7(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.chif_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
+
+                                    {% if form.chif_pav_villa_prix_t8.errors %}
+                                        {{ form.chif_pav_villa_prix_t8(class="is-small input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.chif_pav_villa_prix_t8.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.chif_pav_villa_prix_t8(class="input is-small pt-2")}}
+                                        {% endif %}
+                                    </div>b
+                                    <div class="col-sm-12 pb-1">
+                                        {{form.prix_autre.label(class="form-control-label")}}
+
+                                    {% if form.prix_autre.errors %}
+                                        {{ form.prix_autre(class="input is-small is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.prix_autre.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                            {{form.prix_autre(class="input is-small")}}
                                         {% endif %}
                                     </div>
 
