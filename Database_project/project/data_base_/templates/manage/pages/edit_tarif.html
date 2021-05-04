@@ -30,720 +30,1167 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST" action="{{url_for('users.update_tarif', id=expert.id)}}">
-                                {{ form.hidden_tag() }}
-                                <fieldset class="form-group">
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_prix_std.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_prix_std.errors %}
-                                            {{form.edl_prix_std(class="input is-small is-invalid" , value=expert.edl_prix_std) }}
+                            <form class="user" method="POST" style="padding: 10px;" action="{{url_for('users.update_tarif', id=expert.id)}}">
+                                    {{ form.hidden_tag() }}
+                                    <div class="field is-horizontal">
+                                      <div class="field-label is-normal">
+                                        <label class="label" style="text-align: left;"><small>{{form.edl_prix_std.label(class="form-control-label")}}</small></label></div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.edl_prix_std.errors %}
+                                            {{form.edl_prix_std(class="input is-invalid", value=expert.edl_prix_std) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.edl_prix_std.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                        {% else %}
-                                            {{form.edl_prix_std(class="input is-small pt-2" , value=expert.edl_prix_std)}}
-                                        {% endif %}
-                                        </div> 
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f1.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f1.errors %}
-                                            {{form.edl_appt_prix_f1(class="input is-small is-invalid" , value=expert.edl_appt_prix_f1) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                                {% else %}
+                                                    {{form.edl_prix_std(class="input", value=expert.edl_prix_std)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis. Le numero de edl_prix_std est requis</p>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f1(class="input is-small pt-2" , value=expert.edl_appt_prix_f1)}}
-                                        {% endif %}
+                                          </div>
                                         </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f2.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f2.errors %}
-                                            {{form.edl_appt_prix_f2(class="input is-small is-invalid" , value=expert.edl_appt_prix_f2) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f1.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.edl_appt_prix_f1.errors %}
+                                                {{form.edl_appt_prix_f1(class="input is-invalid", value=expert.edl_appt_prix_f1) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.edl_appt_prix_f1.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.edl_appt_prix_f1(class="input", value=expert.edl_appt_prix_f1)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help"> Requis. Le edl_appt_prix_f1 est requis</p>
+                                                </div>
+                                              </div>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f2(class="input is-small pt-2" , value=expert.edl_appt_prix_f2)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f3.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f3.errors %}
-                                            {{form.edl_appt_prix_f3(class="input is-small is-invalid", value=expert.edl_appt_prix_f3) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f3.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f2.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_appt_prix_f2.errors %}
+                                                  {{form.edl_appt_prix_f2(class="input is-invalid", value=expert.edl_appt_prix_f2) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_appt_prix_f2.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_appt_prix_f2(class="input", value=expert.edl_appt_prix_f2)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_appt_prix_f2 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f3.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_appt_prix_f3.errors %}
+                                                  {{form.edl_appt_prix_f3(class="input is-invalid", value=expert.edl_appt_prix_f3) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_appt_prix_f3.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_appt_prix_f3(class="input", value=expert.edl_appt_prix_f3)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_appt_prix_f3 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f4.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_appt_prix_f4.errors %}
+                                                  {{form.edl_appt_prix_f4(class="input is-invalid", value=expert.edl_appt_prix_f4) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_appt_prix_f4.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_appt_prix_f4(class="input", value=expert.edl_appt_prix_f4)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_appt_prix_f4 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f5.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_appt_prix_f5.errors %}
+                                                  {{form.edl_appt_prix_f5(class="input is-invalid", value=expert.edl_appt_prix_f5) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_appt_prix_f5.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_appt_prix_f5(class="input", value=expert.edl_appt_prix_f5)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_appt_prix_f5 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_appt_prix_f6.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_appt_prix_f6.errors %}
+                                                  {{form.edl_appt_prix_f6(class="input is-invalid", value=expert.edl_appt_prix_f6) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_appt_prix_f6.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_appt_prix_f6(class="input", value=expert.edl_appt_prix_f6)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_appt_prix_f6 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t1.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.edl_pav_villa_prix_t1.errors %}
+                                                {{form.edl_pav_villa_prix_t1(class="input is-invalid", value=expert.edl_pav_villa_prix_t1) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.edl_pav_villa_prix_t1.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.edl_pav_villa_prix_t1(class="input", value=expert.edl_pav_villa_prix_t1)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help"> Requis. Le edl_pav_villa_prix_t1 est requis</p>
+                                                </div>
+                                              </div>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f3(class="input is-small pt-2" , value=expert.edl_appt_prix_f3)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f4.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f4.errors %}
-                                            {{form.edl_appt_prix_f4(class="input is-small is-invalid" , value=expert.edl_appt_prix_f4) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f4.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t2.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t2.errors %}
+                                                  {{form.edl_pav_villa_prix_t2(class="input is-invalid", value=expert.edl_pav_villa_prix_t2) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t2.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t2(class="input", value=expert.edl_pav_villa_prix_t2)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t2 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t3.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t3.errors %}
+                                                  {{form.edl_pav_villa_prix_t3(class="input is-invalid", value=expert.edl_pav_villa_prix_t3) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t3.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t3(class="input", value=expert.edl_pav_villa_prix_t3)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t3 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t4.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t4.errors %}
+                                                  {{form.edl_pav_villa_prix_t4(class="input is-invalid", value=expert.edl_pav_villa_prix_t4) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t4.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t4(class="input", value=expert.edl_pav_villa_prix_t4)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t4 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t5.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t5.errors %}
+                                                  {{form.edl_pav_villa_prix_t5(class="input is-invalid", value=expert.edl_pav_villa_prix_t5) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t5.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t5(class="input", value=expert.edl_pav_villa_prix_t5)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t5 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t6.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t6.errors %}
+                                                  {{form.edl_pav_villa_prix_t6(class="input is-invalid", value=expert.edl_pav_villa_prix_t6) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t6.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t6(class="input", value=expert.edl_pav_villa_prix_t6)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t6 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t7.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t7.errors %}
+                                                  {{form.edl_pav_villa_prix_t7(class="input is-invalid", value=expert.edl_pav_villa_prix_t7) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t7.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t7(class="input", value=expert.edl_pav_villa_prix_t7)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t7 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.edl_pav_villa_prix_t8.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.edl_pav_villa_prix_t8.errors %}
+                                                  {{form.edl_pav_villa_prix_t8(class="input is-invalid", value=expert.edl_pav_villa_prix_t8) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.edl_pav_villa_prix_t8.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.edl_pav_villa_prix_t8(class="input", value=expert.edl_pav_villa_prix_t8)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t8 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_stu.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.chif_appt_prix_stu.errors %}
+                                                    {{form.chif_appt_prix_stu(class="input is-invalid", value=expert.chif_appt_prix_stu) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.chif_appt_prix_stu.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.chif_appt_prix_stu(class="input", value=expert.chif_appt_prix_stu)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help"> Requis. Le chif_appt_prix_stu est requis</p>
+                                                </div>
+                                              </div>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f4(class="input is-small pt-2" , value=expert.edl_appt_prix_f4)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f5.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f5.errors %}
-                                            {{form.edl_appt_prix_f5(class="input is-small is-invalid" , value=expert.edl_appt_prix_f5) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f5.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_f1.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f1.errors %}
+                                                      {{form.chif_appt_prix_f1(class="input is-invalid", value=expert.chif_appt_prix_f1) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f1.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f1(class="input", value=expert.chif_appt_prix_f1)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f1 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_f2.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f2.errors %}
+                                                      {{form.chif_appt_prix_f2(class="input is-invalid", value=expert.chif_appt_prix_f2) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f2.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f2(class="input", value=expert.chif_appt_prix_f2)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f2 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_f3.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f3.errors %}
+                                                      {{form.chif_appt_prix_f3(class="input is-invalid", value=expert.chif_appt_prix_f3) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f3.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f3(class="input", value=expert.chif_appt_prix_f3)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f3 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_f4.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f4.errors %}
+                                                      {{form.chif_appt_prix_f4(class="input is-invalid", value=expert.chif_appt_prix_f4) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f4.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f4(class="input", value=expert.chif_appt_prix_f4)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f4 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_appt_prix_f5.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f5.errors %}
+                                                      {{form.chif_appt_prix_f5(class="input is-invalid", value=expert.chif_appt_prix_f5) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f5.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f5(class="input", value=expert.chif_appt_prix_f5)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f5 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{#{{form.chif_appt_prix_f6.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.chif_appt_prix_f6.errors %}
+                                                      {{form.chif_appt_prix_f6(class="input is-invalid", value=expert.chif_appt_prix_f6) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_appt_prix_f6.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_appt_prix_f6(class="input", value=expert.chif_appt_prix_f6)}}
+                                                      {% endif %}#}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_appt_prix_f6 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t1.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field">
+                                                  <div class="control">
+                                                   {% if form.chif_pav_villa_prix_t1.errors %}
+                                                    {{form.chif_pav_villa_prix_t1(class="input is-invalid", value=expert.chif_pav_villa_prix_t1) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.chif_pav_villa_prix_t1.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.chif_pav_villa_prix_t1(class="input", value=expert.chif_pav_villa_prix_t1)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help"> Requis. Le chif_pav_villa_prix_t1 est requis</p>
+                                                </div>
+                                              </div>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f5(class="input is-small pt-2" , value=expert.edl_appt_prix_f5)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.edl_appt_prix_f6.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.edl_appt_prix_f6.errors %}
-                                            {{form.edl_appt_prix_f6(class="input is-small is-invalid" , value=expert.edl_appt_prix_f6) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_appt_prix_f6.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t2.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t2.errors %}
+                                                      {{form.chif_pav_villa_prix_t2(class="input is-invalid", value=expert.chif_pav_villa_prix_t2) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t2.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t2(class="input", value=expert.chif_pav_villa_prix_t2)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t2 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t3.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t3.errors %}
+                                                      {{form.chif_pav_villa_prix_t3(class="input is-invalid", value=expert.chif_pav_villa_prix_t3) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t3.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t3(class="input", value=expert.chif_pav_villa_prix_t3)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t3 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t4.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t4.errors %}
+                                                      {{form.chif_pav_villa_prix_t4(class="input is-invalid", value=expert.chif_pav_villa_prix_t4) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t4.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t4(class="input", value=expert.chif_pav_villa_prix_t4)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t4 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t5.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t5.errors %}
+                                                      {{form.chif_pav_villa_prix_t5(class="input is-invalid", value=expert.chif_pav_villa_prix_t5) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t5.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t5(class="input", value=expert.chif_pav_villa_prix_t5)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t5 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t6.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t6.errors %}
+                                                      {{form.chif_pav_villa_prix_t6(class="input is-invalid", value=expert.chif_pav_villa_prix_t6) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t6.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t6(class="input", value=expert.chif_pav_villa_prix_t6)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t6 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t7.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t7.errors %}
+                                                      {{form.chif_pav_villa_prix_t7(class="input is-invalid", value=expert.chif_pav_villa_prix_t7) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t7.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t7(class="input", value=expert.chif_pav_villa_prix_t7)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t7 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.chif_pav_villa_prix_t8.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field">
+                                                    <div class="control">
+                                                     {% if form.chif_pav_villa_prix_t8.errors %}
+                                                      {{form.chif_pav_villa_prix_t8(class="input is-invalid", value=expert.chif_pav_villa_prix_t8) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.chif_pav_villa_prix_t8.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.chif_pav_villa_prix_t8(class="input", value=expert.chif_pav_villa_prix_t8)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t8 est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.prix_autre.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field">
+                                                  <div class="control">
+                                                   {% if form.prix_autre.errors %}
+                                                    {{form.prix_autre(class="input is-invalid", value=expert.prix_autre) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.prix_autre.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.prix_autre(class="input", value=expert.prix_autre)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    
+                                                </div>
+                                              </div>
                                             </div>
-                                        {% else %}
-                                            {{form.edl_appt_prix_f6(class="input is-small pt-2" , value=expert.edl_appt_prix_f6)}}
-                                        {% endif %}
-                                        </div>a
+                                        <hr/>
+                        
+                    
                                         
-                                        b<div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t1.errors %}
-                                            {{ form.edl_pav_villa_prix_t1(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t1) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.code_tva.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.code_tva.errors %}
+                                                    {{form.code_tva(class="input is-invalid", value=expert.code_tva) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.code_tva.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.code_tva(class="input", value=expert.code_tva)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    
+                                                </div>
+                                              </div>
                                             </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t1(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t1)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t2.errors %}
-                                            {{ form.edl_pav_villa_prix_t2(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t2) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                          <div class="field-label is-normal">
+                                            <label class="label" style="text-align: left;"><small>{{form.taux_meuble.label(class="form-control-label")}}</small></label></div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.taux_meuble.errors %}
+                                                    {{form.taux_meuble(class="input is-invalid", value=expert.taux_meuble) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.taux_meuble.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.taux_meuble(class="input", value=expert.taux_meuble)}}
+                                                    {% endif %}
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t2(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t2)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t3.errors %}
-                                            {{ form.edl_pav_villa_prix_t3(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t3) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t3.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
+                                        <hr/>
+                                        <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.referent_as_client.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.referent_as_client.errors %}
+                                                      {{form.referent_as_client(class="input is-invalid", value=expert.referent_as_client) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.referent_as_client.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.referent_as_client(class="input", value=expert.referent_as_client)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. referent_as_client est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_as_sur_ca_client.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_as_sur_ca_client.errors %}
+                                                      {{form.com_as_sur_ca_client(class="input is-invalid", value=expert.com_as_sur_ca_client) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_as_sur_ca_client.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_as_sur_ca_client(class="input", value=expert.com_as_sur_ca_client)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_as_sur_ca_client est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_dev_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_dev_ref_responsable.errors %}
+                                                      {{form.cell_dev_ref_responsable(class="input is-invalid", value=expert.cell_dev_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_dev_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_dev_ref_responsable(class="input", value=expert.cell_dev_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_dev_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_dev_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_dev_ref_responsable.errors %}
+                                                      {{form.com_cell_dev_ref_responsable(class="input is-invalid", value=expert.com_cell_dev_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_dev_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_dev_ref_responsable(class="input", value=expert.com_cell_dev_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_dev_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_dev_ref_agent.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_dev_ref_agent.errors %}
+                                                      {{form.cell_dev_ref_agent(class="input is-invalid", value=expert.cell_dev_ref_agent) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_dev_ref_agent.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_dev_ref_agent(class="input", value=expert.cell_dev_ref_agent)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_dev_ref_agent est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_dev_ref_agent.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_dev_ref_agent.errors %}
+                                                      {{form.com_cell_dev_ref_agent(class="input is-invalid", value=expert.com_cell_dev_ref_agent) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_dev_ref_agent.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_dev_ref_agent(class="input", value=expert.com_cell_dev_ref_agent)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_dev_ref_agent est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_tech_ref_agent.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_tech_ref_agent.errors %}
+                                                      {{form.cell_tech_ref_agent(class="input is-invalid", value=expert.cell_tech_ref_agent) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_tech_ref_agent.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_tech_ref_agent(class="input", value=expert.cell_tech_ref_agent)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_tech_ref_agent est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_tech_Ref_agent.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_tech_Ref_agent.errors %}
+                                                      {{form.com_cell_tech_Ref_agent(class="input is-invalid", value=expert.com_cell_tech_Ref_agent) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_tech_Ref_agent.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_tech_Ref_agent(class="input", value=expert.com_cell_tech_Ref_agent)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_tech_Ref_agent est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_tech_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_tech_ref_responsable.errors %}
+                                                      {{form.cell_tech_ref_responsable(class="input is-invalid", value=expert.cell_tech_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_tech_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_tech_ref_responsable(class="input", value=expert.cell_tech_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_tech_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_tech_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_tech_ref_responsable.errors %}
+                                                      {{form.com_cell_tech_ref_responsable(class="input is-invalid", value=expert.com_cell_tech_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_tech_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_tech_ref_responsable(class="input", value=expert.com_cell_tech_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_tech_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_tech_ref_suiveur.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_tech_ref_suiveur.errors %}
+                                                      {{form.cell_tech_ref_suiveur(class="input is-invalid", value=expert.cell_tech_ref_suiveur) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_tech_ref_suiveur.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_tech_ref_suiveur(class="input", value=expert.cell_tech_ref_suiveur)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_tech_ref_suiveur est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_tech_ref_suiveur.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_tech_ref_suiveur.errors %}
+                                                      {{form.com_cell_tech_ref_suiveur(class="input is-invalid", value=expert.com_cell_tech_ref_suiveur) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_tech_ref_suiveur.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_tech_ref_suiveur(class="input", value=expert.com_cell_tech_ref_suiveur)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_tech_ref_suiveur est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_planif_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_planif_ref_responsable.errors %}
+                                                      {{form.cell_planif_ref_responsable(class="input is-invalid", value=expert.cell_planif_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_planif_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_planif_ref_responsable(class="input", value=expert.cell_planif_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_planif_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_planif_ref_responsable.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_planif_ref_responsable.errors %}
+                                                      {{form.com_cell_planif_ref_responsable(class="input is-invalid", value=expert.com_cell_planif_ref_responsable) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_planif_ref_responsable.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_planif_ref_responsable(class="input", value=expert.com_cell_planif_ref_responsable)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_planif_ref_responsable est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_planif_ref_suiveur.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_planif_ref_suiveur.errors %}
+                                                      {{form.cell_planif_ref_suiveur(class="input is-invalid", value=expert.cell_planif_ref_suiveur) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_planif_ref_suiveur.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_planif_ref_suiveur(class="input", value=expert.cell_planif_ref_suiveur)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_planif_ref_suiveur est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_planif_ref_suiveur.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_planif_ref_suiveur.errors %}
+                                                      {{form.com_cell_planif_ref_suiveur(class="input is-invalid", value=expert.com_cell_planif_ref_suiveur) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_planif_ref_suiveur.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_planif_ref_suiveur(class="input", value=expert.com_cell_planif_ref_suiveur)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_planif_ref_suiveur est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.cell_planif_ref_agent_saisie.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.cell_planif_ref_agent_saisie.errors %}
+                                                      {{form.cell_planif_ref_agent_saisie(class="input is-invalid", value=expert.cell_planif_ref_agent_saisie) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.cell_planif_ref_agent_saisie.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.cell_planif_ref_agent_saisie(class="input", value=expert.cell_planif_ref_agent_saisie)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. cell_planif_ref_agent_saisie est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.com_cell_planif_ref_agent_saisie.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.com_cell_planif_ref_agent_saisie.errors %}
+                                                      {{form.com_cell_planif_ref_agent_saisie(class="input is-invalid", value=expert.com_cell_planif_ref_agent_saisie) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.com_cell_planif_ref_agent_saisie.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.com_cell_planif_ref_agent_saisie(class="input", value=expert.com_cell_planif_ref_agent_saisie)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. com_cell_planif_ref_agent_saisie est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                          <div class="field is-horizontal">
+                                            <div class="field-label is-normal">
+                                              <label class="label" style="text-align: left;"><small>{{form.commentaire_libre.label(class="form-control-label")}}</small></label></div>
+                                              <div class="field-body">
+                                                <div class="field"><!---->
+                                                    <div class="control">
+                                                     {% if form.commentaire_libre.errors %}
+                                                      {{form.commentaire_libre(class="input is-invalid", value=expert.commentaire_libre) }}
+                                                  <div class="invalid-feedback">
+                                                      {% for error in form.commentaire_libre.errors %}
+                                                          <span>{{ error }}</span>
+                                                      {% endfor %}
+                                                  </div>
+                                                      {% else %}
+                                                          {{form.commentaire_libre(class="input", value=expert.commentaire_libre)}}
+                                                      {% endif %}
+                                                    </div>
+                                                      <p class="help"> Requis. commentaire_libre est requis</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          <hr/>
+                                       <div class="field is-horizontal">
+                                        <div class="field-label is-normal"></div>
+                                            <div class="field-body">
+                                              <div class="field">
+                                                <div class="control">
+                                                  <button type="submit" class="button is-primary is-small"> Submit </button>
+                                                </div>
+                                              </div>
                                             </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t3(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t3)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
     
-                                        {% if form.edl_pav_villa_prix_t4.errors %}
-                                            {{ form.edl_pav_villa_prix_t4(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t4) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t4.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t4(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t4)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t5.errors %}
-                                            {{ form.edl_pav_villa_prix_t5(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t5) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t5.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t5(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t5)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t6.errors %}
-                                            {{ form.edl_pav_villa_prix_t6(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t6) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t6.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t6(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t6)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t7.errors %}
-                                            {{ form.edl_pav_villa_prix_t7(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t7) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t7.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t7(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t7)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.edl_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.edl_pav_villa_prix_t8.errors %}
-                                            {{ form.edl_pav_villa_prix_t8(class="is-small input is-invalid" , value=expert.edl_pav_villa_prix_t8) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.edl_pav_villa_prix_t8.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.edl_pav_villa_prix_t8(class="input is-small pt-2" , value=expert.edl_pav_villa_prix_t8)}}
-                                            {% endif %}
-                                        </div>
-                                        a<div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_stu.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_stu.errors %}
-                                            {{form.chif_appt_prix_stu(class="input is-small is-invalid" , value=expert.chif_appt_prix_stu) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_stu.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_stu(class="input is-small pt-2" , value=expert.chif_appt_prix_stu)}}
-                                        {% endif %}
-                                        </div> 
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_f1.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f1.errors %}
-                                            {{form.chif_appt_prix_f1(class="input is-small is-invalid" , value=expert.chif_appt_prix_f1) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f1(class="input is-small pt-2" , value=expert.chif_appt_prix_f1)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_f2.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f2.errors %}
-                                            {{form.chif_appt_prix_f2(class="input is-small is-invalid" , value=expert.chif_appt_prix_f2) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f2(class="input is-small pt-2" , value=expert.chif_appt_prix_f2)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_f3.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f3.errors %}
-                                            {{form.chif_appt_prix_f3(class="input is-small is-invalid" , value=expert.chif_appt_prix_f3) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f3.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f3(class="input is-small pt-2" , value=expert.chif_appt_prix_f3)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_f4.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f4.errors %}
-                                            {{form.chif_appt_prix_f4(class="input is-small is-invalid" , value=expert.chif_appt_prix_f4) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f4.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f4(class="input is-small pt-2" , value=expert.chif_appt_prix_f4)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {{form.chif_appt_prix_f5.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f5.errors %}
-                                            {{form.chif_appt_prix_f5(class="input is-small is-invalid" , value=expert.chif_appt_prix_f5) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f5.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f5(class="input is-small pt-2" , value=expert.chif_appt_prix_f5)}}
-                                        {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 mb-3 mb-sm-0">
-                                            {#{{form.chif_appt_prix_f6.label(class="form-control-label pt-2")}}
-                        
-                                            {% if form.chif_appt_prix_f6.errors %}
-                                            {{form.chif_appt_prix_f6(class="input is-small is-invalid" , value=expert.chif_appt_prix_f6) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_appt_prix_f6.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{form.chif_appt_prix_f6(class="input is-small pt-2" , value=expert.chif_appt_prix_f6)}}
-                                        {% endif %}#}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t1.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t1.errors %}
-                                            {{ form.chif_pav_villa_prix_t1(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t1) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t1.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t1(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t1)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t2.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t2.errors %}
-                                            {{ form.chif_pav_villa_prix_t2(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t2) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t2.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t2(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t2)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t3.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t3.errors %}
-                                            {{ form.chif_pav_villa_prix_t3(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t3) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t3.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t3(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t3)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t4.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t4.errors %}
-                                            {{ form.chif_pav_villa_prix_t4(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t4) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t4.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t4(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t4)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t5.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t5.errors %}
-                                            {{ form.chif_pav_villa_prix_t5(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t5) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t5.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t5(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t5)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t6.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t6.errors %}
-                                            {{ form.chif_pav_villa_prix_t6(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t6) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t6.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t6(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t6)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t7.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t7.errors %}
-                                            {{ form.chif_pav_villa_prix_t7(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t7) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t7.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t7(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t7)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.chif_pav_villa_prix_t8.label(class="form-control-label pt-2")}}
-    
-                                        {% if form.chif_pav_villa_prix_t8.errors %}
-                                            {{ form.chif_pav_villa_prix_t8(class="is-small input is-invalid" , value=expert.chif_pav_villa_prix_t8) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.chif_pav_villa_prix_t8.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.chif_pav_villa_prix_t8(class="input is-small pt-2" , value=expert.chif_pav_villa_prix_t8)}}
-                                            {% endif %}
-                                        </div>b
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.prix_autre.label(class="form-control-label")}}
-    
-                                        {% if form.prix_autre.errors %}
-                                            {{ form.prix_autre(class="input is-small is-invalid" , value=expert.prix_autre) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.prix_autre.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.prix_autre(class="input is-small" , value=expert.prix_autre)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.code_tva.label(class="form-control-label")}}
-    
-                                        {% if form.code_tva.errors %}
-                                            {{ form.code_tva(class="input is-small is-invalid" , value=expert.code_tva) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.code_tva.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.code_tva(class="input is-small" , value=expert.code_tva)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_AS_referent_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_AS_referent_client.errors %}
-                                            {{ form.ID_Cell_AS_referent_client(class="input is-small is-invalid" , value=expert.ID_Cell_AS_referent_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_AS_referent_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_AS_referent_client(class="input is-small", value=expert.ID_Cell_AS_referent_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_AS_referent_client_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_AS_referent_client_taux_com.errors %}
-                                            {{ form.Cell_AS_referent_client_taux_com(class="input is-small is-invalid", value=expert.Cell_AS_referent_client_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_AS_referent_client_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_AS_referent_client_taux_com(class="input is-small", value=expert.Cell_AS_referent_client_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_devel_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_devel_client.errors %}
-                                            {{ form.ID_Cell_devel_client(class="input is-small is-invalid", value=expert.ID_Cell_devel_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_devel_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_devel_client(class="input is-small", value=expert.ID_Cell_devel_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_devel_respon_client_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_devel_respon_client_taux_com.errors %}
-                                            {{ form.Cell_devel_respon_client_taux_com(class="input is-small is-invalid", value=expert.Cell_devel_respon_client_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_devel_respon_client_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_devel_respon_client_taux_com(class="input is-small", value=expert.Cell_devel_respon_client_taux_com)}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_devel_agent_suivi_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_devel_agent_suivi_client.errors %}
-                                            {{ form.ID_Cell_devel_agent_suivi_client(class="input is-small is-invalid", value=expert.ID_Cell_devel_agent_suivi_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_devel_agent_suivi_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_devel_agent_suivi_client(class="input is-small", value=expert.ID_Cell_devel_agent_suivi_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_devel_agent_suivi_client_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_devel_agent_suivi_client_taux_com.errors %}
-                                            {{ form.Cell_devel_agent_suivi_client_taux_com(class="input is-small is-invalid", value=expert.Cell_devel_agent_suivi_client_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_devel_agent_suivi_client_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_devel_agent_suivi_client_taux_com(class="input is-small" , value=expert.Cell_devel_agent_suivi_client_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_tech_Ref_agent_suivi_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
-                                            {{ form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small is-invalid", value=expert.ID_Cell_tech_Ref_agent_suivi_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_tech_Ref_agent_suivi_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_tech_Ref_agent_suivi_client(class="input is-small", value=expert.ID_Cell_tech_Ref_agent_suivi_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_tech_Ref_respon_suivi_client_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_tech_Ref_respon_suivi_client_taux_com.errors %}
-                                            {{ form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small is-invalid", value=expert.Cell_tech_Ref_respon_suivi_client_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_tech_Ref_respon_suivi_client_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_tech_Ref_respon_suivi_client_taux_com(class="input is-small", value=expert.Cell_tech_Ref_respon_suivi_client_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_tech_Ref_suiveur_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_tech_Ref_suiveur_client.errors %}
-                                            {{ form.ID_Cell_tech_Ref_suiveur_client(class="input is-small is-invalid", value=expert.ID_Cell_tech_Ref_suiveur_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_tech_Ref_suiveur_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_tech_Ref_suiveur_client(class="input is-small", value=expert.ID_Cell_tech_Ref_suiveur_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_tech_Ref_suiveur_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_tech_Ref_suiveur_taux_com.errors %}
-                                            {{ form.Cell_tech_Ref_suiveur_taux_com(class="input is-small is-invalid", value=expert.Cell_tech_Ref_suiveur_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_tech_Ref_suiveur_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_tech_Ref_suiveur_taux_com(class="input is-small", value=expert.Cell_tech_Ref_suiveur_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_Planif_Ref_respon_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_Planif_Ref_respon_client.errors %}
-                                            {{ form.ID_Cell_Planif_Ref_respon_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_respon_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_Planif_Ref_respon_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_Planif_Ref_respon_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_respon_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_Planif_Ref_respon_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                            {{ form.Cell_Planif_Ref_respon_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_respon_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_Planif_Ref_respon_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_Planif_Ref_respon_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_respon_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_Planif_Ref_suiveur_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_Planif_Ref_suiveur_client.errors %}
-                                            {{ form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_suiveur_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_Planif_Ref_suiveur_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_Planif_Ref_suiveur_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_suiveur_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_Planif_Ref_suiveur_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_Planif_Ref_suiveur_taux_com.errors %}
-                                            {{ form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_suiveur_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_Planif_Ref_suiveur_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_Planif_Ref_suiveur_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_suiveur_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.ID_Cell_Planif_Ref_agent_client.label(class="form-control-label")}}
-    
-                                        {% if form.ID_Cell_Planif_Ref_agent_client.errors %}
-                                            {{ form.ID_Cell_Planif_Ref_agent_client(class="input is-small is-invalid", value=expert.ID_Cell_Planif_Ref_agent_client) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.ID_Cell_Planif_Ref_agent_client.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.ID_Cell_Planif_Ref_agent_client(class="input is-small", value=expert.ID_Cell_Planif_Ref_agent_client)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.Cell_Planif_Ref_agent_taux_com.label(class="form-control-label")}}
-    
-                                        {% if form.Cell_Planif_Ref_agent_taux_com.errors %}
-                                            {{ form.Cell_Planif_Ref_agent_taux_com(class="input is-small is-invalid", value=expert.Cell_Planif_Ref_agent_taux_com) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Cell_Planif_Ref_agent_taux_com.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Cell_Planif_Ref_agent_taux_com(class="input is-small", value=expert.Cell_Planif_Ref_agent_taux_com)}}
-                                            {% endif %}
-                                        </div>
-    
-                                        <div class="col-sm-12 pb-1">
-                                            {{form.commentaire_libre.label(class="form-control-label")}}
-    
-                                        {% if form.commentaire_libre.errors %}
-                                            {{ form.commentaire_libre(class="input is-small is-invalid", value=expert.commentaire_libre) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.commentaire_libre.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.commentaire_libre(class="input is-small", value=expert.sexe)}}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                <div class="form-group">
-                                    {{form.modifier(class="button is-small is-fullwidth is-success")}}   
-                                </div>
-                                </fieldset>
-                            </form>
+                                           
+                                         </div>
+                                </form>
                         </div>
                     </div>
                 </div>

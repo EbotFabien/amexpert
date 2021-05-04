@@ -174,46 +174,51 @@ class Tarif_Form(FlaskForm):
 
     code_tva= StringField('code tva', validators=[Optional()])
 
-    ID_Cell_AS_referent_client= StringField('ID Cell AS referent client', validators=[DataRequired()])
+    taux_meuble= StringField('taux_meuble', validators=[Optional()])
 
-    Cell_AS_referent_client_taux_com=StringField('Cell AS referent client taux com', validators=[DataRequired()])
+    referent_as_client= StringField('referent_as_client', validators=[DataRequired()])
 
-    ID_Cell_devel_client = StringField('ID Cell devel client', validators=[DataRequired()])
+    com_as_sur_ca_client=StringField('com_as_sur_ca_client', validators=[DataRequired()])
 
-    Cell_devel_respon_client_taux_com = StringField('Cell devel respon client taux com', validators=[DataRequired()])
+    cell_dev_ref_responsable = StringField('cell_dev_ref_responsable', validators=[DataRequired()])
 
-    ID_Cell_devel_agent_suivi_client = StringField('ID Cell devel agent suivi client', validators=[DataRequired()])
+    com_cell_dev_ref_responsable = StringField('com_cell_dev_ref_responsable', validators=[DataRequired()])
 
-    Cell_devel_agent_suivi_client_taux_com = StringField('Cell devel agent suivi client taux com', validators=[DataRequired()])
+    cell_dev_ref_agent = StringField('cell_dev_ref_agent', validators=[DataRequired()])
 
-    ID_Cell_tech_Ref_agent_suivi_client = StringField('ID Cell tech Ref agent suivi client', validators=[DataRequired()])
+    com_cell_dev_ref_agent = StringField('com_cell_dev_ref_agent', validators=[DataRequired()])
 
-    Cell_tech_Ref_respon_suivi_client_taux_com = StringField('Cell tech Ref respon suivi client taux com', validators=[DataRequired()])
+    cell_tech_ref_agent = StringField('cell_tech_ref_agent', validators=[DataRequired()])
 
-    ID_Cell_tech_Ref_suiveur_client = StringField('ID Cell tech Ref suiveur client', validators=[DataRequired()])
+    com_cell_tech_Ref_agent = StringField('com_cell_tech_Ref_agent', validators=[DataRequired()])
 
-    Cell_tech_Ref_suiveur_taux_com = StringField('Cell tech Ref suiveur taux com', validators=[DataRequired()])
+    cell_tech_ref_responsable  = StringField('cell_tech_ref_responsable', validators=[DataRequired()])
 
-    ID_Cell_Planif_Ref_respon_client = StringField('ID Cell Planif Ref respon client', validators=[DataRequired()])
+    com_cell_tech_ref_responsable = StringField('com_cell_tech_ref_responsable', validators=[DataRequired()])
 
-    Cell_Planif_Ref_respon_taux_com = StringField('Cell Planif Ref respon taux com', validators=[DataRequired()])
+    cell_tech_ref_suiveur = StringField('cell_tech_ref_suiveur', validators=[DataRequired()])
 
-    ID_Cell_Planif_Ref_suiveur_client = StringField('ID Cell Planif Ref suiveur client', validators=[DataRequired()])
+    com_cell_tech_ref_suiveur  = StringField('com_cell_tech_ref_suiveur', validators=[DataRequired()])
 
-    Cell_Planif_Ref_suiveur_taux_com = StringField('Cell Planif Ref suiveur taux com', validators=[DataRequired()])
+    cell_planif_ref_responsable = StringField('cell_planif_ref_responsable', validators=[DataRequired()])
 
-    ID_Cell_Planif_Ref_agent_client = StringField('ID Cell Planif Ref agent client', validators=[DataRequired()])
+    com_cell_planif_ref_responsable = StringField('com_cell_planif_ref_responsable', validators=[DataRequired()])
 
-    Cell_Planif_Ref_agent_taux_com  =  StringField('Cell Planif Ref suiveur taux com', validators=[DataRequired()])
+    cell_planif_ref_suiveur = StringField('cell_planif_ref_suiveur', validators=[DataRequired()])
 
-    commentaire_libre = TextAreaField('commentaire libre', validators=[Optional()])
+    com_cell_planif_ref_suiveur  =  StringField('com_cell_planif_ref_suiveur', validators=[DataRequired()])
+
+    cell_planif_ref_agent_saisie  =  StringField('cell_planif_ref_agent_saisie', validators=[DataRequired()])
+
+    com_cell_planif_ref_agent_saisie  =  StringField('com_cell_planif_ref_agent_saisie', validators=[DataRequired()])
+
+    commentaire_libre = TextAreaField('commentaire_libre', validators=[Optional()])
     
     submit = SubmitField('enregistrer')
 
     modifier = SubmitField('modifier')
 
-#NORMAL PRICE APPARTMENT
-    def validate_price_STD(self,edl_prix_std): 
+    def validate_price_STD(self,edl_prix_std1): 
             base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
             
             if edl_prix_std.data == 0:

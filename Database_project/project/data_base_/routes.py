@@ -939,10 +939,10 @@ def ajouter_tarif(id):
             tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
             ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
             chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
-            chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data,chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data,chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data,code_tva=form.code_tva.data,Cell_AS_referent_client=form.ID_Cell_AS_referent_client.data,prix_autre=form.prix_autre.data,
-            Cell_AS_referent_client_taux_com=form.Cell_AS_referent_client_taux_com.data,Cell_devel_client=form.ID_Cell_devel_client.data,Cell_devel_respon_client_taux_com=form.Cell_devel_respon_client_taux_com.data,Cell_devel_agent_suivi_client=form.ID_Cell_devel_agent_suivi_client.data,Cell_devel_agent_suivi_client_taux_com=form.Cell_devel_agent_suivi_client_taux_com.data,
-            Cell_tech_Ref_agent_suivi_client=form.ID_Cell_tech_Ref_agent_suivi_client.data,Cell_tech_Ref_respon_suivi_client_taux_com=form.Cell_tech_Ref_respon_suivi_client_taux_com.data,Cell_tech_Ref_suiveur_client=form.ID_Cell_tech_Ref_suiveur_client.data,Cell_tech_Ref_suiveur_taux_com=form.Cell_tech_Ref_suiveur_taux_com.data,Cell_Planif_Ref_respon_client=form.ID_Cell_Planif_Ref_respon_client.data,
-            Cell_Planif_Ref_respon_taux_com=form.Cell_Planif_Ref_respon_taux_com.data,Cell_Planif_Ref_suiveur_client=form.ID_Cell_Planif_Ref_suiveur_client.data,Cell_Planif_Ref_suiveur_taux_com=form.Cell_Planif_Ref_suiveur_taux_com.data,Cell_Planif_Ref_agent_client=form.ID_Cell_Planif_Ref_agent_client.data,Cell_Planif_Ref_agent_taux_com=form.Cell_Planif_Ref_agent_taux_com.data,
+            chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data,chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data,chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data,code_tva=form.code_tva.data,referent_as_client=form.referent_as_client.data,com_as_sur_ca_client=form.com_as_sur_ca_client.data,cell_dev_ref_responsable=form.cell_dev_ref_responsable.data,prix_autre=form.prix_autre.data,taux_meuble=form.taux_meuble.data,
+            com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data,cell_dev_ref_agent=form.cell_dev_ref_agent.data,com_cell_dev_ref_agent=form.com_cell_dev_ref_agent.data,cell_tech_ref_agent=form.cell_tech_ref_agent.data,com_cell_tech_Ref_agent=form.com_cell_tech_Ref_agent.data,
+            cell_tech_ref_responsable=form.cell_tech_ref_responsable.data,com_cell_tech_ref_responsable=form.com_cell_tech_ref_responsable.data,cell_tech_ref_suiveur=form.cell_tech_ref_suiveur.data,com_cell_tech_ref_suiveur=form.com_cell_tech_ref_suiveur.data,cell_planif_ref_responsable=form.cell_planif_ref_responsable.data,
+            com_cell_planif_ref_responsable=form.com_cell_planif_ref_responsable.data,cell_planif_ref_suiveur=form.cell_planif_ref_suiveur.data,com_cell_planif_ref_suiveur=form.com_cell_planif_ref_suiveur.data,cell_planif_ref_agent_saisie=form.cell_planif_ref_agent_saisie.data,com_cell_planif_ref_agent_saisie=form.com_cell_planif_ref_agent_saisie.data,
             commentaire_libre=form.commentaire_libre.data)#,chif_appt_prix_f6=form.chif_appt_prix_f6.data
             db.session.add(tarif)
             #db.session.commit()
@@ -1009,37 +1009,43 @@ def update_tarif(id):
 
         tarif.code_tva=request.form['code_tva']
 
-        tarif.ID_Cell_AS_referent_client=request.form['ID_Cell_AS_referent_client']
+        tarif.taux_meuble=request.form['taux_meuble']
 
-        tarif.Cell_AS_referent_client_taux_com=request.form['Cell_AS_referent_client_taux_com']
+        tarif.referent_as_client=request.form['ID_Cell_AS_referent_client']
 
-        tarif.ID_Cell_devel_client =request.form['ID_Cell_devel_client']
+        tarif.com_as_sur_ca_client=request.form['com_as_sur_ca_client']
 
-        tarif.Cell_devel_respon_client_taux_com=request.form['Cell_devel_respon_client_taux_com'] 
+        tarif.cell_dev_ref_responsable =request.form['cell_dev_ref_responsable']
 
-        tarif.ID_Cell_devel_agent_suivi_client =request.form['ID_Cell_devel_agent_suivi_client']
+        tarif.com_cell_dev_ref_responsable=request.form['com_cell_dev_ref_responsable'] 
 
-        tarif.Cell_devel_agent_suivi_client_taux_com =request.form['Cell_devel_agent_suivi_client_taux_com']
+        tarif.cell_dev_ref_agent =request.form['cell_dev_ref_agent']
 
-        tarif.ID_Cell_tech_Ref_agent_suivi_client =request.form['ID_Cell_tech_Ref_agent_suivi_client']
+        tarif.com_cell_dev_ref_agent =request.form['com_cell_dev_ref_agent']
 
-        tarif.Cell_tech_Ref_respon_suivi_client_taux_com =request.form['Cell_tech_Ref_respon_suivi_client_taux_com']
+        tarif.cell_tech_ref_agent  =request.form['cell_tech_ref_agent ']
 
-        tarif.ID_Cell_tech_Ref_suiveur_client =request.form['ID_Cell_tech_Ref_suiveur_client']
+        tarif.com_cell_tech_Ref_agent =request.form['com_cell_tech_Ref_agent']
 
-        tarif.Cell_tech_Ref_suiveur_taux_com =request.form['Cell_tech_Ref_suiveur_taux_com']
+        tarif.cell_tech_ref_responsable =request.form['cell_tech_ref_responsable']
 
-        tarif.ID_Cell_Planif_Ref_respon_client =request.form['ID_Cell_Planif_Ref_respon_client']
+        tarif.com_cell_tech_ref_responsable =request.form['com_cell_tech_ref_responsable']
 
-        tarif.Cell_Planif_Ref_respon_taux_com =request.form['Cell_Planif_Ref_respon_taux_com']
+        tarif.cell_tech_ref_suiveur =request.form['cell_tech_ref_suiveur']
 
-        tarif.ID_Cell_Planif_Ref_suiveur_client =request.form['ID_Cell_Planif_Ref_suiveur_client']
+        tarif.com_cell_tech_ref_suiveur =request.form['com_cell_tech_ref_suiveur']
 
-        tarif.Cell_Planif_Ref_suiveur_taux_com =request.form['Cell_Planif_Ref_suiveur_taux_com']
+        tarif.cell_planif_ref_responsable =request.form['cell_planif_ref_responsable']
 
-        tarif.ID_Cell_Planif_Ref_agent_client =request.form['ID_Cell_Planif_Ref_agent_client']
+        tarif.com_cell_planif_ref_responsable =request.form['com_cell_planif_ref_responsable']
 
-        tarif.Cell_Planif_Ref_agent_taux_com  =request.form['Cell_Planif_Ref_agent_taux_com']
+        tarif.cell_planif_ref_suiveur =request.form['cell_planif_ref_suiveur']
+
+        tarif.com_cell_planif_ref_suiveur =request.form['com_cell_planif_ref_suiveur']
+
+        tarif.cell_planif_ref_agent_saisie =request.form['cell_planif_ref_agent_saisie']
+
+        tarif.com_cell_planif_ref_agent_saisie =request.form['com_cell_planif_ref_agent_saisie']
 
         tarif.commentaire_libre =request.form['commentaire_libre']
         

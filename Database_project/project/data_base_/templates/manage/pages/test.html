@@ -1,25 +1,55 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
- <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tarif</h1>
-        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+  <div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between title-box">
+        {% if legend == "prospect" %}
+            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Prospect</h2>
+        {% endif %}
+         {% if legend == "negociateur" %}
+            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Négociateur</h2>
+        {% endif %}
+        {% if legend == "client" %}
+            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Client</h2>
+        {% endif %}
+        {% if legend == "prospect" %}
+            <a href="{{url_for('users.prospect_')}}" title="Consultez la liste des propects" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
+        {% endif %}
+         {% if legend == "client" %}
+            <a href="{{url_for('users.client')}}" title="Consultez la liste des clients" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
+        {% endif %}
     </div>
-    <!-- Content Row -->
+      <div class="table-container" style="">
+        <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+            <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
+                <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+                <div class="card-header-title">
+                  <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+                </div>
+                                       
+            </header>
 
-    <div class="row">
+    <!-- <div class="row"> -->
         <!-- Area Chart -->
-        <div class="col-xl-6 col-lg-6 mx-auto">
-            <div class="card shadow mb-4">
-	        <div class="card-header py-1 justify-content-between align-items-center">
-	            <h6 class="m-0 font-weight-bold d-inline">Ajouter un Tarif</h6>
-                <!-- <a href="/tarifs" class="button is-small is-black">Tous les tarif</a> -->
-	        </div>
-	        <div class="card-body">
-	            <div class="row">
-                    <div class="col-lg-12 mx-auto">
+        <!-- <div class="col-xl-6 col-lg-6 mx-auto"> -->
+            <!-- <div class="card shadow mb-4"> -->
+	       <!--  <div class="card-header py-1 d-flex justify-content-between align-items-center">
+                {% if legend == "client" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un client</h6>
+                    <a href="/client" class="button is-black is-small pull-right">Tous les clients</a>
+                {% endif %}
+                {% if legend == "negociateur" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un negociateur</h6>
+                    <a href="{{url_for('users.negotiateur', id=ID)}}" class="button is-black is-small pull-right">Tous les negociateurs</a>
+                {% endif %}
+                {% if legend == "prospect" %}
+                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un prospect</h6>
+                    <a href="/prospect" class="button is-black is-small pull-right">Tous les prospect</a>
+                {% endif %}
+	        </div> -->
+	        <!-- <div class="card-body"> -->
+	            <!-- <div class="row"> -->
+                    <!-- <div class="col-lg-11 mx-auto"> -->
                         <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
@@ -1192,13 +1222,13 @@
                                      </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-	        </div>
-	    </div>
-	</div>
+                    <!-- </div> -->
+                <!-- </div> -->
+	        <!-- </div> -->
+	    <!-- </div> -->
+	<!-- </div> -->
     <!-- Pie Chart --> 
-</div>
+<!-- </div> -->
 
     <!-- Content Row -->
 </div>
