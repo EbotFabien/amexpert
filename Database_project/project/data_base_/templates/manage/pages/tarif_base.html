@@ -38,8 +38,8 @@
 	                        <th scope="col" >Type</th> 
 	                        <th scope="col" >Prix_EDL</th> 
                             <th scope="col" >surface</th> 
-							<!--th></th>
-							<th></th>	
+							<th></th>
+							<!--th></th>	
 							<th></th-->                     
 	                    </tr>
 	                </thead>
@@ -51,10 +51,10 @@
 							<td>{{tarif.Type}}</td>
 							<td>{{tarif.Prix_EDL}}</td> 
                             <td>{{tarif.surface}}</td> 
-							<!--td>
-                                <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+							<td>
+                                <a href="{{url_for('users.edit_tarifb', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
                             </td>   
-                            <td>
+                            <!--td>
                                 <a href="{{url_for('users.delete_tarif', id=tarif.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
 							</td>  
 							<td style="">

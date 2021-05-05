@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form)
+from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client,fix_mission,Base,reset
 from Database_project.project.data_base_.utils import send_reset_email
@@ -32,7 +32,7 @@ def client():
             if f is not None:
                 PER_PAGE = int(f)
                 Ord =order
-        print(Ord)
+    
         if Ord == "asc":
             client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         if Ord == "desc":
@@ -891,11 +891,34 @@ def update_expert(id):
 @login_required
 def tarif_base():
     if current_user.TYPE == "Admin":
-        tarifs=list(Tarif_base.query.filter_by(visibility=True).all())
+        tarifs=list(Tarif_base.query.filter_by(visibility=True).order_by(asc(Tarif_base.id)).all())
         return render_template('manage/pages/tarif_base.html',legend="tarifs",tarifs=tarifs, highlight='tarif_base')
 
     return redirect(url_for('users.main'))
-    
+
+@users.route('/edit/<int:id>/tarifb', methods=['GET'])
+@login_required
+def edit_tarifb(id):
+    if current_user.TYPE == 'Admin':
+        form = Tarif_edit()
+        Tarif = Tarif_base.query.filter_by(id=id).first_or_404()
+        return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
+
+
+@users.route('/update/<int:id>/tarifb', methods=['POST', 'PUT'])
+@login_required
+def update_tarifb(id):
+    if current_user.TYPE == 'Admin':
+        tarif = Tarif_base.query.filter_by(id=id).first_or_404()
+        tarif.Prix_EDL=request.form['prix']    
+        tarif.surface=request.form['surface']
+        
+        db.session.commit()
+        flash(f'Les donnes du tarif a été modifiées','success')
+        return redirect(url_for('users.tarif_base'))
+    return redirect(url_for('users.edit_tarifb', id=id))
+
+
 @users.route('/ajouter/tarifs')
 @login_required
 def tarif_ajouter():
@@ -936,6 +959,8 @@ def ajouter_tarif(id):
         form = Tarif_Form()
         client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
+            if form.validate_price_STD(form.edl_prix_std.data):
+                print('ok5')
             tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
             ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
             chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
@@ -943,7 +968,7 @@ def ajouter_tarif(id):
             com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data,cell_dev_ref_agent=form.cell_dev_ref_agent.data,com_cell_dev_ref_agent=form.com_cell_dev_ref_agent.data,cell_tech_ref_agent=form.cell_tech_ref_agent.data,com_cell_tech_Ref_agent=form.com_cell_tech_Ref_agent.data,
             cell_tech_ref_responsable=form.cell_tech_ref_responsable.data,com_cell_tech_ref_responsable=form.com_cell_tech_ref_responsable.data,cell_tech_ref_suiveur=form.cell_tech_ref_suiveur.data,com_cell_tech_ref_suiveur=form.com_cell_tech_ref_suiveur.data,cell_planif_ref_responsable=form.cell_planif_ref_responsable.data,
             com_cell_planif_ref_responsable=form.com_cell_planif_ref_responsable.data,cell_planif_ref_suiveur=form.cell_planif_ref_suiveur.data,com_cell_planif_ref_suiveur=form.com_cell_planif_ref_suiveur.data,cell_planif_ref_agent_saisie=form.cell_planif_ref_agent_saisie.data,com_cell_planif_ref_agent_saisie=form.com_cell_planif_ref_agent_saisie.data,
-            commentaire_libre=form.commentaire_libre.data)#,chif_appt_prix_f6=form.chif_appt_prix_f6.data
+            commentaire_libre=form.commentaire_libre.data,chif_appt_prix_f6=form.chif_appt_prix_f6.data)
             db.session.add(tarif)
             #db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
@@ -996,7 +1021,7 @@ def update_tarif(id):
         tarif.chif_appt_prix_f3  =request.form['chif_appt_prix_f3']
         tarif.chif_appt_prix_f4  =request.form['chif_appt_prix_f4']
         tarif.chif_appt_prix_f5=request.form['chif_appt_prix_f5']
-        #tarif.chif_appt_prix_f6  =request.form['chif_appt_prix_f6']
+        tarif.chif_appt_prix_f6  =request.form['chif_appt_prix_f6']
         tarif.chif_pav_villa_prix_t1=request.form['chif_pav_villa_prix_t1']
         tarif.chif_pav_villa_prix_t2 =request.form['chif_pav_villa_prix_t2']
         tarif.chif_pav_villa_prix_t3=request.form['chif_pav_villa_prix_t3']
@@ -1660,7 +1685,7 @@ def uploader_():
            # expert__('Respon Cell Planif',loc)
            # expert__('Suiveur Cell Planif',loc)
            # expert__('Agent saisie Cell Planif',loc)'''
-            #insert_client('professionelle',loc)
+            #insert_client('professionnel',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
             #Missions(loc) #learn how to check a whole row for this tables
@@ -1669,8 +1694,8 @@ def uploader_():
             #fix_mission()
             #Base(loc)
             #reset()
-            #tarif_client(loc)
-            #mission_date()
+            tarif_client(loc)
+            
             
             flash(f"Vous avez importer les donnees avec success",'success')
             return redirect(url_for('users.up'))
@@ -1682,9 +1707,9 @@ def uploader_():
 
 
 
-@users.app_errorhandler(404)
-def error_404(error):
-    return render_template('errors/404.html'),404
+#@users.app_errorhandler(404)
+#def error_404(error):
+ #   return render_template('errors/404.html'),404
 
 @users.app_errorhandler(403)
 def error_403(error):
@@ -1748,14 +1773,6 @@ def search ():
             else:
                 title = "Facturation"
             return render_template('manage/pages/search_results.html', Facturation__=facturation_, title=title, table=table, search=request.args.get('keyword')) 
-
-
-
-
-
-
-
-
 
 
 

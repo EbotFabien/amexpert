@@ -420,7 +420,7 @@ class Tarif_base(db.Model):
     pav_appartement=db.Column(db.String) 
     Type  = db.Column(db.String) 
     surface = db.Column(db.String) 
-    Prix_EDL = db.Column(db.String) 
+    Prix_EDL = db.Column(db.Integer) 
     visibility =db.Column(db.Boolean,default=True)
 
     def __repr__(self):
@@ -458,6 +458,7 @@ class Tarifs(db.Model):
     chif_appt_prix_f3 =db.Column(Float) 
     chif_appt_prix_f4 =db.Column(Float) 
     chif_appt_prix_f5 =db.Column(Float) #f6
+    chif_appt_prix_f6 =db.Column(Float)
     chif_pav_villa_prix_t1=db.Column(Float) 
     chif_pav_villa_prix_t2=db.Column(Float) 
     chif_pav_villa_prix_t3=db.Column(Float) 

@@ -13,7 +13,7 @@ def insert_client(A,loc):
 
     for i in range(1,sheet.max_row):
         
-        if A == 'professionelle':
+        if A == 'professionnel':
             
             if sheet["D"][i].value == '' or sheet["D"][i].value == 'XX':
                 print('no data here')
@@ -72,20 +72,65 @@ def tarif_client(loc):
     sheet = wb.sheet_by_index(0)
 
     sheet.cell_value(0, 0)
-    for i in range(0,4):
+    for i in range(0,5):
         name=sheet.row_values(i+1)
         tarif =Tarifs.query.filter_by(reference_client=int(name[1])).first()
         cli=Client.query.filter_by(reference=int(name[1])).first()
+        r_C=Expert.query.filter_by(nom=str(name[3].lower())).first()
+        if r_C is not None:
+            rC= r_C.id
+        if r_C is None  :
+            rC= 0
+        r_r=Expert.query.filter_by(nom=str(name[5].lower())).first()
+        if r_r is not None:
+            rr= r_r.id
+        if r_r is None  :
+            rr= 0
+        dr_a=Expert.query.filter_by(nom=str(name[7].lower())).first()
+        if dr_a is not None:
+            dra= dr_a.id
+        if dr_a is None  :
+            dra= 0
+        tr_a=Expert.query.filter_by(nom=str(name[9].lower())).first()
+        if tr_a is not None:
+            tra= tr_a.id
+        if tr_a is None  :
+            tra= 0
+        tr_r=Expert.query.filter_by(nom=str(name[11].lower())).first()
+        if tr_r is not None:
+            trr= tr_r.id
+        if tr_r is None  :
+            trr= 0
+        tr_s=Expert.query.filter_by(nom=str(name[13].lower())).first()
+        if tr_s is not None:
+            trs= tr_s.id
+        if tr_s is None  :
+            trs= 0
+        pr_s=Expert.query.filter_by(nom=str(name[15].lower())).first()
+        if pr_s is not None:
+            prs= pr_s.id
+        if pr_s is None  :
+            prs= 0
+        pr_si=Expert.query.filter_by(nom=str(name[17].lower())).first()
+        if pr_si is not None:
+            prsi= pr_si.id
+        if pr_si is None  :
+            prsi= 0
+        ra_s=Expert.query.filter_by(nom=str(name[19].lower())).first()
+        if ra_s is not None:
+            ras= ra_s.id
+        if ra_s is None  :
+            ras= 0
         if tarif is None:
             if cli :
                 taf_base =Tarifs(reference_client=cli.id,code_tva=int(name[2]),
-                referent_as_client=int(name[3]),com_as_sur_ca_client=name[4],cell_dev_ref_responsable=name[5],
-                com_cell_dev_ref_responsable=name[6],cell_dev_ref_agent=int(name[7]),com_cell_dev_ref_agent=name[8],
-                cell_tech_ref_agent=int(name[9]),com_cell_tech_Ref_agent=name[10],cell_tech_ref_responsable=int(name[11]),
-                com_cell_tech_ref_responsable=name[12],cell_tech_ref_suiveur=int(name[13]),
-                com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=int(name[15]),
-                com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=int(name[17]),
-                com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=int(name[19]),
+                referent_as_client=rC,com_as_sur_ca_client=name[4],cell_dev_ref_responsable=rr,
+                com_cell_dev_ref_responsable=name[6],cell_dev_ref_agent=dra,com_cell_dev_ref_agent=name[8],
+                cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=name[10],cell_tech_ref_responsable=trr,
+                com_cell_tech_ref_responsable=name[12],cell_tech_ref_suiveur=trs,
+                com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=prs,
+                com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=prsi,
+                com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=ras,
                 com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=float(name[22]),
                 edl_appt_prix_f1=float(name[23]),edl_appt_prix_f2=float(name[24]),edl_appt_prix_f3=float(name[25]),edl_appt_prix_f4=float(name[26]),
                 edl_appt_prix_f5=float(name[27]),edl_appt_prix_f6=float(name[28]),edl_pav_villa_prix_t1=float(name[29]), edl_pav_villa_prix_t2=float(name[30]),
@@ -95,7 +140,7 @@ def tarif_client(loc):
                 chif_appt_prix_f4=float(name[41]),chif_appt_prix_f5=float(name[42]),chif_pav_villa_prix_t1=float(name[43]),
                 chif_pav_villa_prix_t2=float(name[44]),chif_pav_villa_prix_t3=float(name[45]),chif_pav_villa_prix_t4=float(name[46]),
                 chif_pav_villa_prix_t5=float(name[47]),chif_pav_villa_prix_t6=float(name[48]),chif_pav_villa_prix_t7=float(name[49]),
-                chif_pav_villa_prix_t8=float(name[50]))
+                chif_pav_villa_prix_t8=int(name[50]))
                 
                 db.session.add(taf_base)
                 db.session.commit()

@@ -139,37 +139,311 @@ class tableform(FlaskForm):
 
 
 class Tarif_Form(FlaskForm):
+    def validate_price_STD(self,edl_prix_std): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
+            if edl_prix_std.data == 0:
+                raise ValidationError("Veuillez mettre une bonne valeur") 
 
-    edl_prix_std=IntegerField('edl_prix_std', validators=[DataRequired()])     
-    edl_appt_prix_f1=IntegerField('edl_appt_prix_f1', validators=[DataRequired()])
-    edl_appt_prix_f2=IntegerField('edl_appt_prix_f2', validators=[DataRequired()]) 
-    edl_appt_prix_f3=IntegerField('edl_appt_prix_f3', validators=[DataRequired()])
-    edl_appt_prix_f4=IntegerField('edl_appt_prix_f4', validators=[DataRequired()]) 
-    edl_appt_prix_f5=IntegerField('edl_appt_prix_f5', validators=[DataRequired()])
-    edl_appt_prix_f6=IntegerField('edl_appt_prix_f6', validators=[DataRequired()])
-    edl_pav_villa_prix_t1=IntegerField('edl_pav_villa_prix_t1', validators=[DataRequired()])
-    edl_pav_villa_prix_t2=IntegerField('edl_pav_villa_prix_t2', validators=[DataRequired()])
-    edl_pav_villa_prix_t3=IntegerField('edl_pav_villa_prix_t3', validators=[DataRequired()])
-    edl_pav_villa_prix_t4=IntegerField('edl_pav_villa_prix_t4', validators=[DataRequired()]) 
-    edl_pav_villa_prix_t5=IntegerField('edl_pav_villa_prix_t5', validators=[DataRequired()])
-    edl_pav_villa_prix_t6=IntegerField('edl_pav_villa_prix_t6', validators=[DataRequired()])
-    edl_pav_villa_prix_t7=IntegerField('edl_pav_villa_prix_t7', validators=[DataRequired()]) 
-    edl_pav_villa_prix_t8=IntegerField('edl_pav_villa_prix_t8', validators=[DataRequired()])
-    chif_appt_prix_stu=IntegerField('chif_appt_prix_stu', validators=[DataRequired()])
-    chif_appt_prix_f1 =IntegerField('chif_appt_prix_f1', validators=[DataRequired()]) 
-    chif_appt_prix_f2 =IntegerField('chif_appt_prix_f2', validators=[DataRequired()]) 
-    chif_appt_prix_f3 =IntegerField('chif_appt_prix_f3', validators=[DataRequired()]) 
-    chif_appt_prix_f4 =IntegerField('chif_appt_prix_f4', validators=[DataRequired()]) 
-    chif_appt_prix_f5 =IntegerField('chif_appt_prix_f5', validators=[DataRequired()]) 
-    #chif_appt_prix_f6 =IntegerField('chif_appt_prix_f5', validators=[DataRequired()]) 
-    chif_pav_villa_prix_t1=IntegerField('chif_pav_villa_prix_t1', validators=[DataRequired()])
-    chif_pav_villa_prix_t2=IntegerField('chif_pav_villa_prix_t2', validators=[DataRequired()]) 
-    chif_pav_villa_prix_t3=IntegerField('chif_pav_villa_prix_t3', validators=[DataRequired()])
-    chif_pav_villa_prix_t4=IntegerField('chif_pav_villa_prix_t4', validators=[DataRequired()])
-    chif_pav_villa_prix_t5=IntegerField('chif_pav_villa_prix_t5', validators=[DataRequired()])
-    chif_pav_villa_prix_t6=IntegerField('chif_pav_villa_prix_t6', validators=[DataRequired()])
-    chif_pav_villa_prix_t7=IntegerField('chif_pav_villa_prix_t7', validators=[DataRequired()]) 
-    chif_pav_villa_prix_t8=IntegerField('chif_pav_villa_prix_t8', validators=[DataRequired()])
+            if base.Prix_EDL>edl_prix_std.data:
+               
+                raise ValidationError("le tarif de base  STD es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+    def validate_price_F1(self,edl_appt_prix_f1): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F1')).first()
+            
+            if edl_appt_prix_f1.data == 0:
+                raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f1.data:
+                raise ValidationError("le tarif de base F1 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_F2(self,edl_appt_prix_f2): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F2')).first()
+            
+            if edl_appt_prix_f2.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f2.data:
+                raise ValidationError("le tarif de base F2 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_F3(self,edl_appt_prix_f3): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F3')).first()
+            
+            if edl_appt_prix_f3.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f3.data:
+                raise ValidationError("le tarif de base F3 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_F4(self,edl_appt_prix_f4): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F4')).first()
+            
+            if edl_appt_prix_f4.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f4.data:
+                raise ValidationError("le tarif de base F4 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_F5(self,edl_appt_prix_f5): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F5')).first()
+            
+            if edl_appt_prix_f5.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f5.data:
+                raise ValidationError("le tarif de base F5 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+    
+    def validate_price_F6(self,edl_appt_prix_f6): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F6')).first()
+            
+            if edl_appt_prix_f6.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_appt_prix_f6.data:
+                raise ValidationError("le tarif de base F6 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+#PRIX CHIFFRAGE APPARTEMENT
+    def validate_chif_STD(self,chif_appt_prix_stu): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
+            
+            if chif_appt_prix_stu.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_stu.data:
+                raise ValidationError("le tarif de base  STD es moin aue le tarif normal "+str(base.Prix_EDL)+"€")
+    
+    def validate_chif_F1(self,chif_appt_prix_f1): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F1')).first()
+            
+            if chif_appt_prix_f1.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f1.data:
+                raise ValidationError("le tarif de base F1 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_F2(self,chif_appt_prix_f2): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F2')).first()
+            
+            if chif_appt_prix_f2.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f2.data:
+                raise ValidationError("le tarif de base F2 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_F3(self,chif_appt_prix_f3): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F3')).first()
+            
+            if chif_appt_prix_f3.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f3.data:
+                raise ValidationError("le tarif de base F3 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_F4(self,chif_appt_prix_f4): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F4')).first()
+            
+            if chif_appt_prix_f4.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f4.data:
+                raise ValidationError("le tarif de base F4 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_F5(self,chif_appt_prix_f5): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F5')).first()
+            
+            if chif_appt_prix_f5.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f5.data:
+                raise ValidationError("le tarif de base F5 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+    
+    def validate_chif_F6(self,chif_appt_prix_f6): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F6')).first()
+            
+            if chif_appt_prix_f6.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_appt_prix_f6.data:
+                raise ValidationError("le tarif de base F6 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    
+#PRICE VILLA
+    def validate_price_T1(self,edl_pav_villa_prix_t1): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T1')).first()
+            
+            if edl_pav_villa_prix_t1.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t1.data:
+                raise ValidationError("le tarif de base T1 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T2(self,edl_pav_villa_prix_t2): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T2')).first()
+            
+            if edl_pav_villa_prix_t2.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t2.data:
+                raise ValidationError("le tarif de base T2 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T3(self,edl_pav_villa_prix_t3): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T3')).first()
+            
+            if edl_pav_villa_prix_t3.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t3.data:
+                raise ValidationError("le tarif de base T3 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T4(self,edl_pav_villa_prix_t4): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T4')).first()
+            
+            if edl_pav_villa_prix_t4.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t4.data:
+                raise ValidationError("le tarif de base T4 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T5(self,edl_pav_villa_prix_t5): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T5')).first()
+            
+            if edl_pav_villa_prix_t5.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t5.data:
+                raise ValidationError("le tarif de base T5 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T6(self,edl_pav_villa_prix_t6): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T6')).first()
+            
+            if edl_pav_villa_prix_t6.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t6.data:
+                raise ValidationError("le tarif de base T6 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    
+    def validate_price_T7(self,edl_pav_villa_prix_t7): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T7')).first()
+            
+            if edl_pav_villa_prix_t7.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t7.data:
+                raise ValidationError("le tarif de base T7 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_price_T8(self,edl_pav_villa_prix_t8): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T8')).first()
+            
+            if edl_pav_villa_prix_t8.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>edl_pav_villa_prix_t8.data:
+                raise ValidationError("le tarif de base T8 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+#Prix CHiffrage Pav
+    def validate_chif_T1(self,chif_pav_villa_prix_t1): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T1')).first()
+            
+            if chif_pav_villa_prix_t1.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t1.data:
+                raise ValidationError("le tarif de base T1 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T2(self,chif_pav_villa_prix_t2): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T2')).first()
+            
+            if chif_pav_villa_prix_t2.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t2.data:
+                raise ValidationError("le tarif de base T2 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T3(self,chif_pav_villa_prix_t3): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T3')).first()
+            
+            if chif_pav_villa_prix_t3.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t3.data:
+                raise ValidationError("le tarif de base T3 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T4(self,chif_pav_villa_prix_t4): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T4')).first()
+            
+            if chif_pav_villa_prix_t4.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t4.data:
+                raise ValidationError("le tarif de base T4 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T5(self,chif_pav_villa_prix_t5): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T5')).first()
+            
+            if chif_pav_villa_prix_t5.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t5.data:
+                raise ValidationError("le tarif de base T5 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T6(self,chif_pav_villa_prix_t6): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T6')).first()
+            
+            if chif_pav_villa_prix_t6.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t6.data:
+                raise ValidationError("le tarif de base T6 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    
+    def validate_chif_T7(self,chif_pav_villa_prix_t7): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T7')).first()
+            
+            if chif_pav_villa_prix_t7.data == 0:
+                 raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t7.data:
+                raise ValidationError("le tarif de base T7 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    def validate_chif_T8(self,chif_pav_villa_prix_t8): 
+            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T8')).first()
+            
+            if chif_pav_villa_prix_t8.data == 0:
+                raise ValidationError("Veuillez mettre une bonne valeur")
+
+            if base.Prix_EDL>chif_pav_villa_prix_t8.data:
+                raise ValidationError("le tarif de base T8 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
+
+    edl_prix_std=IntegerField('edl_prix_std', validators=[DataRequired(),validate_price_STD])     
+    edl_appt_prix_f1=IntegerField('edl_appt_prix_f1', validators=[DataRequired(),validate_price_F1])
+    edl_appt_prix_f2=IntegerField('edl_appt_prix_f2', validators=[DataRequired(),validate_price_F2]) 
+    edl_appt_prix_f3=IntegerField('edl_appt_prix_f3', validators=[DataRequired(),validate_price_F3])
+    edl_appt_prix_f4=IntegerField('edl_appt_prix_f4', validators=[DataRequired(),validate_price_F4]) 
+    edl_appt_prix_f5=IntegerField('edl_appt_prix_f5', validators=[DataRequired(),validate_price_F5])
+    edl_appt_prix_f6=IntegerField('edl_appt_prix_f6', validators=[DataRequired(),validate_price_F6])
+    edl_pav_villa_prix_t1=IntegerField('edl_pav_villa_prix_t1', validators=[DataRequired(),validate_price_T1])
+    edl_pav_villa_prix_t2=IntegerField('edl_pav_villa_prix_t2', validators=[DataRequired(),validate_price_T2])
+    edl_pav_villa_prix_t3=IntegerField('edl_pav_villa_prix_t3', validators=[DataRequired(),validate_price_T3])
+    edl_pav_villa_prix_t4=IntegerField('edl_pav_villa_prix_t4', validators=[DataRequired(),validate_price_T4]) 
+    edl_pav_villa_prix_t5=IntegerField('edl_pav_villa_prix_t5', validators=[DataRequired(),validate_price_T5])
+    edl_pav_villa_prix_t6=IntegerField('edl_pav_villa_prix_t6', validators=[DataRequired(),validate_price_T6])
+    edl_pav_villa_prix_t7=IntegerField('edl_pav_villa_prix_t7', validators=[DataRequired(),validate_price_T7]) 
+    edl_pav_villa_prix_t8=IntegerField('edl_pav_villa_prix_t8', validators=[DataRequired(),validate_price_T8])
+    chif_appt_prix_stu=IntegerField('chif_appt_prix_stu', validators=[DataRequired(),validate_chif_STD])
+    chif_appt_prix_f1 =IntegerField('chif_appt_prix_f1', validators=[DataRequired(),validate_chif_F1]) 
+    chif_appt_prix_f2 =IntegerField('chif_appt_prix_f2', validators=[DataRequired(),validate_chif_F2]) 
+    chif_appt_prix_f3 =IntegerField('chif_appt_prix_f3', validators=[DataRequired(),validate_chif_F3]) 
+    chif_appt_prix_f4 =IntegerField('chif_appt_prix_f4', validators=[DataRequired(),validate_chif_F4]) 
+    chif_appt_prix_f5 =IntegerField('chif_appt_prix_f5', validators=[DataRequired(),validate_chif_F5]) 
+    chif_appt_prix_f6 =IntegerField('chif_appt_prix_f6', validators=[DataRequired(),validate_chif_F6]) 
+    chif_pav_villa_prix_t1=IntegerField('chif_pav_villa_prix_t1', validators=[DataRequired(),validate_chif_T1])
+    chif_pav_villa_prix_t2=IntegerField('chif_pav_villa_prix_t2', validators=[DataRequired(),validate_chif_T2]) 
+    chif_pav_villa_prix_t3=IntegerField('chif_pav_villa_prix_t3', validators=[DataRequired(),validate_chif_T3])
+    chif_pav_villa_prix_t4=IntegerField('chif_pav_villa_prix_t4', validators=[DataRequired(),validate_chif_T4])
+    chif_pav_villa_prix_t5=IntegerField('chif_pav_villa_prix_t5', validators=[DataRequired(),validate_chif_T5])
+    chif_pav_villa_prix_t6=IntegerField('chif_pav_villa_prix_t6', validators=[DataRequired(),validate_chif_T6])
+    chif_pav_villa_prix_t7=IntegerField('chif_pav_villa_prix_t7', validators=[DataRequired(),validate_chif_T7]) 
+    chif_pav_villa_prix_t8=IntegerField('chif_pav_villa_prix_t8', validators=[DataRequired(),validate_chif_T8])
     prix_autre=IntegerField('prix_autre', validators=[Optional()])
 
     code_tva= StringField('code tva', validators=[Optional()])
@@ -218,282 +492,9 @@ class Tarif_Form(FlaskForm):
 
     modifier = SubmitField('modifier')
 
-    def validate_price_STD(self,edl_prix_std1): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
-            
-            if edl_prix_std.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_prix_std.data:
-                raise ValidationError("le tarif de base  STD es moin que le tarif normal "%base.Prix_EDL+"€")
     
-    def validate_price_F1(self,edl_appt_prix_f1): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F1')).first()
-            
-            if edl_appt_prix_f1.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f1.data:
-                raise ValidationError("le tarif de base F1 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_F2(self,edl_appt_prix_f2): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F2')).first()
-            
-            if edl_appt_prix_f2.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f2.data:
-                raise ValidationError("le tarif de base F2 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_F3(self,edl_appt_prix_f3): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F3')).first()
-            
-            if edl_appt_prix_f3.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f3.data:
-                raise ValidationError("le tarif de base F3 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_F4(self,edl_appt_prix_f4): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F4')).first()
-            
-            if edl_appt_prix_f4.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f4.data:
-                raise ValidationError("le tarif de base F4 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_F5(self,edl_appt_prix_f5): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F5')).first()
-            
-            if edl_appt_prix_f5.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f5.data:
-                raise ValidationError("le tarif de base F5 es moin que le tarif normal "%base.Prix_EDL+"€")
     
-    def validate_price_F6(self,edl_appt_prix_f6): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F6')).first()
-            
-            if edl_appt_prix_f6.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_appt_prix_f6.data:
-                raise ValidationError("le tarif de base F6 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-#PRIX CHIFFRAGE APPARTEMENT
-    def validate_chif_STD(self,chif_appt_prix_stu): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
-            
-            if chif_appt_prix_stu.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_stu.data:
-                raise ValidationError("le tarif de base  STD es moin aue le tarif normal "%base.Prix_EDL+"€")
-    
-    def validate_chif_F1(self,chif_appt_prix_f1): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F1')).first()
-            
-            if chif_appt_prix_f1.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f1.data:
-                raise ValidationError("le tarif de base F1 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_F2(self,chif_appt_prix_f2): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F2')).first()
-            
-            if chif_appt_prix_f2.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f2.data:
-                raise ValidationError("le tarif de base F2 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_F3(self,chif_appt_prix_f3): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F3')).first()
-            
-            if chif_appt_prix_f3.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f3.data:
-                raise ValidationError("le tarif de base F3 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_F4(self,chif_appt_prix_f4): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F4')).first()
-            
-            if chif_appt_prix_f4.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f4.data:
-                raise ValidationError("le tarif de base F4 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_F5(self,chif_appt_prix_f5): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F5')).first()
-            
-            if chif_appt_prix_f5.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f5.data:
-                raise ValidationError("le tarif de base F5 es moin que le tarif normal "%base.Prix_EDL+"€")
-    
-    def validate_chif_F6(self,chif_appt_prix_f6): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F6')).first()
-            
-            if chif_appt_prix_f6.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_appt_prix_f6.data:
-                raise ValidationError("le tarif de base F6 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    
-#PRICE VILLA
-    def validate_price_T1(self,edl_pav_villa_prix_t1): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T1')).first()
-            
-            if edl_pav_villa_prix_t1.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t1.data:
-                raise ValidationError("le tarif de base T1 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T2(self,edl_pav_villa_prix_t2): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T2')).first()
-            
-            if edl_pav_villa_prix_t2.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t2.data:
-                raise ValidationError("le tarif de base T2 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T3(self,edl_pav_villa_prix_t3): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T3')).first()
-            
-            if edl_pav_villa_prix_t3.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t3.data:
-                raise ValidationError("le tarif de base T3 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T4(self,edl_pav_villa_prix_t4): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T4')).first()
-            
-            if edl_pav_villa_prix_t4.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t4.data:
-                raise ValidationError("le tarif de base T4 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T5(self,edl_pav_villa_prix_t5): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T5')).first()
-            
-            if edl_pav_villa_prix_t5.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t5.data:
-                raise ValidationError("le tarif de base T5 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T6(self,edl_pav_villa_prix_t6): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T6')).first()
-            
-            if edl_pav_villa_prix_t6.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t6.data:
-                raise ValidationError("le tarif de base T6 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    
-    def validate_price_T7(self,edl_pav_villa_prix_t7): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T7')).first()
-            
-            if edl_pav_villa_prix_t7.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t7.data:
-                raise ValidationError("le tarif de base T7 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_price_T8(self,edl_pav_villa_prix_t8): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T8')).first()
-            
-            if edl_pav_villa_prix_t8.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>edl_pav_villa_prix_t8.data:
-                raise ValidationError("le tarif de base T8 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-#Prix CHiffrage Pav
-    def validate_chif_T1(self,chif_pav_villa_prix_t1): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T1')).first()
-            
-            if chif_pav_villa_prix_t1.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t1.data:
-                raise ValidationError("le tarif de base T1 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T2(self,chif_pav_villa_prix_t2): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T2')).first()
-            
-            if chif_pav_villa_prix_t2.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t2.data:
-                raise ValidationError("le tarif de base T2 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T3(self,chif_pav_villa_prix_t3): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T3')).first()
-            
-            if chif_pav_villa_prix_t3.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t3.data:
-                raise ValidationError("le tarif de base T3 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T4(self,chif_pav_villa_prix_t4): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T4')).first()
-            
-            if chif_pav_villa_prix_t4.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t4.data:
-                raise ValidationError("le tarif de base T4 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T5(self,chif_pav_villa_prix_t5): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T5')).first()
-            
-            if chif_pav_villa_prix_t5.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t5.data:
-                raise ValidationError("le tarif de base T5 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T6(self,chif_pav_villa_prix_t6): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T6')).first()
-            
-            if chif_pav_villa_prix_t6.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t6.data:
-                raise ValidationError("le tarif de base T6 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    
-    def validate_chif_T7(self,chif_pav_villa_prix_t7): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T7')).first()
-            
-            if chif_pav_villa_prix_t7.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t7.data:
-                raise ValidationError("le tarif de base T7 es moin que le tarif normal "%base.Prix_EDL+"€")
-
-    def validate_chif_T8(self,chif_pav_villa_prix_t8): 
-            base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='PAV',Tarif_base.Type=='T8')).first()
-            
-            if chif_pav_villa_prix_t8.data == 0:
-                return 'ok'
-
-            if base.Prix_EDL>chif_pav_villa_prix_t8.data:
-                raise ValidationError("le tarif de base T8 es moin que le tarif normal "%base.Prix_EDL+"€")
-
+   
 
 
 class Facturation_Form(FlaskForm):
@@ -709,7 +710,18 @@ class Invitation_Agenda(FlaskForm):
 
     submit = SubmitField('enregistrer')
 
+class Tarif_edit(FlaskForm):
 
+    Type=StringField("Type",
+                        render_kw={'readonly':True})
+
+    prix=StringField("prix",
+                        validators=[DataRequired()])
+
+    surface=StringField("surface",
+                        validators=[DataRequired()])
+
+    submit = SubmitField('enregistrer')
 class time(FlaskForm):
 
     Demarrer=DateField("Demarrer")
