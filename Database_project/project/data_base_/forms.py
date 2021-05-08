@@ -529,13 +529,13 @@ class Client_Form(FlaskForm):
     Type=SelectField('Type',
                              choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
 
-    Societe =StringField('Societe',
+    Societe =StringField('Société',
                            validators=[DataRequired()])
 
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Noms',
+    NOM =StringField('Nom et prénom',
                            validators=[DataRequired()])
     
     email =StringField('E-mail',
@@ -584,7 +584,7 @@ class Negotiateur_Form(FlaskForm):
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Noms',
+    NOM =StringField('Nom et prénom',
                            validators=[DataRequired()])
     
     email =StringField('E-mail',

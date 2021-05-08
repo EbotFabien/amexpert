@@ -131,25 +131,47 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>
- <div class="field is-horizontal">
+                                    <hr/>                                  
+                                    <div class="field is-horizontal">
                                       <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
+                                        <label class="label" style="text-align: left;"><small>{{form.Adresse.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
                                           <div class="field"><!---->
                                               <div class="control">
-                                               {% if form.Pays.errors %}
-                                                {{form.Pays(class="input is-invalid", value=history.pays) }}
+                                               {% if form.Adresse.errors %}
+                                                {{form.Adresse(class="input is-invalid", value=history.adresse) }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Pays.errors %}
+                                                {% for error in form.Adresse.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Pays(class="input", value=history.pays)}}
+                                                    {{form.Adresse(class="input", value=history.adresse)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le pays est requis</p>
+                                                <p class="help"> Requis. L'addresse est requis</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <hr/>
+                                     <div class="field is-horizontal">
+                                      <div class="field-label is-normal">
+                                        <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.CP.errors %}
+                                                {{form.CP(class="input is-invalid", value=history.cp) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.CP.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                                {% else %}
+                                                    {{form.CP(class="input", value=history.cp)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis. Le code postal est requis</p>
                                             </div>
                                           </div>
                                         </div>
@@ -176,56 +198,29 @@
                                           </div>
                                         </div>
                                     <hr/>
-
-                                    <div class="field is-horizontal">
+                                     <!-- <div class="field is-horizontal">
                                       <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
+                                        <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
-                                          <div class="field"><!---->
+                                          <div class="field">
                                               <div class="control">
-                                               {% if form.CP.errors %}
-                                                {{form.CP(class="input is-invalid", value=history.cp) }}
+                                               {% if form.Pays.errors %}
+                                                {{form.Pays(class="input is-invalid", value=history.pays) }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.CP.errors %}
+                                                {% for error in form.Pays.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.CP(class="input", value=history.cp)}}
+                                                    {{form.Pays(class="input", value=history.pays)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le code postal est requis</p>
+                                                <p class="help"> Requis. Le pays est requis</p>
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>
-
-
-
-                                    <div class="field is-horizontal">
-                                      <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.Adresse.label(class="form-control-label")}}</small></label></div>
-                                        <div class="field-body">
-                                          <div class="field"><!---->
-                                              <div class="control">
-                                               {% if form.Adresse.errors %}
-                                                {{form.Adresse(class="input is-invalid", value=history.adresse) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                                {% else %}
-                                                    {{form.Adresse(class="input", value=history.adresse)}}
-                                                {% endif %}
-                                              </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                    <hr/>
-
-                                      <div class="field is-horizontal">
+                                    <hr/> -->
+                                <div class="field is-horizontal">
                                     <div class="field-label is-normal"></div>
                                         <div class="field-body">
                                           <div class="field">

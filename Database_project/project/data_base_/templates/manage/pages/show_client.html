@@ -14,15 +14,10 @@
         </div>
       </div>
       <div class='columns'>
-	  <div class='container profile'>
+	  <div class='container'>
 	    <div class='section profile-heading'>
 	      <div class='columns is-mobile is-multiline'>
-	        <div class='column is-2'>
-	          <span class='header-icon user-profile-image'>
-	            <img alt='' src='https://via.placeholder.com/75x75.png?text=Logo'>
-	          </span>
-	        </div>
-	        <div class='column is-4-tablet is-10-mobile name'>
+	        <div class='column is-5 is-6-tablet is-10-mobile name'>
 	          <p>
 	            <span class='title is-bold' style="font-size: larger;">{{client.nom}}</span>
 	            <br>
@@ -32,8 +27,9 @@
 	            <br>
 	          </p>
 	          <p class='tagline'>
-	            {{history.adresse1}} Address2 {{history.adresse2}}
+	          <strong>Adresse:</strong> {{history.adresse1}}, <br/> {{history.cp}} {{history.ville}}, {{history.pays}}
 	          </p>
+	          
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
 	          <p class='stat-val'><strong>Tel</strong></p>
@@ -47,8 +43,8 @@
 	          <p class='stat-val'><strong>Email</strong></p>
 	          <p class='stat-key'>{{client.email}}</p>
 	        </div>
-			<div class='column is-12-tablet is-12-mobile has-text-centered'>
-				<p class='stat-val'><strong>Societe</strong></p>
+			<div class='column is-12-tablet is-12-mobile'>
+				<p class='stat-val'><strong>Société</strong></p>
 				<p class='stat-key'>{{client.societe}}</p>
 			</div>
 			<!-- <div class='column is-2-tablet is-4-mobile has-text-centered'>
@@ -127,13 +123,13 @@
 		  		<a href="{{url_for('users.ajouter_tarif', id=client.id)}}" style="color: #fff; background: #219EBC;" title="modifier" class="button is-small is-fullwidth">Ajouter un Tarif</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.client_mission', id=client.id)}}" style="background: #6B705C; color: #fff;" title="modifier" class="button is-outlined-black is-small is-fullwidth">Missions</a>
+		  		<a href="{{url_for('users.client_mission', id=client.id)}}" style="background: #6B705C; color: #fff;" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir ses Missions</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.tarifs', id=client.id)}}" title="modifier" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Tarifs</a>
+		  		<a href="{{url_for('users.tarifs', id=client.id)}}" title="modifier" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Tarifs</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Factures</a>
+		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
 		  	</div>
 		</div>
 	{% endif %}

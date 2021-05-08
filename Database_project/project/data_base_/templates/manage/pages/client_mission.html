@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">La mission du client</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Les missions de {{missions[0].Bailleur__data.titre}} {{missions[0].Bailleur__data.nom}}</h2>
       <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR ,Type='client')}}" title="ajouter une facture" class="button is-primary is-small"><span class="is-warning">Ajouter une facture</span></a>
     </div>
 
@@ -11,7 +11,7 @@
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <span><i class="fa fa-users"></i></span>
+            <span><i class="fa fa-list"></i></span>
             <div class="control has-icons-left has-icons-right">
               <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
               <span class="icon is-small is-right">

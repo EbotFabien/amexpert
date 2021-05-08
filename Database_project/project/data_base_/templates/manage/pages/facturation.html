@@ -33,9 +33,10 @@
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">N° Facture</th>
-                            <th scope="col">Montant HT</th>
-                            <th scope="col">Mission Reussi</th> 
-                            <th scope="col">Mission Echoue</th>
+                            <th scope="col">Montant € HT</th>
+                            <th scope="col">Mission(s) réussie(s)</th> 
+                            <th scope="col">Mission(s) echouee(s)</th>
+                            <th scope="col">Mission(s) anomalie(s)</th>
                             <th scope="col">Date de creation</th> 
                             
                             <th></th> 
@@ -50,6 +51,7 @@
                                     <td>{{facturation.Montant_HT}}</td>
                                     <td>{{s}}</td> 
                                     <td>{{f}}</td>
+                                    <td>{{a}}</td>
                                     <td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 
                                       
                                     <td style="">

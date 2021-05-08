@@ -8,11 +8,9 @@
  	<section class="tile" style="margin-top: 10px;">
     <div class="box" style="  width: -webkit-fill-available;">
       <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-      	{% if expert.sexe == "monsieur" %}
-        	<span><i class="fas fa-male"></i></span>
-        {% else %}
-        	<span><i class="fas fa-female"></i></span>
-        {% endif %}
+     
+        	<span><i class="fas fa-user"></i></span>
+     
         <div class="control has-icons-left has-icons-right">
          	{{expert.TYPE}}
         </div>
@@ -21,12 +19,8 @@
 	  <div class='container profile'>
 	    <div class='section profile-heading'>
 	      <div class='columns is-mobile is-multiline'>
-	        <div class='column is-2'>
-	          <span class='header-icon user-profile-image'>
-	            <img alt='' src='https://via.placeholder.com/75/000/ffffff?Text=WebsiteBuilders.com'>
-	          </span>
-	        </div>
-	        <div class='column is-4-tablet is-10-mobile name'>
+	        
+	        <div class='column is-6-tablet is-10-mobile name'>
 	          <p>
 	            <span class='title is-bold' style="font-size: larger;">{{expert.nom}}</span>
 	            <br>
@@ -35,21 +29,24 @@
 	            </a>
 	            <br>
 	          </p>
-	          <p class='tagline'>
-	            {{history.adresse1}} C.P {{expert.cp}}
+	        
+	             <p class='tagline'>
+	          <strong>Adresse:</strong> {{history.adresse1}}, <br/> {{history.cp}} {{history.ville}}, {{history.pays}}
 	          </p>
+	         
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'>{{expert.numero}}</p>
-	          <p class='stat-key'>Tel</p>
+	          <strong><p class='stat-val'><strong>Tel</strong></p></strong>
+	          <p class='stat-key'>{{expert.numero}}</p>
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'>{{expert.siret}}</p>
-	          <p class='stat-key'>Siret</p>
+	        	<strong><p class='stat-key'>Siret</p></strong>
+	          	<p class='stat-val'>{{expert.siret}}</p>	          
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'>{{expert.email}}</p>
-	          <p class='stat-key'>Email</p>
+	        	<strong><p class='stat-key'>Email</p></strong>
+	          	<p class='stat-val'>{{expert.email}}</p>
+	         
 	        </div>
 	      </div>
 

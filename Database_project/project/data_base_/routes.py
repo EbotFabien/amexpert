@@ -589,9 +589,16 @@ def facturation(id):
         facturation=list(facturation_client.query.filter(and_(facturation_client.client==id,facturation_client.visibility==True)).all())#add visibility
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==facturation[0].id,Facturation_history.visibility==True)).all())
         fac=facturation_mission.query.filter_by(fact_mission=facturation[0].id).all()
+        abnormal =list()
+        facture = list(facturation_mission.query.filter_by(fact_mission=facturation[0].id).all())
+        
+        for i in facture:
+            if i.mission__data_.Anomalie == True:
+                abnormal.append(i)
         f=len(failed)
         s=len(fac)
-        return render_template('manage/pages/facturation.html',legend="facturation",facturations=facturation,f=f,s=s, highlight="facturation") 
+        a=len(abnormal)
+        return render_template('manage/pages/facturation.html',legend="facturation",facturations=facturation,f=f,s=s,a=a, highlight="facturation") 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -1368,7 +1375,7 @@ def main():
             return render_template('manage/dashboard.html',title='Portail', form=form, clients=clients, missions=missions, facturations=facturations, highlight='dashboard')
     return redirect(url_for('users.login'))
 
-@users.route('/client/<int:id>/negotiateur')
+@users.route('/client/<int:id>/négociateurs')
 @login_required
 def negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1703,7 +1710,10 @@ def uploader_():
     return redirect(url_for('users.login'))
 
 
-
+@users.route('/profile')
+@login_required
+def profile():
+    return render_template('manage/pages/profile.html')
 
 
 

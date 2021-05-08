@@ -15,17 +15,30 @@
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
           	 <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label" style="text-align: left;"><small>NOM</small></label>
+                <div class="field-label is-normal is-3">
+                    <label class="label" style="text-align: left;"><small>Tarifs de {{tarif.data_client.titre}}</small></label>
                 </div>
                 <div class="field-body is-normal">
                   	<div class="field"><!---->
-                      	<p>{{tarif.data_client.nom}} </p>
+                      	<p style="text-transform: capitalize;padding: 6px 0px 0px;">{{tarif.data_client.nom}} </p>
                     </div>
                   </div>
                 </div>
             <hr/>
           	<div class="columns">
+               <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PRIX STD</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                              {{tarif.edl_prix_std}} €                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
@@ -67,20 +80,7 @@
                 </div>                                
             </div>
             <hr />
-            <div class="columns">
-                <div class="column">
-                    <div class="field is-vertical">
-                        <div class="is-normal">
-                            <label class="label"><small>EDL PRIX STD</small>
-                        </label>
-                        </div>
-                        <div class="field-body">
-                          	<div class="field">
-                              {{tarif.edl_prix_std}} €                                                   
-                            </div>
-                      </div>
-                    </div>
-                </div>
+            <div class="columns">             
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
@@ -119,7 +119,7 @@
                             </div>
                       </div>
                     </div>
-                </div>                                
+                </div>                                             
             </div>
             <hr />
             <div class="columns">
@@ -432,7 +432,7 @@
 				
 				<div class="col-md-4">
 					
-					<strong>commentaire_libre:</strong> {{tarif.commentaire_libre}} € <br>
+					<strong>commentaire_libre:</strong> {% if tarif.commentaire_libre == None %} aucun commentaire {% else %}{{tarif.commentaire_libre}} {% endif %} <br>
 					
 			 		</p>
 				</div> 

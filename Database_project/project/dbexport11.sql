@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.2
--- Dumped by pg_dump version 12.2
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1101,11 +1101,11 @@ COPY public."Agenda_expert" (id, agenda_taken, "Participant_invité", validation
 --
 
 COPY public."Client" (id, reference, "TYPE", societe, titre, nom, email, numero, siret, date_creation, visibility) FROM stdin;
-1	1075491	professionnel	L'ADRESSE ANJOU MAINE SARL LES 3B 	Monsieur	blanvilain sébastien	\N	\N	\N	2019-01-01 00:00:00	t
 2	1270215	professionnel	L'ADRESSE CARQUEFOU SARL LOUAME	Monsieur 	blanvilain sébastien	\N	\N	\N	2019-01-02 00:00:00	t
 3	123630	professionnel	L'ADRESSE LES HERBIERS - SARL LES HERBIERS GESTION 	Monsieur	blavillain et teillol	\N	\N	\N	2019-01-03 00:00:00	t
 4	120020	professionnel	L'ADRESSE MAISON BLANCHE 	Monsieur	blanvillain sebastien	\N	\N	\N	2019-01-04 00:00:00	t
 5	1270234	professionnel	WEST IMMOBILIER  LAFORET QUIMPER	Monsieur 	le floc'h françois	\N	\N	\N	2019-01-05 00:00:00	t
+1	1075491	Professionnel	LASOC1216	Monsieur	DURAND Yves	azed@pm.fr	336578452169	\N	2019-01-01 00:00:00	t
 \.
 
 
@@ -1114,11 +1114,14 @@ COPY public."Client" (id, reference, "TYPE", societe, titre, nom, email, numero,
 --
 
 COPY public."Client_History" (id, client_id, adresse1, adresse2, etat_client, cp, ville, pays, login_extranet, mpd_extranet, abonnement, date, visibility) FROM stdin;
-1	1	8  RUE DE LA CLAIE	Zone industrielle	t	49070	BEAUCOUZE	\N	AM1841	H2Z1FA1	\N	2021-05-05 05:38:57.357107	t
 2	2	2 RUE HARROUYS	\N	t	44470	CARQUEFOU	\N	AMI0431	\N	\N	2021-05-05 05:38:57.389092	t
 3	3	 48 RUE DU BRANDON	\N	t	85500	LES HERBIERS	\N	AM3261	CB1H32PE1	\N	2021-05-05 05:38:57.416073	t
 4	4	50 BOULEVARD FELIX GRAT	\N	t	53000	LAVAL	\N	AM3701	MAIS531	\N	2021-05-05 05:38:57.445053	t
 5	5	57 RUE DE BENODET	\N	t	29000	QUIMPER	\N	\N	\N	\N	2020-12-31 00:00:00	t
+6	1	\N	\N	t	\N	\N	\N	\N	\N	\N	2021-05-05 13:30:10.843602	t
+7	1	\N	\N	t	\N	\N	\N	\N	\N	\N	2021-05-05 14:52:25.323698	t
+1	1	8  RUE DE LA CLAIE	Zone industrielle	t	49330	LES HAUTS D'ANJOU	France	AM1841	H2Z1FA1	\N	2021-05-05 05:38:57.357107	t
+8	1	\N	\N	t	\N	\N	\N	\N	\N	\N	2021-05-05 14:53:08.561982	t
 \.
 
 
@@ -1479,6 +1482,7 @@ COPY public."prospect_History" (id, prospect, adresse, cp, ville, pays, etat_cli
 --
 
 COPY public.suivi_client (id, client, responsable, commentaire, date_creation, date_modif, visibility) FROM stdin;
+1	1	2	test messages	2021-05-05 13:32:23.125936	\N	t
 \.
 
 
@@ -1508,7 +1512,7 @@ SELECT pg_catalog.setval('public."Agenda_id_seq"', 1, false);
 -- Name: Client_History_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Client_History_id_seq"', 5, true);
+SELECT pg_catalog.setval('public."Client_History_id_seq"', 8, true);
 
 
 --
@@ -1620,7 +1624,7 @@ SELECT pg_catalog.setval('public.seq_street_segment_id', 6, true);
 -- Name: suivi_client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.suivi_client_id_seq', 1, false);
+SELECT pg_catalog.setval('public.suivi_client_id_seq', 1, true);
 
 
 --

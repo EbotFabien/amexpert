@@ -11,7 +11,7 @@
                   <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <span><i class="fa fa-user"></i></span>
                     <div class="control has-icons-left has-icons-right">
-                      <a href="#" class="button is-danger is-small">Annuler</a>
+                      <a onclick="window.history.back()" class="button is-danger is-small">Annuler</a>
                     </div>
                   </div>
                   <div class="tile is-ancestor">
@@ -41,11 +41,11 @@
                                             <hr>
                                             <div class="field is-horizontal">
                                                 <div class="field-label is-normal">
-                                                    <label class="label">Name</label></div>
+                                                    <label class="label">Nom</label></div>
                                                     <div class="field-body"><div class="field"><!---->
                                                         <div class="control">
                                                             <input type="text" autocomplete="on" name="name" required="required" class="input">
-                                                            <!----><!----><!----></div><p class="help"> Required. Your name <!---->
+                                                            <!----><!----><!----></div><p class="help"> Obligatoire. Votre nom <!---->
                                                             </p>
                                                         </div>
                                                         </div><!----></div>
@@ -56,7 +56,7 @@
                                                                     <div class="control">
                                                                         <input type="email" autocomplete="on" name="email" required="required" class="input"><!----><!----><!---->
                                                                     </div>
-                                                                    <p class="help"> Required. Your e-mail <!----></p>
+                                                                    <p class="help"> Obligatoire. Votre nom <!----></p>
                                                                 </div>
                                                             </div><!---->
                                                         </div>
@@ -67,7 +67,7 @@
                                                             <div class="field-body">
                                                                 <div class="field"><!---->
                                                                     <div class="control">
-                                                                        <button type="submit" class="button is-primary is-small"> Submit </button>
+                                                                        <button type="submit" class="button is-primary is-small"> Modifier </button>
                                                                     </div><!---->
                                                                 </div>
                                                             </div>
@@ -111,17 +111,17 @@
                   </div>
                   <div class="table-container" style="">
                     <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
-                        <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;"><p class="card-header-title"><span class="icon"><i class="fas fa-lock"></i></span><span>Change Password</span></p><!----></header>
+                        <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;"><p class="card-header-title"><span class="icon"><i class="fas fa-lock"></i></span><span>Changer le mot de passe</span></p><!----></header>
                       <form class="" style="margin-top: 50px; padding: 5px;">
                         <div class="field is-horizontal">
                           <div class="field-label is-normal">
-                            <label class="label" style="text-align: left;"><small>Current password</small></label></div>
+                            <label class="label" style="text-align: left;"><small>Votre mot de passe actuel</small></label></div>
                             <div class="field-body">
                               <div class="field"><!---->
                               <div class="control">
                                 <input type="password" autocomplete="on" name="password_current" required="required" autcomplete="current-password" class="input">
                                 <!----><!----><!----></div>
-                                <p class="help"> Required. Your current password 
+                                <p class="help"> Requis. Votre mot de passe actuel 
                                   <!----></p>
                                 </div>
                               </div><!---->
@@ -129,25 +129,25 @@
                             <hr>
                             <div class="field is-horizontal">
                               <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>New password</small></label>
+                                <label class="label" style="text-align: left;"><small>Nouveau mot de passe</small></label>
                               </div>
                               <div class="field-body">
                                 <div class="field"><!---->
                                   <div class="control">
                                     <input type="password" autocomplete="new-password" name="password" required="required" class="input">
-                                    <!----><!----><!----></div><p class="help"> Required. New password <!----></p>
+                                    <!----><!----><!----></div><p class="help"> Requis. Nouveau mot de passe <!----></p>
                                   </div>
                                 </div><!---->
                               </div>
                               <div class="field is-horizontal">
                                 <div class="field-label is-normal">
-                                  <label class="label" style="text-align: left;"><small>Confirm password</small></label></div>
+                                  <label class="label" style="text-align: left;"><small>Confirmer le mot de passe</small></label></div>
                                   <div class="field-body">
                                     <div class="field"><!---->
                                       <div class="control">
                                         <input type="password" autocomplete="new-password" name="password_confirmation" required="required" class="input">
                                         <!----><!----><!----></div>
-                                        <p class="help"> Required. New password one more time <!----></p>
+                                        <p class="help"> Requis. Nouveau mot de passe une fois de plus <!----></p>
                                       </div>
                                     </div><!---->
                                   </div><hr>

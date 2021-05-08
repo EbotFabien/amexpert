@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Négociateur de {{cli.nom}}</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Négociateur(s) de {{cli.nom}}</h2>
       <a href="{{url_for('users.ajouter_negotiateur', id=ID)}}" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
 
@@ -35,7 +35,7 @@
                             <th scope="col">client</th>
                            
                             <!-- <th scope="col">SOCIETE</th> -->
-                            <th scope="col">Nom</th>
+                            <th scope="col">Nom et prenom <small>(Negociateur(s))</small></th>
                             <!-- <th scope="col">NOM</th> -->
                             <th scope="col">Email</th>
                             <th scope="col">Tel</th>
@@ -44,9 +44,9 @@
                             <!-- <th scope="col">CP</th> -->
                             <!--th scope="col">Ville</th-->
                             <!-- <th scope="col">Zone_de_région_du_client</th> -->
-                            <th>Modifier</th>
-                            <th>Infos</th>
-                            <th>Suprimer</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>

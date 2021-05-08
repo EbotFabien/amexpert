@@ -215,25 +215,47 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>
+                                    <hr/>                                  
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
+                                        <label class="label" style="text-align: left;"><small>{{form.Adresse.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
                                           <div class="field"><!---->
                                               <div class="control">
-                                               {% if form.Pays.errors %}
-                                                {{form.Pays(class="input is-invalid") }}
+                                               {% if form.Adresse.errors %}
+                                                {{form.Adresse(class="input is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Pays.errors %}
+                                                {% for error in form.Adresse.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Pays(class="input")}}
+                                                    {{form.Adresse(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le pays est requis</p>
+                                                <p class="help"> Requis. L'addresse est requis</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <hr/>
+                                     <div class="field is-horizontal">
+                                      <div class="field-label is-normal">
+                                        <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.CP.errors %}
+                                                {{form.CP(class="input is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.CP.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                                {% else %}
+                                                    {{form.CP(class="input", placeholder="00000")}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis. Le code postal est requis</p>
                                             </div>
                                           </div>
                                         </div>
@@ -260,50 +282,29 @@
                                           </div>
                                         </div>
                                     <hr/>
-                                    <div class="field is-horizontal">
+                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
+                                        <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
                                           <div class="field"><!---->
                                               <div class="control">
-                                               {% if form.CP.errors %}
-                                                {{form.CP(class="input is-invalid") }}
+                                               {% if form.Pays.errors %}
+                                                {{form.Pays(class="input is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.CP.errors %}
+                                                {% for error in form.Pays.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.CP(class="input")}}
+                                                    {{form.Pays(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le code postal est requis</p>
+                                                <p class="help"> Requis. Le pays est requis</p>
                                             </div>
                                           </div>
                                         </div>
                                     <hr/>
-                                    <div class="field is-horizontal">
-                                      <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.Adresse.label(class="form-control-label")}}</small></label></div>
-                                        <div class="field-body">
-                                          <div class="field"><!---->
-                                              <div class="control">
-                                               {% if form.Adresse.errors %}
-                                                {{form.Adresse(class="input is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Adresse.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                                {% else %}
-                                                    {{form.Adresse(class="input")}}
-                                                {% endif %}
-                                              </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                    <hr/>
+                                   
                                    <div class="field is-horizontal">
                                     <div class="field-label is-normal"></div>
                                         <div class="field-body">
