@@ -14,14 +14,9 @@
         </div>
       </div>
       <div class='columns'>
-	  <div class='container profile'>
+	  <div class='container'>
 	    <div class='section profile-heading'>
 	      <div class='columns is-mobile is-multiline'>
-	        <div class='column is-2'>
-	          <span class='header-icon user-profile-image'>
-	            <img alt='' src='https://via.placeholder.com/75x75.png?text=Logo'>
-	          </span>
-	        </div>
 	        <div class='column is-4-tablet is-10-mobile name'>
 	          <p>
 	            <span class='title is-bold' style="font-size: larger;">{{client.nom}}</span>
@@ -32,7 +27,7 @@
 	            <br>
 	          </p>
 	          <p class='tagline'>
-	            {{history.adresse1}} Address2 {{history.adresse2}}
+	            <strong>Address:</strong>{{history.adresse1}}  
 	          </p>
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
@@ -40,12 +35,12 @@
 	          <p class='stat-key'>{{client.numero}}</p>
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Client concernee</strong></p>
-	          <p class='stat-key'>{{client.client__nego.nom}}</p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
 	          <p class='stat-val'><strong>Email</strong></p>
 	          <p class='stat-key'>{{client.email}}</p>
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	          <p class='stat-val'><strong>Client concernee</strong></p>
+	          <p class='stat-key'>{{client.client__nego.nom}}</p>
 	        </div>
 			<!-- <div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-val'>{{client.titre}}</p>
