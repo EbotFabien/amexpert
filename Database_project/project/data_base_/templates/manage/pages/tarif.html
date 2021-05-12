@@ -9,12 +9,7 @@
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fas fa-file-invoice"></i></span>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-small is-rounded" type="text" placeholder="Rechercher">
-              <span class="icon is-small is-right">
-                <i class="fas fa-search"></i>  
-              </span>
-            </div>
+            
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
           	{% with messages = get_flashed_messages(with_categories=true)%}
@@ -26,7 +21,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table is-striped" style="overflow-x: scroll;min-width: 800px;">
+            <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
                 <thead>
                     <tr>
                         <th scope="col">id</th>

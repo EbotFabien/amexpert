@@ -14,12 +14,6 @@
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fas fa-file-invoice"></i></span>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-small is-rounded" type="text" placeholder="Rechercher">
-              <span class="icon is-small is-right">
-                <i class="fas fa-search"></i>  
-              </span>
-            </div>
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
                       {% with messages = get_flashed_messages(with_categories=true)%}
@@ -31,15 +25,15 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-	                <table class="table table-bordered" id="dataTable" style="width:100%">
+	                <table class="table table-bordered" id="table_id" style="width:100%">
                         <thead class="">
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">client</th>
                             <th scope="col">responsable</th>
-                            <th scope="col">commentaire</th>
-                            <th scope="col">data cree</th>
-                            <th scope="col">date Modifier</th>
+                            <th scope="col">commentaire(s)</th>
+                            <th scope="col">date(s) cree(s)</th>
+                            <th scope="col">date(s) Modifiee(s)</th>
                             <td></td>
                             <td></td>
                         </tr>

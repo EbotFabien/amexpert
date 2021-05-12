@@ -24,21 +24,22 @@ def client():
     Ord="a"
     db.create_all()
     if current_user.TYPE == "Admin":
-        page = request.args.get('page', 1, type=int)
-        if request.method == 'POST':
-            form_data = request.form
-            order = request.form.get('order')
-            f = request.form.get('filter')
-            if f is not None:
-                PER_PAGE = int(f)
-                Ord =order
+        client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
+        # page = request.args.get('page', 1, type=int)
+        # if request.method == 'POST':
+        #     form_data = request.form
+        #     order = request.form.get('order')
+        #     f = request.form.get('filter')
+        #     if f is not None:
+        #         PER_PAGE = int(f)
+        #         Ord =order
     
-        if Ord == "asc":
-            client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        if Ord == "desc":
-            client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        else:
-            client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
+        # if Ord == "asc":
+        #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
+        # if Ord == "desc":
+        #     client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
+        # else:
+        #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         return render_template('manage/pages/client.html',cli_ent=client_,legend="client", highlight='client')
     return redirect(url_for('users.main'))
  
@@ -193,8 +194,7 @@ def update_client(id):
 @login_required
 def mission():
     if current_user.TYPE == "Admin":
-        page = request.args.get('page', 1, type=int)
-        mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page, per_page=10)
+        mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).all()
         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
 
     return redirect(url_for('users.main'))
@@ -792,7 +792,7 @@ def delete_mission(id):
 def expert():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        expert_=Expert.query.filter_by(visibility=True).order_by(asc(Expert.id)).paginate(page=page, per_page=10)
+        expert_=Expert.query.filter_by(visibility=True).order_by(asc(Expert.id)).all()
         return render_template('manage/pages/expert.html',Expert=expert_, legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
@@ -1710,9 +1710,9 @@ def uploader_():
     return redirect(url_for('users.login'))
 
 
-@users.route('/profile')
+@users.route('/profil')
 @login_required
-def profile():
+def profil():
     return render_template('manage/pages/profile.html')
 
 
