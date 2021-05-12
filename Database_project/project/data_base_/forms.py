@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm,RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, TextAreaField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
 from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur
 from wtforms.fields.html5 import DateField
@@ -511,7 +511,9 @@ class Facturation_Form(FlaskForm):
                              render_kw={'readonly':True})
 
 
-   # Date_reglement_client=DateField("Date_reglement_client")
+    Data=HiddenField()
+
+    Missions=HiddenField()
 
     
     Statut=SelectField('Statut',

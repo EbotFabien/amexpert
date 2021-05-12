@@ -14,7 +14,7 @@
         <div class="col-xl-6 col-lg-6 mx-auto">
             <div class="card shadow mb-4">
 	        <div class="card-header py-1 justify-content-between align-items-center d-flex">
-	            <h6 class="m-0 font-weight-bold">Ajouter un Facturation</h6>
+	            <h6 class="m-0 font-weight-bold">Ajouter une Facturation</h6>
                 <!--a href="/facturation" class="button is-small is-black">Tous les factures</a-->
 	        </div>
 	        <div class="card-body">
@@ -30,7 +30,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST" action="{{url_for('users.create_facture')}}">
+                            <form class="user" method="POST" action="{{url_for('users.create_facturem')}}" >
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
                                 <div class="form-group row">
@@ -65,24 +65,46 @@
                                             {% endif %}
                                     </div>
                                 </div>
-                               <div class="form-group row">
-                                     <div class="col-sm-4 mb-3 mb-sm-0">
-                                        {{form.Montant_HT.label(class="form-control-label")}}
-
-                                    {% if form.Montant_HT.errors %}
-                                        {{ form.Montant_HT(class="input is-small is-invalid",value=sum) }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Montant_HT.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        {% else %}
-                                            {{form.Montant_HT(class="is-small input",value=sum)}}
-                                        {% endif %}
-                                    </div>
+                                {%for key,v in sum.items() %}
                                     
+                                    <span>
+                                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                                {{form.Reference_client.label(class="form-control-label")}}
+                                                
+                                            {% if form.Reference_client.errors %}
+                                                {{ form.Reference_client(class="input is-small is-invalid",value=key) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.Montant_HT.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.Reference_client(class="is-small input",value=key)}}
+                                                {% endif %}
+                                            </div>
+                                            
+                                            
+                                    </span>
+                                    <span>
+                                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                                {{form.Montant_HT.label(class="form-control-label")}}
+                                                
+                                            {% if form.Montant_HT.errors %}
+                                                {{ form.Montant_HT(class="input is-small is-invalid",value=v) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.Montant_HT.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.Montant_HT(class="is-small input",value=v)}}
+                                                {% endif %}
+                                            </div>
+                                            
+                                            
+                                    <span>
                                     
-                                </div>
+                                {%endfor%}
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                         {{form.Statut.label(class="form-control-label")}}
@@ -98,8 +120,7 @@
                                                 {{form.Statut(class="input is-small")}}
                                             {% endif %}
                                     </div>
-                                </div>
-                                    
+                                </div>     
                                 <div class="form-group">
                                     {{form.submit(class="button is-small is-success is-fullwidth")}}   
                                 </div>
@@ -118,3 +139,4 @@
 </div>
     <!-- /.container-fluid -->
 {%endblock%}
+
