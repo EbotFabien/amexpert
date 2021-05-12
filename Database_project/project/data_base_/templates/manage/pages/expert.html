@@ -11,12 +11,7 @@
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
-              <span class="icon is-small is-right">
-                <i class="fas fa-search"></i>  
-              </span>
-            </div>
+            
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
@@ -28,7 +23,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table is-hoverable is-striped" style="overflow-x: scroll;min-width: 800px;">  
+            <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">  
                     <thead>
                     <tr>
                         <th scope="col">id</th>
@@ -42,7 +37,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {%for expert in Expert.items %}
+                        {%for expert in Expert %}
                             <tr>
                                 <th scope="row">{{expert.id}}</th>
                                 <td>{{expert.TITRE}} {{expert.nom}}</td>
@@ -62,43 +57,7 @@
                 </table>
 	            </div>
                  <!-- Pagination Links-->
-              <div style="display: flex; justify-content: space-between;">
-                 <p class="text-right mt-3">
-                   Afficher la page {{ Expert.page }} sur {{ Expert.pages }}
-                </p>        
-                <div class="text-right pagination">
-                    <a href="{{ url_for('users.expert', page=Expert.prev_num) }}"
-                       class="btn btn-outline-dark 
-                       {% if Expert.page == 1 %}disabled{% endif %}">
-                        &laquo;
-                    </a>
-                <!-- Loop through the number of pages to display a link for each-->
-                    {% for page_num in Expert.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                {% if page_num %}
-                <!-- Check for the active page and set the link to "Active"-->
-                            {% if Expert.page == page_num %}
-                            <a href="{{ url_for('users.expert', page=page_num) }}"
-                               class="is-current pagination-link">
-                                {{ page_num }}
-                            </a>
-                            {% else %}
-                            <a href="{{ url_for('users.expert', page=page_num) }}"
-                               class="btn pagination-link">
-                                {{ page_num }}
-                            </a>
-                            {% endif %}
-                        {% else %}
-                            ...
-                        {% endif %}
-                    {% endfor %}
-                    <a href="{{ url_for('users.expert', page=Expert.next_num) }}"
-                       class="btn btn-outline-dark 
-                       {% if Expert.page == Expert.pages %}disabled{% endif %}">
-                        &raquo;
-                    </a>
-                </div>
-               
-            </div>
+              
             <!--end of pagination -->
 	        </div>
 	    </div>
