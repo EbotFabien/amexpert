@@ -1,0 +1,35 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}      
+
+        
+    <div class="columns">
+                <div class="column">
+                    <form method="GET" action="{{url_for('users.menusearch')}}" class="d-none d-sm-inline-block form-inline navbar-search" style="width: 550px;">
+                        <div class='row'>
+                            <div class="input-group col-8">
+                                <input type="text" class="form-control bg-light border-0 small" name="keyword" placeholder="Reference client..."
+                                    aria-label="Search" aria-describedby="basic-addon2" value="{{search}}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit" style="background: #e09929!important; border: 1px solid #e09929!important;">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="column">
+                    <a href="{{url_for('users.facturationa')}}" style="color: #fff; background: #0B6E4F;" title="modifier" class="button is-small is-fullwidth">Voir Tous les Factures</a>
+                </div>
+                <div class="column">
+                    <a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter une Facture Mensuel" class="button is-primary is-small"><i class="fas fa-plus"></i>Facturation Mensuel General</a> 
+                </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

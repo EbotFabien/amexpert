@@ -143,7 +143,7 @@
               <a href="/tarifs"><span class="menu_icon"><i class="fas fa-money-check"></i></span> <span class="menu_text">Tarifs</span></a>
             </li>
             <li class="{% if highlight == 'facturation' %} active {% endif %}">
-                <a href="/facture"><span class="menu_icon"><i class="fas fa-wallet"></i></span> <span class="menu_text">Facturation</span></a>
+                <a href="{{url_for('users.menufactures')}}"><span class="menu_icon"><i class="fas fa-wallet"></i></span> <span class="menu_text">Facturation</span></a>
             </li> 
         </ul>
 

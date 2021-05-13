@@ -6,40 +6,47 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Les missions de {{missions[0].Bailleur__data.titre}} {{missions[0].Bailleur__data.nom}}</h2>
       <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR ,Type='client')}}" title="ajouter une facture" class="button is-primary is-small"><span class="is-warning">Ajouter une facture</span></a>
     </div>
-
+	
    
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-list"></i></span>
           </div>
+		     
           <div class="table-container" style="overflow-x: scroll;position: relative;">
-            <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
-	                    <thead class="">
-	                	<tr>
-		                    <th scope="col">N° Mission</th>
-		                    <th scope="col">Date de realisation de la mission</th>
-							<th></th>
-							
-		                    
-		                    
-
-	                	</tr>
-	            	</thead>
-		            <tbody>
-		                {%for mission in missions %}
-		                    <tr>
-		                        <td scope="col">{{mission.id}}</td>
-		                        <td>{{mission.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
-								<td style="">
-                                    <a href="{{url_for('users.show_mission', id=mission.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                    
-                                </td>
-                              
-		                    </tr>
-		                {%endfor%}                               
-		            </tbody>         
-	             </table>
+		  	<form action="{{url_for('users.choosep')}}" method="post">
+				
+			
+				<table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
+						<thead class="">
+							<tr>
+								<th></th>
+								<th scope="col">N° Mission</th>
+								<th scope="col">Date de realisation de la mission</th>
+								<th></th>
+								
+							</tr>
+						</thead>
+						
+						<tbody>
+							{%for mission in missions %}
+								<tr>
+									<td><input type="checkbox" value={{mission.id}} class="danger" name='my_checkbox'></td>
+									<td scope="col">{{mission.id}}</td>
+									<td>{{mission.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
+									<td style="">
+										<a href="{{url_for('users.show_mission', id=mission.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+										
+									</td>
+								
+								</tr>
+							{%endfor%}                             
+						</tbody> 
+								
+					</table>
+				<input type="submit" value="Upload Image" name="submit">
+			</form>
 	            </div>
 	        </div>
 	    </section>

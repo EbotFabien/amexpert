@@ -515,6 +515,9 @@ class Facturation_Form(FlaskForm):
 
     Missions=HiddenField()
 
+    Mission =StringField('Mission ID',
+                             render_kw={'readonly':True})
+
     
     Statut=SelectField('Statut',
                              choices=[('paye', 'paye'), ('attente', 'attente')])
