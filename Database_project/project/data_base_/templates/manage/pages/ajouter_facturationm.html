@@ -1,25 +1,22 @@
-{% extends 'manage/index.html' %}
+{% extends 'manage/index.html'%}
 {% block manage_content %}
- <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Facturation +</h1>
-        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter une Facturation</h2>
+    
     </div>
-    <!-- Content Row -->
 
-    <div class="row">
-        <!-- Area Chart -->
-        <div class="col-xl-6 col-lg-6 mx-auto">
-            <div class="card shadow mb-4">
-	        <div class="card-header py-1 justify-content-between align-items-center d-flex">
-	            <h6 class="m-0 font-weight-bold">Ajouter une Facturation</h6>
-                <!--a href="/facturation" class="button is-small is-black">Tous les factures</a-->
-	        </div>
-	        <div class="card-body">
-	            <div class="row">
-                    <div class="col-lg-12 mx-auto">
+    <div class="table-container" style="">
+        <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+            <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
+                <p class="card-header-title"><span class="icon"><i class="fas fa-file"></i></span></p>
+                <div class="card-header-title">
+                  <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+                </div>
+                                       
+            </header>
+
                         <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
@@ -30,101 +27,152 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST" action="{{url_for('users.create_facturem')}}" >
+                            <form class="user" method="POST" style="padding: 10px;" action="{{url_for('users.create_facturem')}}" >
                                 {{ form.hidden_tag() }}
-                                <fieldset class="form-group">
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Demarrer.label(class="form-control-label")}}
-                                    
-                                        {% if form.Demarrer.errors %}
-                                            {{ form.Demarrer(class="input is-small is-invalid",value=start) }}
+                                <div class="columns">
+                                <div class="column">
+                                    <div class="field is-vertical">
+                                        <div class="is-normal">
+                                            <label class="label"><small>{{form.Demarrer.label(class="form-control-label")}}</small>
+                                        </label>
+                                        </div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Demarrer.errors %}
+                                                {{form.Demarrer(class="input is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Demarrer.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
-                                                {{form.Demarrer(class="input is-small",value=start)}}
-                                            {% endif %}
+                                                {% else %}
+                                                    {{form.Demarrer(class="input", value=start)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
+                                            </div>
+                                      </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{form.Fin.label(class="form-control-label")}}
-                                    
-                                        {% if form.Fin.errors %}
-                                            {{ form.Fin(class="input is-small is-invalid",value=end)}}
+                                <div class="column">
+                                    <div class="field is-vertical">
+                                        <div class="is-normal">
+                                            <label class="label"><small>{{form.Fin.label(class="form-control-label")}}</small>
+                                        </label>
+                                        </div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Fin.errors %}
+                                                {{form.Fin(class="input is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Fin.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
-                                                {{form.Fin(class="input is-small",value=end)}}
-                                            {% endif %}
+                                                {% else %}
+                                                    {{form.Fin(class="input", value=end)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
+                                            </div>
+                                      </div>
                                     </div>
-                                </div>
-                                {%for key,v in sum.items() %}
-                                    
-                                    <span>
-                                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                                {{form.Reference_client.label(class="form-control-label")}}
-                                                
-                                            {% if form.Reference_client.errors %}
-                                                {{ form.Reference_client(class="input is-small is-invalid",value=key) }}
-                                                <div class="invalid-feedback">
-                                                    {% for error in form.Montant_HT.errors %}
-                                                        <span>{{ error }}</span>
-                                                    {% endfor %}
-                                                </div>
-                                                {% else %}
-                                                    {{form.Reference_client(class="is-small input",value=key)}}
-                                                {% endif %}
-                                            </div>
-                                            
-                                            
-                                    </span>
-                                    <span>
-                                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                                {{form.Montant_HT.label(class="form-control-label")}}
-                                                
-                                            {% if form.Montant_HT.errors %}
-                                                {{ form.Montant_HT(class="input is-small is-invalid",value=v) }}
-                                                <div class="invalid-feedback">
-                                                    {% for error in form.Montant_HT.errors %}
-                                                        <span>{{ error }}</span>
-                                                    {% endfor %}
-                                                </div>
-                                                {% else %}
-                                                    {{form.Montant_HT(class="is-small input",value=v)}}
-                                                {% endif %}
-                                            </div>
-                                            
-                                            
-                                    <span>
-                                    
-                                {%endfor%}
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{form.Statut.label(class="form-control-label")}}
-
-                                        {% if form.Statut.errors %}
-                                            {{ form.Statut(class="input is-small is-invalid") }}
+                                </div>                                
+                            </div>
+                            <hr> 
+                             {%for key,v in sum.items() %}
+                             <div class="columns">
+                              
+                                <div class="column">
+                                    <div class="field is-vertical">
+                                        <div class="is-normal">
+                                            <label class="label"><small>{{form.Reference_client.label(class="form-control-label")}}</small>
+                                        </label>
+                                        </div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Reference_client.errors %}
+                                                {{form.Reference_client(class="input is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.Statut.errors %}
+                                                {% for error in form.Reference_client.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
-                                                {{form.Statut(class="input is-small")}}
-                                            {% endif %}
+                                                {% else %}
+                                                    {{form.Reference_client(class="input", value=key)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
+                                            </div>
+                                      </div>
                                     </div>
-                                </div>     
-                                <div class="form-group">
-                                    {{form.submit(class="button is-small is-success is-fullwidth")}}   
                                 </div>
-                            <fieldset>
+                                <div class="column">
+                                    <div class="field is-vertical">
+                                        <div class="is-normal">
+                                            <label class="label"><small>{{form.Montant_HT.label(class="form-control-label")}}</small>
+                                        </label>
+                                        </div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Montant_HT.errors %}
+                                                {{form.Montant_HT(class="input is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Montant_HT.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                                {% else %}
+                                                    {{form.Montant_HT(class="input", value=v)}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
+                                            </div>
+                                      </div>
+                                    </div>
+                                </div>  
+                                                             
+                            </div>
+                             {%endfor%}
+                            <hr/>
+                                                              
+                                
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.Statut.label(class="form-control-label")}}</small></label></div>
+                                    <div class="field-body">
+                                      <div class="field"><!---->
+                                          <div class="control">
+                                           {% if form.Statut.errors %}
+                                            {{form.Statut(class="input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Statut.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                            {% else %}
+                                                {{form.Statut(class="input")}}
+                                            {% endif %}
+                                          </div>
+                                            <p class="help"> Requis. type status est requis</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                <hr/> 
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal"></div>
+                                        <div class="field-body">
+                                          <div class="field">
+                                            <div class="control">
+                                              {{form.submit(class="button is-small is-success")}} 
+                                            </div>
+                                          </div>
+                                        </div>
+                                       
                             </form>
                         </div>
                     </div>
