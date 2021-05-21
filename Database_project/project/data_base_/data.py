@@ -32,7 +32,7 @@ def insert_client(A,loc):
                         db.session.commit()
 
                 else:
-                    print('already exist')
+                    return 'This data already exist'
 
         
 #to be fixed

@@ -1591,24 +1591,30 @@ def uploader_():
       # get the uploaded file
       if request.method == 'POST':
         uploaded_file = request.files['file']
+        table = request.form['table']
         if uploaded_file.filename != '':
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
             loc=str(file_path)
             # set the file path
             uploaded_file.save(file_path)
+            if table == 'client':
+                try:
+                    insert_client('professionnel',loc)
+                    flash(f"Vous avez importer les donnees avec success",'success')
+                    return redirect(url_for('users.client'))
+                except:
+                    flash(f"Fichier incorrect",'warning')
+                    return redirect(url_for('users.up'))
+            if table == 'expert':
+                try:
+                    expert__(loc)
+                    flash(f"Vous avez importer les donnees avec success",'success')
+                    return redirect(url_for('users.expert'))
+                except:
+                    flash(f"Fichier incorrect",'warning')
+                    return redirect(url_for('users.up'))
             # save the file
             #expert__(loc)
-            #expert__('CONCESS',loc)
-           #''' expert__('Manager_chiffrage',loc)
-           # expert__('Agent_chiffrage',loc)
-           # expert__('Respon Cell Dev',loc)
-           # expert__('agent Cell Dev',loc)
-           ## expert__('Agent CellTech',loc)
-           # expert__('Respon Cell Tech',loc)
-           ## expert__('Suiveur Cell Tech',loc)
-           # expert__('Respon Cell Planif',loc)
-           # expert__('Suiveur Cell Planif',loc)
-           # expert__('Agent saisie Cell Planif',loc)'''
             #insert_client('professionnel',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
@@ -1622,8 +1628,7 @@ def uploader_():
 
             
             
-            flash(f"Vous avez importer les donnees avec success",'success')
-            return redirect(url_for('users.up'))
+            
       return redirect(url_for('users.main'))
     return redirect(url_for('users.login'))
 
