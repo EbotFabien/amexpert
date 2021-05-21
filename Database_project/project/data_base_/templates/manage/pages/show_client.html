@@ -83,14 +83,17 @@
 				<p class='stat-val'>{{history.pays}}</p>
 				<p class='stat-key'>Pays</p>
 			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{tarif.id}}</p>
-				<p class='stat-key'>ID_Tarif</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{tarif.referent__data.nom}}</p>
-				<p class='stat-key'>AS</p>
-			</div>
+			{% if legend == "client" %}
+				<div class='column is-2-tablet is-4-mobile has-text-centered'>
+					<p class='stat-val'>{{tarif.id}}</p>
+					<p class='stat-key'>ID_Tarif</p>
+				</div>
+			
+				<div class='column is-2-tablet is-4-mobile has-text-centered'>
+					<p class='stat-val'>{{tarif.referent__data.nom}}</p>
+					<p class='stat-key'>AS</p>
+				</div>
+			{% endif %}
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-val'>{{history.date|string|truncate(13, True)}}</p>
 				<p class='stat-key'>Date historique:</p>

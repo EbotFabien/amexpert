@@ -99,22 +99,7 @@
                                     
                                     
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{form.Statut.label(class="form-control-label")}}
-
-                                        {% if form.Statut.errors %}
-                                            {{ form.Statut(class="input is-small is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Statut.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Statut(class="input is-small")}}
-                                            {% endif %}
-                                    </div>
-                                </div>
+                                
                                     
                                 <div class="form-group">
                                     {{form.submit(class="button is-small is-success is-fullwidth")}}   

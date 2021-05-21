@@ -443,7 +443,7 @@ def create_facturec():
             
         if mission_:
            
-            facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut=request.form['Statut'],Date_mission=request.form['Demarrer'],client=request.form['Reference_client'])
+            facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut='attente',Date_mission=request.form['Demarrer'],client=request.form['Reference_client'])
             db.session.add(facture)
             db.session.commit()
             factura=str(facture.Date_de_creation)
@@ -1371,7 +1371,7 @@ def update_negotiateur(id):
             db.session.commit()
             client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
             client_history.ville = request.form['Ville']
-            client_history.pays = request.form['Pays']
+           # client_history.pays = request.form['Pays'] fix this edit
             client_history.cp = request.form['CP']
             client_history.adresse = request.form['Adresse']
             db.session.commit()
@@ -1631,7 +1631,10 @@ def uploader_():
 @users.route('/profil')
 @login_required
 def profil():
-    return render_template('manage/pages/profile.html')
+    if current_user.TYPE == 'Admin':
+        form = RegistrationForm()
+        client=Expert.query.filter_by(id=current_user.id).first()
+    return render_template('manage/pages/profile.html',form=form,client=client)
 
 
 
@@ -2239,7 +2242,7 @@ def create_facturep():
                 mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
                 missions.append(mission)
 
-            facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut=request.form['Statut'],client=request.form['Reference_client'])
+            facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut='attente',client=request.form['Reference_client'])
             db.session.add(facture)
             db.session.commit()
             factura=str(facture.Date_de_creation)

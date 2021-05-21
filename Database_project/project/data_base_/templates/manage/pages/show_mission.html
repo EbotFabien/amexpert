@@ -3,7 +3,11 @@
 	<div style="" class="main-content">
 	    {% include 'manage/partials/search.html'%}
 	    <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
-	      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Mission N° {{mission.id}}</h2>
+	      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Mission N° {{mission.id}} 
+			{% if mission.Anomalie == True %}
+				Avec Anomalie 
+			{% endif %}
+		   </h2>
 	    </div>
 	    <div class="tile is-ancestor is-vertical">
 	    	<div class="tile is-horizontal is-parent">
@@ -15,8 +19,8 @@
 	    				<li><strong>Societe:</strong> {{mission.Bailleur__data.societe}}</li>
 	    				<li><strong>N° du concessionnaire:</strong> {{mission.ID_AS}}</li>
 	    				<li><strong>Nom :</strong> {{mission.AS__data.nom}}</li>
-	    				<li><strong>ID Interv:</strong> {{mission.ID_INTERV}}</li>
 	    				<li><strong>Reference Locataire:</strong> {{mission.Reference_LOCATAIRE}}</li>
+						<li><strong>ID Interv:</strong> {{mission.ID_INTERV}}</li>
 	    				<li><strong>Intervenant</strong> {{mission.INTERV__data.nom}}</li>
 	    			</ul>
 	    		</div>
@@ -71,17 +75,29 @@
 	    				<li><strong>Type Logement:</strong> {{mission.TYPE_LOGEMENT }}</li>
 	    				<li><strong>Surface Logement:</strong> {{mission.surface_logement1}}m<sup>2</sup></li>
 	    				<li><strong>No Facture:</strong> {{mission.NRO_FACTURE}}</li>
-						<li><strong>Coherance:</strong> {{mission.Coherence}}</li>
+						<li><strong>Coherance:</strong> 
+							{% if mission.coherent == True %}
+								Coherant
+							{% else %}
+	    						Incoherant
+	    					{% endif %}
+						</li>
+						<li><strong>Anomalie:</strong>
+							{% if mission.Anomalie == True %}
+								{{mission.reason}}
+							{% else %}
+	    						Aucune anomalie
+	    					{% endif %}
+						</li>
 	    			</ul>
 	    		</div>
 	    		<div class="tile is-child box">
-	    			<h1 class="title is-5">POURCENTAGE</h1>
+	    			<h1 class="title is-5">POURCENTAGE/100%</h1>
 	    			<hr/>
 	    			<ul>
-	    				<li><strong>POURCENTAGE COM AS DU CLIENT:</strong> {{mission.POURCENTAGE_COM_AS_DU_CLIENT}}%</li>
-	    				<li><strong>POURCENTAGE AS chiffrage:</strong>   {{mission.POURCENTAGE_AS_chiffrage}}%</li>
-	    				<li><strong>POURCENTAGE_suiveur_chiffrage:</strong> {{mission.TYPE_LOGEMENT }}</li>
-	    				<li><strong>Surface Logement:</strong> {{mission.POURCENTAGE_suiveur_chiffrage}}</li>
+	    				<li><strong>POURCENTAGE COM AS DU CLIENT:</strong> {{mission.POURCENTAGE_COM_AS_DU_CLIENT}}</li>
+	    				<li><strong>POURCENTAGE AS chiffrage:</strong>   {{mission.POURCENTAGE_AS_chiffrage}}</li>
+	    				<li><strong>POURCENTAGE_suiveur_chiffrage:</strong> {{mission.POURCENTAGE_suiveur_chiffrage }}</li>
 	    			</ul>
 	    		</div>
 	    	</div>
@@ -144,60 +160,60 @@
 									<tr>
 										<th>Type d'expert</th>
 										<th>N° de l'expert</th>
-										<th>Pourcentage</th>
+										<th>Pourcentage/100%</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td>ID Respon Cell Dev</td>
 										<td><strong>{{mission.ID_agent_Cell_Dev}}</strong></td>
-										<td><strong>{{mission.POURCENTAGE_Agent_Cell_Dev}}%</strong></td>
+										<td><strong>{{mission.POURCENTAGE_Agent_Cell_Dev}}</strong></td>
 									</tr>
 									<tr>
 										<td>ID agent Cell Dev</td>
 										<td>{{mission.ID_agent_Cell_Dev}}</td>
-										<td>{{mission.POURCENTAGE_Agent_Cell_Dev}}%</td>
+										<td>{{mission.POURCENTAGE_Agent_Cell_Dev}}</td>
 									</tr>
 									<tr>
 										<td>ID Agent CellTech</td>
 										<td>{{mission.ID_Agent_CellTech}}</td>
-										<td>{{mission.POURCENTAGE_Agent_Cell_Tech}}%</td>
+										<td>{{mission.POURCENTAGE_Agent_Cell_Tech}}</td>
 									</tr>
 									<tr>
 										<td>ID Respon Cell Tech</td>
 										<td>{{mission.ID_Respon_Cell_Tech}}</td>
-										<td>{{mission.POURCENTAGE_Respon_Cell_Tech}}%</td>
+										<td>{{mission.POURCENTAGE_Respon_Cell_Tech}}</td>
 									</tr>
 									<tr>
 										<td>ID Suiveur Cell Tech</td>
 										<td>{{mission.ID_Suiveur_Cell_Tech}}</td>
-										<td>{{mission.POURCENTAGE_Respon_Cell_Planif}}%</td>
+										<td>{{mission.POURCENTAGE_Respon_Cell_Planif}}</td>
 									</tr>
 									<tr>
 										<td>ID Respon Cell Planif</td>
 										<td>{{mission.ID_Respon_Cell_Planif}}</td>
-										<td>{{mission.POURCENTAGE_Respon_Cell_Planif}}%</td>
+										<td>{{mission.POURCENTAGE_Respon_Cell_Planif}}</td>
 									</tr>
 									<tr>
 										<td>ID Suiveur Cell Planif</td>
 										<td>{{mission.ID_Suiveur_Cell_Planif }}</td>
-										<td>{{mission.POURCENTAGE_Suiveur_Cell_Planif}}%</td>
+										<td>{{mission.POURCENTAGE_Suiveur_Cell_Planif}}</td>
 									</tr>
 									<tr>
 										<td>ID manager chiffrage</td>
 										<td>{{mission.ID_manager_chiffrage}}</td>
-										<td>{{mission.POURCENTAGE_manager_chiffrage}}%</td>
+										<td>{{mission.POURCENTAGE_manager_chiffrage}}</td>
 									</tr>
 									<tr>
 										<td>ID Agent saisie Cell Planif</td>
 										<td>{{mission.ID_Agent_saisie_Cell_Planif }}</td>
-										<td>{{mission.POURCENTAGE_Agent_saisie_CEll_planif}}%</td>
+										<td>{{mission.POURCENTAGE_Agent_saisie_CEll_planif}}</td>
 									</tr>
 									
 									<tr>
 										<td>ID agent chiffrage</td>
 										<td>{{mission.ID_agent_chiffrage }}</td>
-										<td>{{mission.POURCENTAGE_agent_chiffrage}}%</td>
+										<td>{{mission.POURCENTAGE_agent_chiffrage}}</td>
 									</tr>
 									
 									<tr>
