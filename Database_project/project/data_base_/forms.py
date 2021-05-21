@@ -498,7 +498,7 @@ class Tarif_Form(FlaskForm):
 
 
 class Facturation_Form(FlaskForm):
-    Reference_client=StringField('Reference_client',
+    Reference_client=StringField('Reference client',
                            render_kw={'readonly':True})
 
     Demarrer=StringField('Demarrer',
@@ -507,7 +507,7 @@ class Facturation_Form(FlaskForm):
     Fin=StringField('Fin',
                            render_kw={'readonly':True})
     
-    Montant_HT =StringField('Montant_HT',
+    Montant_HT =StringField('Montant HT€',
                              render_kw={'readonly':True})
 
 
@@ -737,12 +737,12 @@ class time(FlaskForm):
 
 class Tarif_Base(FlaskForm):
 
-    maison_appartement=StringField("maison_appartement",
+    maison_appartement=StringField("maison appartement",
                         validators=[DataRequired()])
-    Nombre_de_piece=StringField("Nombre_de_piece",
+    Nombre_de_piece=StringField("Nombre de piece",
                     validators=[DataRequired()])   
-    Prix_EDL=StringField("Prix_EDL",
+    Prix_EDL=StringField("Prix EDL",
                 validators=[DataRequired()])
-    Prix_Chiffrage=StringField("Prix_EDL",
+    Prix_Chiffrage=StringField("Prix EDL",
                 validators=[DataRequired()])      
     submit = SubmitField('enregistrer')

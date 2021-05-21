@@ -1,35 +1,32 @@
-{% extends 'manage/index.html' %}
+{% extends 'manage/index.html'%}
 {% block manage_content %}
 <div style="" class="main-content">
-    {% include 'manage/partials/search.html'%}      
-
-        
-    <div class="columns">
-                <div class="column">
-                    <form method="GET" action="{{url_for('users.menusearch')}}" class="d-none d-sm-inline-block form-inline navbar-search" style="width: 550px;">
-                        <div class='row'>
-                            <div class="input-group col-8">
-                                <input type="text" class="form-control bg-light border-0 small" name="keyword" placeholder="Reference client..."
-                                    aria-label="Search" aria-describedby="basic-addon2" value="{{search}}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit" style="background: #e09929!important; border: 1px solid #e09929!important;">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="column">
-                    <a href="{{url_for('users.facturationa')}}" style="color: #fff; background: #0B6E4F;" title="modifier" class="button is-small is-fullwidth">Voir Tous les Factures</a>
-                </div>
-                <div class="column">
-                    <a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter une Facture Mensuel" class="button is-primary is-small"><i class="fas fa-plus"></i>Facturation Mensuel General</a> 
-                </div>
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facturation Client</h2>
+      <form method="GET" action="{{url_for('users.menusearch')}}">
+        <div class="columns">
+          <input type="text" name="keyword" placeholder="Reférence du client" class="input is-small is-white" required value="{{search}}">
+          <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
+        </div>
+      </form>      
     </div>
 
+     <section class="tile" style="margin-top: 30px;">
+                <div class="box" style="  width: -webkit-fill-available;">
+                  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="title">Les actions</h2>
+                    <div class="control has-icons-left has-icons-right">
+                        <a href="{{url_for('users.facturationa')}}" style="color: #fff; background: #0B6E4F;" title="modifier" class="button is-small is-fullwidth">Voir Tous les Factures</a>
+                    <a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter une Facture Mensuel" class="button is-primary is-small"><i class="fas fa-plus"></i>Facturation Mensuel General</a> 
+                      <a onclick="window.history.back()" class="button is-danger is-small">Annuler</a>
+                    </div>
+                  </div>
+                  <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                         
 
-</div>
-
+                </div> 
+            </section>
 
 {% endblock %}
