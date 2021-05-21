@@ -4,7 +4,7 @@
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Les missions de {{missions[0].Bailleur__data.titre}} {{missions[0].Bailleur__data.nom}}</h2>
-      <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR ,Type='client')}}" title="ajouter une facture" class="button is-primary is-small"><span class="is-warning">Ajouter une facture</span></a>
+      <a href="{{url_for('users.choose', id=missions[0].Reference_BAILLEUR ,Type='client')}}" title="ajouter une facture" class="button is-primary is-small"><span class="is-warning">Ajouter une facturation mensuel</span></a>
     </div>
 	
    
@@ -15,7 +15,7 @@
           </div>
 		     
           <div class="table-container" style="overflow-x: scroll;position: relative;">
-		  	<form action="{{url_for('users.choosep')}}" method="post">
+		  	<form action="{{url_for('users.choosep')}}" method="post" id="form">
 				
 			
 				<table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
@@ -45,11 +45,22 @@
 						</tbody> 
 								
 					</table>
-				<input type="submit" value="Upload Image" name="submit">
+				<input type="submit" class="button is-small is-black" value="Facturer vos mission choisis" name="submit">
 			</form>
 	            </div>
 	        </div>
 	    </section>
 	    </div>
+	    <script type="text/javascript">
+	    	var table = $('#table_id').DataTable();
+			    $("#form").on("submit", function(e){
+			        //Stop the form submitting
+			        //e.preventDefault();
+			        //Show all the rows
+			        table.page.len( -1 ).draw();
+			        //Submit the form now it can see everything
+			        $('#form').submit();
+			    });
+	    </script>
 	
 {% endblock %}
