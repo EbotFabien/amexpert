@@ -20,9 +20,10 @@ class Client(db.Model):
     __tablename__ = 'Client'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    reference = db.Column(db.Integer) 	
+    reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
     societe = db.Column(db.String) 	
+    enseigne = db.Column(db.String)
     titre = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String)
@@ -201,6 +202,7 @@ class prospect(db.Model):
     reference = db.Column(db.String) 	
     TYPE = db.Column(db.String) 
     societe = db.Column(db.String) 	
+    enseigne = db.Column(db.String)
     titre = db.Column(db.String) 	
     nom = db.Column(db.String)
     email = db.Column(db.String)
@@ -211,13 +213,13 @@ class prospect(db.Model):
   
 
 
-    def __init__(self,TYPE,societe,genre,nom,email,numero):
-        self.TYPE=TYPE
-        self.societe= societe
-        self.genre = genre
-        self.nom = nom
-        self.email=email
-        self.numero=numero
+    #def __init__(self,TYPE,societe,genre,nom,email,numero):
+      #  self.TYPE=TYPE
+      #  self.societe= societe
+      #  self.genre = genre
+      #  self.nom = nom
+      #  self.email=email
+      #  self.numero=numero
     
 
     def __repr__(self):
@@ -331,8 +333,8 @@ class Expert_History(db.Model):
     actif_parti=db.Column(db.String)
     secteur=db.Column(db.String)
     type_certification=db.Column(db.String)
-    date_certification_initiale=db.Column(db.DateTime)
-    date_renouv_certification=db.Column(db.DateTime)
+    date_certification_initiale=db.Column(db.String)
+    date_renouv_certification=db.Column(db.String)
     adresse1 = db.Column(db.String)
     adresse2 = db.Column(db.String)
     cp=db.Column(db.String)
@@ -543,6 +545,9 @@ class Tarifs(db.Model):
         return '<Tarifs %r>' %self.id
 
 
+    
+
+
 
 
 
@@ -574,7 +579,8 @@ class Mission(db.Model):
     Adresse2_Bien	 = db.Column(db.String) 
     CP_Bien	 = db.Column(db.String)  
     Ville_Bien	 = db.Column(db.String)  
-      
+    TVA_EDL = db.Column(db.String)
+    PRIX_TTC_EDL = db.Column(db.String)
     CA_HT_AS = db.Column(db.String) 	
     TVA_AS	 = db.Column(db.String) 
     CA_TTC_AS = db.Column(db.String) 	

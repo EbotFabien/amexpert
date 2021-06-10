@@ -1,153 +1,829 @@
 from Database_project.project.data_base_ import db
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client
 import xlrd
 import openpyxl
-import pandas
+import pandas as pd
+from sqlalchemy import or_, and_
 
-def insert_client(A,loc):
-    
-    wb_obj = openpyxl.load_workbook(loc)
-    sheet=wb_obj.active
-
-    
-
-    for i in range(1,sheet.max_row):
-        
-        if A == 'professionnel':
-            
-            if sheet["D"][i].value == '' or sheet["D"][i].value == 'XX':
-                print('no data here')
-            else:
+def checktarif(a,p,c):
+    taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
+    if type(a) == int:
+            v=float(a)
+            if p =="edl_prix_std":
+                taf_base.edl_prix_std=v
+            if p =="edl_appt_prix_f1":
+                taf_base.edl_appt_prix_f1=v
+            if p =="edl_appt_prix_f2":
+                taf_base.edl_appt_prix_f2=v
+            if p =="edl_appt_prix_f3":
+                taf_base.edl_appt_prix_f3=v
+            if p =="edl_appt_prix_f4":
+                taf_base.edl_appt_prix_f4=v
+            if p =="edl_appt_prix_f5":
+                taf_base.edl_appt_prix_f5=v
+            if p =="edl_appt_prix_f6":
+                taf_base.edl_appt_prix_f6=v
+            if p =="edl_pav_villa_prix_t1":
+                taf_base.edl_pav_villa_prix_t1=v
+            if p =="edl_pav_villa_prix_t2":
+                taf_base.edl_pav_villa_prix_t2=v
+            if p =="edl_pav_villa_prix_t3":
+                taf_base.edl_pav_villa_prix_t3=v
+            if p =="edl_pav_villa_prix_t4":
+                taf_base.edl_pav_villa_prix_t4=v
+            if p =="edl_pav_villa_prix_t5":
+                taf_base.edl_pav_villa_prix_t5=v
+            if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t7=v
+            if p =="edl_pav_villa_prix_t8":
+                taf_base.edl_pav_villa_prix_t8=v
+            if p =="chif_appt_prix_stu":
+                taf_base.chif_appt_prix_stu=v
+            if p =="chif_appt_prix_f1":
+                taf_base.chif_appt_prix_f1=v
+            if p =="chif_appt_prix_f2":
+                taf_base.chif_appt_prix_f2=v
+            if p =="chif_appt_prix_f3":
+                taf_base.chif_appt_prix_f3=v
+            if p =="chif_appt_prix_f4":
+                taf_base.chif_appt_prix_f4=v
+            if p =="chif_appt_prix_f5":
+                taf_base.chif_appt_prix_f5=v
+            if p =="chif_pav_villa_prix_t1":
+                taf_base.chif_pav_villa_prix_t1=v
+            if p =="chif_pav_villa_prix_t2":
+                taf_base.chif_pav_villa_prix_t2=v
+            if p =="chif_pav_villa_prix_t3":
+                taf_base.chif_pav_villa_prix_t3=v
+            if p =="chif_pav_villa_prix_t4":
+                taf_base.chif_pav_villa_prix_t4=v
+            if p =="chif_pav_villa_prix_t5":
+                taf_base.chif_pav_villa_prix_t5=v
+            if p =="chif_pav_villa_prix_t6":
+                taf_base.chif_pav_villa_prix_t6=v
+            if p =="chif_pav_villa_prix_t7":
+                taf_base.chif_pav_villa_prix_t7=v
+            if p =="chif_pav_villa_prix_t8":
+                taf_base.chif_pav_villa_prix_t8=v
                 
-                cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
-                if cli is None:
-                    client=Client(reference=int(sheet["A"][i].value),TYPE=A,societe=sheet["B"][i].value,titre=sheet["C"][i].value,nom=sheet["D"][i].value.lower(),date_creation=sheet["K"][i].value)
-                    db.session.add(client)
-                    db.session.commit()   
-                    history=Client_History(client_id=client.id,adresse1=sheet["E"][i].value,adresse2=sheet["F"][i].value,cp=sheet["G"][i].value,ville=sheet["H"][i].value,login_extranet=sheet["M"][i].value,mpd_extranet=sheet["N"][i].value)
-                    db.session.add(history)
+            db.session.commit()
+    if type(a) == str:
+              
+        try:
+            v=a[0:a.index('€')]
+            try:
+                a=float(v)
+                if p =="edl_prix_std":
+                    taf_base.edl_prix_std=v
+                if p =="edl_appt_prix_f1":
+                    taf_base.edl_appt_prix_f1=v
+                if p =="edl_appt_prix_f2":
+                    taf_base.edl_appt_prix_f2=v
+                if p =="edl_appt_prix_f3":
+                    taf_base.edl_appt_prix_f3=v
+                if p =="edl_appt_prix_f4":
+                    taf_base.edl_appt_prix_f4=v
+                if p =="edl_appt_prix_f5":
+                    taf_base.edl_appt_prix_f5=v
+                if p =="edl_appt_prix_f6":
+                    taf_base.edl_appt_prix_f6=v
+                if p =="edl_pav_villa_prix_t1":
+                    taf_base.edl_pav_villa_prix_t1=v
+                if p =="edl_pav_villa_prix_t2":
+                    taf_base.edl_pav_villa_prix_t2=v
+                if p =="edl_pav_villa_prix_t3":
+                    taf_base.edl_pav_villa_prix_t3=v
+                if p =="edl_pav_villa_prix_t4":
+                    taf_base.edl_pav_villa_prix_t4=v
+                if p =="edl_pav_villa_prix_t5":
+                    taf_base.edl_pav_villa_prix_t5=v
+                if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t7=v
+                if p =="edl_pav_villa_prix_t8":
+                    taf_base.edl_pav_villa_prix_t8=v
+                if p =="chif_appt_prix_stu":
+                    taf_base.chif_appt_prix_stu=v
+                if p =="chif_appt_prix_f1":
+                    taf_base.chif_appt_prix_f1=v
+                if p =="chif_appt_prix_f2":
+                    taf_base.chif_appt_prix_f2=v
+                if p =="chif_appt_prix_f3":
+                    taf_base.chif_appt_prix_f3=v
+                if p =="chif_appt_prix_f4":
+                    taf_base.chif_appt_prix_f4=v
+                if p =="chif_appt_prix_f5":
+                    taf_base.chif_appt_prix_f5=v
+                if p =="chif_pav_villa_prix_t1":
+                    taf_base.chif_pav_villa_prix_t1=v
+                if p =="chif_pav_villa_prix_t2":
+                    taf_base.chif_pav_villa_prix_t2=v
+                if p =="chif_pav_villa_prix_t3":
+                    taf_base.chif_pav_villa_prix_t3=v
+                if p =="chif_pav_villa_prix_t4":
+                    taf_base.chif_pav_villa_prix_t4=v
+                if p =="chif_pav_villa_prix_t5":
+                    taf_base.chif_pav_villa_prix_t5=v
+                if p =="chif_pav_villa_prix_t6":
+                    taf_base.chif_pav_villa_prix_t6=v
+                if p =="chif_pav_villa_prix_t7":
+                    taf_base.chif_pav_villa_prix_t7=v
+                if p =="chif_pav_villa_prix_t8":
+                    taf_base.chif_pav_villa_prix_t8=v
+                db.session.commit() 
+            except:
+                f=v[2:]
+                a=[]
+                for word in f.split():
+                    if word.isdigit():
+                        a.append(int(word))
+                vam=str(a)
+                v=vam[1:-1]
+                if p =="edl_prix_std":
+                    taf_base.edl_prix_std=v
+                if p =="edl_appt_prix_f1":
+                    taf_base.edl_appt_prix_f1=v
+                if p =="edl_appt_prix_f2":
+                    taf_base.edl_appt_prix_f2=v
+                if p =="edl_appt_prix_f3":
+                    taf_base.edl_appt_prix_f3=v
+                if p =="edl_appt_prix_f4":
+                    taf_base.edl_appt_prix_f4=v
+                if p =="edl_appt_prix_f5":
+                    taf_base.edl_appt_prix_f5=v
+                if p =="edl_appt_prix_f6":
+                    taf_base.edl_appt_prix_f6=v
+                if p =="edl_pav_villa_prix_t1":
+                    taf_base.edl_pav_villa_prix_t1=v
+                if p =="edl_pav_villa_prix_t2":
+                    taf_base.edl_pav_villa_prix_t2=v
+                if p =="edl_pav_villa_prix_t3":
+                    taf_base.edl_pav_villa_prix_t3=v
+                if p =="edl_pav_villa_prix_t4":
+                    taf_base.edl_pav_villa_prix_t4=v
+                if p =="edl_pav_villa_prix_t5":
+                    taf_base.edl_pav_villa_prix_t5=v
+                if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t7=v
+                if p =="edl_pav_villa_prix_t8":
+                    taf_base.edl_pav_villa_prix_t8=v
+                if p =="chif_appt_prix_stu":
+                    taf_base.chif_appt_prix_stu=v
+                if p =="chif_appt_prix_f1":
+                    taf_base.chif_appt_prix_f1=v
+                if p =="chif_appt_prix_f2":
+                    taf_base.chif_appt_prix_f2=v
+                if p =="chif_appt_prix_f3":
+                    taf_base.chif_appt_prix_f3=v
+                if p =="chif_appt_prix_f4":
+                    taf_base.chif_appt_prix_f4=v
+                if p =="chif_appt_prix_f5":
+                    taf_base.chif_appt_prix_f5=v
+                if p =="chif_pav_villa_prix_t1":
+                    taf_base.chif_pav_villa_prix_t1=v
+                if p =="chif_pav_villa_prix_t2":
+                    taf_base.chif_pav_villa_prix_t2=v
+                if p =="chif_pav_villa_prix_t3":
+                    taf_base.chif_pav_villa_prix_t3=v
+                if p =="chif_pav_villa_prix_t4":
+                    taf_base.chif_pav_villa_prix_t4=v
+                if p =="chif_pav_villa_prix_t5":
+                    taf_base.chif_pav_villa_prix_t5=v
+                if p =="chif_pav_villa_prix_t6":
+                    taf_base.chif_pav_villa_prix_t6=v
+                if p =="chif_pav_villa_prix_t7":
+                    taf_base.chif_pav_villa_prix_t7=v
+                if p =="chif_pav_villa_prix_t8":
+                    taf_base.chif_pav_villa_prix_t8=v
+                db.session.commit()
+
+                
+
+        except:
+              try:
+                f=int(a)
+                v=float(f)
+                if p =="edl_prix_std":
+                    taf_base.edl_prix_std=v
+                if p =="edl_appt_prix_f1":
+                    taf_base.edl_appt_prix_f1=v
+                if p =="edl_appt_prix_f2":
+                    taf_base.edl_appt_prix_f2=v
+                if p =="edl_appt_prix_f3":
+                    taf_base.edl_appt_prix_f3=v
+                if p =="edl_appt_prix_f4":
+                    taf_base.edl_appt_prix_f4=v
+                if p =="edl_appt_prix_f5":
+                    taf_base.edl_appt_prix_f5=v
+                if p =="edl_appt_prix_f6":
+                    taf_base.edl_appt_prix_f6=v
+                if p =="edl_pav_villa_prix_t1":
+                    taf_base.edl_pav_villa_prix_t1=v
+                if p =="edl_pav_villa_prix_t2":
+                    taf_base.edl_pav_villa_prix_t2=v
+                if p =="edl_pav_villa_prix_t3":
+                    taf_base.edl_pav_villa_prix_t3=v
+                if p =="edl_pav_villa_prix_t4":
+                    taf_base.edl_pav_villa_prix_t4=v
+                if p =="edl_pav_villa_prix_t5":
+                    taf_base.edl_pav_villa_prix_t5=v
+                if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t7=v
+                if p =="edl_pav_villa_prix_t8":
+                    taf_base.edl_pav_villa_prix_t8=v
+                if p =="chif_appt_prix_stu":
+                    taf_base.chif_appt_prix_stu=v
+                if p =="chif_appt_prix_f1":
+                    taf_base.chif_appt_prix_f1=v
+                if p =="chif_appt_prix_f2":
+                    taf_base.chif_appt_prix_f2=v
+                if p =="chif_appt_prix_f3":
+                    taf_base.chif_appt_prix_f3=v
+                if p =="chif_appt_prix_f4":
+                    taf_base.chif_appt_prix_f4=v
+                if p =="chif_appt_prix_f5":
+                    taf_base.chif_appt_prix_f5=v
+                if p =="chif_pav_villa_prix_t1":
+                    taf_base.chif_pav_villa_prix_t1=v
+                if p =="chif_pav_villa_prix_t2":
+                    taf_base.chif_pav_villa_prix_t2=v
+                if p =="chif_pav_villa_prix_t3":
+                    taf_base.chif_pav_villa_prix_t3=v
+                if p =="chif_pav_villa_prix_t4":
+                    taf_base.chif_pav_villa_prix_t4=v
+                if p =="chif_pav_villa_prix_t5":
+                    taf_base.chif_pav_villa_prix_t5=v
+                if p =="chif_pav_villa_prix_t6":
+                    taf_base.chif_pav_villa_prix_t6=v
+                if p =="chif_pav_villa_prix_t7":
+                    taf_base.chif_pav_villa_prix_t7=v
+                if p =="chif_pav_villa_prix_t8":
+                    taf_base.chif_pav_villa_prix_t8=v
+                db.session.commit()
+              except:
+                    v=0
+                    if p =="edl_prix_std":
+                        taf_base.edl_prix_std=v
+                    if p =="edl_appt_prix_f1":
+                        taf_base.edl_appt_prix_f1=v
+                    if p =="edl_appt_prix_f2":
+                        taf_base.edl_appt_prix_f2=v
+                    if p =="edl_appt_prix_f3":
+                        taf_base.edl_appt_prix_f3=v
+                    if p =="edl_appt_prix_f4":
+                        taf_base.edl_appt_prix_f4=v
+                    if p =="edl_appt_prix_f5":
+                        taf_base.edl_appt_prix_f5=v
+                    if p =="edl_appt_prix_f6":
+                        taf_base.edl_appt_prix_f6=v
+                    if p =="edl_pav_villa_prix_t1":
+                        taf_base.edl_pav_villa_prix_t1=v
+                    if p =="edl_pav_villa_prix_t2":
+                        taf_base.edl_pav_villa_prix_t2=v
+                    if p =="edl_pav_villa_prix_t3":
+                        taf_base.edl_pav_villa_prix_t3=v
+                    if p =="edl_pav_villa_prix_t4":
+                        taf_base.edl_pav_villa_prix_t4=v
+                    if p =="edl_pav_villa_prix_t5":
+                        taf_base.edl_pav_villa_prix_t5=v
+                    if p =="edl_pav_villa_prix_t6":
+                        taf_base.edl_pav_villa_prix_t7=v
+                    if p =="edl_pav_villa_prix_t8":
+                        taf_base.edl_pav_villa_prix_t8=v
+                    if p =="chif_appt_prix_stu":
+                        taf_base.chif_appt_prix_stu=v
+                    if p =="chif_appt_prix_f1":
+                        taf_base.chif_appt_prix_f1=v
+                    if p =="chif_appt_prix_f2":
+                        taf_base.chif_appt_prix_f2=v
+                    if p =="chif_appt_prix_f3":
+                        taf_base.chif_appt_prix_f3=v
+                    if p =="chif_appt_prix_f4":
+                        taf_base.chif_appt_prix_f4=v
+                    if p =="chif_appt_prix_f5":
+                        taf_base.chif_appt_prix_f5=v
+                    if p =="chif_pav_villa_prix_t1":
+                        taf_base.chif_pav_villa_prix_t1=v
+                    if p =="chif_pav_villa_prix_t2":
+                        taf_base.chif_pav_villa_prix_t2=v
+                    if p =="chif_pav_villa_prix_t3":
+                        taf_base.chif_pav_villa_prix_t3=v
+                    if p =="chif_pav_villa_prix_t4":
+                        taf_base.chif_pav_villa_prix_t4=v
+                    if p =="chif_pav_villa_prix_t5":
+                        taf_base.chif_pav_villa_prix_t5=v
+                    if p =="chif_pav_villa_prix_t6":
+                        taf_base.chif_pav_villa_prix_t6=v
+                    if p =="chif_pav_villa_prix_t7":
+                        taf_base.chif_pav_villa_prix_t7=v
+                    if p =="chif_pav_villa_prix_t8":
+                        taf_base.chif_pav_villa_prix_t8=v
+
                     db.session.commit()
-                    if sheet["L"][i].value != None :
-                        history.date=sheet["L"][i].value
+    if type(a) == float:
+        try:
+                f=int(a)
+                v=float(f)
+                if p =="edl_prix_std":
+                    taf_base.edl_prix_std=v
+                if p =="edl_appt_prix_f1":
+                    taf_base.edl_appt_prix_f1=v
+                if p =="edl_appt_prix_f2":
+                    taf_base.edl_appt_prix_f2=v
+                if p =="edl_appt_prix_f3":
+                    taf_base.edl_appt_prix_f3=v
+                if p =="edl_appt_prix_f4":
+                    taf_base.edl_appt_prix_f4=v
+                if p =="edl_appt_prix_f5":
+                    taf_base.edl_appt_prix_f5=v
+                if p =="edl_appt_prix_f6":
+                    taf_base.edl_appt_prix_f6=v
+                if p =="edl_pav_villa_prix_t1":
+                    taf_base.edl_pav_villa_prix_t1=v
+                if p =="edl_pav_villa_prix_t2":
+                    taf_base.edl_pav_villa_prix_t2=v
+                if p =="edl_pav_villa_prix_t3":
+                    taf_base.edl_pav_villa_prix_t3=v
+                if p =="edl_pav_villa_prix_t4":
+                    taf_base.edl_pav_villa_prix_t4=v
+                if p =="edl_pav_villa_prix_t5":
+                    taf_base.edl_pav_villa_prix_t5=v
+                if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t7=v
+                if p =="edl_pav_villa_prix_t8":
+                    taf_base.edl_pav_villa_prix_t8=v
+                if p =="chif_appt_prix_stu":
+                    taf_base.chif_appt_prix_stu=v
+                if p =="chif_appt_prix_f1":
+                    taf_base.chif_appt_prix_f1=v
+                if p =="chif_appt_prix_f2":
+                    taf_base.chif_appt_prix_f2=v
+                if p =="chif_appt_prix_f3":
+                    taf_base.chif_appt_prix_f3=v
+                if p =="chif_appt_prix_f4":
+                    taf_base.chif_appt_prix_f4=v
+                if p =="chif_appt_prix_f5":
+                    taf_base.chif_appt_prix_f5=v
+                if p =="chif_pav_villa_prix_t1":
+                    taf_base.chif_pav_villa_prix_t1=v
+                if p =="chif_pav_villa_prix_t2":
+                    taf_base.chif_pav_villa_prix_t2=v
+                if p =="chif_pav_villa_prix_t3":
+                    taf_base.chif_pav_villa_prix_t3=v
+                if p =="chif_pav_villa_prix_t4":
+                    taf_base.chif_pav_villa_prix_t4=v
+                if p =="chif_pav_villa_prix_t5":
+                    taf_base.chif_pav_villa_prix_t5=v
+                if p =="chif_pav_villa_prix_t6":
+                    taf_base.chif_pav_villa_prix_t6=v
+                if p =="chif_pav_villa_prix_t7":
+                    taf_base.chif_pav_villa_prix_t7=v
+                if p =="chif_pav_villa_prix_t8":
+                    taf_base.chif_pav_villa_prix_t8=v
+                db.session.commit()
+        except:
+            v=float(0)
+            if p =="edl_prix_std":
+                taf_base.edl_prix_std=v
+            if p =="edl_appt_prix_f1":
+                taf_base.edl_appt_prix_f1=v
+            if p =="edl_appt_prix_f2":
+                taf_base.edl_appt_prix_f2=v
+            if p =="edl_appt_prix_f3":
+                taf_base.edl_appt_prix_f3=v
+            if p =="edl_appt_prix_f4":
+                taf_base.edl_appt_prix_f4=v
+            if p =="edl_appt_prix_f5":
+                taf_base.edl_appt_prix_f5=v
+            if p =="edl_appt_prix_f6":
+                taf_base.edl_appt_prix_f6=v
+            if p =="edl_pav_villa_prix_t1":
+                taf_base.edl_pav_villa_prix_t1=v
+            if p =="edl_pav_villa_prix_t2":
+                taf_base.edl_pav_villa_prix_t2=v
+            if p =="edl_pav_villa_prix_t3":
+                taf_base.edl_pav_villa_prix_t3=v
+            if p =="edl_pav_villa_prix_t4":
+                taf_base.edl_pav_villa_prix_t4=v
+            if p =="edl_pav_villa_prix_t5":
+                taf_base.edl_pav_villa_prix_t5=v
+            if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t7=v
+            if p =="edl_pav_villa_prix_t8":
+                taf_base.edl_pav_villa_prix_t8=v
+            if p =="chif_appt_prix_stu":
+                taf_base.chif_appt_prix_stu=v
+            if p =="chif_appt_prix_f1":
+                taf_base.chif_appt_prix_f1=v
+            if p =="chif_appt_prix_f2":
+                taf_base.chif_appt_prix_f2=v
+            if p =="chif_appt_prix_f3":
+                taf_base.chif_appt_prix_f3=v
+            if p =="chif_appt_prix_f4":
+                taf_base.chif_appt_prix_f4=v
+            if p =="chif_appt_prix_f5":
+                taf_base.chif_appt_prix_f5=v
+            if p =="chif_pav_villa_prix_t1":
+                taf_base.chif_pav_villa_prix_t1=v
+            if p =="chif_pav_villa_prix_t2":
+                taf_base.chif_pav_villa_prix_t2=v
+            if p =="chif_pav_villa_prix_t3":
+                taf_base.chif_pav_villa_prix_t3=v
+            if p =="chif_pav_villa_prix_t4":
+                taf_base.chif_pav_villa_prix_t4=v
+            if p =="chif_pav_villa_prix_t5":
+                taf_base.chif_pav_villa_prix_t5=v
+            if p =="chif_pav_villa_prix_t6":
+                taf_base.chif_pav_villa_prix_t6=v
+            if p =="chif_pav_villa_prix_t7":
+                taf_base.chif_pav_villa_prix_t7=v
+            if p =="chif_pav_villa_prix_t8":
+                taf_base.chif_pav_villa_prix_t8=v
+            db.session.commit()
+            
+        
+
+def insert_client(loc):
+    df = pd.read_excel(loc)
+   
+
+
+    for (ca,a,b,c,d,e,f,g,h,i,j,k,l,m,v,en,n,o,p,q,r,s,t,u,vo,x,y,z,aa,bb,cc,dd,ee,ff,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an,ao,ap,aq,ar,As,at,au,av,aw,ax,ay,az,ba,bc,bd,be,bf) in zip(df['Ref code client- service comptabilité'],df['Etat du client']
+                                                                            ,df['Référence de la société'],df['Titre'],
+                                                                            df['Nom du ou des responsables'],df['Date création du client']
+                                                                            ,df['Adresse 1'],df['Complément adresse'],df['CODE POSTAL'],
+                                                                            df['Ville'],df['Extranet ID Login'],df['Extranet MDP'],df['Numéro de siret']
+                                                                            ,df['AS du Client'],df['Commentaires  suivi client et action à prévoir'],df["Nom de l'enseigne"],df['% Com AS du client'],df['Nom Respon Cell Dev'],
+                                                                            df['% Respon Cell Dev'],df['Nom agent Cell Dev'],df['% Agent Cell Dev']
+                                                                            ,df['Nom Agent TECH EDELE'],df['% Agent TECH EDELE'],df['Nom Respon Cell Tech']
+                                                                            ,df['% Respon Cell Tech'],df['Nom Suiveur Cell Tech'],df['% Suiveur Cell Tech'],
+                                                                            df['Nom Respon Cell Planif'],df['% Respon Cell Planif'],df['Nom Suiveur Cell Planif'],
+                                                                            df['% Suiveur Cell Planif'],df['Nom Agent saisie Cell Planif'],df['% Agent saisie CEll planif'],
+                                                                            df['TAUX DE MAJORATION MEUBLE'],df['EDL_PRIX STD'],df['EDL_APPT / PRIX T1'],df['EDL_APPT / PRIX T2'],
+                                                                            df['EDL_APPT / PRIX T3'],df['EDL_APPT / PRIX T4'],df['EDL_APPT / PRIX T5'],df['EDL_APPT / PRIX T6'],
+                                                                            df['EDL_PAV VILLA / PRIX T1'],df['EDL_PAV VILLA / PRIX T2'],df['EDL_PAV VILLA / PRIX T3'],
+                                                                            df['EDL_PAV VILLA / PRIX T4'],df['EDL_PAV VILLA / PRIX T5'],df['EDL_PAV VILLA / PRIX T6'],
+                                                                            df['EDL_PAV VILLA / PRIX T7'],df['EDL_PAV VILLA / PRIX T8'],df['CHIF_APPT / PRIX STU'],
+                                                                              df['CHIF_APPT / PRIX T1'],df['CHIF_APPT / PRIX T2'],df['CHIF_APPT / PRIX T3'],
+                                                                            df['CHIF_APPT / PRIX T4'],df['CHIF_APPT / PRIX T5'],df['CHIF_PAV VILLA / PRIX T1'],
+                                                                            df['CHIF_PAV VILLA / PRIX T2'],df['CHIF_PAV VILLA / PRIX T3'],df['CHIF_PAV VILLA / PRIX T4'],
+                                                                            df['CHIF_PAV VILLA / PRIX T5'],df['CHIF_PAV VILLA / PRIX T6'],df['CHIF_PAV VILLA / PRIX T7'],
+                                                                            df['CHIF_PAV VILLA / PRIX T8'],df['PRIX AUTRE']):
+                    
+                    if str(a) != 'PROSPECT':
+                        '''try :
+                            cli=Client.query.filter(and_(Client.reference==str(ca),Client.societe==str(b),Client.nom==str(d.lower()))).first()  #check by reference number,societe, and nom
+                        except:
+                            cli=Client.query.filter(and_(Client.reference==str(ca),Client.societe==str(b))).first() #check by reference number,societe, and nom'''
+                        if type(m) != str :
+                            r_C=0
+                        else:
+                            r_C=Expert.query.filter_by(nom=str(m.lower())).first()
+                            if r_C is not None:#check keys
+                                rC= r_C.id
+                            if r_C is None  :
+                                rC= 0
+                        #if cli is None:
+                        try:
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l))#,date_creation=e
+                        except:
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),siret=str(l))#,date_creation=e
+                        db.session.add(client)
+                        db.session.commit() 
+                        if type(ca) != float :
+                            client.reference=ca
+                            db.session.commit()
+                        try:  
+                            if type(en) == str:
+                                a=str(en.lower()).split()
+                                vii=''.join(a)
+                                client.enseigne =str(vii)
+                                db.session.commit()
+                        except:
+                            print('ei choke')
+                        history=Client_History(client_id=client.id,adresse1=str(f),adresse2=str(g),cp=str(h),ville=str(i),
+                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE")
+                        
+                        
+                        if type(v) == str :#check
+                            
+                            suivi =suivi_client(client=client.id,responsable=str(rC),commentaire=str(v))
+                            db.session.add(suivi)
+                        db.session.add(history)
                         db.session.commit()
 
-                else:
-                    return 'This data already exist'
+                        try:
+                            r_C=Expert.query.filter_by(nom=str(m.lower())).first()
+                            if r_C is not None:#check keys
+                                rC= r_C.id
+                            if r_C is None  :
+                                rC= 0
+                        except:
+                            rC= 0
+                        try:
+                            r_r=Expert.query.filter_by(nom=str(o.lower())).first()
+                            if r_r is not None:
+                                rr= r_r.id
+                            if r_r is None  :
+                                rr= 0
+                        except:
+                            rr=0
+                        try:
+                            dr_a=Expert.query.filter_by(nom=str(q.lower())).first()
+                            if dr_a is not None:
+                                dra= dr_a.id
+                            if dr_a is None  :
+                                dra= 0
+                        except:
+                            dra= 0
+                        try:
+                            tr_a=Expert.query.filter_by(nom=str(s.lower())).first()
+                            if tr_a is not None:
+                                tra= tr_a.id
+                            if tr_a is None  :
+                                tra= 0
+                        except:
+                            tra=0
+                        try:
+                            tr_r=Expert.query.filter_by(nom=str(u.lower())).first()
+                            if tr_r is not None:
+                                trr= tr_r.id
+                            if tr_r is None  :
+                                trr= 0
+                        except:
+                            trr= 0
+                        try:
+                            tr_s=Expert.query.filter_by(nom=str(x.lower())).first()
+                            if tr_s is not None:
+                                trs= tr_s.id
+                            if tr_s is None  :
+                                trs= 0
+                        except:
+                            trs= 0
+                        try:
+                            pr_s=Expert.query.filter_by(nom=str(z.lower())).first()
+                            if pr_s is not None:
+                                prs= pr_s.id
+                            if pr_s is None  :
+                                prs= 0
+                        except:
+                            prs=0
+                        try:
+                            pr_si=Expert.query.filter_by(nom=str(bb.lower())).first()
+                            if pr_si is not None:
+                                prsi= pr_si.id
+                            if pr_si is None  :
+                                prsi= 0
+                        except:
+                            prsi= 0
+                        try:
+                            ra_s=Expert.query.filter_by(nom=str(dd.lower())).first()
+                            if ra_s is not None:
+                                ras= ra_s.id
+                            if ra_s is None  :
+                                ras= 0  
+                        except:
+                            ras= 0    
+                        
+                        taf_base =Tarifs(reference_client=client.id,
+                        referent_as_client=rC,com_as_sur_ca_client=str(n),cell_dev_ref_responsable=rr,
+                        com_cell_dev_ref_responsable=str(p),cell_dev_ref_agent=dra,com_cell_dev_ref_agent=str(r),
+                        cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=str(t),cell_tech_ref_responsable=trr,
+                        com_cell_tech_ref_responsable=str(vo),cell_tech_ref_suiveur=trs,
+                        com_cell_tech_ref_suiveur=str(y),cell_planif_ref_responsable=prs,
+                        com_cell_planif_ref_responsable=str(aa),cell_planif_ref_suiveur=prsi,
+                        com_cell_planif_ref_suiveur=str(cc),cell_planif_ref_agent_saisie=ras,
+                        com_cell_planif_ref_agent_saisie=str(ee),taux_meuble=str(ff),prix_autre=str(bf))
+                        
+                        db.session.add(taf_base)
+                        db.session.commit()
+                        checktarif(ab,"edl_prix_std",client.id)
+                        checktarif(ac,"edl_appt_prix_f1",client.id)
+                        checktarif(ad,"edl_appt_prix_f2",client.id)
+                        checktarif(ae,"edl_appt_prix_f3",client.id)
+                        checktarif(af,"edl_appt_prix_f4",client.id)
+                        checktarif(ag,"edl_appt_prix_f5",client.id)
+                        checktarif(ah,"edl_appt_prix_f6",client.id)
+                        checktarif(ai,"edl_pav_villa_prix_t1",client.id)
+                        checktarif(aj,"edl_pav_villa_prix_t2",client.id)
+                        checktarif(ak,"edl_pav_villa_prix_t3",client.id)
+                        checktarif(al,"edl_pav_villa_prix_t4",client.id)
+                        checktarif(am,"edl_pav_villa_prix_t5",client.id)
+                        checktarif(an,"edl_pav_villa_prix_t6",client.id)
+                        checktarif(ao,"edl_pav_villa_prix_t7",client.id)
+                        checktarif(ap,"edl_pav_villa_prix_t8",client.id)
+                        checktarif(aq,"chif_appt_prix_stu",client.id)
+                        checktarif(ar,"chif_appt_prix_f1",client.id)
+                        checktarif(As,"chif_appt_prix_f2",client.id)
+                        checktarif(at,"chif_appt_prix_f3",client.id)
+                        checktarif(au,"chif_appt_prix_f4",client.id)
+                        checktarif(av,"chif_appt_prix_f5",client.id)
+                        checktarif(aw,"chif_pav_villa_prix_t1",client.id)
+                        checktarif(ax,"chif_pav_villa_prix_t2",client.id)
+                        checktarif(ay,"chif_pav_villa_prix_t3",client.id)
+                        checktarif(az,"chif_pav_villa_prix_t4",client.id)
+                        checktarif(ba,"chif_pav_villa_prix_t5",client.id)
+                        checktarif(bc,"chif_pav_villa_prix_t6",client.id)
+                        checktarif(bd,"chif_pav_villa_prix_t7",client.id)
+                        checktarif(be,"chif_pav_villa_prix_t8",client.id)
+                        
+                            
+                    if str(a) == 'PROSPECT' :
+                        
+                        '''try:
+                            cli=prospect.query.filter(and_(prospect.reference==str(ca),prospect.societe==str(b),prospect.nom==str(d.lower()))).first() #check by reference number,societe, and nom
+                        except:
+                            cli=prospect.query.filter(and_(prospect.reference==str(ca),prospect.societe==str(b))).first() #check by reference number,societe, and nom
+                        if cli is None:'''
+                        try:
+                            client=prospect(TYPE=a,societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l))#,date_creation=e
+                        except:
+                            client=prospect(TYPE=a,societe=str(b),titre=str(c),siret=str(l))#,date_creation=e
+                        db.session.add(client)
+                        db.session.commit()   
+                        if type(ca) != float :
+                            client.reference=ca
+                            db.session.commit()
+                        try:  
+                            a=str(en.lower()).split()
+                            v=''.join(a)
+                            client.enseigne =str(v)
+                            db.session.commit()
+                        except:
+                            print('ei choke')
+                        history=prospect_History(prospect=str(client.id),adresse=str(f),cp=str(h),ville=str(i))
+                        db.session.add(history)
+                        db.session.commit()
 
-        
-#to be fixed
+                        #else:
+                         #   return 'This data already exist'
+
+
+    '''for (m,n,o,p,q,r,s,t,u,v,x,y,z,aa,bb,cc,dd,ee,ff,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an,ao,ap,aq,ar,As,at,au,av,aw,ax,ay,az,ba,bc,bd,be,bf,ca,km,ck) in zip(df['AS du Client'],df['% Com AS du client'],df['Nom Respon Cell Dev'],
+                                                        df['% Respon Cell Dev'],df['Nom agent Cell Dev'],df['% Agent Cell Dev']
+                                                        ,df['Nom Agent TECH EDELE'],df['% Agent TECH EDELE'],df['Nom Respon Cell Tech']
+                                                        ,df['% Respon Cell Tech'],df['Nom Suiveur Cell Tech'],df['% Suiveur Cell Tech'],
+                                                        df['Nom Respon Cell Planif'],df['% Respon Cell Planif'],df['Nom Suiveur Cell Planif'],
+                                                        df['% Suiveur Cell Planif'],df['Nom Agent saisie Cell Planif'],df['% Agent saisie CEll planif'],
+                                                        df['TAUX DE MAJORATION MEUBLE'],df['EDL_PRIX STD'],df['EDL_APPT / PRIX T1'],df['EDL_APPT / PRIX T2'],
+                                                        df['EDL_APPT / PRIX T3'],df['EDL_APPT / PRIX T4'],df['EDL_APPT / PRIX T5'],df['EDL_APPT / PRIX T6'],
+                                                        df['EDL_PAV VILLA / PRIX T1'],df['EDL_PAV VILLA / PRIX T2'],df['EDL_PAV VILLA / PRIX T3'],
+                                                        df['EDL_PAV VILLA / PRIX T4'],df['EDL_PAV VILLA / PRIX T5'],df['EDL_PAV VILLA / PRIX T6'],
+                                                        df['EDL_PAV VILLA / PRIX T7'],df['EDL_PAV VILLA / PRIX T8'],df['CHIF_APPT / PRIX STU'],
+                                                        df['CHIF_APPT / PRIX T1'],df['CHIF_APPT / PRIX T2'],df['CHIF_APPT / PRIX T3'],
+                                                        df['CHIF_APPT / PRIX T4'],df['CHIF_APPT / PRIX T5'],df['CHIF_PAV VILLA / PRIX T1'],
+                                                        df['CHIF_PAV VILLA / PRIX T2'],df['CHIF_PAV VILLA / PRIX T3'],df['CHIF_PAV VILLA / PRIX T4'],
+                                                        df['CHIF_PAV VILLA / PRIX T5'],df['CHIF_PAV VILLA / PRIX T6'],df['CHIF_PAV VILLA / PRIX T7'],
+                                                        df['CHIF_PAV VILLA / PRIX T8'],df['PRIX AUTRE'],df['Ref proposition commerciale']
+                                                        ,df['Référence de la société'],df['Nom du ou des responsables']):
+                        try:
+                            cli=Client.query.filter(and_(Client.reference==ca,Client.societe==km,Client.nom==str(ck.lower()))).first() #check by reference number,societekm, and nomck
+                        except:
+                            cli=Client.query.filter(and_(Client.reference==ca,Client.societe==km)).first() #check by reference number,societekm, and nomck
+                        tarif =Tarifs.query.filter_by(reference_client=int(cli.id)).first()
+                        try:
+                            r_C=Expert.query.filter_by(nom=str(m.lower())).first()
+                            if r_C is not None:#check keys
+                                rC= r_C.id
+                            if r_C is None  :
+                                rC= 0
+                        except:
+                            rC= 0
+                        try:
+                            r_r=Expert.query.filter_by(nom=str(o.lower())).first()
+                            if r_r is not None:
+                                rr= r_r.id
+                            if r_r is None  :
+                                rr= 0
+                        except:
+                            rr=0
+                        try:
+                            dr_a=Expert.query.filter_by(nom=str(q.lower())).first()
+                            if dr_a is not None:
+                                dra= dr_a.id
+                            if dr_a is None  :
+                                dra= 0
+                        except:
+                            dra= 0
+                        try:
+                            tr_a=Expert.query.filter_by(nom=str(s.lower())).first()
+                            if tr_a is not None:
+                                tra= tr_a.id
+                            if tr_a is None  :
+                                tra= 0
+                        except:
+                            tra=0
+                        try:
+                            tr_r=Expert.query.filter_by(nom=str(u.lower())).first()
+                            if tr_r is not None:
+                                trr= tr_r.id
+                            if tr_r is None  :
+                                trr= 0
+                        except:
+                            trr= 0
+                        try:
+                            tr_s=Expert.query.filter_by(nom=str(x.lower())).first()
+                            if tr_s is not None:
+                                trs= tr_s.id
+                            if tr_s is None  :
+                                trs= 0
+                        except:
+                            trs= 0
+                        try:
+                            pr_s=Expert.query.filter_by(nom=str(z.lower())).first()
+                            if pr_s is not None:
+                                prs= pr_s.id
+                            if pr_s is None  :
+                                prs= 0
+                        except:
+                            prs=0
+                        try:
+                            pr_si=Expert.query.filter_by(nom=str(bb.lower())).first()
+                            if pr_si is not None:
+                                prsi= pr_si.id
+                            if pr_si is None  :
+                                prsi= 0
+                        except:
+                            prsi= 0
+                        try:
+                            ra_s=Expert.query.filter_by(nom=str(dd.lower())).first()
+                            if ra_s is not None:
+                                ras= ra_s.id
+                            if ra_s is None  :
+                                ras= 0  
+                        except:
+                            ras= 0    
+                        if tarif is None:
+                            taf_base =Tarifs(reference_client=cli.id,
+                            referent_as_client=rC,com_as_sur_ca_client=str(n),cell_dev_ref_responsable=rr,
+                            com_cell_dev_ref_responsable=str(p),cell_dev_ref_agent=dra,com_cell_dev_ref_agent=str(r),
+                            cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=str(t),cell_tech_ref_responsable=trr,
+                            com_cell_tech_ref_responsable=str(v),cell_tech_ref_suiveur=trs,
+                            com_cell_tech_ref_suiveur=str(y),cell_planif_ref_responsable=prs,
+                            com_cell_planif_ref_responsable=str(aa),cell_planif_ref_suiveur=prsi,
+                            com_cell_planif_ref_suiveur=str(cc),cell_planif_ref_agent_saisie=ras,
+                            com_cell_planif_ref_agent_saisie=str(ee),taux_meuble=str(ff),prix_autre=str(bf))
+                            
+                            db.session.add(taf_base)
+                            db.session.commit()
+                            checktarif(ab,taf_base.edl_prix_std)
+                            checktarif(ac,edl_appt_prix_f1)
+                            checktarif(ad,edl_appt_prix_f2)
+                            checktarif(ae,edl_appt_prix_f3)
+                            checktarif(af,edl_appt_prix_f4)
+                            checktarif(ag,edl_appt_prix_f5)
+                            checktarif(ah,edl_appt_prix_f6)
+                            checktarif(ai,edl_pav_villa_prix_t1)
+                            checktarif(aj,edl_pav_villa_prix_t2)
+                            checktarif(ak,edl_pav_villa_prix_t3)
+                            checktarif(al,edl_pav_villa_prix_t4)
+                            checktarif(am,edl_pav_villa_prix_t5)
+                            checktarif(an,edl_pav_villa_prix_t6)
+                            checktarif(ao,edl_pav_villa_prix_t7)
+                            checktarif(ap,edl_pav_villa_prix_t8)
+                            checktarif(aq,chif_appt_prix_stu)
+                            checktarif(ar,chif_appt_prix_f1)
+                            checktarif(As,chif_appt_prix_f2)
+                            checktarif(at,chif_appt_prix_f3)
+                            checktarif(au,chif_appt_prix_f4)
+                            checktarif(av,chif_appt_prix_f5)
+                            checktarif(aw,chif_pav_villa_prix_t1)
+                            checktarif(ax,chif_pav_villa_prix_t2)
+                            checktarif(ay,chif_pav_villa_prix_t3)
+                            checktarif(az,chif_pav_villa_prix_t4)
+                            checktarif(ba,chif_pav_villa_prix_t5)
+                            checktarif(bc,chif_pav_villa_prix_t6)
+                            checktarif(bd,chif_pav_villa_prix_t7)
+                            checktarif(be,chif_pav_villa_prix_t8)
+                             
+                        else:
+                            print('exist2')'''
 
 def expert__(loc):
-
-    wb_obj = openpyxl.load_workbook(loc)
-    sheet=wb_obj.active
-
     
-    for i in range(1,sheet.max_row):
-        
-        
-  
-        cli=Expert.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
-    
-        if cli is None:
-            expert=Expert(genre='M',old=sheet["A"][i].value,nom=sheet["D"][i].value.lower(),numero=sheet["R"][i].value,TYPE=sheet["B"][i].value,
-            email=sheet["S"][i].value,email_perso=sheet["T"][i].value,code_tva=sheet["P"][i].value,taux_tva=sheet["Q"][i].value,siret=sheet["K"][i].value,date_entree=sheet["F"][i].value,
-            trigramme=sheet["E"][i].value)    
-            db.session.add(expert)
-            db.session.commit()
-            #expert.new="Expert"+str(expert.id)
-            #db.session.commit()
-            history=Expert_History(expert_id=expert.id,secteur=sheet["C"][i].value,adresse1=sheet["L"][i].value,adresse2=sheet["M"][i].value,cp=sheet["N"][i].value,
-            ville=sheet["O"][i].value,login_backof=sheet["U"][i].value,pwd_backof=sheet["V"][i].value,login_extranet=sheet["Y"][i].value,
-            pwd_extranet=sheet["Z"][i].value,login_google=sheet["AA"][i].value,pwd_google=sheet["AB"][i].value,observations_de_suivi=sheet["AE"][i].value)
-            db.session.add(history)
-            db.session.commit()
-        else:
-            print('already exist')
-#talk about date sortie(Format)
-        
+    df = pd.read_excel(loc)
+    for (ca,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,y,z,aa,bb,cc) in zip(df['ID'],df['identité agent'],df['Téléphone'],df['AS AC AP'],
+                                                                            df['email groupe'],df['email perso'],df['Code Tva'],
+                                                                            df['Taux Tva'],df['SIRET'],df['date entrée'],df['Trigramme'],
+                                                                            df['secteur activité'],df['Adresse 1'],df['Adresse 2'],df['CP'],
+                                                                            df['Ville'],df['Login backof'],df['PWD backof.1'],df['Login extranet']
+                                                                            ,df['Pwd extranet'],df['Login tablette'],df['PWD backof'],df['Observations de suivi'],
+                                                                            df['Actif  Parti'],df['Type certification'],df['Date certification initiale']
+                                                                            ,df['date renouv certification'],df['Pwd Gsuite']):
+            cli=Expert.query.filter_by(nom=str(a.lower())).first()
 
-def tarif_client(loc):
-    wb = xlrd.open_workbook(loc)
-    sheet = wb.sheet_by_index(0)
-
-    sheet.cell_value(0, 0)
-    for i in range(0,5):
-        name=sheet.row_values(i+1)
-        tarif =Tarifs.query.filter_by(reference_client=int(name[1])).first()
-        cli=Client.query.filter_by(reference=int(name[1])).first()
-        r_C=Expert.query.filter_by(nom=str(name[3].lower())).first()
-        if r_C is not None:
-            rC= r_C.id
-        if r_C is None  :
-            rC= 0
-        r_r=Expert.query.filter_by(nom=str(name[5].lower())).first()
-        if r_r is not None:
-            rr= r_r.id
-        if r_r is None  :
-            rr= 0
-        dr_a=Expert.query.filter_by(nom=str(name[7].lower())).first()
-        if dr_a is not None:
-            dra= dr_a.id
-        if dr_a is None  :
-            dra= 0
-        tr_a=Expert.query.filter_by(nom=str(name[9].lower())).first()
-        if tr_a is not None:
-            tra= tr_a.id
-        if tr_a is None  :
-            tra= 0
-        tr_r=Expert.query.filter_by(nom=str(name[11].lower())).first()
-        if tr_r is not None:
-            trr= tr_r.id
-        if tr_r is None  :
-            trr= 0
-        tr_s=Expert.query.filter_by(nom=str(name[13].lower())).first()
-        if tr_s is not None:
-            trs= tr_s.id
-        if tr_s is None  :
-            trs= 0
-        pr_s=Expert.query.filter_by(nom=str(name[15].lower())).first()
-        if pr_s is not None:
-            prs= pr_s.id
-        if pr_s is None  :
-            prs= 0
-        pr_si=Expert.query.filter_by(nom=str(name[17].lower())).first()
-        if pr_si is not None:
-            prsi= pr_si.id
-        if pr_si is None  :
-            prsi= 0
-        ra_s=Expert.query.filter_by(nom=str(name[19].lower())).first()
-        if ra_s is not None:
-            ras= ra_s.id
-        if ra_s is None  :
-            ras= 0
-        if tarif is None:
-            if cli :
-                taf_base =Tarifs(reference_client=cli.id,code_tva=int(name[2]),
-                referent_as_client=rC,com_as_sur_ca_client=name[4],cell_dev_ref_responsable=rr,
-                com_cell_dev_ref_responsable=name[6],cell_dev_ref_agent=dra,com_cell_dev_ref_agent=name[8],
-                cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=name[10],cell_tech_ref_responsable=trr,
-                com_cell_tech_ref_responsable=name[12],cell_tech_ref_suiveur=trs,
-                com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=prs,
-                com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=prsi,
-                com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=ras,
-                com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=float(name[22]),
-                edl_appt_prix_f1=float(name[23]),edl_appt_prix_f2=float(name[24]),edl_appt_prix_f3=float(name[25]),edl_appt_prix_f4=float(name[26]),
-                edl_appt_prix_f5=float(name[27]),edl_appt_prix_f6=float(name[28]),edl_pav_villa_prix_t1=float(name[29]), edl_pav_villa_prix_t2=float(name[30]),
-                edl_pav_villa_prix_t3=float(name[31]),edl_pav_villa_prix_t4=float(name[32]),edl_pav_villa_prix_t5=float(name[33]),edl_pav_villa_prix_t6=float(name[34]),
-                edl_pav_villa_prix_t7=float(name[35]),edl_pav_villa_prix_t8=float(name[36]),chif_appt_prix_stu=float(name[37]),
-                chif_appt_prix_f1=float(name[38]),chif_appt_prix_f2=float(name[39]),chif_appt_prix_f3=float(name[40]),
-                chif_appt_prix_f4=float(name[41]),chif_appt_prix_f5=float(name[42]),chif_pav_villa_prix_t1=float(name[43]),
-                chif_pav_villa_prix_t2=float(name[44]),chif_pav_villa_prix_t3=float(name[45]),chif_pav_villa_prix_t4=float(name[46]),
-                chif_pav_villa_prix_t5=float(name[47]),chif_pav_villa_prix_t6=float(name[48]),chif_pav_villa_prix_t7=float(name[49]),
-                chif_pav_villa_prix_t8=int(name[50]))
-                
-                db.session.add(taf_base)
+            if cli is None:
+                expert=Expert(nom=a.lower(),numero=b,TYPE=c,email=d,email_perso=e,code_tva=f,taux_tva=g,siret=h,date_entree=i,
+                trigramme=j)    
+                db.session.add(expert)
+                db.session.commit()
+                history=Expert_History(expert_id=expert.id,secteur=k,adresse1=l,adresse2=m,cp=n,ville=o,login_backof=p,pwd_backof=q
+                ,login_extranet=r,pwd_extranet=s,login_google=t,pwd_google=u,observations_de_suivi=v,actif_parti=y,type_certification=z,
+                date_certification_initiale=aa,date_renouv_certification=bb,pwd_gsuite=cc)
+                db.session.add(history)
                 db.session.commit()
             else:
-                print('esit2')
-        else:
-            print('esit')
+                print('already exist')
 
 def Missions(loc):
     
@@ -158,98 +834,123 @@ def Missions(loc):
     
     for i in range(1,sheet.max_row):
         
-        cli=Client.query.filter_by(reference=int(sheet["B"][i].value)).first()
-        AS=Expert.query.filter_by(nom=str(sheet["E"][i].value.lower())).first()
-        if AS is not None:
-            SA= AS.id
-        if AS is None :
-            SA= 0
+        
+        cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
+        '''except:
+            cli=Client.query.filter_by(nom=str(sheet["B"][i].value.lower())).first()
+        if cli1 is None:
+            try:
+                client=Client(reference=str(sheet["A"][i].value),nom=str(sheet["B"][i].value.lower()))#,date_creation=e
+            except:
+                client=Client(reference=str(sheet["A"][i].value))#,date_creation=e
+            db.session.add(client)
+            db.session.commit()   
+            history=Client_History(client_id=client.id)
+            db.session.commit() '''
+        #try:
+          #  cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
+        #except:
+           # cli1=Client.query.filter_by(nom=str(sheet["B"][i].value)).first()
+        if sheet["L"][i].value is None:
+            SA=0
+        else:
+            AS=Expert.query.filter_by(nom=str(sheet["L"][i].value.lower())).first()
+            if AS is not None:
+                SA= AS.id
+            if AS is None :
+                SA= 0
+        if sheet["R"][i].value is None:
+            IV=0
+        else:
+            INTERV=Expert.query.filter_by(nom=str(sheet["R"][i].value.lower())).first()
+            if INTERV is not None:
+                IV= INTERV.id
+            if INTERV is None  :
+                IV= 0
+        if sheet["AL"][i].value is None:
+            MC=0
+        else:
+            M_C=Expert.query.filter_by(nom=str(sheet["AL"][i].value.lower())).first()
+            if M_C is not None:
+                MC= M_C.id
+            if M_C is None  :
+                MC= 0
+        if sheet["AN"][i].value is None:
+            AC=0
+        else:
+            A_C=Expert.query.filter_by(nom=str(sheet["AN"][i].value.lower())).first()
+            if A_C is not None:
+                AC= A_C.id
+            if A_C is None  :
+                AC= 0
 
-        INTERV=Expert.query.filter_by(nom=str(sheet["H"][i].value.lower())).first()
-        if INTERV is not None:
-            IV= INTERV.id
-        if INTERV is None  :
-            IV= 0
-
-        M_C=Expert.query.filter_by(nom=str(sheet["Z"][i].value.lower())).first()
-        if M_C is not None:
-            MC= M_C.id
-        if M_C is None  :
-            MC= 0
-
-        A_C=Expert.query.filter_by(nom=str(sheet["AB"][i].value.lower())).first()
-        if A_C is not None:
-            AC= A_C.id
-        if A_C is None  :
-            AC= 0
-
-        if sheet["AQ"][i].value is None:
+        if sheet["BR"][i].value is None:
             RCD=0
         else:
-            R_CD=Expert.query.filter_by(nom=str(sheet["AQ"][i].value.lower())).first()
+            R_CD=Expert.query.filter_by(nom=str(sheet["BR"][i].value.lower())).first()
             if R_CD is not None:
                 RCD= R_CD.id
             if R_CD is None  :
                 RCD= 0
 
-        if sheet["AS"][i].value is None:
+        if sheet["BT"][i].value is None:
             ACD=0
         else:
-            A_CD=Expert.query.filter_by(nom=str(sheet["AS"][i].value.lower())).first()
+            A_CD=Expert.query.filter_by(nom=str(sheet["BT"][i].value.lower())).first()
             if A_CD is not None:
                 ACD= A_CD.id
             if A_CD is None  :
                 ACD= 0
 
-        if sheet["AU"][i].value is None:
+        if sheet["BV"][i].value is None:
             ACT=0
         else:
-            A_CT=Expert.query.filter_by(nom=str(sheet["AU"][i].value.lower())).first()
+            A_CT=Expert.query.filter_by(nom=str(sheet["BV"][i].value.lower())).first()
             if A_CT is not None:
                 ACT= A_CT.id
             if A_CT is None  :
                 ACT= 0
 
-        if sheet["AW"][i].value is None:
+        if sheet["BX"][i].value is None:
             RCT=0
         else:
-            R_CT=Expert.query.filter_by(nom=str(sheet["AW"][i].value.lower())).first()
+            R_CT=Expert.query.filter_by(nom=str(sheet["BX"][i].value.lower())).first()
             if R_CT is not None:
                 RCT= R_CT.id
             if R_CT is None  :
                 RCT= 0
 
-        if sheet["AY"][i].value is None:
+        if sheet["BZ"][i].value is None:
             SCT=0
         else:
-            S_CT=Expert.query.filter_by(nom=str(sheet["AY"][i].value.lower())).first()
+            S_CT=Expert.query.filter_by(nom=str(sheet["BZ"][i].value.lower())).first()
             if S_CT is not None:
                 SCT= S_CT.id
             if S_CT is None  :
                 SCT= 0
 
-        if sheet["BA"][i].value is None:
+        if sheet["CB"][i].value is None:
             RCP=0
         else:
-            R_CP=Expert.query.filter_by(nom=str(sheet["BA"][i].value.lower())).first()
+            R_CP=Expert.query.filter_by(nom=str(sheet["CB"][i].value.lower())).first()
             if R_CP is not None:
                 RCP= R_CP.id
             if R_CP is None  :
                 RCP= 0
 
-        if sheet["BC"][i].value is None:
+        if sheet["CD"][i].value is None:
             SCP=0
         else:
-            S_CP=Expert.query.filter_by(nom=str(sheet["BC"][i].value.lower())).first()
+            S_CP=Expert.query.filter_by(nom=str(sheet["CD"][i].value.lower())).first()
             if S_CP is not None:
                 SCP= S_CP.id
             if S_CP is None  :
                 SCP= 0
 
-        if sheet["BE"][i].value is None:
+        if sheet["CF"][i].value is None:
             ASCP=0
         else:
-            AS_CP=Expert.query.filter_by(nom=str(sheet["BE"][i].value.lower())).first()
+            AS_CP=Expert.query.filter_by(nom=str(sheet["CF"][i].value.lower())).first()
             if AS_CP is not None:
                 ASCP= AS_CP.id
             if AS_CP is None  :
@@ -257,78 +958,81 @@ def Missions(loc):
 
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
-            old=sheet["A"][i].value,
-            ABONNEMENT	 = sheet["D"][i].value ,
+           # old=sheet["A"][i].value,
+            ABONNEMENT	 = sheet["J"][i].value ,
             ID_AS	 = SA ,
         
           
-            DATE_REALISE_EDL =sheet["G"][i].value , 	
+            DATE_REALISE_EDL =sheet["M"][i].value , 	
             ID_INTERV = IV ,
+            NRO_FACTURE = sheet["I"][i].value ,
+            PRIX_HT_EDL = sheet["N"][i].value ,
+            TVA_EDL = sheet["O"][i].value ,
+            PRIX_TTC_EDL = sheet["P"][i].value ,
+            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
+            Adresse1_Bien	 = sheet["V"][i].value ,  
+            Adresse2_Bien	 = sheet["W"][i].value , 
+            CP_Bien	 = sheet["X"][i].value ,  
+            Ville_Bien	 = sheet["Y"][i].value , 
             
-            Reference_LOCATAIRE	 =  sheet["I"][i].value ,
-            Adresse1_Bien	 = sheet["J"][i].value ,  
-            Adresse2_Bien	 = sheet["K"][i].value , 
-            CP_Bien	 = sheet["L"][i].value ,  
-            Ville_Bien	 = sheet["M"][i].value , 
-            
-            CA_HT_AS = sheet["N"][i].value , 	
-            TVA_AS	 = sheet["O"][i].value , 
-            CA_TTC_AS = sheet["P"][i].value , 	
-            CA_HT_AC = sheet["Q"][i].value , 	
-            CA_TTC_AC	 = sheet["R"][i].value , 
-            CA_HT_TRUST	 = sheet["S"][i].value , 
-            TVA_TRUST	 = sheet["T"][i].value ,
-            Prix_ht_chiffrage	 = sheet["V"][i].value , 
-            POURCENTAGE_suiveur_chiffrage	 = sheet["W"][i].value ,
-            POURCENTAGE_AS_chiffrage = sheet["X"][i].value ,	
-            POURCENTAGE_manager_chiffrage  = sheet["Y"][i].value , 	
+            CA_HT_AS = sheet["Z"][i].value , 	
+            TVA_AS	 = sheet["AA"][i].value , 
+            CA_TTC_AS = sheet["AB"][i].value , 	
+            CA_HT_AC = sheet["AC"][i].value , 	
+            CA_TTC_AC	 = sheet["AD"][i].value , 
+            CA_HT_TRUST	 = sheet["AE"][i].value , 
+            TVA_TRUST	 = sheet["AF"][i].value ,
+            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
+            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
+            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
+            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
             ID_manager_chiffrage  = MC ,
                 
-            POURCENTAGE_agent_chiffrage = sheet["AA"][i].value ,	
+            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
             ID_agent_chiffrage  = AC ,	
             
-            TYPE_EDL = sheet["AC"][i].value ,	
-            TITREPROPRIO = sheet["AE"][i].value , 		
-            NOMPROPRIO = sheet["AF"][i].value , 	
-           # DATE_FACT_REGLEE = sheet["AG"][i].value ,	
-            TYPE_LOGEMENT = sheet["AH"][i].value , 	
+            TYPE_EDL = sheet["AO"][i].value ,	
+            TITREPROPRIO = sheet["AC"][i].value , 		
+            NOMPROPRIO = sheet["AR"][i].value , 	
+            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
+            TYPE_LOGEMENT = sheet["BB"][i].value , 	
             CODE_AMEXPERT = sheet["AI"][i].value , 	
-            #COMMENTAIRE_FACTURE = sheet["AJ"][i].value , 	
-            LOGEMENT_MEUBLE =sheet["AK"][i].value , 	
-            CODE_FACTURATION = sheet["AL"][i].value , 	
-            TYPE_DE_BIEN = sheet["AM"][i].value , 	
-            surface_logement1 = sheet["AN"][i].value , 		
-            Ref_commande = sheet["AO"][i].value , 	
-            POURCENTAGE_COM_AS_DU_CLIENT = sheet["AP"][i].value , 	
+            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
+            LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
+            CODE_FACTURATION = sheet["BI"][i].value , 	
+            TYPE_DE_BIEN = sheet["BJ"][i].value , 	
+            surface_logement1 = sheet["BK"][i].value , 		
+            DATE_FACTURE = sheet["I"][i].value , 	
+            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
             ID_Respon_Cell_Dev	 =RCD ,
             
-            POURCENTAGE_Respon_Cell_Dev = sheet["AR"][i].value , 	
+            POURCENTAGE_Respon_Cell_Dev = sheet["BS"][i].value , 	
             ID_agent_Cell_Dev = ACD, 	
             
-            POURCENTAGE_Agent_Cell_Dev = sheet["AT"][i].value ,	
+            POURCENTAGE_Agent_Cell_Dev = sheet["BU"][i].value ,	
             ID_Agent_CellTech = ACT,  	
             
-            POURCENTAGE_Agent_Cell_Tech = sheet["AV"][i].value , 	
+            POURCENTAGE_Agent_Cell_Tech = sheet["BW"][i].value , 	
             ID_Respon_Cell_Tech = RCT, #######
                 
-            POURCENTAGE_Respon_Cell_Tech = sheet["AX"][i].value ,	
+            POURCENTAGE_Respon_Cell_Tech = sheet["BY"][i].value ,	
             ID_Suiveur_Cell_Tech  = SCT ,
             
-            POURCENTAGE_Suiveur_Cell_Tech	 = sheet["AZ"][i].value , 
+            POURCENTAGE_Suiveur_Cell_Tech	 = sheet["CA"][i].value , 
             ID_Respon_Cell_Planif = RCP,
             
-            POURCENTAGE_Respon_Cell_Planif  = sheet["BB"][i].value ,
+            POURCENTAGE_Respon_Cell_Planif  = sheet["CC"][i].value ,
             ID_Suiveur_Cell_Planif  = SCP,
             
-            POURCENTAGE_Suiveur_Cell_Planif	 = sheet["BD"][i].value , 
+            POURCENTAGE_Suiveur_Cell_Planif	 = sheet["CE"][i].value , 
             ID_Agent_saisie_Cell_Planif  = ASCP,
-                
-            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["BF"][i].value )
+                  
+            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["CG"][i].value )
 
             db.session.add(mission)
             db.session.commit()
         else:
-            reference.append(int(sheet["B"][i].value))# make a table for historique des donnees 
+            reference.append(int(sheet["A"][i].value))# make a table for historique des donnees 
             print(reference)
         
 
@@ -417,10 +1121,104 @@ def Base(loc):
         db.session.add(base_pav)
         db.session.commit()
         
+
+
     
+#def suivi(loc):
 
 
 
+
+def Missions2(loc):
+    
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
+    
+    reference=[]
+    
+    for i in range(1,sheet.max_row):
+        
+        a=str(sheet["B"][i].value.lower()).split()
+        v=''.join(a)
+        cli=Client.query.filter_by(enseigne=str(v)).first()
+        if cli:
+            mission=Mission(Reference_BAILLEUR=cli.id,
+           # old=sheet["A"][i].value,
+            ABONNEMENT	 = sheet["J"][i].value ,
+            ID_AS	 = 0 ,
+        
+          
+            DATE_REALISE_EDL =sheet["M"][i].value , 	
+            ID_INTERV = 0 ,
+            NRO_FACTURE = sheet["I"][i].value ,
+            PRIX_HT_EDL = sheet["N"][i].value ,
+            TVA_EDL = sheet["O"][i].value ,
+            PRIX_TTC_EDL = sheet["P"][i].value ,
+            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
+            Adresse1_Bien	 = sheet["V"][i].value ,  
+            Adresse2_Bien	 = sheet["W"][i].value , 
+            CP_Bien	 = sheet["X"][i].value ,  
+            Ville_Bien	 = sheet["Y"][i].value , 
+            
+            CA_HT_AS = sheet["Z"][i].value , 	
+            TVA_AS	 = sheet["AA"][i].value , 
+            CA_TTC_AS = sheet["AB"][i].value , 	
+            CA_HT_AC = sheet["AC"][i].value , 	
+            CA_TTC_AC	 = sheet["AD"][i].value , 
+            CA_HT_TRUST	 = sheet["AE"][i].value , 
+            TVA_TRUST	 = sheet["AF"][i].value ,
+            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
+            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
+            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
+            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
+            ID_manager_chiffrage  = 0 ,
+                
+            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
+            ID_agent_chiffrage  = 0 ,	
+            
+            TYPE_EDL = sheet["AO"][i].value ,	
+            TITREPROPRIO = sheet["AQ"][i].value , 		
+            NOMPROPRIO = sheet["AR"][i].value , 	
+            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
+            TYPE_LOGEMENT = sheet["AX"][i].value , 	
+            CODE_AMEXPERT = sheet["BB"][i].value , 	
+            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
+            LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
+            CODE_FACTURATION = sheet["BI"][i].value , 	
+            TYPE_DE_BIEN = sheet["BJ"][i].value , 	
+            surface_logement1 = sheet["BK"][i].value , 		
+            DATE_FACTURE = sheet["I"][i].value , 	
+            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
+            ID_Respon_Cell_Dev	 =0 ,
+            
+           
+            ID_agent_Cell_Dev = 0, 	
+            
+           
+            ID_Agent_CellTech = 0,  	
+            
+            	
+            ID_Respon_Cell_Tech = 0, #######
+                
+            	
+            ID_Suiveur_Cell_Tech  = 0 ,
+            
+            
+            ID_Respon_Cell_Planif = 0,
+            
+           
+            ID_Suiveur_Cell_Planif  = 0,
+            
+             
+            ID_Agent_saisie_Cell_Planif  = 0
+                  
+             )
+
+            db.session.add(mission)
+            db.session.commit()
+        else:
+            reference.append(sheet["B"][i].value)# make a table for historique des donnees 
+            print(reference)
 
 
 

@@ -30,9 +30,9 @@
                         <th scope="col">ID</th>
                         <th scope="col">Reference</th>
                         <th scope="col">Type</th>
-                        <!-- <th scope="col">SOCIETE</th> -->
+                        <th scope="col">SOCIETE</th> 
                         <th scope="col">Nom et prenom</th>
-                        <!-- <th scope="col">NOM</th> -->
+                        <th scope="col">L'ensigne</th> 
                         <th scope="col">Email</th>
                         <th scope="col">Tel</th>
                         <!-- <th scope="col">ADRESSE2</th> -->
@@ -50,9 +50,9 @@
                                 <th scope="row">{{client_.id}}</th>
                                 <td>{{client_.reference}}</td>
                                 <td>{{client_.TYPE}}</td>
-                                <!-- <td>{{client_.SOCIETE}}</td> -->
-                                <td> {{client_.nom | truncate(10, True)}}</td>
-                                <!-- <td>{{client_.NOM}}</td> -->
+                                <td>{{client_.societe}}</td>
+                                <td> {{client_.nom }}</td>
+                                <td>{{client_.enseigne}}</td>
                                 <td>{{client_.email }}</td>
                                 <td>{{client_.numero}}</td>
                                 <!--td>{{client_.ADRESSE1|truncate(10, True)}}</td-->

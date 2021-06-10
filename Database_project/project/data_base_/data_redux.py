@@ -406,7 +406,153 @@ def mission_date(loc):
 
 
 
+#secondddddddddddddddddddd
 
+
+def insert_client(A,loc):
+    
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
+
+    
+
+    for i in range(1,sheet.max_row):
+        
+        if A == 'professionnel':
+            
+            if sheet["D"][i].value == '' or sheet["D"][i].value == 'XX':
+                print('no data here')
+            else:
+                
+                cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
+                if cli is None:
+                    client=Client(reference=int(sheet["A"][i].value),TYPE=A,societe=sheet["B"][i].value,titre=sheet["C"][i].value,nom=sheet["D"][i].value.lower(),date_creation=sheet["K"][i].value)
+                    db.session.add(client)
+                    db.session.commit()   
+                    history=Client_History(client_id=client.id,adresse1=sheet["E"][i].value,adresse2=sheet["F"][i].value,cp=sheet["G"][i].value,ville=sheet["H"][i].value,login_extranet=sheet["M"][i].value,mpd_extranet=sheet["N"][i].value)
+                    db.session.add(history)
+                    db.session.commit()
+                    if sheet["L"][i].value != None :
+                        history.date=sheet["L"][i].value
+                        db.session.commit()
+
+                else:
+                    return 'This data already exist'
+
+        
+#to be fixed
+
+def expert__(loc):
+
+    wb_obj = openpyxl.load_workbook(loc)
+    sheet=wb_obj.active
+
+    
+    for i in range(1,sheet.max_row):
+        
+        
+  
+        cli=Expert.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
+    
+        if cli is None:
+            expert=Expert(genre='M',old=sheet["A"][i].value,nom=sheet["D"][i].value.lower(),numero=sheet["R"][i].value,TYPE=sheet["B"][i].value,
+            email=sheet["S"][i].value,email_perso=sheet["T"][i].value,code_tva=sheet["P"][i].value,taux_tva=sheet["Q"][i].value,siret=sheet["K"][i].value,date_entree=sheet["F"][i].value,
+            trigramme=sheet["E"][i].value)    
+            db.session.add(expert)
+            db.session.commit()
+            #expert.new="Expert"+str(expert.id)
+            #db.session.commit()
+            history=Expert_History(expert_id=expert.id,secteur=sheet["C"][i].value,adresse1=sheet["L"][i].value,adresse2=sheet["M"][i].value,cp=sheet["N"][i].value,
+            ville=sheet["O"][i].value,login_backof=sheet["U"][i].value,pwd_backof=sheet["V"][i].value,login_extranet=sheet["Y"][i].value,
+            pwd_extranet=sheet["Z"][i].value,login_google=sheet["AA"][i].value,pwd_google=sheet["AB"][i].value,observations_de_suivi=sheet["AE"][i].value)
+            db.session.add(history)
+            db.session.commit()
+        else:
+            print('already exist')
+#talk about date sortie(Format)
+        
+
+def tarif_client(loc):
+    wb = xlrd.open_workbook(loc)
+    sheet = wb.sheet_by_index(0)
+
+    sheet.cell_value(0, 0)
+    for i in range(0,5):
+        name=sheet.row_values(i+1)
+        tarif =Tarifs.query.filter_by(reference_client=int(name[1])).first()
+        cli=Client.query.filter_by(reference=int(name[1])).first()
+        r_C=Expert.query.filter_by(nom=str(name[3].lower())).first()
+        if r_C is not None:
+            rC= r_C.id
+        if r_C is None  :
+            rC= 0
+        r_r=Expert.query.filter_by(nom=str(name[5].lower())).first()
+        if r_r is not None:
+            rr= r_r.id
+        if r_r is None  :
+            rr= 0
+        dr_a=Expert.query.filter_by(nom=str(name[7].lower())).first()
+        if dr_a is not None:
+            dra= dr_a.id
+        if dr_a is None  :
+            dra= 0
+        tr_a=Expert.query.filter_by(nom=str(name[9].lower())).first()
+        if tr_a is not None:
+            tra= tr_a.id
+        if tr_a is None  :
+            tra= 0
+        tr_r=Expert.query.filter_by(nom=str(name[11].lower())).first()
+        if tr_r is not None:
+            trr= tr_r.id
+        if tr_r is None  :
+            trr= 0
+        tr_s=Expert.query.filter_by(nom=str(name[13].lower())).first()
+        if tr_s is not None:
+            trs= tr_s.id
+        if tr_s is None  :
+            trs= 0
+        pr_s=Expert.query.filter_by(nom=str(name[15].lower())).first()
+        if pr_s is not None:
+            prs= pr_s.id
+        if pr_s is None  :
+            prs= 0
+        pr_si=Expert.query.filter_by(nom=str(name[17].lower())).first()
+        if pr_si is not None:
+            prsi= pr_si.id
+        if pr_si is None  :
+            prsi= 0
+        ra_s=Expert.query.filter_by(nom=str(name[19].lower())).first()
+        if ra_s is not None:
+            ras= ra_s.id
+        if ra_s is None  :
+            ras= 0
+        if tarif is None:
+            if cli :
+                taf_base =Tarifs(reference_client=cli.id,code_tva=int(name[2]),
+                referent_as_client=rC,com_as_sur_ca_client=name[4],cell_dev_ref_responsable=rr,
+                com_cell_dev_ref_responsable=name[6],cell_dev_ref_agent=dra,com_cell_dev_ref_agent=name[8],
+                cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=name[10],cell_tech_ref_responsable=trr,
+                com_cell_tech_ref_responsable=name[12],cell_tech_ref_suiveur=trs,
+                com_cell_tech_ref_suiveur=name[14],cell_planif_ref_responsable=prs,
+                com_cell_planif_ref_responsable=name[16],cell_planif_ref_suiveur=prsi,
+                com_cell_planif_ref_suiveur=name[18],cell_planif_ref_agent_saisie=ras,
+                com_cell_planif_ref_agent_saisie=name[20],taux_meuble=name[21],edl_prix_std=float(name[22]),
+                edl_appt_prix_f1=float(name[23]),edl_appt_prix_f2=float(name[24]),edl_appt_prix_f3=float(name[25]),edl_appt_prix_f4=float(name[26]),
+                edl_appt_prix_f5=float(name[27]),edl_appt_prix_f6=float(name[28]),edl_pav_villa_prix_t1=float(name[29]), edl_pav_villa_prix_t2=float(name[30]),
+                edl_pav_villa_prix_t3=float(name[31]),edl_pav_villa_prix_t4=float(name[32]),edl_pav_villa_prix_t5=float(name[33]),edl_pav_villa_prix_t6=float(name[34]),
+                edl_pav_villa_prix_t7=float(name[35]),edl_pav_villa_prix_t8=float(name[36]),chif_appt_prix_stu=float(name[37]),
+                chif_appt_prix_f1=float(name[38]),chif_appt_prix_f2=float(name[39]),chif_appt_prix_f3=float(name[40]),
+                chif_appt_prix_f4=float(name[41]),chif_appt_prix_f5=float(name[42]),chif_pav_villa_prix_t1=float(name[43]),
+                chif_pav_villa_prix_t2=float(name[44]),chif_pav_villa_prix_t3=float(name[45]),chif_pav_villa_prix_t4=float(name[46]),
+                chif_pav_villa_prix_t5=float(name[47]),chif_pav_villa_prix_t6=float(name[48]),chif_pav_villa_prix_t7=float(name[49]),
+                chif_pav_villa_prix_t8=int(name[50]))
+                
+                db.session.add(taf_base)
+                db.session.commit()
+            else:
+                print('esit2')
+        else:
+            print('esit')
 
 
 
