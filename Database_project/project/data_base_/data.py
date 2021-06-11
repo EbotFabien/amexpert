@@ -35,6 +35,8 @@ def checktarif(a,p,c):
             if p =="edl_pav_villa_prix_t5":
                 taf_base.edl_pav_villa_prix_t5=v
             if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t6=v
+            if p =="edl_pav_villa_prix_t7":
                 taf_base.edl_pav_villa_prix_t7=v
             if p =="edl_pav_villa_prix_t8":
                 taf_base.edl_pav_villa_prix_t8=v
@@ -99,6 +101,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -164,6 +168,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -228,6 +234,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -287,6 +295,8 @@ def checktarif(a,p,c):
                     if p =="edl_pav_villa_prix_t5":
                         taf_base.edl_pav_villa_prix_t5=v
                     if p =="edl_pav_villa_prix_t6":
+                        taf_base.edl_pav_villa_prix_t6=v
+                    if p =="edl_pav_villa_prix_t7":
                         taf_base.edl_pav_villa_prix_t7=v
                     if p =="edl_pav_villa_prix_t8":
                         taf_base.edl_pav_villa_prix_t8=v
@@ -349,6 +359,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -408,6 +420,8 @@ def checktarif(a,p,c):
             if p =="edl_pav_villa_prix_t5":
                 taf_base.edl_pav_villa_prix_t5=v
             if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t6=v
+            if p =="edl_pav_villa_prix_t7":
                 taf_base.edl_pav_villa_prix_t7=v
             if p =="edl_pav_villa_prix_t8":
                 taf_base.edl_pav_villa_prix_t8=v
