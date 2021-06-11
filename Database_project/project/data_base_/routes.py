@@ -2,7 +2,7 @@ from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
 from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,tarif_client,fix_mission,Base,reset
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2
 from Database_project.project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
@@ -1410,7 +1410,7 @@ def ajouter_prospect():
     if current_user.TYPE == "Admin":
         form=Client_Form()
         if form.validate_on_submit():
-            user=prospect(form.Type.data,form.Societe.data,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data)
+            user=prospect(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data)
             db.session.add(user)
             db.session.commit()
             user_history=prospect.query.filter(or_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
@@ -1562,8 +1562,18 @@ def update_suivip(id):
 @users.route("/televeser", methods=['GET','POST'])
 #@login_required
 def up():
-    
-    #db.create_all()
+    db.create_all()
+    '''db.create_all()
+    expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert1)
+    db.session.add(expert)
+    db.session.commit()
+    expert1.id =0
+    hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
+    expert.password=hashed_password
+    db.session.commit()
+    print('po')'''
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
@@ -1585,30 +1595,47 @@ def up():
 
 
 @users.route("/uploader", methods=['GET','POST'])
-@login_required
+#@login_required
 def uploader_():
-    if current_user.TYPE == 'Admin':
+    #if current_user.TYPE == 'Admin':
       # get the uploaded file
       if request.method == 'POST':
         uploaded_file = request.files['file']
+        table = request.form['table']
         if uploaded_file.filename != '':
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
             loc=str(file_path)
             # set the file path
             uploaded_file.save(file_path)
+            if table == 'client':
+                
+                    insert_client(loc)
+                   
+                
+            if table == 'expert':
+                try:
+                    expert__(loc)
+                    flash(f"Vous avez importer les donnees avec success",'success')
+                    return redirect(url_for('users.client'))
+                except:
+                    flash(f"Fichier incorrect",'warning')
+                    return redirect(url_for('users.up'))
+            if table == 'Tarifb':
+                try:
+                    Base(loc)
+                    flash(f"Vous avez importer les donnees avec success",'success')
+                    return redirect(url_for('users.tarif_base'))
+                except:
+                    flash(f"Fichier incorrect",'warning')
+                    return redirect(url_for('users.up'))
+            if table == 'mission':
+                Missions(loc)
+                fix_mission()
+                fix_mission()
+                fix_mission()
+
             # save the file
             #expert__(loc)
-            #expert__('CONCESS',loc)
-           #''' expert__('Manager_chiffrage',loc)
-           # expert__('Agent_chiffrage',loc)
-           # expert__('Respon Cell Dev',loc)
-           # expert__('agent Cell Dev',loc)
-           ## expert__('Agent CellTech',loc)
-           # expert__('Respon Cell Tech',loc)
-           ## expert__('Suiveur Cell Tech',loc)
-           # expert__('Respon Cell Planif',loc)
-           # expert__('Suiveur Cell Planif',loc)
-           # expert__('Agent saisie Cell Planif',loc)'''
             #insert_client('professionnel',loc)
            # insert_client('Locataire',loc)
            # insert_client('Prop',loc)
@@ -1622,10 +1649,9 @@ def uploader_():
 
             
             
-            flash(f"Vous avez importer les donnees avec success",'success')
-            return redirect(url_for('users.up'))
-      return redirect(url_for('users.main'))
-    return redirect(url_for('users.login'))
+            
+        return redirect(url_for('users.main'))
+    #return redirect(url_for('users.login'))
 
 
 @users.route('/profil')

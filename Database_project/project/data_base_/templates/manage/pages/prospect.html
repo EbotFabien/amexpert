@@ -27,13 +27,14 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table is-hoverable is-striped" style="overflow-x: scroll;min-width: 800px;">
+            <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
              <thead class="">
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Reference</th>
                     <th scope="col">Type</th>
                     <th scope="col">Nom</th>
+                    <th scope="col">L'ensigne</th>
                     <th scope="col">Email</th>
                     <th scope="col">Tel</th>
                     <th></th>
@@ -47,8 +48,9 @@
                         <th scope="row">{{client_.id}}</th>
                         <td>{{client_.reference}}</td>
                         <td>{{client_.TYPE}}</td>
-                        <td> {{client_.nom | truncate(10, True)}}</td>
-                        <td>{{client_.email | truncate(10, True)}}</td>
+                        <td> {{client_.nom }}</td>
+                        <td>{{client_.enseigne}}</td>
+                        <td>{{client_.email }}</td>
                         <td>{{client_.numero}}</td>
                         <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                         <td style="">
