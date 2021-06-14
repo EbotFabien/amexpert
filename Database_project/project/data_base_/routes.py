@@ -710,7 +710,8 @@ def expert():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
         expert_=Expert.query.filter_by(visibility=True).order_by(asc(Expert.id)).all()
-        return render_template('manage/pages/expert.html',Expert=expert_, legend="expert", highlight='expert')
+        history=Expert_History.query.filter_by(visibility=True).order_by(asc(Expert_History.id)).all()
+        return render_template('manage/pages/expert.html',Expert=zip(expert_,history), legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
 

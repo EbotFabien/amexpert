@@ -35,6 +35,8 @@ def checktarif(a,p,c):
             if p =="edl_pav_villa_prix_t5":
                 taf_base.edl_pav_villa_prix_t5=v
             if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t6=v
+            if p =="edl_pav_villa_prix_t7":
                 taf_base.edl_pav_villa_prix_t7=v
             if p =="edl_pav_villa_prix_t8":
                 taf_base.edl_pav_villa_prix_t8=v
@@ -99,6 +101,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -164,6 +168,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -228,6 +234,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -287,6 +295,8 @@ def checktarif(a,p,c):
                     if p =="edl_pav_villa_prix_t5":
                         taf_base.edl_pav_villa_prix_t5=v
                     if p =="edl_pav_villa_prix_t6":
+                        taf_base.edl_pav_villa_prix_t6=v
+                    if p =="edl_pav_villa_prix_t7":
                         taf_base.edl_pav_villa_prix_t7=v
                     if p =="edl_pav_villa_prix_t8":
                         taf_base.edl_pav_villa_prix_t8=v
@@ -349,6 +359,8 @@ def checktarif(a,p,c):
                 if p =="edl_pav_villa_prix_t5":
                     taf_base.edl_pav_villa_prix_t5=v
                 if p =="edl_pav_villa_prix_t6":
+                    taf_base.edl_pav_villa_prix_t6=v
+                if p =="edl_pav_villa_prix_t7":
                     taf_base.edl_pav_villa_prix_t7=v
                 if p =="edl_pav_villa_prix_t8":
                     taf_base.edl_pav_villa_prix_t8=v
@@ -408,6 +420,8 @@ def checktarif(a,p,c):
             if p =="edl_pav_villa_prix_t5":
                 taf_base.edl_pav_villa_prix_t5=v
             if p =="edl_pav_villa_prix_t6":
+                taf_base.edl_pav_villa_prix_t6=v
+            if p =="edl_pav_villa_prix_t7":
                 taf_base.edl_pav_villa_prix_t7=v
             if p =="edl_pav_villa_prix_t8":
                 taf_base.edl_pav_villa_prix_t8=v
@@ -448,7 +462,7 @@ def insert_client(loc):
    
 
 
-    for (ca,a,b,c,d,e,f,g,h,i,j,k,l,m,v,en,n,o,p,q,r,s,t,u,vo,x,y,z,aa,bb,cc,dd,ee,ff,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an,ao,ap,aq,ar,As,at,au,av,aw,ax,ay,az,ba,bc,bd,be,bf) in zip(df['Ref code client- service comptabilité'],df['Etat du client']
+    for (ca,a,b,c,d,e,f,g,h,i,j,k,l,m,v,en,n,o,p,q,r,s,t,u,vo,x,y,z,aa,bb,cc,dd,ee,ff,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an,ao,ap,aq,ar,As,at,au,av,aw,ax,ay,az,ba,bc,bd,be,bf,bet,bat) in zip(df['Ref code client- service comptabilité'],df['Etat du client']
                                                                             ,df['Référence de la société'],df['Titre'],
                                                                             df['Nom du ou des responsables'],df['Date création du client']
                                                                             ,df['Adresse 1'],df['Complément adresse'],df['CODE POSTAL'],
@@ -468,7 +482,7 @@ def insert_client(loc):
                                                                             df['CHIF_APPT / PRIX T4'],df['CHIF_APPT / PRIX T5'],df['CHIF_PAV VILLA / PRIX T1'],
                                                                             df['CHIF_PAV VILLA / PRIX T2'],df['CHIF_PAV VILLA / PRIX T3'],df['CHIF_PAV VILLA / PRIX T4'],
                                                                             df['CHIF_PAV VILLA / PRIX T5'],df['CHIF_PAV VILLA / PRIX T6'],df['CHIF_PAV VILLA / PRIX T7'],
-                                                                            df['CHIF_PAV VILLA / PRIX T8'],df['PRIX AUTRE']):
+                                                                            df['CHIF_PAV VILLA / PRIX T8'],df['PRIX AUTRE'],df['Tel principal client'],df['Email de contact général du client']):
                     
                     if str(a) != 'PROSPECT':
                         '''try :
@@ -485,9 +499,9 @@ def insert_client(loc):
                                 rC= 0
                         #if cli is None:
                         try:
-                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l))#,date_creation=e
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l),numero=str(bet),email=str(bat))#,date_creation=e
                         except:
-                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),siret=str(l))#,date_creation=e
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),siret=str(l),numero=str(bet),email=str(bat))#,date_creation=e
                         db.session.add(client)
                         db.session.commit() 
                         if type(ca) != float :
