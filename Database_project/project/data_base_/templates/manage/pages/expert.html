@@ -31,19 +31,45 @@
                         <th scope="col">Type</th>
                         <th scope="col">Email</th>
                         <th scope="col">Numero</th>
+                        <th scope="col">Trigramme</th>
+                        <th scope="col">Siret</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Actif/Parti</th>
+                        <th scope="col">Adresse1</th>
+                        <th scope="col">Adresse2</th>
+                        <th scope="col">CP</th>
+                        <th scope="col">Ville</th>
+                        <th scope="col">Pays</th>
+                        <th scope="col">Login Backof</th>
+                        <th scope="col">Pwd Backof</th>
+                        <th scope="col">Pwd extranet</th>
+                        <th scope="col">Observations de suivi</th>
                         <th></th>
                         <th></th> 
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                        {%for expert in Expert %}
+                        {%for expert,history in Expert %}
                             <tr>
                                 <th scope="row">{{expert.id}}</th>
                                 <td>{{expert.TITRE}} {{expert.nom}}</td>
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.email}}</td>
                                 <td>{{expert.numero}}</td>
+                                <td>{{expert.trigramme}}</td>
+                                <td>{{expert.siret}}</td>
+                                <td>{{expert.genre}}</td>
+                                <td>{{history.actif_parti}}</td>
+                                <td>{{history.adresse1}}</td>
+                                <td>{{history.adresse2}}</td>
+                                <td>{{history.cp}}</td>
+                                <td>{{history.ville}}</td>
+                                <td>{{history.pays}}</td>
+                                <td>{{history.login_backof}}</td>
+                                <td>{{history.pwd_backof}}</td>
+                                <td>{{history.pwd_extranet}}</td>
+                                <td>{{history.observations_de_suivi}}</td>
                                 <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="button is-outlined-black is-small is-fullwidth center"><i class="fa fa-pen"></i></a></td>
                                 <td style="">
                                     <a href="{{url_for('users.show_expert', id=expert.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
