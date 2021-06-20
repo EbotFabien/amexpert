@@ -25,6 +25,7 @@ def client():
     db.create_all()
     if current_user.TYPE == "Admin":
         client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
+        history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
         # page = request.args.get('page', 1, type=int)
         #     form_data = request.form
         #     order = request.form.get('order')
@@ -39,7 +40,7 @@ def client():
         #     client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         # else:
         #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        return render_template('manage/pages/client.html',cli_ent=client_,legend="client", highlight='client')
+        return render_template('manage/pages/client.html',cli_ent=zip(client_,history),legend="client", highlight='client')
     return redirect(url_for('users.main'))
  
 @users.route('/ajouter/client',methods=['GET','POST'])
@@ -1399,8 +1400,9 @@ def update_negotiateur(id):
 def prospect_():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).paginate(page=page, per_page=10)
-        return render_template('manage/pages/prospect.html',Client=client_,legend="client", highlight='prospect')
+        client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
+        history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
+        return render_template('manage/pages/prospect.html',Client=zip(client_,history),legend="client", highlight='prospect')
 
     
     return redirect(url_for('users.main'))

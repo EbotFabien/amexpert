@@ -58,9 +58,19 @@ class Expert_editForm(FlaskForm):
     email =StringField('E-mail',
                            validators=[DataRequired(),Email()])
 
+    email_perso =StringField('E-mail perso', validators=[DataRequired(),Email()])
+
 
     Sexe=SelectField('Genre',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
+
+
+    Type =SelectField('Type',
+                             choices=[('AS', 'AS'), ('AP', 'AP'), ('AC', 'AC')])
+
+    secteur =SelectField('Type',
+                             choices=[('AS', 'AS'), ('AP', 'AP'), ('AC', 'AC')])
+
 
     siret =StringField('siret',
                                   validators=[DataRequired()])
@@ -68,23 +78,40 @@ class Expert_editForm(FlaskForm):
     trigramme =StringField('trigramme',
                                 validators=[DataRequired()])
 
-    code_tva =StringField('code_tva',
+    code_tva =StringField('Code tva',
                             validators=[DataRequired()])
                         
-    taux_tva =StringField('taux_tva',
+    taux_tva =StringField('Taux tva',
                             validators=[DataRequired()])
 
-    actif_parti =SelectField('actif_parti',
+    actif_parti =SelectField('Actif parti',
                             choices=[('Actif'), ('Parti')])
 
-    ville =StringField('ville',
+    ville =StringField('Ville',
                         validators=[DataRequired()])
     
-    type_certification=StringField('type_certification',
+    type_certification=StringField('Type certification',
                         validators=[DataRequired()])
-    adresse=StringField('adresse',
+    date_certification=DateField('Date de certification', validators=[DataRequired()])
+    date_certification_renouv=DateField('Date de recertification', validators=[DataRequired()])
+    
+    date_entree=DateField('Date de entree', validators=[DataRequired()])
+
+    date_sortir=DateField('Date de sortir', validators=[DataRequired()])
+
+    mdp=DateField('Date de sortir', validators=[DataRequired()])
+
+    adresse=StringField('Adresse 1',
                         validators=[DataRequired()])
-    cp=StringField('cp',
+
+    adresse2=StringField('Adresse 2',
+                        validators=[DataRequired()])
+
+    cp=StringField('CP',
+                        validators=[DataRequired()])
+    login_google=StringField('login google',
+                        validators=[DataRequired()])
+    pwd_google=StringField('Pwd google',
                         validators=[DataRequired()])
     login_backof=StringField('login_backof',
                         validators=[DataRequired()])
@@ -563,6 +590,16 @@ class Client_Form(FlaskForm):
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
+
+    Abonnement=SelectField("Abonnement", choices=[('', ''), ('', '')],
+                        validators=[DataRequired()])
+
+    EtatClient=StringField("Etat du client", validators=[DataRequired()])
+    LoginExtranet = StringField("Login Extranet", validators=[DataRequired()])
+
+    MdpExtranet = StringField("Login Extranet", validators=[DataRequired()])
+
+    Enseigne=StringField("Enseigne", validators=[DataRequired()])
 
     submit = SubmitField('enregistrer')
 

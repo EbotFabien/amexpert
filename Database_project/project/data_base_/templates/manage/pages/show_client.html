@@ -29,6 +29,10 @@
 	          <p class='tagline'>
 	          <strong>Adresse:</strong> {{history.adresse1}}, <br/> {{history.cp}} {{history.ville}}, {{history.pays}}
 	          </p>
+
+	          <p class='tagline'>
+	          <strong>Adresse 2:</strong> {{history.adresse2}}, <br/> {{history.cp}} {{history.ville}}, {{history.pays}}
+	          </p>
 	          
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
@@ -43,45 +47,58 @@
 	          <p class='stat-val'><strong>Email</strong></p>
 	          <p class='stat-key'>{{client.email}}</p>
 	        </div>
-			<div class='column is-12-tablet is-12-mobile'>
+			<div class='column is-2-tablet is-12-mobile'>
 				<p class='stat-val'><strong>Société</strong></p>
 				<p class='stat-key'>{{client.societe}}</p>
 			</div>
-			<!-- <div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.titre}}</p>
-				<p class='stat-key'>Titre</p>
+			<div class='column is-2-tablet is-12-mobile'>
+				<p class='stat-val'><strong>Etat du client</strong></p>
+				<p class='stat-key'>{{history.etat_client}}</p>
+			</div>
+			<div class='column is-2-tablet is-12-mobile'>
+				<p class='stat-val'><strong>L'enseigne</strong></p>
+				<p class='stat-key'>{{client.enseigne}}</p>
+			</div>
+			<div class='column is-2-tablet is-12-mobile'>
+				<p class='stat-val'><strong>Abonnement</strong></p>
+				<p class='stat-key'>{{history.abonnement}}</p>
+			</div>
+			 <div class='column is-2-tablet is-4-mobile has-text-centered'>
+			 	<p class='stat-key'><strong>Type</strong></p>
+				<p class='stat-val'>{{client.TYPE}}</p>
+				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.siret}}</p>
-				<p class='stat-key'>Siret</p>
+				<p class='stat-key'><strong>Siret</strong></p>
+				<p class='stat-val'>{{client.siret}}</p>				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.cp}}</p>
-				<p class='stat-key'>CP</p>
+				<p class='stat-key'><strong>CP</strong></p>
+				<p class='stat-val'>{{history.cp}}</p>				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Login Extranet</strong></p>
 				<p class='stat-val'>{{history.login_extranet}}</p>
-				<p class='stat-key'>Login Extranet</p>
+				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>MDP Extranet</strong></p>
 				<p class='stat-val'>{{history.mpd_extranet}}</p>
-				<p class='stat-key'>MDP Extranet:</p>
+				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.societe}}</p>
-				<p class='stat-key'>Societe</p>
+				<p class='stat-key'><strong>Societe</strong></p>
+				<p class='stat-val'>{{client.societe}}</p>				
+			</div>
+			
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Ville</strong></p>
+				<p class='stat-val'>{{history.ville}}</p>				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.societe}}</p>
-				<p class='stat-key'>Societe</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.ville}}</p>
-				<p class='stat-key'>Ville</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Pays</strong></p>
 				<p class='stat-val'>{{history.pays}}</p>
-				<p class='stat-key'>Pays</p>
+				
 			</div>
 			{% if legend == "client" %}
 				<div class='column is-2-tablet is-4-mobile has-text-centered'>
@@ -95,13 +112,13 @@
 				</div>
 			{% endif %}
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date historique</strong></p>
 				<p class='stat-val'>{{history.date|string|truncate(13, True)}}</p>
-				<p class='stat-key'>Date historique:</p>
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date creation</strong></p>
 				<p class='stat-val'>{{client.date_creation|string|truncate(13, True)}}</p>
-				<p class='stat-key'>Date_creation:</p>
-			</div> -->
+			</div> 
 	      </div>
 	    </div>
 	  </div>
