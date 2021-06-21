@@ -507,10 +507,15 @@ def insert_client(loc):
                         if type(ca) != float :
                             client.reference=ca
                             db.session.commit()
+                        else:
+                            client.reference=''
+                            db.session.commit()
                         try:  
                             if type(en) == str:
                                 a=str(en.lower()).split()
                                 vii=''.join(a)
+                                vii=vii.split("-")
+                                vii=''.join(vii)
                                 client.enseigne =str(vii)
                                 db.session.commit()
                         except:
@@ -671,7 +676,159 @@ def insert_client(loc):
 
                         #else:
                          #   return 'This data already exist'
+                    if  type(ca) != float :
+                      cli=Client.query.filter_by(reference=str(ca)).first()
+                      if cli is None:
+                        if type(m) != str :
+                            r_C=0
+                        else:
+                            r_C=Expert.query.filter_by(nom=str(m.lower())).first()
+                            if r_C is not None:#check keys
+                                rC= r_C.id
+                            if r_C is None  :
+                                rC= 0
+                        #if cli is None:
+                        try:
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l),numero=str(bet),email=str(bat),reference=ca)#,date_creation=e
+                        except:
+                            client=Client(TYPE=str(a),societe=str(b),titre=str(c),siret=str(l),numero=str(bet),email=str(bat),reference=ca)#,date_creation=e
+                        db.session.add(client)
+                        db.session.commit() 
+                        try:  
+                            if type(en) == str:
+                                a=str(en.lower()).split()
+                                vii=''.join(a)
+                                vii=vii.split("-")
+                                vii=''.join(vii)
+                                client.enseigne =str(vii)
+                                db.session.commit()
+                        except:
+                            print('ei choke')
+                        history=Client_History(client_id=client.id,adresse1=str(f),adresse2=str(g),cp=str(h),ville=str(i),
+                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE")
+                        
+                        
+                        if type(v) == str :#check
+                            
+                            suivi =suivi_client(client=client.id,responsable=str(rC),commentaire=str(v))
+                            db.session.add(suivi)
+                        db.session.add(history)
+                        db.session.commit()
 
+                        try:
+                            r_C=Expert.query.filter_by(nom=str(m.lower())).first()
+                            if r_C is not None:#check keys
+                                rC= r_C.id
+                            if r_C is None  :
+                                rC= 0
+                        except:
+                            rC= 0
+                        try:
+                            r_r=Expert.query.filter_by(nom=str(o.lower())).first()
+                            if r_r is not None:
+                                rr= r_r.id
+                            if r_r is None  :
+                                rr= 0
+                        except:
+                            rr=0
+                        try:
+                            dr_a=Expert.query.filter_by(nom=str(q.lower())).first()
+                            if dr_a is not None:
+                                dra= dr_a.id
+                            if dr_a is None  :
+                                dra= 0
+                        except:
+                            dra= 0
+                        try:
+                            tr_a=Expert.query.filter_by(nom=str(s.lower())).first()
+                            if tr_a is not None:
+                                tra= tr_a.id
+                            if tr_a is None  :
+                                tra= 0
+                        except:
+                            tra=0
+                        try:
+                            tr_r=Expert.query.filter_by(nom=str(u.lower())).first()
+                            if tr_r is not None:
+                                trr= tr_r.id
+                            if tr_r is None  :
+                                trr= 0
+                        except:
+                            trr= 0
+                        try:
+                            tr_s=Expert.query.filter_by(nom=str(x.lower())).first()
+                            if tr_s is not None:
+                                trs= tr_s.id
+                            if tr_s is None  :
+                                trs= 0
+                        except:
+                            trs= 0
+                        try:
+                            pr_s=Expert.query.filter_by(nom=str(z.lower())).first()
+                            if pr_s is not None:
+                                prs= pr_s.id
+                            if pr_s is None  :
+                                prs= 0
+                        except:
+                            prs=0
+                        try:
+                            pr_si=Expert.query.filter_by(nom=str(bb.lower())).first()
+                            if pr_si is not None:
+                                prsi= pr_si.id
+                            if pr_si is None  :
+                                prsi= 0
+                        except:
+                            prsi= 0
+                        try:
+                            ra_s=Expert.query.filter_by(nom=str(dd.lower())).first()
+                            if ra_s is not None:
+                                ras= ra_s.id
+                            if ra_s is None  :
+                                ras= 0  
+                        except:
+                            ras= 0    
+                        
+                        taf_base =Tarifs(reference_client=client.id,
+                        referent_as_client=rC,com_as_sur_ca_client=str(n),cell_dev_ref_responsable=rr,
+                        com_cell_dev_ref_responsable=str(p),cell_dev_ref_agent=dra,com_cell_dev_ref_agent=str(r),
+                        cell_tech_ref_agent=tra,com_cell_tech_Ref_agent=str(t),cell_tech_ref_responsable=trr,
+                        com_cell_tech_ref_responsable=str(vo),cell_tech_ref_suiveur=trs,
+                        com_cell_tech_ref_suiveur=str(y),cell_planif_ref_responsable=prs,
+                        com_cell_planif_ref_responsable=str(aa),cell_planif_ref_suiveur=prsi,
+                        com_cell_planif_ref_suiveur=str(cc),cell_planif_ref_agent_saisie=ras,
+                        com_cell_planif_ref_agent_saisie=str(ee),taux_meuble=str(ff),prix_autre=str(bf))
+                        
+                        db.session.add(taf_base)
+                        db.session.commit()
+                        checktarif(ab,"edl_prix_std",client.id)
+                        checktarif(ac,"edl_appt_prix_f1",client.id)
+                        checktarif(ad,"edl_appt_prix_f2",client.id)
+                        checktarif(ae,"edl_appt_prix_f3",client.id)
+                        checktarif(af,"edl_appt_prix_f4",client.id)
+                        checktarif(ag,"edl_appt_prix_f5",client.id)
+                        checktarif(ah,"edl_appt_prix_f6",client.id)
+                        checktarif(ai,"edl_pav_villa_prix_t1",client.id)
+                        checktarif(aj,"edl_pav_villa_prix_t2",client.id)
+                        checktarif(ak,"edl_pav_villa_prix_t3",client.id)
+                        checktarif(al,"edl_pav_villa_prix_t4",client.id)
+                        checktarif(am,"edl_pav_villa_prix_t5",client.id)
+                        checktarif(an,"edl_pav_villa_prix_t6",client.id)
+                        checktarif(ao,"edl_pav_villa_prix_t7",client.id)
+                        checktarif(ap,"edl_pav_villa_prix_t8",client.id)
+                        checktarif(aq,"chif_appt_prix_stu",client.id)
+                        checktarif(ar,"chif_appt_prix_f1",client.id)
+                        checktarif(As,"chif_appt_prix_f2",client.id)
+                        checktarif(at,"chif_appt_prix_f3",client.id)
+                        checktarif(au,"chif_appt_prix_f4",client.id)
+                        checktarif(av,"chif_appt_prix_f5",client.id)
+                        checktarif(aw,"chif_pav_villa_prix_t1",client.id)
+                        checktarif(ax,"chif_pav_villa_prix_t2",client.id)
+                        checktarif(ay,"chif_pav_villa_prix_t3",client.id)
+                        checktarif(az,"chif_pav_villa_prix_t4",client.id)
+                        checktarif(ba,"chif_pav_villa_prix_t5",client.id)
+                        checktarif(bc,"chif_pav_villa_prix_t6",client.id)
+                        checktarif(bd,"chif_pav_villa_prix_t7",client.id)
+                        checktarif(be,"chif_pav_villa_prix_t8",client.id)
 
     '''for (m,n,o,p,q,r,s,t,u,v,x,y,z,aa,bb,cc,dd,ee,ff,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an,ao,ap,aq,ar,As,at,au,av,aw,ax,ay,az,ba,bc,bd,be,bf,ca,km,ck) in zip(df['AS du Client'],df['% Com AS du client'],df['Nom Respon Cell Dev'],
                                                         df['% Respon Cell Dev'],df['Nom agent Cell Dev'],df['% Agent Cell Dev']
@@ -841,15 +998,18 @@ def expert__(loc):
 
 def Missions(loc):
     
-    wb_obj = openpyxl.load_workbook(loc)
+    wb_obj = openpyxl.load_workbook(loc,data_only=True)
     sheet=wb_obj.active
     
     reference=[]
+    Nom=[]
     
     for i in range(1,sheet.max_row):
         
         
         cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
+        if cli is None:
+            cli=Client.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
         '''except:
             cli=Client.query.filter_by(nom=str(sheet["B"][i].value.lower())).first()
         if cli1 is None:
@@ -861,6 +1021,7 @@ def Missions(loc):
             db.session.commit()   
             history=Client_History(client_id=client.id)
             db.session.commit() '''
+        
         #try:
           #  cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
         #except:
@@ -1006,7 +1167,7 @@ def Missions(loc):
             ID_agent_chiffrage  = AC ,	
             
             TYPE_EDL = sheet["AO"][i].value ,	
-            TITREPROPRIO = sheet["AC"][i].value , 		
+            TITREPROPRIO = sheet["AQ"][i].value , 		
             NOMPROPRIO = sheet["AR"][i].value , 	
             DATE_FACT_REGLEE = sheet["AS"][i].value ,	
             TYPE_LOGEMENT = sheet["BB"][i].value , 	
@@ -1016,7 +1177,7 @@ def Missions(loc):
             CODE_FACTURATION = sheet["BI"][i].value , 	
             TYPE_DE_BIEN = sheet["BJ"][i].value , 	
             surface_logement1 = sheet["BK"][i].value , 		
-            DATE_FACTURE = sheet["I"][i].value , 	
+            DATE_FACTURE = sheet["AP"][i].value , 	
             POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
             ID_Respon_Cell_Dev	 =RCD ,
             
@@ -1046,8 +1207,11 @@ def Missions(loc):
             db.session.add(mission)
             db.session.commit()
         else:
+
+            Nom.append(sheet["D"][i].value.lower())
             reference.append(int(sheet["A"][i].value))# make a table for historique des donnees 
             print(reference)
+            print(Nom)
         
 
 def fix_mission():
@@ -1145,16 +1309,17 @@ def Base(loc):
 
 def Missions2(loc):
     
-    wb_obj = openpyxl.load_workbook(loc)
+    wb_obj = openpyxl.load_workbook(loc,data_only=True)
     sheet=wb_obj.active
     
     reference=[]
     
     for i in range(1,sheet.max_row):
-        
         a=str(sheet["B"][i].value.lower()).split()
         v=''.join(a)
-        cli=Client.query.filter_by(enseigne=str(v)).first()
+        vii=v.split("-")
+        vii=''.join(vii)
+        cli=Client.query.filter_by(enseigne=str(vii)).first()
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
            # old=sheet["A"][i].value,

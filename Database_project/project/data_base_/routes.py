@@ -961,7 +961,7 @@ def update_tarif(id):
 
         tarif.taux_meuble=request.form['taux_meuble']
 
-        tarif.referent_as_client=request.form['ID_Cell_AS_referent_client']
+        tarif.referent_as_client=request.form['referent_as_client']
 
         tarif.com_as_sur_ca_client=request.form['com_as_sur_ca_client']
 
@@ -973,7 +973,7 @@ def update_tarif(id):
 
         tarif.com_cell_dev_ref_agent =request.form['com_cell_dev_ref_agent']
 
-        tarif.cell_tech_ref_agent  =request.form['cell_tech_ref_agent ']
+        tarif.cell_tech_ref_agent  =request.form['cell_tech_ref_agent']
 
         tarif.com_cell_tech_Ref_agent =request.form['com_cell_tech_Ref_agent']
 
@@ -1001,7 +1001,7 @@ def update_tarif(id):
         
         db.session.commit()
         flash(f'Les donnes du tarif a été modifiées','success')
-        return redirect(url_for('users.tarifs'))
+        return redirect(url_for('users.tarifs',id=id))
     return redirect(url_for('users.edit_tarif', id=id))
        
 
@@ -1630,7 +1630,7 @@ def uploader_():
                     flash(f"Fichier incorrect",'warning')
                     return redirect(url_for('users.up'))
             if table == 'mission':
-                Missions(loc)
+                Missions2(loc)
                 fix_mission()
                 fix_mission()
                 fix_mission()

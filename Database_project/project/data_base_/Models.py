@@ -603,7 +603,7 @@ class Mission(db.Model):
         primaryjoin=(ID_agent_chiffrage == Expert.id),
         backref=db.backref('agent_chiffrage__data',  uselist=False),  uselist=False)
     TYPE_EDL = db.Column(db.String) 	
-    DATE_FACTURE = db.Column(db.String) # db.Column(db.DateTime())
+    DATE_FACTURE = db.Column(db.DateTime()) # db.Column(db.DateTime())
     TITREPROPRIO = db.Column(db.String) 		
     NOMPROPRIO = db.Column(db.String) 	
     DATE_FACT_REGLEE = db.Column(db.String) 	
