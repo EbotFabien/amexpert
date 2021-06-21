@@ -72,6 +72,29 @@
                     <hr/>
                      <div class="field is-horizontal">
                         <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.Type.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.Type.errors %}
+                                {{form.Type(class="input is-invalid", value=expert.TYPE) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.Type.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.Type(class="input", value=expert.TYPE)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                     <div class="field is-horizontal">
+                        <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.email.label(class="form-control-label")}}</small></label>
                         </div>
                         <div class="field-body">
@@ -95,20 +118,43 @@
                     <hr/>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.email_perso.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.email_perso.errors %}
+                                {{form.email_perso(class="input is-invalid", value=expert.email_perso) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.email_perso(class="input", value=expert.email_perso)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.Sexe.label(class="form-control-label")}}</small></label>
                         </div>
                         <div class="field-body">
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Sexe.errors %}
-                                {{form.Sexe(class="input is-invalid", value=expert.sexe) }}
+                                {{form.Sexe(class="input is-invalid", value=expert.genre) }}
                             <div class="invalid-feedback">
                                 {% for error in form.Sexe.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Sexe(class="input", value=expert.sexe)}}
+                                    {{form.Sexe(class="input", value=expert.genre)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le sexe est requis</p>
@@ -216,17 +262,40 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.actif_parti.errors %}
-                                {{form.actif_parti(class="input is-invalid", value=expert.actif_parti) }}
+                                {{form.actif_parti(class="input is-invalid", value=history.actif_parti) }}
                             <div class="invalid-feedback">
                                 {% for error in form.actif_parti.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.actif_parti(class="input", value=expert.actif_parti)}}
+                                    {{form.actif_parti(class="input", value=history.actif_parti)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le parti actif est requis</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.mdp.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.mdp.errors %}
+                                {{form.mdp(class="input is-invalid", value=expert.mdp) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.mdp.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.mdp(class="input", value=expert.mdp)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis. </p>
                             </div>
                           </div>
                         </div>
@@ -262,17 +331,40 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.adresse.errors %}
-                                {{form.adresse(class="input is-invalid", value=history.adresse) }}
+                                {{form.adresse(class="input is-invalid", value=history.adresse1) }}
                             <div class="invalid-feedback">
                                 {% for error in form.adresse.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.adresse(class="input", value=history.adresse)}}
+                                    {{form.adresse(class="input", value=history.adresse1)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. La adresse est requis</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.adresse2.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.adresse2.errors %}
+                                {{form.adresse2(class="input is-invalid", value=history.adresse2) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.adresse2.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.adresse2(class="input", value=history.adresse2)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis. </p>
                             </div>
                           </div>
                         </div>
@@ -417,6 +509,52 @@
                     <hr/>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.login_google.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.login_google.errors %}
+                                {{form.login_google(class="input is-invalid", value=history.login_google) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.login_google.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.login_google(class="input", value=history.login_google)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.pwd_google.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.pwd_google.errors %}
+                                {{form.pwd_google(class="input is-invalid", value=history.pwd_google) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.pwd_google.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.pwd_google(class="input", value=history.pwd_google)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.observations_de_suivi.label(class="form-control-label")}}</small></label>
                         </div>
                         <div class="field-body">
@@ -461,7 +599,54 @@
                           </div>
                         </div>
                     <hr/>
-                 
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.date_certification.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.date_certification.errors %}
+                                {{form.date_certification(class="input is-invalid", value=history.date_certification) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date_certification.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.date_certification(class="input", value=history.date_certification)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>                    
+                     <hr/>
+                    
+
+                     <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.date_entree.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!---->
+                              <div class="control">
+                               {% if form.date_entree.errors %}
+                                {{form.date_entree(class="input is-invalid", value=expert.date_entree.strftime('%d. %m. %Y')) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date_entree.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.date_entree(class="input", value=expert.date_entree.strftime('%d. %m. %Y'))}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis.</p>
+                            </div>
+                          </div>
+                        </div>                    
+                     <hr/>                 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal"></div>
                         <div class="field-body">

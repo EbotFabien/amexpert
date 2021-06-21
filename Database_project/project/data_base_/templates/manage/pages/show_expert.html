@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class='columns'>
-	  <div class='container profile'>
+	  <div class='container'>
 	    <div class='section profile-heading'>
 	      <div class='columns is-mobile is-multiline'>
 	        
@@ -31,7 +31,10 @@
 	          </p>
 	        
 	             <p class='tagline'>
-	          <strong>Adresse:</strong> {{history.adresse1}}, <br/> {{history.cp}} {{history.ville}}, {{history.pays}}
+	          <strong>Adresse:</strong> {{history.adresse1}}, <br/>
+			  <strong>CP:</strong> {{history.cp}}, <br/>
+			  <strong>Ville:</strong> {{history.ville}}, <br/>
+			  <strong>Pays:</strong> {{history.pays}}, <br/> 
 	          </p>
 	         
 	        </div>
@@ -44,40 +47,112 @@
 	          	<p class='stat-val'>{{expert.siret}}</p>	          
 	        </div>
 	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Email groupe </p></strong>
-	          	<p class='stat-val'>{{expert.email}}</p>
-	         
+	        	<strong><p class='stat-key'>Email</p></strong>
+	          	<p class='stat-val'>{{expert.email}}</p>	         
 	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>Email perso</p></strong>
+	          	<p class='stat-val'>{{expert.email_perso}}</p>	         
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>actif/parti</p></strong>
+	          	<p class='stat-val'>{{history.actif_parti}}</p>	         
+	        </div>
+	         <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>Secteur</p></strong>
+	          	<p class='stat-val'>{{history.secteur}}</p>	         
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>Trigramme</p></strong>
+	          	<p class='stat-val'>{{expert.trigramme}}</p>	         
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>Code Tva</p></strong>
+	          	<p class='stat-val'>{{expert.code_tva}}</p>	         
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+	        	<strong><p class='stat-key'>Taux Tva</p></strong>
+	          	<p class='stat-val'>{{expert.taux_tva}}</p>	         
+	        </div>
+	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Login Backof</strong></p>
+				<p class='stat-val'>{{history.login_backof}}</p>				
+			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Email perso </p></strong>
-	          	<p class='stat-val'>{{expert.email_perso}}</p>
-	         
-	        </div>
+				<p class='stat-key'><strong>Pwd backof</strong></p>
+				<p class='stat-val'>{{history.pwd_backof}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Login Extranet</strong></p>
+				<p class='stat-val'>{{history.login_extranet}}</p>
+				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>MDP Extranet</strong></p>
+				<p class='stat-val'>{{history.pwd_extranet}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Login Google</strong></p>
+				<p class='stat-val'>{{history.login_google}}</p>
+				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>MDP Google</strong></p>
+				<p class='stat-val'>{{history.pwd_google}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>MDP Gsuite</strong></p>
+				<p class='stat-val'>{{history.pwd_gsuite}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Observations de suivi</strong></p>
+				<p class='stat-val'>{{history.observations_de_suivi}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Type de certification</strong></p>
+				<p class='stat-val'>{{history.type_certification}}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date de certification initial</strong></p>
+				<p class='stat-val'>{% if history.date_certification_initiale == '' %}
+					{{history.date_certification_initiale.strftime('%d. %m. %Y')}}
+             {%endif%}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date de recertification </strong></p>
+				<p class='stat-val'> {% if history.date_renouv_certification == '' %}
+					{{history.date_renouv_certification.strftime('%d. %m. %Y')}}
+             {%endif%}</p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date d'entree</strong></p>
+				<p class='stat-val'> 
+             {{expert.date_entree.strftime('%d. %m. %Y')}}
+             </p>				
+			</div>
+			<div class='column is-2-tablet is-4-mobile has-text-centered'>
+				<p class='stat-key'><strong>Date de sortie</strong></p>
+				<p class='stat-val'> {% if history.date_sortie == '' %}
+             {{history.date_sortie.strftime('%d. %m. %Y')}}
+             {%endif%}</p>				
+			</div>
 	      </div>
 
 	      <div>
-	      	<strong>actif/parti:</strong> <strong><small>{{history.actif_parti}}</small></strong>
-			<p><strong>type_certification: </strong> <small>{{history.type_certification}}</small><br>  
-			<strong>Date certification initiale:</strong> {{history.date_certification_initiale}} <br>
-			<strong>date renouv certification:</strong> {{history.date_renouv_certification}} <br>
-			<strong>trigramme:</strong> {{expert.trigramme}}<br> 
+	      	
+	
+		
+			
 			<strong>Genre:</strong> {{expert.genre}}<br> 
-			<strong>Code TvA:</strong> {{expert.code_tva}}<br>
-			<strong>Taux TVA:</strong> {{expert.taux_tva}}<br> 
-			<strong>Secteur:</strong> {{history.secteur}}<br>
-			<strong>ville:</strong> <small>{{history.ville}}</small> <br>
+			
 	    	<strong>Adresse2 :</strong> <small>{{history.adresse2}}</small> <br> 
-            <strong>Code Postal:</strong> {{history.cp}} <br> 
-            <strong>login_backof:</strong> {{history.login_backof}} <br> 
-            <strong>pwd_backof:</strong> {{history.pwd_backof}} <br>  
-			<strong>Login extranet:</strong> {{history.login_extranet}} <br>
-            <strong>pwd_extranet:</strong> {{history.pwd_extranet}} <br> 
-            <strong>pwd_gsuite:</strong> {{history.pwd_gsuite}} <br> 
-			<strong>Login google:</strong> {{history.login_google}} <br> 
-			<strong>pwd google:</strong> {{history.pwd_google}} <br> 
-            <strong>observations_de_suivi:</strong> {{history.observations_de_suivi}} <br>
-			<strong>DATE ENTREE:</strong> {{expert.date_entree.strftime('%d. %m. %Y')}} <br>
-            <strong>date_historique:</strong> {{history.date.strftime('%d. %m. %Y')}}<br></p>	
+           
+			<strong>date_historique:</strong> {{history.date.strftime('%d. %m. %Y')}}<br>
+            
+           
+            
+         </p>	
+            
 	      </div>
 
 	    </div>

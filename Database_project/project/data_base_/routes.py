@@ -25,6 +25,7 @@ def client():
     db.create_all()
     if current_user.TYPE == "Admin":
         client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
+        history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
         # page = request.args.get('page', 1, type=int)
         #     form_data = request.form
         #     order = request.form.get('order')
@@ -39,7 +40,7 @@ def client():
         #     client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         # else:
         #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        return render_template('manage/pages/client.html',cli_ent=client_,legend="client", highlight='client')
+        return render_template('manage/pages/client.html',cli_ent=zip(client_,history),legend="client", highlight='client')
     return redirect(url_for('users.main'))
  
 @users.route('/ajouter/client',methods=['GET','POST'])
@@ -161,7 +162,7 @@ def edit_client(id):
 def update_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
-        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse'] :
+        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse1'] :
             client_check=Client_History(client_id=id)
             db.session.add(client_check)
             db.session.commit()
@@ -169,15 +170,19 @@ def update_client(id):
             client_history.ville = request.form['Ville']
             client_history.pays = request.form['Pays']
             client_history.cp = request.form['CP']
-            client_history.adresse = request.form['Adresse']
+            client_history.adresse1 = request.form['Adresse1']
+            client_history.adresse2 = request.form['Adresse2']
             db.session.commit()
             
 
         client.email = request.form['email']
+        client.siret = request.form['email']
         client.societe = request.form['Societe']
         client.numero = request.form['Numero']
         client.sexe = request.form['Sexe']
         client.TYPE = request.form['Type']
+        client.enseigne = request.form['Enseigne']
+        client.etat_client = request.form['EtatClient']
         client.nom = request.form['NOM']
         db.session.commit()
         flash(f'Informations client modifiées','success')
@@ -791,16 +796,25 @@ def update_expert(id):
             expert_history.login_backof = request.form['login_backof']
             expert_history.pwd_backof = request.form['pwd_backof']
             
-            expert_history.adresse = request.form['adresse']
+            expert_history.adresse1 = request.form['adresse']
+            expert_history.adresse2 = request.form['adresse2']
             expert_history.login_extranet = request.form['login_extranet']
             expert_history.pwd_extranet = request.form['pwd_extranet']
+            expert_history.date_certification = request.form['pwd_extranet']
             
-            expert_history.pwd_gsuite = request.form['pwd_gsuite']
+            expert_history.date_certification_initiale = request.form['date_certification']
+
             expert_history.observations_de_suivi = request.form['observations_de_suivi']
+            if  request.form['type_certification'] != "None" or "Nan":
+                expert_history.date_renouv_certification= expert_history.date
+                db.session.commit()
             
+            if request.form['mdp']:
+                expert_history.date_sortie = request.form['date_sortie']
+
             db.session.commit()
       
-        expert.sexe= request.form['Sexe']
+        expert.genre= request.form['Sexe']
         expert.nom = request.form['username']
         expert.numero = request.form['Numero']
         expert.email = request.form['email']
@@ -1399,8 +1413,9 @@ def update_negotiateur(id):
 def prospect_():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).paginate(page=page, per_page=10)
-        return render_template('manage/pages/prospect.html',Client=client_,legend="client", highlight='prospect')
+        client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
+        history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
+        return render_template('manage/pages/prospect.html',Client=zip(client_,history),legend="client", highlight='prospect')
 
     
     return redirect(url_for('users.main'))

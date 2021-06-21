@@ -1,6 +1,6 @@
 from Database_project.project.data_base_ import db
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
 import xlrd
 import openpyxl
 import pandas as pd
@@ -521,7 +521,7 @@ def insert_client(loc):
                         except:
                             print('ei choke')
                         history=Client_History(client_id=client.id,adresse1=str(f),adresse2=str(g),cp=str(h),ville=str(i),
-                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE")
+                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE",etat_client=str(a))
                         
                         
                         if type(v) == str :#check
@@ -655,9 +655,9 @@ def insert_client(loc):
                             cli=prospect.query.filter(and_(prospect.reference==str(ca),prospect.societe==str(b))).first() #check by reference number,societe, and nom
                         if cli is None:'''
                         try:
-                            client=prospect(TYPE=a,societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l))#,date_creation=e
+                            client=prospect(TYPE=a,societe=str(b),titre=str(c),nom=str(d.lower()),siret=str(l),numero=str(bet),email=str(bat))#,date_creation=e
                         except:
-                            client=prospect(TYPE=a,societe=str(b),titre=str(c),siret=str(l))#,date_creation=e
+                            client=prospect(TYPE=a,societe=str(b),titre=str(c),siret=str(l),numero=str(bet),email=str(bat))#,date_creation=e
                         db.session.add(client)
                         db.session.commit()   
                         if type(ca) != float :
@@ -670,8 +670,15 @@ def insert_client(loc):
                             db.session.commit()
                         except:
                             print('ei choke')
-                        history=prospect_History(prospect=str(client.id),adresse=str(f),cp=str(h),ville=str(i))
+                        history=prospect_History(prospect=str(client.id),adresse=str(f),cp=str(h),ville=str(i),login_extranet=str(j),mpd_extranet=str(k),pays="France",etat_client=str(a))
                         db.session.add(history)
+                        db.session.commit()
+
+                        if type(v) == str :#check
+                            
+                            suivi =suivi_prospect(client.id,str(rC),str(v))
+                            db.session.add(suivi)
+                        
                         db.session.commit()
 
                         #else:
@@ -705,7 +712,7 @@ def insert_client(loc):
                         except:
                             print('ei choke')
                         history=Client_History(client_id=client.id,adresse1=str(f),adresse2=str(g),cp=str(h),ville=str(i),
-                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE")
+                        login_extranet=str(j),mpd_extranet=str(k),pays="FRANCE",etat_client=str(a))
                         
                         
                         if type(v) == str :#check
@@ -1230,48 +1237,53 @@ def fix_mission():
             B=i.CODE_FACTURATION[0:-1] 
             i.CODE_FACTURATION = B
             db.session.commit()
-        
-        
-        if i.TYPE_LOGEMENT[-1] == ' ':
-            print( i.TYPE_LOGEMENT)
-            B=i.TYPE_LOGEMENT[0:-1] 
-            i.TYPE_LOGEMENT = B
-            db.session.commit()
-
-
-        if i.TYPE_LOGEMENT[-1] == 'M':
-            print(i.TYPE_LOGEMENT)
-            i.CODE_FACTURATION[2:5] == 150
-            print(i.CODE_FACTURATION)
-            B=i.TYPE_LOGEMENT[0:-1] 
-            i.TYPE_LOGEMENT = B
-            print(i.TYPE_LOGEMENT)
-            db.session.commit()
-
-        if i.TYPE_LOGEMENT[-2:] != i.CODE_FACTURATION[-2:]  :
-            i.Anomalie = True
-            i.reason = "Anomalie non bloquante traite en  "+str(i.TYPE_LOGEMENT[-2:])
-            db.session.commit()
 
         if i.CODE_FACTURATION[-2:] == "00" or  i.CODE_FACTURATION[-2:] == "50" :
-            i.Anomalie = False
-            i.reason = None
-            db.session.commit()
-
-        if len(i.TYPE_LOGEMENT[0:4]) < 3 :
-            if len(i.TYPE_LOGEMENT[0:2]) == 2:
-                if i.TYPE_LOGEMENT[0] == "T":
-                    B="PAV-"+str(i.TYPE_LOGEMENT) 
-                    i.TYPE_LOGEMENT = B
-                    db.session.commit()
-                if i.TYPE_LOGEMENT[0] == "F":
-                    B="APPT-"+str(i.TYPE_LOGEMENT)
-                    i.TYPE_LOGEMENT = B
-                    db.session.commit() 
-            else:
-                i.coherent = False 
-                i.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(i.TYPE_LOGEMENT)
+                i.Anomalie = False
+                i.reason = None
                 db.session.commit()
+        
+        try:
+            if i.TYPE_LOGEMENT[-1] == ' ':
+                print( i.TYPE_LOGEMENT)
+                B=i.TYPE_LOGEMENT[0:-1] 
+                i.TYPE_LOGEMENT = B
+                db.session.commit()
+
+
+            if i.TYPE_LOGEMENT[-1] == 'M':
+                print(i.TYPE_LOGEMENT)
+                i.CODE_FACTURATION[2:5] == 150
+                print(i.CODE_FACTURATION)
+                B=i.TYPE_LOGEMENT[0:-1] 
+                i.TYPE_LOGEMENT = B
+                print(i.TYPE_LOGEMENT)
+                db.session.commit()
+
+            if i.TYPE_LOGEMENT[-2:] != i.CODE_FACTURATION[-2:]  :
+                i.Anomalie = True
+                i.reason = "Anomalie non bloquante traite en  "+str(i.TYPE_LOGEMENT[-2:])
+                db.session.commit()
+
+            
+
+            if len(i.TYPE_LOGEMENT[0:4]) < 3 :
+                if len(i.TYPE_LOGEMENT[0:2]) == 2:
+                    if i.TYPE_LOGEMENT[0] == "T":
+                        B="PAV-"+str(i.TYPE_LOGEMENT) 
+                        i.TYPE_LOGEMENT = B
+                        db.session.commit()
+                    if i.TYPE_LOGEMENT[0] == "F":
+                        B="APPT-"+str(i.TYPE_LOGEMENT)
+                        i.TYPE_LOGEMENT = B
+                        db.session.commit() 
+                else:
+                    i.coherent = False 
+                    i.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(i.TYPE_LOGEMENT)
+                    db.session.commit()
+            
+        except:
+            print('ok')
         
 
 
@@ -1396,7 +1408,7 @@ def Missions2(loc):
             db.session.add(mission)
             db.session.commit()
         else:
-            reference.append(sheet["B"][i].value)# make a table for historique des donnees 
+            reference.append(vii)# make a table for historique des donnees 
             print(reference)
 
 

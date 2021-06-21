@@ -97,7 +97,7 @@ class Client_History(db.Model):
     client_id = db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   	
     adresse1  = db.Column(db.String)
     adresse2 = db.Column(db.String)
-    etat_client=db.Column(db.Boolean,default=True)
+    etat_client=db.Column(db.String)
     cp 	 = db.Column(db.String)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
@@ -237,7 +237,9 @@ class prospect_History(db.Model):
     cp 	 = db.Column(db.String)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
-    etat_client=db.Column(db.String,default=True)
+    etat_client=db.Column(db.String)
+    login_extranet= db.Column(db.String)
+    mpd_extranet = db.Column(db.String)
     date =db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
 
@@ -333,8 +335,8 @@ class Expert_History(db.Model):
     actif_parti=db.Column(db.String)
     secteur=db.Column(db.String)
     type_certification=db.Column(db.String)
-    date_certification_initiale=db.Column(db.String)
-    date_renouv_certification=db.Column(db.String)
+    date_certification_initiale=db.Column(db.String)#check this
+    date_renouv_certification=db.Column(db.String)#check this
     adresse1 = db.Column(db.String)
     adresse2 = db.Column(db.String)
     cp=db.Column(db.String)

@@ -10,12 +10,6 @@
         <div class="box" style="  width: -webkit-fill-available;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
-              <span class="icon is-small is-right">
-                <i class="fas fa-search"></i>  
-              </span>
-            </div>
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
              {% with messages = get_flashed_messages(with_categories=true)%}
@@ -32,26 +26,48 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Reference</th>
+                    <th>Siret</th>
                     <th scope="col">Type</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">L'ensigne</th>
+                    <th scope="col">L'enseigne</th>
+                    <th>Societé</th>
                     <th scope="col">Email</th>
                     <th scope="col">Tel</th>
+                    <th>Adresse</th>
+                    <th>Code Postal</th>
+                    <th>Ville</th>
+                    <th>Pays</th>
+                   
+                    <th>Etats Client</th>
+                    <th>Login extranet</th>
+                    <th>Mdp extranet</th>
+                    <th>Date creation</th>
                     <th></th>
                     <th></th>
                     <th></th>
                 </tr>
                 </thead>                    
             <tbody>
-                {%for client_ in Client.items %}
+                {%for client_,history in Client %}
                     <tr>
                         <th scope="row">{{client_.id}}</th>
                         <td>{{client_.reference}}</td>
+                        <td>{{client_.siret}}</td>
                         <td>{{client_.TYPE}}</td>
-                        <td> {{client_.nom }}</td>
+                        <td>{{client_.titre}} {{client_.nom }}</td>
                         <td>{{client_.enseigne}}</td>
+                        <td>{{client_.societe}}</td>
                         <td>{{client_.email }}</td>
                         <td>{{client_.numero}}</td>
+                        <td>{{history.adresse}}</td>
+                        <td>{{history.code_postal}}</td>
+                        <td>{{history.ville}}</td>
+                        <td>{{history.pays}}</td>
+                     
+                        <td>{{history.etat_client}}</td>
+                        <td>{{client_.date_creation.strftime('%d. %m. %Y')}}</td>
+                        <td>{{history.login_extranet}}</td>
+                        <td>{{history.mdp_extranet}}</td>
                         <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                         <td style="">
                             <a href="{{url_for('users.show_prospect', id=client_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
@@ -63,43 +79,7 @@
           </table>
           </div>
           <!-- Pagination Links-->
-          <div style="display: flex; justify-content: space-between;">
-             <p class="text-right mt-3">
-               Afficher la page {{ Client.page }} sur {{ Client.pages }}
-            </p>        
-            <div class="text-right pagination">
-                <a href="{{ url_for('users.prospect_', page=Client.prev_num) }}"
-                   class="btn btn-outline-dark 
-                   {% if Client.page == 1 %}disabled{% endif %}">
-                    &laquo;
-                </a>
-            <!-- Loop through the number of pages to display a link for each-->
-                {% for page_num in Client.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-            {% if page_num %}
-            <!-- Check for the active page and set the link to "Active"-->
-                        {% if Client.page == page_num %}
-                        <a href="{{ url_for('users.prospect_', page=page_num) }}"
-                           class="is-current pagination-link">
-                            {{ page_num }}
-                        </a>
-                        {% else %}
-                        <a href="{{ url_for('users.prospect_', page=page_num) }}"
-                           class="btn pagination-link">
-                            {{ page_num }}
-                        </a>
-                        {% endif %}
-                    {% else %}
-                        ...
-                    {% endif %}
-                {% endfor %}
-                <a href="{{ url_for('users.prospect_', page=Client.next_num) }}"
-                   class="btn btn-outline-dark 
-                   {% if Client.page == Client.pages %}disabled{% endif %}">
-                    &raquo;
-                </a>
-            </div>
-           
-        </div>
+          
         </div>                  
     </section>
 </div>

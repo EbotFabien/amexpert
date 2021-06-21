@@ -24,7 +24,7 @@
             {% endwith %}
             <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
 	                    <thead class="">
-	                	<tr>
+	                	<tr>    <th scope="col">ID</th>
                             <th scope="col">Reference BAILLEUR</th>  	 
                             <th scope="col">ID CONCESS</th>	  
                             <th scope="col">DATE EDL REALISE</th>  	
@@ -37,7 +37,8 @@
 	            	</thead>
 		            <tbody>
 		                {%for mission_ in Mission %}
-		                    <tr>
+		                    <tr>    
+                                <td>{{mission_.id}}</td> 
                                 <td>{{mission_.Bailleur__data.reference}}</td>     	   
                                 <td>{{mission_.AS__data.nom}}</td> 	  
                                 <td>
