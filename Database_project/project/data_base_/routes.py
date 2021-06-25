@@ -2,7 +2,7 @@ from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
 from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from Database_project.project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
@@ -1484,7 +1484,7 @@ def edit_prospect(id):
 def update_prospect(id):
     if current_user.TYPE == "Admin":
         client = prospect.query.filter_by(id=id).first_or_404()
-        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse'] :
+        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse1'] :
             client_check=prospect_History(prospect=id)
             db.session.add(client_check)
             db.session.commit()
@@ -1492,13 +1492,18 @@ def update_prospect(id):
             client_history.ville = request.form['Ville']
             client_history.pays = request.form['Pays']
             client_history.cp = request.form['CP']
-            client_history.adresse = request.form['Adresse']
+            client_history.adresse1 = request.form['Adresse1']
+            client_history.adresse2 = request.form['Adresse2']
+            client_history.login_extranet = request.form['LoginExtranet']
+            client_history.mpd_extranet = request.form['MdpExtranet']
+            client_history.etat_client = request.form['EtatClient']
             db.session.commit()
         client.email = request.form['email']
-        #client.siret = request.form['Siret']
+        client.siret = request.form['Siret']
         client.societe = request.form['Societe']
+        client.enseigne = request.form['Enseigne']
         client.numero = request.form['Numero']
-        client.sexe = request.form['Sexe']
+        client.titre = request.form['Sexe']
         client.TYPE = request.form['Type']
         client.nom = request.form['NOM']
         
@@ -1645,9 +1650,10 @@ def uploader_():
                     flash(f"Fichier incorrect",'warning')
                     return redirect(url_for('users.up'))
             if table == 'mission':
-                Missions(loc)
-
-            # save the file
+                Missions1(loc)
+                #Missions2(loc)
+               
+            # save the file1362
             #expert__(loc)
             #insert_client('professionnel',loc)
            # insert_client('Locataire',loc)

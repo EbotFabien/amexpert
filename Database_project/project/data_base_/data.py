@@ -5,6 +5,7 @@ import xlrd
 import openpyxl
 import pandas as pd
 from sqlalchemy import or_, and_
+import datetime
 
 def checktarif(a,p,c):
     taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
@@ -1005,15 +1006,18 @@ def expert__(loc):
 
 def Missions(loc):
     
+    print('ok')
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
-    sheet=wb_obj.active
-    
+    print(wb_obj.sheetnames)
+    sheet=wb_obj['Sheet1']
+    print(sheet)
     reference=[]
     Nom=[]
+    num=[]
     
     for i in range(1,sheet.max_row):
         
-        
+        print(sheet["I"][i].value)
         cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
         if cli is None:
             cli=Client.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
@@ -1210,38 +1214,46 @@ def Missions(loc):
             ID_Agent_saisie_Cell_Planif  = ASCP,
                   
             POURCENTAGE_Agent_saisie_CEll_planif  = sheet["CG"][i].value )
-
             db.session.add(mission)
             db.session.commit()
+            
         else:
 
             Nom.append(sheet["D"][i].value.lower())
-            reference.append(int(sheet["A"][i].value))# make a table for historique des donnees 
+            num.append(i)
+            reference.append((sheet["A"][i].value))# make a table for historique des donnees 
             print(reference)
             print(Nom)
+            print(num)
         
 
 def fix_mission():
     mission=Mission.query.all()
     for i in mission:
-        if i.CODE_FACTURATION[-1]=='M':
-            print(i.CODE_FACTURATION)
-            i.CODE_FACTURATION[2:5] == 150
-            A=i.CODE_FACTURATION[0:-1]
-            i.CODE_FACTURATION = A
-            print(i.CODE_FACTURATION)
-            db.session.commit()
-
-        if i.CODE_FACTURATION[-1] == ' ':
-            print( i.CODE_FACTURATION)
-            B=i.CODE_FACTURATION[0:-1] 
-            i.CODE_FACTURATION = B
-            db.session.commit()
-
-        if i.CODE_FACTURATION[-2:] == "00" or  i.CODE_FACTURATION[-2:] == "50" :
-                i.Anomalie = False
-                i.reason = None
+        try:
+            if i.CODE_FACTURATION[-1]=='M':
+                print(i.CODE_FACTURATION)
+                i.CODE_FACTURATION[2:5] == 150
+                A=i.CODE_FACTURATION[0:-1]
+                i.CODE_FACTURATION = A
+                print(i.CODE_FACTURATION)
                 db.session.commit()
+
+            if i.CODE_FACTURATION[-1] == ' ':
+                print( i.CODE_FACTURATION)
+                B=i.CODE_FACTURATION[0:-1] 
+                i.CODE_FACTURATION = B
+                db.session.commit()
+
+            if i.CODE_FACTURATION[-2:] == "00" or  i.CODE_FACTURATION[-2:] == "50" :
+                    i.Anomalie = False
+                    i.reason = None
+                    db.session.commit()
+        except:
+            i.coherent = False
+            i.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+            print(i)
+            db.session.commit()
         
         try:
             if i.TYPE_LOGEMENT[-1] == ' ':
@@ -1283,7 +1295,9 @@ def fix_mission():
                     db.session.commit()
             
         except:
-            print('ok')
+            i.coherent = False
+            i.reason = "Anomalie bloquante codification du type de logement incorrect "
+            db.session.commit()
         
 
 
@@ -1292,8 +1306,16 @@ def reset():
     db.session.commit()
     #for i in mission:
         #i.NRO_FACTURE = None
-       # db.session.commit()
-       # print('o')
+       # db.session.commit()[None]
+#['bertay fabrice']
+#[1362]
+#[None, 120252]
+##['bertay fabrice', 'detoc olivier et latitia']
+#[1362, 1365]
+#[None, 120252, 108746]
+#['bertay fabrice', 'detoc olivier et latitia', 'boivin - champeaux']
+#[1362, 1365, 1836]
+       # print('o')Histo4723l_22091-22556
 
 def Base(loc):
     wb_obj = openpyxl.load_workbook(loc)
@@ -1322,7 +1344,7 @@ def Base(loc):
 def Missions2(loc):
     
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
-    sheet=wb_obj.active
+    sheet=wb_obj['26']
     
     reference=[]
     
@@ -1341,45 +1363,45 @@ def Missions2(loc):
           
             DATE_REALISE_EDL =sheet["M"][i].value , 	
             ID_INTERV = 0 ,
-            NRO_FACTURE = sheet["I"][i].value ,
-            PRIX_HT_EDL = sheet["N"][i].value ,
-            TVA_EDL = sheet["O"][i].value ,
-            PRIX_TTC_EDL = sheet["P"][i].value ,
-            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
-            Adresse1_Bien	 = sheet["V"][i].value ,  
-            Adresse2_Bien	 = sheet["W"][i].value , 
-            CP_Bien	 = sheet["X"][i].value ,  
-            Ville_Bien	 = sheet["Y"][i].value , 
+            NRO_FACTURE = sheet["I"] ,
+            PRIX_HT_EDL = sheet["N"] ,
+            TVA_EDL = sheet["O"] ,
+            PRIX_TTC_EDL = sheet["P"] ,
+            Reference_LOCATAIRE	 =  sheet["U"] ,
+            Adresse1_Bien	 = sheet["V"] ,  
+            Adresse2_Bien	 = sheet["W"] , 
+            CP_Bien	 = sheet["X"] ,  
+            Ville_Bien	 = sheet["Y"] , 
             
-            CA_HT_AS = sheet["Z"][i].value , 	
-            TVA_AS	 = sheet["AA"][i].value , 
-            CA_TTC_AS = sheet["AB"][i].value , 	
-            CA_HT_AC = sheet["AC"][i].value , 	
-            CA_TTC_AC	 = sheet["AD"][i].value , 
-            CA_HT_TRUST	 = sheet["AE"][i].value , 
-            TVA_TRUST	 = sheet["AF"][i].value ,
-            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
-            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
-            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
-            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
+            CA_HT_AS = sheet["Z"] , 	
+            TVA_AS	 = sheet["AA"] , 
+            CA_TTC_AS = sheet["AB"] , 	
+            CA_HT_AC = sheet["AC"] , 	
+            CA_TTC_AC	 = sheet["AD"] , 
+            CA_HT_TRUST	 = sheet["AE"] , 
+            TVA_TRUST	 = sheet["AF"] ,
+            Prix_ht_chiffrage	 = sheet["AH"] , 
+            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"] ,
+            POURCENTAGE_AS_chiffrage = sheet["AJ"] ,	
+            POURCENTAGE_manager_chiffrage  = sheet["AK"] , 	
             ID_manager_chiffrage  = 0 ,
                 
-            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
+            POURCENTAGE_agent_chiffrage = sheet["AM"] ,	
             ID_agent_chiffrage  = 0 ,	
             
-            TYPE_EDL = sheet["AO"][i].value ,	
-            TITREPROPRIO = sheet["AQ"][i].value , 		
-            NOMPROPRIO = sheet["AR"][i].value , 	
-            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
-            TYPE_LOGEMENT = sheet["AX"][i].value , 	
-            CODE_AMEXPERT = sheet["BB"][i].value , 	
-            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
-            LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
-            CODE_FACTURATION = sheet["BI"][i].value , 	
-            TYPE_DE_BIEN = sheet["BJ"][i].value , 	
-            surface_logement1 = sheet["BK"][i].value , 		
-            DATE_FACTURE = sheet["I"][i].value , 	
-            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
+            TYPE_EDL = sheet["AO"] ,	
+            TITREPROPRIO = sheet["AQ"] , 		
+            NOMPROPRIO = sheet["AR"] , 	
+            DATE_FACT_REGLEE = sheet["AS"] ,	
+            TYPE_LOGEMENT = sheet["AX"] , 	
+            CODE_AMEXPERT = sheet["BB"] , 	
+            COMMENTAIRE_FACTURE = sheet["BC"] , 	
+            LOGEMENT_MEUBLE =sheet["BH"] , 	
+            CODE_FACTURATION = sheet["BI"] , 	
+            TYPE_DE_BIEN = sheet["BJ"] , 	
+            surface_logement1 = sheet["BK"] , 		
+            DATE_FACTURE = sheet["I"] , 	
+            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"] , 	
             ID_Respon_Cell_Dev	 =0 ,
             
            
@@ -1404,9 +1426,78 @@ def Missions2(loc):
             ID_Agent_saisie_Cell_Planif  = 0
                   
              )
-
             db.session.add(mission)
             db.session.commit()
+            try:
+                if mission.CODE_FACTURATION[-1]=='M':
+                    print(mission.CODE_FACTURATION)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    A=mission.CODE_FACTURATION[0:-1]
+                    mission.CODE_FACTURATION = A
+                    print(mission.CODE_FACTURATION)
+                    db.session.commit()
+
+                if mission.CODE_FACTURATION[-1] == ' ':
+                    print( mission.CODE_FACTURATION)
+                    B=mission.CODE_FACTURATION[0:-1] 
+                    mission.CODE_FACTURATION = B
+                    db.session.commit()
+
+                if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
+                        mission.Anomalie = False
+                        mission.reason = None
+                        db.session.commit()
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+                print(mission)
+                db.session.commit()
+            
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                    print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                    print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
+                
+            
         else:
             reference.append(vii)# make a table for historique des donnees 
             print(reference)
@@ -1416,8 +1507,230 @@ def Missions2(loc):
 
 
 
+def Missions1(loc):
+    wb = xlrd.open_workbook(loc)
 
+    sheet = wb.sheet_by_index(0)
+    reference=[]
+    Nom=[]
+    num=[]
 
+    rows=int(sheet.nrows)+1
+    sheet.cell_value(0, 0)
+    print('ok')
+    for i in range(0,rows):
+        name=sheet.row_values(i+1)
+        try:
+            cli=Client.query.filter_by(reference=str(int(name[0]))).first()
+        except:
+            cli=None
+        if cli is None:
+            cli=Client.query.filter_by(nom=str(name[3]).lower()).first()
+        if name[11] is None:
+            SA=0
+        else:
+            AS=Expert.query.filter_by(nom=str(name[11].lower())).first()
+            if AS is not None:
+                SA= AS.id
+            if AS is None :
+                SA= 0
+        if name[17] is None:
+            IV=0
+        else:
+            INTERV=Expert.query.filter_by(nom=str(name[17].lower())).first()
+            if INTERV is not None:
+                IV= INTERV.id
+            if INTERV is None  :
+                IV= 0
+        if name[37] is None:
+            MC=0
+        else:
+            M_C=Expert.query.filter_by(nom=str(name[37].lower())).first()
+            if M_C is not None:
+                MC= M_C.id
+            if M_C is None  :
+                MC= 0
+        if name[39] is None:
+            AC=0
+        else:
+            A_C=Expert.query.filter_by(nom=str(name[39].lower())).first()
+            if A_C is not None:
+                AC= A_C.id
+            if A_C is None  :
+                AC= 0
+
+        if name[69] is None:
+            RCD=0
+        else:
+            R_CD=Expert.query.filter_by(nom=str(name[69].lower())).first()
+            if R_CD is not None:
+                RCD= R_CD.id
+            if R_CD is None  :
+                RCD= 0
+
+        if name[71] is None:
+            ACD=0
+        else:
+            A_CD=Expert.query.filter_by(nom=str(name[71].lower())).first()
+            if A_CD is not None:
+                ACD= A_CD.id
+            if A_CD is None  :
+                ACD= 0
+
+        if name[73] is None:
+            ACT=0
+        else:
+            A_CT=Expert.query.filter_by(nom=str(name[73].lower())).first()
+            if A_CT is not None:
+                ACT= A_CT.id
+            if A_CT is None  :
+                ACT= 0
+
+        if name[75] is None:
+            RCT=0
+        else:
+            R_CT=Expert.query.filter_by(nom=str(name[75].lower())).first()
+            if R_CT is not None:
+                RCT= R_CT.id
+            if R_CT is None  :
+                RCT= 0
+
+        if name[77] is None:
+            SCT=0
+        else:
+            S_CT=Expert.query.filter_by(nom=str(name[77].lower())).first()
+            if S_CT is not None:
+                SCT= S_CT.id
+            if S_CT is None  :
+                SCT= 0
+
+        if name[79] is None:
+            RCP=0
+        else:
+            R_CP=Expert.query.filter_by(nom=str(name[79].lower())).first()
+            if R_CP is not None:
+                RCP= R_CP.id
+            if R_CP is None  :
+                RCP= 0
+
+        if name[81] is None:
+            SCP=0
+        else:
+            S_CP=Expert.query.filter_by(nom=str(name[81].lower())).first()
+            if S_CP is not None:
+                SCP= S_CP.id
+            if S_CP is None  :
+                SCP= 0
+
+        if name[83] is None:
+            ASCP=0
+        else:
+            AS_CP=Expert.query.filter_by(nom=str(name[83].lower())).first()
+            if AS_CP is not None:
+                ASCP= AS_CP.id
+            if AS_CP is None  :
+                ASCP= 0
+
+        if cli:
+            mission=Mission(Reference_BAILLEUR=cli.id,
+           # old=sheet["A"],
+            ABONNEMENT	 = name[9] ,
+            ID_AS	 = SA ,
+        
+          
+             	
+            ID_INTERV = IV ,
+            NRO_FACTURE = name[8]  ,
+            PRIX_HT_EDL = name[13] ,
+            TVA_EDL = name[14] ,
+            PRIX_TTC_EDL = name[15] ,
+            Reference_LOCATAIRE	 =  name[20] ,
+            Adresse1_Bien	 = name[21] ,  
+            Adresse2_Bien	 = name[22] , 
+            CP_Bien	 = name[23] ,  
+            Ville_Bien	 = name[24] , 
+            
+            CA_HT_AS = name[25] , 	
+            TVA_AS	 = name[26] , 
+            CA_TTC_AS = name[27] , 	
+            CA_HT_AC = name[28] , 	
+            CA_TTC_AC	 = name[29] , 
+            CA_HT_TRUST	 = name[30] , 
+            TVA_TRUST	 = name[31] ,
+            Prix_ht_chiffrage	 = name[33] , 
+            POURCENTAGE_suiveur_chiffrage	 = name[34] ,
+            POURCENTAGE_AS_chiffrage = name[35] ,	
+            POURCENTAGE_manager_chiffrage  = name[36] , 	
+            ID_manager_chiffrage  = MC ,
+                
+            POURCENTAGE_agent_chiffrage = name[38] ,	
+            ID_agent_chiffrage  = AC ,	
+            
+            TYPE_EDL = name[40] ,	
+            TITREPROPRIO = name[42] , 		
+            NOMPROPRIO = name[43] , 		
+            TYPE_LOGEMENT = name[27] , 	
+            CODE_AMEXPERT = name[34] , 	
+            COMMENTAIRE_FACTURE = name[54] , 	
+            LOGEMENT_MEUBLE =name[59] , 	
+            CODE_FACTURATION = name[60] , 	
+            TYPE_DE_BIEN = name[61] , 	
+            surface_logement1 = name[62] , 		 	
+            POURCENTAGE_COM_AS_DU_CLIENT = name[68] , 	
+            ID_Respon_Cell_Dev	 =RCD ,
+            
+            POURCENTAGE_Respon_Cell_Dev = name[70] , 	
+            ID_agent_Cell_Dev = ACD, 	
+            
+            POURCENTAGE_Agent_Cell_Dev = name[72] ,	
+            ID_Agent_CellTech = ACT,  	
+            
+            POURCENTAGE_Agent_Cell_Tech = name[74] , 	
+            ID_Respon_Cell_Tech = RCT, #######
+                
+            POURCENTAGE_Respon_Cell_Tech = name[76] ,	
+            ID_Suiveur_Cell_Tech  = SCT ,
+            
+            POURCENTAGE_Suiveur_Cell_Tech	 = name[78] , 
+            ID_Respon_Cell_Planif = RCP,
+            
+            POURCENTAGE_Respon_Cell_Planif  = name[80] ,
+            ID_Suiveur_Cell_Planif  = SCP,
+            
+            POURCENTAGE_Suiveur_Cell_Planif	 = name[82] , 
+            ID_Agent_saisie_Cell_Planif  = ASCP,
+                  
+            POURCENTAGE_Agent_saisie_CEll_planif  = name[84] )
+            db.session.add(mission)
+            db.session.commit()
+            try:
+                mission.DATE_FACTURE = datetime.datetime(*xlrd.xldate_as_tuple(name[41], wb.datemode))
+                db.session.commit()
+            except:
+                mission.DATE_FACTURE=None
+                db.session.commit()
+            try:
+                mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
+                db.session.commit()
+            except:
+                mission.DATE_FACT_REGLEE=None
+                db.session.commit()
+            try:
+                mission.DATE_REALISE_EDL =datetime.datetime(*xlrd.xldate_as_tuple(name[12], wb.datemode)) 
+                db.session.commit()
+            except:
+                mission.DATE_REALISE_EDL=None
+                db.session.commit()
+
+            
+        else:
+
+            Nom.append(name[3].lower())
+            num.append(i)
+            reference.append((name[0]))# make a table for historique des donnees 
+            print(reference)
+            print(Nom)
+            print(num)
 
 
 
