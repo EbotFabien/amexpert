@@ -1,7 +1,7 @@
 from Database_project.project.data_base_ import db
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
-import xlrd
+import xlrd,xlwt
 import openpyxl
 import pandas as pd
 from sqlalchemy import or_, and_
@@ -1504,22 +1504,40 @@ def Missions2(loc):
 
 
 
+def failed(av):
+    ba=[]
+    v=0
+    for oo in av:
+        tr=len(oo)
+    for i in range(0,tr):
+        ba.append(i)
+    wb = xlwt.Workbook()
+    style1 = xlwt.easyxf(num_format_str='D-MMM-YY')
+    ws = wb.add_sheet('Anomalie')
+    for oo in av:
+            for q,i in zip(ba,oo) :
+                ws.write(v, q, i,style1)
+            v=v+1
+    wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
 
-
+def date_(floa,date):
+        try:
+            v=datetime.datetime(*xlrd.xldate_as_tuple(floa,date))
+            return v
+        except:
+            return floa
 
 def Missions1(loc):
     wb = xlrd.open_workbook(loc)
 
     sheet = wb.sheet_by_index(0)
-    reference=[]
-    Nom=[]
-    num=[]
+    missions_=[]
 
-    rows=int(sheet.nrows)+1
+    rows=int(sheet.nrows)
     sheet.cell_value(0, 0)
     print('ok')
     for i in range(0,rows):
-        name=sheet.row_values(i+1)
+        name=sheet.row_values(i)
         try:
             cli=Client.query.filter_by(reference=str(int(name[0]))).first()
         except:
@@ -1632,6 +1650,7 @@ def Missions1(loc):
                 ASCP= 0
 
         if cli:
+               
             mission=Mission(Reference_BAILLEUR=cli.id,
            # old=sheet["A"],
             ABONNEMENT	 = name[9] ,
@@ -1701,36 +1720,47 @@ def Missions1(loc):
             ID_Agent_saisie_Cell_Planif  = ASCP,
                   
             POURCENTAGE_Agent_saisie_CEll_planif  = name[84] )
-            db.session.add(mission)
-            db.session.commit()
+            #db.session.add(mission)
+            #db.session.commit()
             try:
                 mission.DATE_FACTURE = datetime.datetime(*xlrd.xldate_as_tuple(name[41], wb.datemode))
-                db.session.commit()
+                #db.session.commit()
             except:
                 mission.DATE_FACTURE=None
-                db.session.commit()
+                #db.session.commit()
             try:
                 mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
-                db.session.commit()
+                #db.session.commit()
             except:
                 mission.DATE_FACT_REGLEE=None
-                db.session.commit()
+                #db.session.commit()
             try:
                 mission.DATE_REALISE_EDL =datetime.datetime(*xlrd.xldate_as_tuple(name[12], wb.datemode)) 
-                db.session.commit()
+                #db.session.commit()
             except:
                 mission.DATE_REALISE_EDL=None
-                db.session.commit()
+                #db.session.commit()
 
             
         else:
 
-            Nom.append(name[3].lower())
-            num.append(i)
-            reference.append((name[0]))# make a table for historique des donnees 
-            print(reference)
-            print(Nom)
-            print(num)
+            missions_.append([name[0],name[1],name[2],name[3],name[4],name[5],name[6],name[7],
+            name[8],name[9],name[10],name[11],date_(name[12],wb.datemode)
+            ,name[14],name[15],name[16],
+            name[17],name[18],name[19],name[20],name[21],name[22],name[23],name[24],
+            name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],
+            name[33],name[34],name[35],name[36],name[37],name[38],name[39],name[40],
+                date_(name[41],wb.datemode),name[42],
+            name[43],date_(name[44],wb.datemode),
+            name[45],name[46],name[47],name[48],
+                name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],
+                name[57],name[58],name[59],name[60],name[61],name[62],name[63],name[64],
+                name[65],name[66],name[67],name[68],name[69],name[70],name[71],name[72],
+                name[73],name[74],name[75],name[76],name[77],name[78],name[79],name[80],
+                    name[81],name[82],name[83],name[84]])
+    print(missions_)
+    failed(missions_)
+    
 
 
 
