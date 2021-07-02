@@ -49,11 +49,11 @@ def ajouter_client():
     if current_user.TYPE == "Admin":
         form=Client_Form()
         if form.validate_on_submit():
-            user=Client(TYPE=form.Type.data,societe=form.Societe.data,sexe=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
+            user=Client(TYPE=form.Type.data,reference=form.Reference.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
             db.session.add(user)
             db.session.commit()
             user_history=Client.query.filter(or_(Client.email == form.email.data,Client.nom == form.NOM.data)).first()
-            user_his=Client_History(client_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
+            user_his=Client_History(client_id=user_history.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
             flash(f'Client créé avec succès','success')
@@ -174,12 +174,12 @@ def update_client(id):
             client_history.adresse2 = request.form['Adresse2']
             db.session.commit()
             
-
+        client.reference=request.form['Reference']
         client.email = request.form['email']
         client.siret = request.form['email']
         client.societe = request.form['Societe']
         client.numero = request.form['Numero']
-        client.sexe = request.form['Sexe']
+        client.titre = request.form['Sexe']
         client.TYPE = request.form['Type']
         client.enseigne = request.form['Enseigne']
         client.etat_client = request.form['EtatClient']
@@ -1650,8 +1650,17 @@ def uploader_():
                     flash(f"Fichier incorrect",'warning')
                     return redirect(url_for('users.up'))
             if table == 'mission':
-                Missions1(loc)
-                #Missions2(loc)
+                #Missions1(loc)
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
+                fix_mission()
                
             # save the file1362
             #expert__(loc)

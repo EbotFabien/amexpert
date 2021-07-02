@@ -597,12 +597,12 @@ class Client_Form(FlaskForm):
     Date_Creation=StringField("Date_Creation",
                            render_kw={'readonly':True})
 
-    EtatClient=StringField("Etat du client", validators=[DataRequired()])
-    LoginExtranet = StringField("Login Extranet", validators=[DataRequired()])
+    EtatClient=StringField("Etat du client")
+    LoginExtranet = StringField("Login Extranet")
 
-    MdpExtranet = StringField("MdpExtranet", validators=[DataRequired()])
+    MdpExtranet = StringField("MdpExtranet")
 
-    Enseigne=StringField("Enseigne", validators=[DataRequired()])
+    Enseigne=StringField("Enseigne")
 
     submit = SubmitField('enregistrer')
 

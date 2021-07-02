@@ -1251,7 +1251,7 @@ def fix_mission():
                     db.session.commit()
         except:
             i.coherent = False
-            i.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+            i.reason = "Anomalie bloquante codification du code facturation incorrect   "
             print(i)
             db.session.commit()
         
@@ -1341,10 +1341,10 @@ def Base(loc):
 
 
 
-def Missions2(loc):
+def Missions2(loc,n):
     
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
-    sheet=wb_obj['26']
+    sheet=wb_obj[n]
     
     reference=[]
     
@@ -1363,45 +1363,45 @@ def Missions2(loc):
           
             DATE_REALISE_EDL =sheet["M"][i].value , 	
             ID_INTERV = 0 ,
-            NRO_FACTURE = sheet["I"] ,
-            PRIX_HT_EDL = sheet["N"] ,
-            TVA_EDL = sheet["O"] ,
-            PRIX_TTC_EDL = sheet["P"] ,
-            Reference_LOCATAIRE	 =  sheet["U"] ,
-            Adresse1_Bien	 = sheet["V"] ,  
-            Adresse2_Bien	 = sheet["W"] , 
-            CP_Bien	 = sheet["X"] ,  
-            Ville_Bien	 = sheet["Y"] , 
+            NRO_FACTURE = sheet["I"][i].value ,
+            PRIX_HT_EDL = sheet["N"][i].value ,
+            TVA_EDL = sheet["O"][i].value ,
+            PRIX_TTC_EDL = sheet["P"][i].value ,
+            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
+            Adresse1_Bien	 = sheet["V"][i].value ,  
+            Adresse2_Bien	 = sheet["W"][i].value , 
+            CP_Bien	 = sheet["X"][i].value ,  
+            Ville_Bien	 = sheet["Y"][i].value , 
             
-            CA_HT_AS = sheet["Z"] , 	
-            TVA_AS	 = sheet["AA"] , 
-            CA_TTC_AS = sheet["AB"] , 	
-            CA_HT_AC = sheet["AC"] , 	
-            CA_TTC_AC	 = sheet["AD"] , 
-            CA_HT_TRUST	 = sheet["AE"] , 
-            TVA_TRUST	 = sheet["AF"] ,
-            Prix_ht_chiffrage	 = sheet["AH"] , 
-            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"] ,
-            POURCENTAGE_AS_chiffrage = sheet["AJ"] ,	
-            POURCENTAGE_manager_chiffrage  = sheet["AK"] , 	
+            CA_HT_AS = sheet["Z"][i].value , 	
+            TVA_AS	 = sheet["AA"][i].value , 
+            CA_TTC_AS = sheet["AB"][i].value , 	
+            CA_HT_AC = sheet["AC"][i].value , 	
+            CA_TTC_AC	 = sheet["AD"][i].value , 
+            CA_HT_TRUST	 = sheet["AE"][i].value , 
+            TVA_TRUST	 = sheet["AF"][i].value ,
+            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
+            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
+            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
+            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
             ID_manager_chiffrage  = 0 ,
                 
-            POURCENTAGE_agent_chiffrage = sheet["AM"] ,	
+            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
             ID_agent_chiffrage  = 0 ,	
             
-            TYPE_EDL = sheet["AO"] ,	
-            TITREPROPRIO = sheet["AQ"] , 		
-            NOMPROPRIO = sheet["AR"] , 	
-            DATE_FACT_REGLEE = sheet["AS"] ,	
-            TYPE_LOGEMENT = sheet["AX"] , 	
-            CODE_AMEXPERT = sheet["BB"] , 	
-            COMMENTAIRE_FACTURE = sheet["BC"] , 	
-            LOGEMENT_MEUBLE =sheet["BH"] , 	
-            CODE_FACTURATION = sheet["BI"] , 	
-            TYPE_DE_BIEN = sheet["BJ"] , 	
-            surface_logement1 = sheet["BK"] , 		
-            DATE_FACTURE = sheet["I"] , 	
-            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"] , 	
+            TYPE_EDL = sheet["AO"][i].value ,	
+            TITREPROPRIO = sheet["AQ"][i].value , 		
+            NOMPROPRIO = sheet["AR"][i].value , 	
+            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
+            TYPE_LOGEMENT = sheet["AX"][i].value , 	
+            CODE_AMEXPERT = sheet["BB"][i].value , 	
+            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
+            LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
+            CODE_FACTURATION = sheet["BI"][i].value , 	
+            TYPE_DE_BIEN = sheet["BJ"][i].value , 	
+            surface_logement1 = sheet["BK"][i].value , 		
+            DATE_FACTURE = sheet["I"][i].value , 	
+            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
             ID_Respon_Cell_Dev	 =0 ,
             
            
@@ -1516,7 +1516,7 @@ def failed(av):
     ws = wb.add_sheet('Anomalie')
     for oo in av:
             for q,i in zip(ba,oo) :
-                ws.write(v, q, i,style1)
+                ws.write(v, q, i)
             v=v+1
     wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
 
@@ -1538,6 +1538,7 @@ def Missions1(loc):
     print('ok')
     for i in range(0,rows):
         name=sheet.row_values(i)
+
         try:
             cli=Client.query.filter_by(reference=str(int(name[0]))).first()
         except:
@@ -1720,32 +1721,32 @@ def Missions1(loc):
             ID_Agent_saisie_Cell_Planif  = ASCP,
                   
             POURCENTAGE_Agent_saisie_CEll_planif  = name[84] )
-            #db.session.add(mission)
-            #db.session.commit()
+            db.session.add(mission)
+            db.session.commit()
             try:
                 mission.DATE_FACTURE = datetime.datetime(*xlrd.xldate_as_tuple(name[41], wb.datemode))
-                #db.session.commit()
+                db.session.commit()
             except:
                 mission.DATE_FACTURE=None
-                #db.session.commit()
+                db.session.commit()
             try:
                 mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
-                #db.session.commit()
+                db.session.commit()
             except:
                 mission.DATE_FACT_REGLEE=None
-                #db.session.commit()
+                db.session.commit()
             try:
                 mission.DATE_REALISE_EDL =datetime.datetime(*xlrd.xldate_as_tuple(name[12], wb.datemode)) 
-                #db.session.commit()
+                db.session.commit()
             except:
                 mission.DATE_REALISE_EDL=None
-                #db.session.commit()
+                db.session.commit()
 
             
         else:
 
             missions_.append([name[0],name[1],name[2],name[3],name[4],name[5],name[6],name[7],
-            name[8],name[9],name[10],name[11],date_(name[12],wb.datemode)
+            name[8],name[9],name[10],name[11],date_(name[12],wb.datemode),name[13]
             ,name[14],name[15],name[16],
             name[17],name[18],name[19],name[20],name[21],name[22],name[23],name[24],
             name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],
