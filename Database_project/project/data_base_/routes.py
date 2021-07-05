@@ -1650,17 +1650,13 @@ def uploader_():
                     flash(f"Fichier incorrect",'warning')
                     return redirect(url_for('users.up'))
             if table == 'mission':
+                Missions2(loc,'26')
+                Missions2(loc,'27')
+                Missions2(loc,'28')
+                Missions2(loc,'29')
+                Missions2(loc,'31')
                 #Missions1(loc)
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
-                fix_mission()
+                
                
             # save the file1362
             #expert__(loc)

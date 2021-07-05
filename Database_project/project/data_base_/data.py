@@ -1344,6 +1344,7 @@ def Base(loc):
 def Missions2(loc,n):
     
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
+    print(wb_obj.sheetnames)
     sheet=wb_obj[n]
     
     reference=[]
@@ -1430,15 +1431,15 @@ def Missions2(loc,n):
             db.session.commit()
             try:
                 if mission.CODE_FACTURATION[-1]=='M':
-                    print(mission.CODE_FACTURATION)
+                    print(mission.CODE_FACTURATION[2:5])
                     mission.CODE_FACTURATION[2:5] == 150
                     A=mission.CODE_FACTURATION[0:-1]
                     mission.CODE_FACTURATION = A
-                    print(mission.CODE_FACTURATION)
+                    #print(mission.CODE_FACTURATION)
                     db.session.commit()
 
                 if mission.CODE_FACTURATION[-1] == ' ':
-                    print( mission.CODE_FACTURATION)
+                    print(mission.CODE_FACTURATION[2:5])
                     B=mission.CODE_FACTURATION[0:-1] 
                     mission.CODE_FACTURATION = B
                     db.session.commit()
@@ -1450,24 +1451,25 @@ def Missions2(loc,n):
             except:
                 mission.coherent = False
                 mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
-                print(mission)
+               # print(mission)
                 db.session.commit()
-            
+            print(mission.CODE_FACTURATION)
+            print(mission.TYPE_LOGEMENT)
             try:
                 if mission.TYPE_LOGEMENT[-1] == ' ':
-                    print( mission.TYPE_LOGEMENT)
+                   # print( mission.TYPE_LOGEMENT)
                     B=mission.TYPE_LOGEMENT[0:-1] 
                     mission.TYPE_LOGEMENT = B
                     db.session.commit()
 
 
                 if mission.TYPE_LOGEMENT[-1] == 'M':
-                    print(mission.TYPE_LOGEMENT)
+                   # print(mission.TYPE_LOGEMENT)
                     mission.CODE_FACTURATION[2:5] == 150
-                    print(mission.CODE_FACTURATION)
+                    #print(mission.CODE_FACTURATION)
                     B=mission.TYPE_LOGEMENT[0:-1] 
                     mission.TYPE_LOGEMENT = B
-                    print(mission.TYPE_LOGEMENT)
+                   # print(mission.TYPE_LOGEMENT)
                     db.session.commit()
 
                 if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
@@ -1496,6 +1498,245 @@ def Missions2(loc,n):
                 mission.coherent = False
                 mission.reason = "Anomalie bloquante codification du type de logement incorrect "
                 db.session.commit()
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                   # print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                   # print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    #print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                   # print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
+            try:
+                if mission.CODE_FACTURATION[0:2] == 'TS':
+                    mission.PRIX_HT_EDL = mission.CODE_FACTURATION[2:5]
+                    db.session.commit()
+                if mission.CODE_FACTURATION[0:2] == 'TN':
+                
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
+                        
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                            meuble=float(tarif.edl_appt_prix_f1)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
+                            db.session.commit()
+                            
+                            
+                        else:
+                            
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
+                            db.session.commit()
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U'   :
+                        
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                            meuble=float(tarif.edl_prix_std)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                            db.session.commit()
+                            
+                            
+                        else:
+                            
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
+                            db.session.commit()
+
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
+                        #print('APPT 2')
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.edl_appt_prix_f2)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.edl_appt_prix_f3)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
+                        
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.edl_appt_prix_f4)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.edl_appt_prix_f5)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.edl_appt_prix_f6)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
+                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                            meuble=float(tarif.EDL_APPT_prix_F7)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
+                            db.session.commit()
+                            
+
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t1)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
+                        
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t2)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t3)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
+                            db.session.commit()
+                            
+                
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
+                        
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t4)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t5)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t6)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
+                            db.session.commit()
+                                
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t7)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
+                            db.session.commit()
+                            
+                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
+                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                        if mission.CODE_FACTURATION[2:5] == '150':
+                            meuble=float(tarif.edl_pav_villa_prix_t8)/2
+                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
+                            db.session.commit()
+                            
+                        else:
+                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
+                            db.session.commit()
+            except:
+                print("done")
+                                    
+            
                 
             
         else:
@@ -1741,7 +1982,118 @@ def Missions1(loc):
             except:
                 mission.DATE_REALISE_EDL=None
                 db.session.commit()
+            try:
+                if mission.CODE_FACTURATION[-1]=='M':
+                    print(mission.CODE_FACTURATION[2:5])
+                    mission.CODE_FACTURATION[2:5] == 150
+                    A=mission.CODE_FACTURATION[0:-1]
+                    mission.CODE_FACTURATION = A
+                    #print(mission.CODE_FACTURATION)
+                    db.session.commit()
 
+                if mission.CODE_FACTURATION[-1] == ' ':
+                    print(mission.CODE_FACTURATION[2:5])
+                    B=mission.CODE_FACTURATION[0:-1] 
+                    mission.CODE_FACTURATION = B
+                    db.session.commit()
+
+                if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
+                        mission.Anomalie = False
+                        mission.reason = None
+                        db.session.commit()
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+               # print(mission)
+                db.session.commit()
+            print(mission.CODE_FACTURATION)
+            print(mission.TYPE_LOGEMENT)
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                   # print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                   # print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    #print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                   # print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                   # print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                   # print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    #print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                   # print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
             
         else:
 
