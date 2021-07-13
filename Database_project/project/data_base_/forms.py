@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
-from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur
+from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
 
@@ -151,7 +151,6 @@ class LoginForm(FlaskForm):
     password =PasswordField('Mot de passe',
                                   validators=[DataRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
 
-    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
     remember = BooleanField('Remember me')                              
     submit = SubmitField('Se connecter')
     

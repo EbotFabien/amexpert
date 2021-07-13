@@ -1,7 +1,7 @@
-from Database_project.project.data_base_ import create_app
+from project.data_base_  import create_app
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from Database_project.project.data_base_ import bcrypt,db
+from project.data_base_  import bcrypt,db
 
 app= create_app()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 
 
-#db.drop_all()
+#db.drop_all() apturl==0.5.2;cffi==1.14.5
 #db.create_all()
 
 

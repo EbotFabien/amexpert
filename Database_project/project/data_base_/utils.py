@@ -1,4 +1,4 @@
-from Database_project.project.data_base_ import mail
+from project.data_base_ import mail
 from flask import  url_for
 from flask_mail import Message
 

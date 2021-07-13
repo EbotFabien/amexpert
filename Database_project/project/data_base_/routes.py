@@ -1,13 +1,13 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
-from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.utils import send_reset_email
+from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
+from project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
+from project.data_base_ import bcrypt
+from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from Database_project.project.data_base_ import create_app
+from project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime
 
