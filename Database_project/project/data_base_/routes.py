@@ -223,6 +223,12 @@ def choose(Type,id=None):
                 return redirect(url_for('users.choose',id=id))
             if mission_:
                 for mission in mission_:
+                    if mission.TYPE_LOGEMENT == None:
+                            mission.TYPE_LOGEMENT = ''
+                            db.session.commit()
+                    if mission.CODE_FACTURATION == None:
+                        mission.CODE_FACTURATION = ''
+                        db.session.commit()
                    
                     if mission.CODE_FACTURATION is None:
 
@@ -409,6 +415,10 @@ def choose(Type,id=None):
                                     mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                                     db.session.commit()
                                     price.append(float(tarif.edl_pav_villa_prix_t8))#goes up to 8  '''
+                            else:
+                                    if mission.PRIX_HT_EDL == None:
+                                        mission.PRIX_HT_EDL = 0
+                                        db.session.commit()
 
                    
                 add_sum=sum(price)
@@ -490,7 +500,11 @@ def show_fac(id):
         for i in facture:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
-                facture.remove(i)
+                
+        s1=set(abnormal)
+        s2=set(facture)
+        facture = list(s2.difference(s1))
+
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         
         return render_template('manage/pages/show_facture.html', facture=facture,failed=failed,abnormal=abnormal)
@@ -1161,7 +1175,7 @@ def sign_up():
 
 @users.route('/login',methods=['GET','POST'])
 def login():
-
+    
     #expert=Expert('Mr.','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
@@ -1794,6 +1808,12 @@ def choosev(Type):
                 for i in  relation:
                     price[i] =[]
                     for mission in relation[i]:
+                        if mission.TYPE_LOGEMENT == None:
+                            mission.TYPE_LOGEMENT = ''
+                            db.session.commit()
+                        if mission.CODE_FACTURATION == None:
+                            mission.CODE_FACTURATION = ''
+                            db.session.commit()
                         if mission.CODE_FACTURATION is None:
 
                             flash(f'SVP Generez une code  Facturation pour cette mission','success')
@@ -1804,7 +1824,7 @@ def choosev(Type):
                             if mission.CODE_FACTURATION[0:2] == 'TS':
                                 price[i].append(mission.CODE_FACTURATION[3:-1])
                             if mission.CODE_FACTURATION[0:2] == 'TN':
-                            
+                                
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1' :
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
@@ -1979,6 +1999,10 @@ def choosev(Type):
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                                         db.session.commit()
                                         price[i].append(float(tarif.edl_pav_villa_prix_t8))#goes up to 8  '''
+                                else:
+                                    if mission.PRIX_HT_EDL == None:
+                                        mission.PRIX_HT_EDL = 0
+                                        db.session.commit()
                                 
                 for i in price:
                     a=sum(price[i])
@@ -1988,7 +2012,7 @@ def choosev(Type):
                 
                 
                 
-            return render_template('manage/pages/ajouter_facturationm.html',form=form2,sum=price,start=start,end=end )
+            return render_template('manage/pages/ajouter_facturationm.html',form=form2,sum=price,start=start,end=end)
 
         if Type == "month":
                     return render_template('manage/pages/choose.html',form=form,legend="time")
@@ -2032,13 +2056,14 @@ def create_facturem():
                 if i.Reference_BAILLEUR in relation:
                     relation[i.Reference_BAILLEUR].append(i)
             for i in  relation:
-                facture=facturation_client(Statut=request.form['Statut'],Date_mission=request.form['Demarrer'],client=i)
+                facture=facturation_client(Date_mission=request.form['Demarrer'],client=i)
                 db.session.add(facture)
                 db.session.commit()
                 factura=str(facture.Date_de_creation)
                 facture.n_facture=str(facture.id)+'-'+str(factura[2:4])+str(factura[5:7])+'-C'
                 db.session.commit()
                 for mission in relation[i]:
+                    print(mission.id)
                     price.append(float(mission.PRIX_HT_EDL))
                     mission.NRO_FACTURE = facture.n_facture
                     mission.DATE_FACTURE = facture.Date_de_creation

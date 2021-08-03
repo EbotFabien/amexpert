@@ -39,20 +39,20 @@
 	    					{% if mission.DATE_FACTURE == None %}
 	    						aucune date
 	    					{% else %}
-	    						{{mission.DATE_FACTURE.strftime('%d. %m. %Y') }}
+	    						{{mission.DATE_FACTURE }}
 	    					{% endif %}	    				
 	    				</li>
 	    				<li><strong>Date de paiement de la Facture:</strong> 
 	    					{% if mission.DATE_FACT_REGLEE == None %}
 	    						aucune date
 	    					{% else %}
-	    						{{mission.DATE_FACT_REGLEE.strftime('%d. %m. %Y') }}
+	    						{{mission.DATE_FACT_REGLEE }}
 	    					{% endif %}	 
 	    				<li><strong>Date chiffrage regle :</strong>
 	    					{% if mission.Date_chiffrage_regle == None %}
 	    						aucune date
 	    					{% else %}
-	    						{{mission.Date_chiffrage_regle.strftime('%d. %m. %Y') }}
+	    						{{mission.Date_chiffrage_regle}} <!--.strftime('%d. %m. %Y')-->
 	    					{% endif %}
 	    				</li>
 	    			</ul>
