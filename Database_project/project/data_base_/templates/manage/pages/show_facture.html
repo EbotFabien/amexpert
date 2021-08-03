@@ -43,13 +43,14 @@
                                     <th>Surface/m<sup>2</sup></th>
                                     <th>Tarif ht/€</th>
                                     
+                                    
 
                                 </tr>
                                 </thead>
                                 <tbody>
                                     {%for fac in facture %}
                                         <tr>
-                                            <td>{{fac.mission__data_.old}}</td>
+                                            <td>{{fac.mission__data_.id}}</td>
                                             <td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
                                             <td>{{fac.mission__data_.TYPE_EDL}}</td>
                                             <td>{{fac.mission__data_.NOMPROPRIO}}</td>
@@ -113,7 +114,7 @@
                     <tbody>
                         {%for fac in abnormal %}
                             <tr>
-                                <td>{{fac.mission__data_.old}}</td>
+                                <td>{{fac.mission__data_.id}}</td>
                                 <td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
                                 <td>{{fac.mission__data_.TYPE_EDL}}</td>
                                 <td>{{fac.mission__data_.NOMPROPRIO}}</td>
@@ -179,7 +180,7 @@
                     <tbody>
                         {%for fac in failed %}
                             <tr>
-                                <td>{{fac.mission__data.old}}</td>
+                                <td>{{fac.mission__data.id}}</td>
                                 <td>{{fac.mission__data.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
                                 <td>{{fac.mission__data.TYPE_EDL}}</td>
                                 <td>{{fac.mission__data.NOMPROPRIO}}</td>

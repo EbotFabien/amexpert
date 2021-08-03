@@ -30,6 +30,14 @@ if it's not present, don't show loader */
     justify-content: flex-end;
 }}
 
+  tr.selected {
+  background-color: #e49f31ca!important;
+  color: #fff;
+}
+
+.button-box > * {
+  margin-left: 2px;
+}
 /*.cb {
   width: 50px!important;
   margin-left: 50%;

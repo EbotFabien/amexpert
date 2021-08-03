@@ -1541,6 +1541,13 @@ def Missions2(loc,n):
                 mission.coherent = False
                 mission.reason = "Anomalie bloquante codification du type de logement incorrect "
                 db.session.commit()
+            
+            if mission.TYPE_LOGEMENT == None:
+                mission.TYPE_LOGEMENT = ''
+                db.session.commit()
+            if mission.CODE_FACTURATION == None:
+                mission.CODE_FACTURATION = ''
+                db.session.commit()
             try:
                 if mission.CODE_FACTURATION[0:2] == 'TS':
                     mission.PRIX_HT_EDL = mission.CODE_FACTURATION[2:5]
@@ -1732,6 +1739,10 @@ def Missions2(loc,n):
                             
                         else:
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
+                            db.session.commit()
+                    else:
+                       if mission.PRIX_HT_EDL == None:
+                            mission.PRIX_HT_EDL = 0
                             db.session.commit()
             except:
                 print("done")
