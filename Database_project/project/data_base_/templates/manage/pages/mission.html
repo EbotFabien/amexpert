@@ -22,7 +22,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
+            <table class="table"  style="overflow-x: scroll;min-width: 800px;"> 
 	                    <thead class="">
 	                	<tr>    <th scope="col">ID</th>
                             <th scope="col">Reference BAILLEUR</th>  	 
@@ -36,7 +36,7 @@
 	                	</tr>
 	            	</thead>
 		            <tbody>
-		                {%for mission_ in Mission %}
+		                {%for mission_ in Mission.items %}
 		                    <tr>    
                                 <td>{{mission_.id}}</td> 
                                 <td>{{mission_.Bailleur__data.reference}}</td>     	   
@@ -68,7 +68,18 @@
                                     
                                 </td>
 		                    </tr>
-		                {%endfor%}                               
+		                {%endfor%} 
+                    {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+                    {% if page_num %}
+                      {% if Mission.page == page_num %}
+                      <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                      {% else %} 
+                      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                      {% endif %}
+                    {% else %}
+                        ....
+                    {% endif %}
+                  {% endfor %}                     
 		            </tbody>         
 	             </table>
 	            </div>
