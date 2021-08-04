@@ -198,7 +198,8 @@ def update_client(id):
 @login_required
 def mission():
     if current_user.TYPE == "Admin":
-        mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).all()
+        page = request.args.get('page',1,type=int)
+        mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=100)
         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
 
     return redirect(url_for('users.main'))
@@ -500,7 +501,7 @@ def show_fac(id):
         for i in facture:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
-                
+
         s1=set(abnormal)
         s2=set(facture)
         facture = list(s2.difference(s1))
@@ -508,7 +509,7 @@ def show_fac(id):
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         
         return render_template('manage/pages/show_facture.html', facture=facture,failed=failed,abnormal=abnormal)
-
+  
 @users.route('/client/<int:id>/mission')
 @login_required
 def client_mission(id):
