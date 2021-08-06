@@ -41,11 +41,13 @@
       </div>
       <div class="profile">
         <div class="dropdown" id="dropdown">
-          <div class="dropdown-trigger" style="overflow: hidden;height: 50px;width: 50px;border-radius: 50%;">
-            <img class="image-profile" onclick="toggleDropdown()" style="cursor: pointer;" src="https://source.unsplash.com/collection/190727/1600x900" style="background-size: cover;height: auto;">
+          <div class="dropdown-trigger" style="overflow: hidden;">
+            <button class="button button-custom-style" onclick="toggleDropdown()" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span><small style="font: small-caption;">Bienvenue</small> {{current_user.nom}}</span>
                 <span class="icon is-small">
                   <i class="fas fa-angle-down" aria-hidden="true"></i>
                 </span>
+              </button>
             </div> 
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">

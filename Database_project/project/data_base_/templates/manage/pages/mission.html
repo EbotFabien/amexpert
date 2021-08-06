@@ -9,8 +9,44 @@
 
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;">
-          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
+          </div>
+          <div>
+            <div class="display-flex" style="margin-top: 20px;justify-content: space-evenly;">
+              <form method="GET" action="{{url_for('users.mission')}}">
+                <div class="columns">
+                  <input type="text" name="keyword" placeholder="Recherche reference client ,Prix ht edl" class="input is-small is-white" required value="{{search}}">
+                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
+                </div>
+              </form>    
+              <form method="GET" action="{{url_for('users.mission')}}">
+                <div class="columns">
+                  <h>Trier par date edl</h>
+                  <input type="date" name="date" placeholder="Recherche Mission" class="input is-small is-white" required value="{{search}}">
+                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
+                </div>
+              </form>      
+              <form method="POST" action="{{url_for('users.mission')}}">
+                <div class="colums" style="display: flex;">
+                <span class="select is-small is-fullwidth">
+                  <select name="table" class="not">
+                    <option value="mission">Ordre par id mission</option>
+                    <option value="edl">Ordre par date EDL</option>
+                    <option value="ht">Ordre par prix ht</option>
+                    <option value="fac">Ordre par date FACTURE </option>
+                  </select>
+                </span>
+                <span class="select is-small is-fullwidth">
+                  <select name="table2" class="not">
+                    <option value="asc">ASC</option>
+                    <option value="desc">DESC</option>
+                  </select>
+                </span>
+                  <input type="submit" class="button is-primary is-small" value="Ordre">
+                </div>
+              </form>      
+            </div>
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
@@ -24,6 +60,7 @@
             {% endwith %}
             <table class="table"  style="overflow-x: scroll;min-width: 800px;"> 
 	                    <thead class="">
+                       
 	                	<tr>    <th scope="col">ID</th>
                             <th scope="col">Reference BAILLEUR</th>  	 
                             <th scope="col">ID CONCESS</th>	  
@@ -42,7 +79,7 @@
                                 <td>{{mission_.Bailleur__data.reference}}</td>     	   
                                 <td>{{mission_.AS__data.nom}}</td> 	  
                                 <td>
-                                  {% if mission_.DATE_REALISER_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d. %m. %Y') }}
+                                  {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d. %m. %Y') }}
                                   {% else %}
                                   aucune date
                                   {% endif %}
