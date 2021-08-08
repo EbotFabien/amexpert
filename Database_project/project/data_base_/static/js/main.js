@@ -27,3 +27,22 @@ toggleSmallMenu.addEventListener('click', function (e) {
         sideMenus.classList.toggle('tablet-side-bar-open')
     }
 })
+
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('image-profile')) {
+        let dropdownMenu = document.getElementById('dropdown')
+        dropdownMenu.classList.toggle('is-active')
+        console.log(e.target)
+    } else {
+        let dropdownMenu = document.getElementById('dropdown')
+        if (dropdownMenu.classList.contains('is-active')) {
+            dropdownMenu.classList.toggle('is-active')
+        }
+    }
+})
+
+let dropdown = document.querySelector('.dropdown');
+dropdown.addEventListener('click', function(event) {
+    event.stopPropagation();
+    dropdown.classList.toggle('is-active');
+});
