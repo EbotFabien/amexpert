@@ -15,7 +15,7 @@ bcrypt = Bcrypt()
 mail = Mail()
 db = SQLAlchemy()
 migrate = Migrate()
-#cache = Cache(config={'CACHE_TYPE': 'simple'})
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 
 def create_app(config_class=Config):
@@ -26,7 +26,7 @@ def create_app(config_class=Config):
     bootstrap=Bootstrap(app)
     bcrypt.init_app(app)
     mail.init_app(app)
-    #cache.init_app(app)
+    cache.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db) 
 

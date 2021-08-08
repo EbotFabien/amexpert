@@ -27,6 +27,7 @@ RUN pip install xlrd
 RUN pip install openpyxl
 RUN pip install xlwt
 RUN pip install psycopg2-binary
+RUN pip install flask_caching
 
 COPY . ./docker-entrypoint.sh
 

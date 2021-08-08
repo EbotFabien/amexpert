@@ -11,7 +11,7 @@ services:
     networks:
       - default
     ports:
-      - 5000:80
+      - 5000:5000
     volumes:
       - ./:/var/www/amexpert/Database_project/project
       - ./migrations:/var/www/amexpert/Database_project/project/migrations
@@ -26,7 +26,7 @@ services:
     networks:
       - default
     ports:
-      - 5432:5432
+      - 5433:5433
     restart: always
     volumes:
       - ./postgres-data:/etc/postgresql/12/main/

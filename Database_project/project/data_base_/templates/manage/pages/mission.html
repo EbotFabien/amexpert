@@ -67,24 +67,31 @@
                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                     
                                 </td>
-		                    </tr>
-		                {%endfor%} 
-                    {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
-                    {% if page_num %}
-                      {% if Mission.page == page_num %}
-                      <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
-                      {% else %} 
-                      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
-                      {% endif %}
-                    {% else %}
-                        ....
-                    {% endif %}
-                  {% endfor %}                     
+		                    </tr> 
+		                {%endfor%}                     
 		            </tbody>         
 	             </table>
 	            </div>
                  <!-- Pagination Links-->
-              
+                <nav class="pagination" role="navigation" aria-label="pagination">
+                  <ul class="pagination-list">
+                    {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+                    {% if page_num %}
+                      {% if Mission.page == page_num %}
+                        <li>
+                          <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                        </li>
+                    {% else %} 
+                        <li>
+                          <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                        </li>
+                     {% endif %}
+                    {% else %}
+                        ....
+                    {% endif %}
+                  {% endfor %}
+                  </ul>
+                </nav>
             <!-- / fin de la pagination -->
 	        </div>
         </section>
