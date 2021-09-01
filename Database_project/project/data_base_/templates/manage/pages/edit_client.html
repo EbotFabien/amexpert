@@ -30,7 +30,7 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                <form class="user form-padding" method="POST" action="{{url_for('users.update_client', id=client.id)}}">
+                <form class="user form-padding" method="POST">
                 {{ form.hidden_tag() }}
                  <div class="field is-horizontal">
                       <div class="field-label is-normal">
@@ -83,7 +83,7 @@
                                   <div class="field"><!---->
                                       <div class="control">
                                        {% if form.Sexe.errors %}
-                                    {{form.Siret(class="input is-invalid", value=client.sexe) }}
+                                    {{form.Sexe(class="input is-invalid", value=client.sexe) }}
                                     <div class="invalid-feedback">
                                         {% for error in form.Sexe.errors %}
                                             <span>{{ error }}</span>
@@ -254,7 +254,7 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>                          
+                                    <hr/>                       
                                      <div class="field is-horizontal">
                                       <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Numero.label(class="form-control-label")}}</small></label></div>

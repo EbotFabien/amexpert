@@ -27,7 +27,7 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                <form class="user form-padding" method="POST" action="{{url_for('users.update_prospect', id=client.id)}}">
+                <form class="user form-padding" method="POST">
                 {{ form.hidden_tag() }}
                  <div class="field is-horizontal">
                       <div class="field-label is-normal">
