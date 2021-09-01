@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Tarifs</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Tarifs</h2>
       <a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter un tarif" class="button is-primary is-small"><i class="fas fa-plus"></i></a> 
     </div>
 
@@ -13,7 +13,7 @@
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fas fa-file-invoice"></i></span>
           </div>
-          <div class="table-container" style="overflow-x: scroll;position: relative;">
+          <div class="table-container" style="position: relative;">
             	{% with messages = get_flashed_messages(with_categories=true)%}
                 	{% if messages %}
                 		{%for category,message in messages%}
@@ -40,7 +40,7 @@
 	                <tbody>
 	                {%for tarif in tarifs %}
 	                    <tr>
-	                        <th scope="row">{{tarif.id}}</th>
+	                        <td scope="row">{{tarif.id}}</td>
 	                        <td>{{tarif.pav_appartement}}</td>
 							<td>{{tarif.Type}}</td>
 							<td>{{tarif.Prix_EDL}}</td> 

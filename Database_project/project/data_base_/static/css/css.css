@@ -17,10 +17,26 @@ if it's not present, don't show loader */
 *{
   margin: 0px;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
 }
-.button {
-  font-family: 'Roboto', sans-serif;
+.admin-dropdown {
+ background: #373737;
+    border: 1px solid #373737;
+    border-radius: 6px;
+    color: #db7b1d;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.admin-dropdown:hover{
+  border-color: #373737;
+  color: #db7b1d;
+}
+.admin-dropdown:focus {
+ border-color: #373737;
+ color: #db7b1d;
+}
+button {
+  /*font-family: 'Roboto', sans-serif;*/
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 .radio+.radio {
   margin-left: .5em;
@@ -222,8 +238,8 @@ body {
 main {
  width: calc(100% - 250px);
  margin-left: 250px;
- /*background: #fff;*/
- background: #efefec;
+ background: #fff;
+ /*background: #efefec;*/
  min-height: 100vh;
  transition: all .5s ease-in-out;
  margin-bottom: 5px;
@@ -237,11 +253,19 @@ main {
  left: 0px;
  overflow: hidden;
  transition: all .5s ease-in-out;
+ box-shadow: rgba(136, 165, 191, 0.48) 0px 2px 16px 0px, 
+ rgba(255, 255, 255, 0.8) -2px -2px 16px 0px;
+ background: rgb(0,0,0);
+background: linear-gradient(123deg, rgba(0,0,0,1) 0%,
+ rgba(55,55,55,1) 41%, rgba(116,116,116,1) 88%, 
+  rgba(118,118,118,1) 100%, rgba(156,156,156,1) 100%);
   /*border-right:1px solid #E4A031;*/
   /*background: #e4a031;*/
 }
 .side-menu > li.active {
-  background: #E4A031;
+  background: #fff;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 .side-menu > li.active a {
   color: #000;
@@ -280,16 +304,17 @@ a{
  overflow: hidden;
 }
 .side-menu > li {
- padding: 5px 10px 5px 0px;
+ padding: 5px 0px 5px 0px;
  display: flex;
  justify-content: space-between;
  align-items: center;
- width: 230px;
+ /*width: 230px;*/
  transition: all .1s ease-in-out;
 }
 .side-menu > li:hover {
   border: 1px solid #E4A031;
-    border-radius: .1rem;
+    border-top-left-radius: 6px;
+    border-bottom-left-raduis: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 .fa-arrow-alt-circle-left:before {
@@ -304,7 +329,7 @@ a{
 }
 
 .side-menu > li > a {
-  color: #000;
+  color: #fff;
   font-weight: 600;
   display: flex;
   font-size: 16px;
@@ -335,8 +360,9 @@ a{
   padding: 10px;
   position: fixed;
   width: calc(100% - 250px);
-  background-color: #efefec;
+  background-color: #fff;
   transition: all .5s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   z-index: 5;
 }
 .fa-bars:before {
@@ -353,7 +379,7 @@ a{
   border-radius: 50%;
 }
 .dropdown-menu {
-  left: -85px;
+  left: 0px;
   z-index: 1;
 }
 .dropdown-menu::after {
@@ -391,7 +417,7 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 800px; /** 600px **/
+  max-width: 500px; /** 600px **/
   margin: 0 auto;
 }
 .searh-contianer > div {
@@ -575,6 +601,8 @@ h1,h2,h3,h4,h5,h6 {
 .button.is-primary {
   background: #00995d;
   color: #fff;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 5%) 0px 0px 0px 1px;
 }
 .select:not(.is-multiple):not(.is-loading)::after {
   border-color: #000;
@@ -1600,14 +1628,14 @@ input[type='radio']:checked:after {
 
 /* width */
 ::-webkit-scrollbar {
-  height: 6px;              /* height of horizontal scrollbar ← You're missing this */
-  width: 8px; 
+  height: 12px;              /* height of horizontal scrollbar ← You're missing this */
+  width: 12px; 
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey; 
-  width: 10px
+  width: 12px
 }
  
 /* Handle */
@@ -1645,6 +1673,18 @@ input[type='radio']:checked:after {
   margin: 20px auto;
 }
 
+table td{
+  border-top: 1px solid #ddd;
+}
+
+table th {
+  font-weight: bold;
+  color: #fff!important;
+  background-color: #373737;
+  vertical-align: middle!important;
+}
+
+
 .title {
   font-weight: 700!important;
   text-transform: uppercase;
@@ -1658,10 +1698,13 @@ input[type='radio']:checked:after {
   box-shadow: 1px 3px 10px rgba(0,0,0,.3); 
 }
 
-select:not(.not) {
+
+select.input,.select:not(.not) {
   appearance: none!important;
   background-image: url(../assets/select-arrow.png)!important;
   background-position: calc(100% - 15px) 50%!important;
   background-repeat: no-repeat!important;
   background-size: 16px 8px!important;
 }
+.h-42{height: 42px!important}
+.border-rounded{border-radius: 6px!important;}

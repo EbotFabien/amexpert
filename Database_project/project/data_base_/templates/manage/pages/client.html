@@ -4,18 +4,18 @@
     
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Clients</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Clients</h2>
       <a href="/ajouter/client" title="Ajouter un client" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
 
     <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div class="display-flex">
                 <span><i class="fa fa-users"></i></span>                
             </div>           
           </div>
-          <div class="table-container" style="overflow-x: scroll;position: relative;">
+          <div class="table-container" style="position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
                     {%for category,message in messages%}
@@ -59,7 +59,7 @@
                     <tbody>
                         {%for client_,history in cli_ent %}
                             <tr>
-                                <th scope="row">{{client_.id}}</th>
+                                <td scope="row">{{client_.id}}</td>
                                 <td>{{client_.reference}}</td>
                                 <td>{{client_.siret}}</td>
                                 <td>{{client_.TYPE}}</td>
@@ -102,7 +102,9 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-                var table = $('#table_id').DataTable();
+                var table = $('#table_id').DataTable({
+                    'scrollX':true
+                });
             
                 $('#table_id tbody').on( 'click', 'tr', function () {
                     if ( $(this).hasClass('selected') ) {

@@ -33,7 +33,9 @@
     <header class="header">
       <div class="bars-section">
         <span class="lg-screen">
-          <i class="fas fa-bars" id="toggleBtn" style="cursor: pointer;"></i>
+          <button onclick="window.history.back()" class="admin-dropdown mr-3">
+                <i class="fas fa-arrow-left" id="toggleBtn"></i>
+            </button>
         </span>
         <span class="md-screen">
             <i class="far fa-arrow-alt-circle-left md-sreen" id="toggleSmallMenu" style="cursor: pointer;"></i>
@@ -42,7 +44,7 @@
       <div class="profile">
         <div class="dropdown" id="dropdown">
           <div class="dropdown-trigger" style="overflow: hidden;">
-            <button class="button button-custom-style" onclick="toggleDropdown()" aria-haspopup="true" aria-controls="dropdown-menu">
+            <button class="button button-custom-style admin-dropdown" onclick="toggleDropdown()" aria-haspopup="true" aria-controls="dropdown-menu">
               <span><small style="font: small-caption;">Bienvenue</small> {{current_user.nom}}</span>
                 <span class="icon is-small">
                   <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -74,9 +76,13 @@
     </footer>
   </main>
   <script type="text/javascript">
-    $(document).ready( function () {
-      $('#table_id').DataTable();
-    });
+    /*$(document).ready( function () {
+      $('#table_id').DataTable({
+        'scrollY': '200px',
+        'scrollCollapse': true,
+        'paging':false
+      });
+    });*/
 
    
   </script>
