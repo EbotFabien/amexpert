@@ -517,7 +517,7 @@ def insert_client(loc):
                                 vii=''.join(a)
                                 vii=vii.split("-")
                                 vii=''.join(vii)
-                                client.enseigne =str(vii)
+                                client.enseigne =str(vii) 
                                 db.session.commit()
                         except:
                             print('ei choke')
@@ -1765,7 +1765,7 @@ def failed(av):
         ba.append(i)
     wb = xlwt.Workbook()
     style1 = xlwt.easyxf(num_format_str='D-MMM-YY')
-    ws = wb.add_sheet('Anomalie')
+    ws = wb.add_sheet('Anomalie')  
     for oo in av:
             for q,i in zip(ba,oo) :
                 ws.write(v, q, i)

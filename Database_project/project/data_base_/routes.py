@@ -3,6 +3,8 @@ from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,
 from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
 from Database_project.project.data_base_.utils import send_reset_email
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
@@ -1633,7 +1635,7 @@ def update_suivip(id):
 def up():
     #db.create_all()
     db.create_all()
-    expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    '''expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert1)
     db.session.add(expert)
@@ -1644,7 +1646,7 @@ def up():
     hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     expert.password=hashed_password
     db.session.commit()
-    print('po')
+    print('po')'''
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
@@ -1680,12 +1682,12 @@ def uploader_():
             uploaded_file.save(file_path)
             if table == 'client':
                 
-                    insert_client(loc)
+                    lient(loc)
                    
                 
             if table == 'expert':
                 try:
-                    expert__(loc)
+                    xpert(loc)
                     flash(f"Vous avez importer les donnees avec success",'success')
                     return redirect(url_for('users.client'))
                 except:
@@ -1738,9 +1740,9 @@ def profil():
 
 
 
-@users.app_errorhandler(404)
-def error_404(error):
-    return render_template('errors/404.html'),404
+#@users.app_errorhandler(404)
+#def error_404(error):
+ #   return render_template('errors/404.html'),404
 
 @users.app_errorhandler(403)
 def error_403(error):

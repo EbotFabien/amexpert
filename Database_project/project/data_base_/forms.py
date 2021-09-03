@@ -573,7 +573,7 @@ class Tarif_Form(FlaskForm):
 
 
 class Facturation_Form(FlaskForm):
-    Reference_client=StringField('Reference client',
+    Reference_client=IntegerField('Reference client',
                            render_kw={'readonly':True})
 
     Demarrer=StringField('Demarrer',
@@ -640,7 +640,7 @@ class Client_Form(FlaskForm):
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    Reference=StringField("Reference")
+    Reference=IntegerField("Reference")
     
     Date_Creation=StringField("Date_Creation",
                            render_kw={'readonly':True})
@@ -722,7 +722,7 @@ class Client_edit(FlaskForm):
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    Reference=StringField("Reference",
+    Reference=IntegerField("Reference",
                            render_kw={'readonly':True})
     
     Date_Creation=StringField("Date_Creation",
@@ -863,7 +863,7 @@ class Mission_add(FlaskForm):
             raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
 
 
-    Reference_client=StringField("Reference Client",
+    Reference_client=IntegerField("Reference Client",
                         validators=[DataRequired(),validate_client])
 
     ID_Concessionaire=StringField("ID Concessionaire",
@@ -1052,7 +1052,7 @@ class Mission_editForm(FlaskForm):
             raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
 
 
-    Reference_client=StringField("Reference Client",
+    Reference_client=IntegerField("Reference Client",
                         validators=[DataRequired(),validate_client])
 
     ID_Concessionaire=IntegerField("ID Concessionaire",
