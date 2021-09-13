@@ -32,54 +32,69 @@ def xpert(loc):
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
     anomalie=[]
     sheet=wb_obj.active
-    for i in range(0,sheet.max_row):
+    for i in range(1,sheet.max_row):
         n=sheet["M"][i].value
         if type(n) == str:
-            cli=Expert.query.filter_by(nom=str(sheet["M"][i].value.lower())).first()
+            cli=Expert.query.filter_by(nom=str(sheet["B"][i].value.lower())).first()
             if cli  is None:
                 exp=Expert()
                 his=Expert_History()
                 
-                exp.nom=regex1(sheet["M"][i].value,'str1')
-                exp.numero=regex1(sheet["S"][i].value,'str1')
+                exp.nom=regex1(sheet["B"][i].value,'str1')
+                numero=regex1(sheet["S"][i].value,'int')
+                if numero == 'Failed':
+                    reason="erreur  de numero dans la colonne  Telephone  ,veuillez verifier toute colonne avant d'envoyer"
+                    anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue
+                else:
+                    exp.numero=numero
                 exp.TYPE=regex1(sheet["I"][i].value,'str1')
                 exp.email=regex1(sheet["T"][i].value,'str1')
                 exp.email_perso=regex1(sheet["U"][i].value,'str1')
                 exp.code_tva=regex1(sheet["Q"][i].value,'str1')
-                taux_tva=regex1(sheet["R"][i].value,'int')
-                if taux_tva == False:
-                    reason="Erreur sur Siret"
+                taux_tva=regex1(sheet["R"][i].value,'int')   
+                if taux_tva == 'Failed':
+                    reason="erreur  de numero dans la colonne  Taux tva ,veuillez verifier toute colonne avant d'envoyer"
                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
-                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
-                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
-                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason)
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
                 else:
                     exp.taux_tva=taux_tva
                 siret=regex1(sheet["L"][i].value,'int')
-                if siret == False:
-                    reason="Erreur sur Siret"
+                if siret == 'Failed':
+                    reason="erreur  de numero dans la colonne  Siret ,veuillez verifier toute colonne avant d'envoyer"
                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
-                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
-                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
-                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason)
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
                 else:
                     exp.siret=siret
                 date_entree=regex1(sheet["D"][i].value,'date')
                 if date_entree == False:
-                    reason="Erreur sur date entree"
+                    reason="erreur  de numero dans la colonne  date entree ,veuillez verifier toute colonne avant d'envoyer"
                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
-                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
-                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
-                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason)
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
                 else:
                     exp.date_entree=date_entree
                 exp.trigramme=regex1(sheet["M"][i].value,'str1')    
@@ -88,35 +103,64 @@ def xpert(loc):
                 his.adresse1=regex1(sheet["M"][i].value,'str1') 
                 his.adresse2=regex1(sheet["N"][i].value,'str1') 
                 cp=regex1(sheet["O"][i].value,'int') 
-                if cp==False:
-                    reason="Erreur sur CP"
+                if cp=='Failed':
+                    reason="erreur  de numero dans la colonne  CP ,veuillez verifier toute colonne avant d'envoyer"
                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
-                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
-                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
-                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason)
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
                 else:
                     his.cp=cp
                 his.ville=regex1(sheet["P"][i].value,'str1') 
-                his.login_backof=regex1(sheet["P"][i].value,'str1') 
-                his.pwd_backof=regex1(sheet["P"][i].value,'str1') 
-                his.login_extranet=regex1(sheet["P"][i].value,'str1') 
-                his.pwd_extranet=regex1(sheet["P"][i].value,'str1') 
-                his.login_google=regex1(sheet["P"][i].value,'str1') 
-                his.pwd_google=regex1(sheet["P"][i].value,'str1') 
-                his.observations_de_suivi=regex1(sheet["P"][i].value,'str1') 
-                his.actif_parti=regex1(sheet["P"][i].value,'str1') 
-                his.type_certification=regex1(sheet["P"][i].value,'str1') 
-                his.date_certification_initiale=regex1(sheet["P"][i].value,'str1') 
-                his.date_renouv_certification=regex1(sheet["P"][i].value,'str1') 
-                his.pwd_gsuite=regex1(sheet["P"][i].value,'str1') 
+                his.login_backof=regex1(sheet["V"][i].value,'str1') 
+                his.pwd_backof=regex1(sheet["W"][i].value,'str1') 
+                his.login_extranet=regex1(sheet["Z"][i].value,'str1') 
+                his.pwd_extranet=regex1(sheet["AA"][i].value,'str1') 
+                his.login_google=regex1(sheet["X"][i].value,'str1') 
+                his.pwd_google=regex1(sheet["AB"][i].value,'str1') 
+                his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1') 
+                his.actif_parti=regex1(sheet["E"][i].value,'str1') 
+                his.type_certification=regex1(sheet["H"][i].value,'str1') 
+                date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
+                if date_certification_initiale == False:
+                    reason="erreur  de numero dans la colonne  date_certification_initiale  ,veuillez verifier toute colonne avant d'envoyer"
+                    anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
+                else:
+                    his.date_certification_initiale=date_certification_initiale
+                date_renouv_certification=regex1(sheet["G"][i].value,'date') #CHECK FOR IF STATE
+                if date_renouv_certification == False:
+                    reason="erreur  de numero dans la colonne  date_renouv_certification  ,veuillez verifier toute colonne avant d'envoyer"
+                    anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
+                    continue 
+                else:
+                    his.date_renouv_certification=date_renouv_certification
+                his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') 
                 db.session.add(exp)
                 db.session.add(his)
                 db.session.commit()
-                expert_id=expert.id
+                his.expert_id=exp.id
                 db.session.commit()
+            else:
+                print('existe')
                 
-    failed1(anomalie)
-    
+    if anomalie == []:
+        print(anomalie)
+    else:
+        failed1(anomalie)

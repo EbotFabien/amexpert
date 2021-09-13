@@ -6,6 +6,7 @@ import openpyxl
 import pandas as pd
 from sqlalchemy import or_, and_
 import datetime
+from Database_project.project.data_base_.client_data  import regex1
 
 def checktarif(a,p,c):
     taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
@@ -992,7 +993,7 @@ def expert__(loc):
             cli=Expert.query.filter_by(nom=str(a.lower())).first()
 
             if cli is None:
-                expert=Expert(nom=a.lower(),numero=b,TYPE=c,email=d,email_perso=e,code_tva=f,taux_tva=g,siret=h,date_entree=i,
+                expert=Expert(nom=a.lower(),numero=b,TYPE=c,email=d,email_perso=e,code_tva=f,taux_tva=int(g),siret=h,date_entree=i,
                 trigramme=j)    
                 db.session.add(expert)
                 db.session.commit()
@@ -1401,8 +1402,7 @@ def Missions2(loc,n):
             CODE_FACTURATION = sheet["BI"][i].value , 	
             TYPE_DE_BIEN = sheet["BJ"][i].value , 	
             surface_logement1 = sheet["BK"][i].value , 		
-            DATE_FACTURE = sheet["I"][i].value , 	
-            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
+            DATE_FACTURE = sheet["I"][i].value , 	 	
             ID_Respon_Cell_Dev	 =0 ,
             
            
@@ -1768,7 +1768,12 @@ def failed(av):
     ws = wb.add_sheet('Anomalie')  
     for oo in av:
             for q,i in zip(ba,oo) :
-                ws.write(v, q, i)
+                if isinstance(i,datetime.datetime) == True:
+                    ws.write(v, q, i,style1)
+                elif isinstance(i,datetime.date) == True:
+                    ws.write(v, q, i,style1) 
+                else:
+                    ws.write(v, q, i)
             v=v+1
     wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
 
@@ -1912,34 +1917,34 @@ def Missions1(loc):
           
              	
             ID_INTERV = IV ,
-            NRO_FACTURE = int(name[8])  ,
-            PRIX_HT_EDL = name[13] ,
-            TVA_EDL = name[14] ,
-            PRIX_TTC_EDL = name[15] ,
+            NRO_FACTURE = regex1(name[8],'M')  ,
+            PRIX_HT_EDL = regex1(name[13],'S') ,
+            TVA_EDL = regex1(name[14],'S') ,
+            PRIX_TTC_EDL = regex1(name[15],'S') ,
             Reference_LOCATAIRE	 =  name[20] ,
             Adresse1_Bien	 = name[21] ,  
             Adresse2_Bien	 = name[22] , 
-            CP_Bien	 = int(name[23]) ,  
+            CP_Bien	 = regex1(name[23],'M') ,  
             Ville_Bien	 = name[24] , 
             
-            CA_HT_AS = name[25] , 	
-            TVA_AS	 = name[26] , 
-            CA_TTC_AS = name[27] , 	
-            CA_HT_AC = name[28] , 	
-            CA_TTC_AC	 = name[29] , 
-            CA_HT_TRUST	 = name[30] , 
-            TVA_TRUST	 = name[31] ,
-            Prix_ht_chiffrage	 = name[33] , 
-            POURCENTAGE_suiveur_chiffrage	 = name[34] ,
-            POURCENTAGE_AS_chiffrage = name[35] ,	
-            POURCENTAGE_manager_chiffrage  = name[36] , 	
+            CA_HT_AS = regex1(name[25],'S') , 	
+            TVA_AS	 = regex1(name[26],'S') , 
+            CA_TTC_AS = regex1(name[27],'S') , 	
+            CA_HT_AC = regex1(name[28],'S') , 	
+            CA_TTC_AC	 = regex1(name[29],'S') , 
+            CA_HT_TRUST	 = regex1(name[30],'S') , 
+            TVA_TRUST	 = regex1(name[31],'S') ,
+            Prix_ht_chiffrage	 = regex1(name[33],'S') , 
+            POURCENTAGE_suiveur_chiffrage	 = regex1(name[34],'perc') ,
+            POURCENTAGE_AS_chiffrage = regex1(name[35],'perc') ,	
+            POURCENTAGE_manager_chiffrage  = regex1(name[36],'perc') , 	
             ID_manager_chiffrage  = MC ,
                 
-            POURCENTAGE_agent_chiffrage = name[38] ,	
+            POURCENTAGE_agent_chiffrage = regex1(name[38],'perc')  ,	
             ID_agent_chiffrage  = AC ,	
             
             TYPE_EDL = name[40] ,	
-            TITREPROPRIO = name[42] , 		
+            TITREPROPRIO = name[42] , 		 
             NOMPROPRIO = name[43] , 		
             TYPE_LOGEMENT = name[27] , 	
             CODE_AMEXPERT = name[34] , 	
@@ -1947,32 +1952,32 @@ def Missions1(loc):
             LOGEMENT_MEUBLE =name[59] , 	
             CODE_FACTURATION = name[60] , 	
             TYPE_DE_BIEN = name[61] , 	
-            surface_logement1 = name[62] , 		 	
-            POURCENTAGE_COM_AS_DU_CLIENT = name[68] , 	
+            surface_logement1 = regex1(name[62],'S'), 		 	
+            POURCENTAGE_COM_AS_DU_CLIENT = regex1(name[68],'perc')  , 	
             ID_Respon_Cell_Dev	 =RCD ,
             
-            POURCENTAGE_Respon_Cell_Dev = name[70] , 	
+            POURCENTAGE_Respon_Cell_Dev = regex1(name[70],'perc')  , 	
             ID_agent_Cell_Dev = ACD, 	
             
-            POURCENTAGE_Agent_Cell_Dev = name[72] ,	
+            POURCENTAGE_Agent_Cell_Dev = regex1(name[72],'perc')  ,	
             ID_Agent_CellTech = ACT,  	
             
-            POURCENTAGE_Agent_Cell_Tech = name[74] , 	
+            POURCENTAGE_Agent_Cell_Tech = regex1(name[74],'perc')  , 	
             ID_Respon_Cell_Tech = RCT, #######
                 
-            POURCENTAGE_Respon_Cell_Tech = name[76] ,	
+            POURCENTAGE_Respon_Cell_Tech = regex1(name[76],'perc')  ,	
             ID_Suiveur_Cell_Tech  = SCT ,
             
-            POURCENTAGE_Suiveur_Cell_Tech	 = name[78] , 
+            POURCENTAGE_Suiveur_Cell_Tech	 = regex1(name[78],'perc') , 
             ID_Respon_Cell_Planif = RCP,
             
-            POURCENTAGE_Respon_Cell_Planif  = name[80] ,
+            POURCENTAGE_Respon_Cell_Planif  = regex1(name[80],'perc') ,
             ID_Suiveur_Cell_Planif  = SCP,
             
-            POURCENTAGE_Suiveur_Cell_Planif	 = name[82] , 
+            POURCENTAGE_Suiveur_Cell_Planif	 = regex1(name[82],'perc') , 
             ID_Agent_saisie_Cell_Planif  = ASCP,
                   
-            POURCENTAGE_Agent_saisie_CEll_planif  = name[84] )
+            POURCENTAGE_Agent_saisie_CEll_planif  = regex1(name[84],'perc') )
             db.session.add(mission)
             db.session.commit()
             try:

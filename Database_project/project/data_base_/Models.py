@@ -333,22 +333,22 @@ class Expert_History(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     expert_id= db.Column(db.Integer, ForeignKey('Expert.id'))
     actif_parti=db.Column(db.String)
-    secteur=db.Column(db.String)
-    type_certification=db.Column(db.String)
+    secteur=db.Column(db.String,default='')
+    type_certification=db.Column(db.String,default='')
     date_certification_initiale=db.Column(db.DateTime())#check this
     date_renouv_certification=db.Column(db.DateTime())#check this
-    adresse1 = db.Column(db.String)
-    adresse2 = db.Column(db.String)
+    adresse1 = db.Column(db.String,default='')
+    adresse2 = db.Column(db.String,default='')
     cp=db.Column(db.Integer)
-    login_backof=db.Column(db.String)
-    pwd_backof=db.Column(db.String) 
-    login_extranet=db.Column(db.String)
-    pwd_extranet=db.Column(db.String) 
-    pwd_gsuite=db.Column(db.String)
-    login_google=db.Column(db.String)
-    pwd_google=db.Column(db.String)
-    ville=db.Column(db.String)
-    observations_de_suivi=db.Column(db.String)
+    login_backof=db.Column(db.String,default='')
+    pwd_backof=db.Column(db.String,default='') 
+    login_extranet=db.Column(db.String,default='')
+    pwd_extranet=db.Column(db.String,default='') 
+    pwd_gsuite=db.Column(db.String,default='')
+    login_google=db.Column(db.String,default='')
+    pwd_google=db.Column(db.String,default='')
+    ville=db.Column(db.String,default='')
+    observations_de_suivi=db.Column(db.String,default='')
     date_sortie=db.Column(db.DateTime)
     date=db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
@@ -478,62 +478,62 @@ class Tarifs(db.Model):
         primaryjoin=(referent_as_client == Expert.id),
         backref=db.backref('referent__data',  uselist=False),  uselist=False)
 
-    com_as_sur_ca_client = db.Column(db.String)
+    com_as_sur_ca_client = db.Column(DECIMAL(65,2))
 
     cell_dev_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_dev__data=db.relationship("Expert", 
         primaryjoin=(cell_dev_ref_responsable == Expert.id),
         backref=db.backref('cell_dev__data',  uselist=False),  uselist=False)
 
-    com_cell_dev_ref_responsable = db.Column(db.String)
+    com_cell_dev_ref_responsable = db.Column(DECIMAL(65,2))
 
     cell_dev_ref_agent =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_dev_ref_data=db.relationship("Expert", 
         primaryjoin=(cell_dev_ref_agent == Expert.id),
         backref=db.backref('cell_dev_ref_data',  uselist=False),  uselist=False)
 
-    com_cell_dev_ref_agent = db.Column(db.String)
+    com_cell_dev_ref_agent = db.Column(DECIMAL(65,2))
     
     cell_tech_ref_agent=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_tech_ref_agent__data=db.relationship("Expert", 
         primaryjoin=(cell_tech_ref_agent == Expert.id),
         backref=db.backref('cell_tech_ref_agent__data',  uselist=False),  uselist=False)
 
-    com_cell_tech_Ref_agent = db.Column(db.String)
+    com_cell_tech_Ref_agent = db.Column(DECIMAL(65,2))
 
     cell_tech_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_tech_ref_responsable__data=db.relationship("Expert", 
         primaryjoin=(cell_tech_ref_responsable == Expert.id),
         backref=db.backref('cell_tech_ref_responsable__data',  uselist=False),  uselist=False)
 
-    com_cell_tech_ref_responsable  = db.Column(db.String)
+    com_cell_tech_ref_responsable  = db.Column(DECIMAL(65,2))
 
     cell_tech_ref_suiveur=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_tech_ref_suiveur__data=db.relationship("Expert", 
         primaryjoin=(cell_tech_ref_suiveur == Expert.id),
         backref=db.backref('cell_tech_ref_suiveur__data',  uselist=False),  uselist=False)
-    com_cell_tech_ref_suiveur = db.Column(db.String)
+    com_cell_tech_ref_suiveur = db.Column(DECIMAL(65,2))
 
     cell_planif_ref_responsable =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_planif_ref_responsable_data=db.relationship("Expert", 
         primaryjoin=(cell_planif_ref_responsable  == Expert.id),
         backref=db.backref('cell_planif_ref_responsable_data',  uselist=False),  uselist=False)
 
-    com_cell_planif_ref_responsable = db.Column(db.String)
+    com_cell_planif_ref_responsable = db.Column(DECIMAL(65,2))
 
     cell_planif_ref_suiveur =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_planif_ref_suiveur__data=db.relationship("Expert", 
         primaryjoin=(cell_planif_ref_suiveur  == Expert.id),
         backref=db.backref('cell_planif_ref_suiveur__data',  uselist=False),  uselist=False)
 
-    com_cell_planif_ref_suiveur = db.Column(db.String)
+    com_cell_planif_ref_suiveur = db.Column(DECIMAL(65,2))
 
     cell_planif_ref_agent_saisie =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     cell_planif_ref_agent_saisie__data=db.relationship("Expert", 
         primaryjoin=(cell_planif_ref_agent_saisie  == Expert.id),
         backref=db.backref('cell_planif_ref_agent_saisie__data',  uselist=False),  uselist=False)
 
-    com_cell_planif_ref_agent_saisie = db.Column(db.String)
+    com_cell_planif_ref_agent_saisie = db.Column(DECIMAL(65,2))
 
     prix_autre= db.Column(db.String)
     commentaire_libre= db.Column(db.String)
@@ -592,14 +592,14 @@ class Mission(db.Model):
     TVA_TRUST	 = db.Column(db.DECIMAL(65,2)) #float
     Date_chiffrage_regle = db.Column(db.DateTime()) 
     Prix_ht_chiffrage	 = db.Column(db.DECIMAL(65,2)) 
-    POURCENTAGE_suiveur_chiffrage	 = db.Column(db.String) #float
-    POURCENTAGE_AS_chiffrage = db.Column(db.String) 	#float
-    POURCENTAGE_manager_chiffrage  = db.Column(db.String) #float	
+    POURCENTAGE_suiveur_chiffrage	 = db.Column(DECIMAL(65,2)) #float
+    POURCENTAGE_AS_chiffrage = db.Column(DECIMAL(65,2)) 	#float
+    POURCENTAGE_manager_chiffrage  = db.Column(DECIMAL(65,2)) #float	
     ID_manager_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     manager_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_manager_chiffrage == Expert.id),
         backref=db.backref('manager_chiffrage__data',  uselist=False),  uselist=False)	
-    POURCENTAGE_agent_chiffrage = db.Column(db.String) 	#float
+    POURCENTAGE_agent_chiffrage = db.Column(DECIMAL(65,2)) 	#float
     ID_agent_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_chiffrage == Expert.id),
@@ -617,47 +617,47 @@ class Mission(db.Model):
     TYPE_DE_BIEN = db.Column(db.String) 	
     surface_logement1 = db.Column(db.DECIMAL(65,2)) 	#float	
     Ref_commande = db.Column(db.String) 	
-    POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.String) 	#float
+    POURCENTAGE_COM_AS_DU_CLIENT = db.Column(DECIMAL(65,2)) 	#float
     ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Dev == Expert.id),
         backref=db.backref('Respon_Cell_Dev__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Respon_Cell_Dev = db.Column(db.String) 	#float
+    POURCENTAGE_Respon_Cell_Dev = db.Column(DECIMAL(65,2)) 	#float
     ID_agent_Cell_Dev = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_Cell_Dev == Expert.id),
         backref=db.backref('agent_Cell_Dev__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Agent_Cell_Dev = db.Column(db.String) 	#float
+    POURCENTAGE_Agent_Cell_Dev = db.Column(DECIMAL(65,2)) 	#float
     ID_Agent_CellTech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)  	
     Agent_CellTech__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_CellTech == Expert.id),
         backref=db.backref('Agent_CellTech__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Agent_Cell_Tech = db.Column(db.String) 	#float
+    POURCENTAGE_Agent_Cell_Tech = db.Column(DECIMAL(65,2)) 	#float
     ID_Respon_Cell_Tech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) #######
     Respon_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Tech == Expert.id),
         backref=db.backref('Respon_Cell_Tech__data',  uselist=False),  uselist=False)	
-    POURCENTAGE_Respon_Cell_Tech = db.Column(db.String) #float	
+    POURCENTAGE_Respon_Cell_Tech = db.Column(DECIMAL(65,2)) #float	
     ID_Suiveur_Cell_Tech  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Tech == Expert.id),
         backref=db.backref('Suiveur_Cell_Tech__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Suiveur_Cell_Tech	 = db.Column(db.String) #float
+    POURCENTAGE_Suiveur_Cell_Tech	 = db.Column(DECIMAL(65,2)) #float
     ID_Respon_Cell_Planif = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Planif == Expert.id),
         backref=db.backref('Respon_Cell_Planif__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Respon_Cell_Planif  = db.Column(db.String) 	#float
+    POURCENTAGE_Respon_Cell_Planif  = db.Column(DECIMAL(65,2)) 	#float
     ID_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Planif == Expert.id),
         backref=db.backref('Suiveur_Cell_Planif__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(db.String) #float
+    POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(DECIMAL(65,2)) #float
     ID_Agent_saisie_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
     Agent_saisie_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
-    POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) #float
+    POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(DECIMAL(65,2)) #float
 
     Anomalie  = db.Column(db.Boolean,default=False)
     coherent  = db.Column(db.Boolean,default=True)
