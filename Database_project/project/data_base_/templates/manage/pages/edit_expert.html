@@ -108,10 +108,23 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
+<<<<<<< HEAD
                                 <select class="input" id="Type" name="Type">
                                     <option value="Professionnel" {% if expert.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
                                     <option value="Particulier" {% if expert.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
                                   </select>
+=======
+                                <select class="input" id="Type" name="Type" value="intervenant de constat">
+                                    <option value="Interv" {% if (expert.TYPE == 'Interv') %} selected {% endif %}>Interv</option>
+                                    <option value="CONCESS" {% if (expert.TYPE == 'CONCESS') %} selected {% endif %}>CONCESS</option>
+                                    <option value="agent Cell Dev" {% if (expert.TYPE == 'agent Cell Dev') %} selected {% endif %}>agent Cell Dev</option>
+                                    <option value="Interv" {% if (expert.TYPE == 'Interv') %} selected {% endif %}>Interv</option>
+                                    <option value="Suiveur Cell Tech" {% if (expert.TYPE == 'Suiveur Cell Tech') %} selected {% endif %}>Suiveur Cell Tech</option>
+                                    <option value="Suiveur Cell Planif" {% if (expert.TYPE == 'Suiveur Cell Planif') %} selected {% endif %}>Suiveur Cell Planif</option>
+                                    <option value="Admin" {% if (expert.TYPE == 'Admin') %} selected {% endif %}>Admin</option>
+                                    <option value="Audit" {% if (expert.TYPE == 'Audit') %} selected {% endif %}>Audit</option>
+                                </select>
+>>>>>>> 3911db09b8536029f12b19af5f6237ed97a52f58
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis.</p>
@@ -180,11 +193,18 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
+<<<<<<< HEAD
                                 <select class="input" id="Sexe" name="Sexe" value="Monsieur">
                                     <option value="Monsieur" {% if expert.ge == 'Monsieur'%} selected {% endif %}>Monsieur</option>
                                     <option value="Madame" {% if client.titre == 'Madame' %} selected {% endif %}>Madame</option>
                                     <option value="Mademoiselle" {% if client.titre == 'Mademoiselle'%} selected {% endif %}>Mademoiselle</option>
                                   </select>
+=======
+                                    <select class="input" id="Sexe" name="Sexe" value="">
+                                        <option value="MME" {% if(expert.genre == 'MME') %} selected {% endif %}>MME</option>
+                                        <option value="M." {% if(expert.genre == 'M.') %} selected {% endif %}>M.</option>
+                                    </select>
+>>>>>>> 3911db09b8536029f12b19af5f6237ed97a52f58
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le sexe est requis</p>
@@ -299,7 +319,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.actif_parti(class="input", value=history.actif_parti)}}
+                                <select class="input" id="actif_parti" name="actif_parti" value="actif">
+                                    <option value="ACTIF" {% if (history.actif_parti == 'ACTIF') %} selected {% endif %}>ACTIF</option>
+                                    <option value="PARTI" {% if (history.actif_parti == 'PARTIR') %} selected {% endif %}>PARTI</option>
+                                </select>
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le parti actif est requis</p>

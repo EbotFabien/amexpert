@@ -6,8 +6,8 @@
   <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture N° <span style="font-size: small;">{{facture[0].facturation_client__data_.n_facture}}</span></h2>
    <div class="buttons">
         <button class="show-client-infos button"><i class="fa fa-user"></i></button>
-        <button class="show-succes-failed-missions button">Mission(s) échoué(s)</button>
-        <button class="show-succes-missions-with-abnormalies button">Mission(s) avec anomalie(s)</button>
+        <button class="show-succes-failed-missions button">Mission(s) échoué(s) {{fld}} </button>
+        <button class="show-succes-missions-with-abnormalies button">Mission(s) avec anomalie(s) {{abd}} </button>
     </div>
   <!-- <a href="/ajouter/mission" class="button is-primary is-small">Ajouter une mission</a> -->
 </div>
@@ -15,7 +15,7 @@
     <section class="tile" style="margin-top: 10px;">
         <div class="box inner-box">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-           <strong>Mission(s)</strong>
+           <strong>Mission(s) {{gd}}</strong>
            
           </div>
           <div class="table-container table-shadow" style="overflow-x: scroll;position: relative;">
@@ -79,7 +79,7 @@
             </div>
         <div class="box modal-inner-box">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-          Mission Success avec anomalie
+          Mission Success avec anomalie 
            
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
@@ -147,7 +147,7 @@
             </div>
         <div class="box modal-inner-box">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-          Mission échouée
+          Mission échouée 
            
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">

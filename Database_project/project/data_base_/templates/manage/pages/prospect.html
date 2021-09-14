@@ -66,7 +66,7 @@
                         <td>{{history.pays}}</td>
                      
                         <td>{{history.etat_client}}</td>
-                        <td>{{client_.date_creation.strftime('%d. %m. %Y')}}</td>
+                        <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d. %m. %Y')}} {% endif %}</td>
                         <td>{{history.login_extranet}}</td>
                         <td>{{history.mdp_extranet}}</td>
                         <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>

@@ -33,28 +33,47 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form method="POST" class="user"  action="{{url_for('users.update_suivip', id=suivi.id)}}">
+                            <form method="POST" class="user">
                                 {{ form.hidden_tag() }}
                                 <fieldset class="form-group">
                                 <!-- <legend class="mb4">Créer un Expert</legend> -->
+                                
                                 <div class="row">
                                    <div class="col-md-6">
                                        <div class="form-group">
-                                        {{form.commentaire.label(class="form-control-label")}}
+                                        {{form.expert.label(class="form-control-label")}}
                                 
-                                        {% if form.commentaire.errors %}
-                                            {{form.commentaire(class="input is-small is-invalid", value=suivi.commentaire) }}
+                                        {% if form.expert.errors %}
+                                            {{form.expert(class="input is-small is-invalid", value=suivi.responsable) }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.commentaire.errors %}
+                                                {% for error in form.expert.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                            {{form.commentaire(class="input is-small", value=suivi.commentaire )}}
+                                            {{form.expert(class="input is-small", value=suivi.responsable )}}
                                         {% endif %}
                                     </div>
                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                         {{form.commentaire.label(class="form-control-label")}}
+                                 
+                                         {% if form.commentaire.errors %}
+                                             {{form.commentaire(class="input is-small is-invalid", value=suivi.commentaire) }}
+                                             <div class="invalid-feedback">
+                                                 {% for error in form.commentaire.errors %}
+                                                     <span>{{ error }}</span>
+                                                 {% endfor %}
+                                             </div>
+                                         {% else %}
+                                             {{form.commentaire(class="input is-small", value=suivi.commentaire )}}
+                                         {% endif %}
+                                     </div>
+                                    </div>
+                                 </div>
                             </fieldset>
                             <div class="form-group">
                                     {{form.submit(class="button is-small is-success btn-block")}}    

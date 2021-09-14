@@ -516,7 +516,7 @@ class Tarif_Form(FlaskForm):
     chif_pav_villa_prix_t6=DecimalField('chif_pav_villa_prix_t6', validators=[validate_chif_T6])
     chif_pav_villa_prix_t7=DecimalField('chif_pav_villa_prix_t7', validators=[validate_chif_T7]) 
     chif_pav_villa_prix_t8=DecimalField('chif_pav_villa_prix_t8', validators=[validate_chif_T8])
-    prix_autre=DecimalField('prix_autre', validators=[Optional()])
+    prix_autre=StringField('prix_autre', validators=[Optional()])
 
     code_tva= StringField('code tva', validators=[Optional()])
 
@@ -524,39 +524,39 @@ class Tarif_Form(FlaskForm):
 
     referent_as_client= IntegerField('referent_as_client', validators=[DataRequired(),validate_email])
 
-    com_as_sur_ca_client=StringField('com_as_sur_ca_client', validators=[DataRequired()])
+    com_as_sur_ca_client=DecimalField('com_as_sur_ca_client', validators=[DataRequired()])
 
     cell_dev_ref_responsable = IntegerField('cell_dev_ref_responsable', validators=[DataRequired(),validate_email])
 
-    com_cell_dev_ref_responsable = StringField('com_cell_dev_ref_responsable', validators=[DataRequired()])
+    com_cell_dev_ref_responsable = DecimalField('com_cell_dev_ref_responsable', validators=[DataRequired()])
 
     cell_dev_ref_agent = IntegerField('cell_dev_ref_agent', validators=[DataRequired(),validate_email])
 
-    com_cell_dev_ref_agent = StringField('com_cell_dev_ref_agent', validators=[DataRequired()])
+    com_cell_dev_ref_agent = DecimalField('com_cell_dev_ref_agent', validators=[DataRequired()])
 
     cell_tech_ref_agent = IntegerField('cell_tech_ref_agent', validators=[DataRequired(),validate_email])
 
-    com_cell_tech_Ref_agent = StringField('com_cell_tech_Ref_agent', validators=[DataRequired()])
+    com_cell_tech_Ref_agent = DecimalField('com_cell_tech_Ref_agent', validators=[DataRequired()])
 
     cell_tech_ref_responsable  = IntegerField('cell_tech_ref_responsable', validators=[DataRequired(),validate_email])
 
-    com_cell_tech_ref_responsable = StringField('com_cell_tech_ref_responsable')
+    com_cell_tech_ref_responsable = DecimalField('com_cell_tech_ref_responsable')
 
     cell_tech_ref_suiveur = IntegerField('cell_tech_ref_suiveur', validators=[DataRequired(),validate_email])
 
-    com_cell_tech_ref_suiveur  = StringField('com_cell_tech_ref_suiveur')
+    com_cell_tech_ref_suiveur  = DecimalField('com_cell_tech_ref_suiveur')
 
     cell_planif_ref_responsable = IntegerField('cell_planif_ref_responsable', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_responsable = StringField('com_cell_planif_ref_responsable')
+    com_cell_planif_ref_responsable = DecimalField('com_cell_planif_ref_responsable')
 
     cell_planif_ref_suiveur = IntegerField('cell_planif_ref_suiveur', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_suiveur  =  StringField('com_cell_planif_ref_suiveur')
+    com_cell_planif_ref_suiveur  =  DecimalField('com_cell_planif_ref_suiveur')
 
     cell_planif_ref_agent_saisie  =  IntegerField('cell_planif_ref_agent_saisie', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_agent_saisie  =  StringField('com_cell_planif_ref_agent_saisie')
+    com_cell_planif_ref_agent_saisie  =  DecimalField('com_cell_planif_ref_agent_saisie')
 
     commentaire_libre = TextAreaField('commentaire_libre', validators=[Optional()])
 
@@ -572,7 +572,7 @@ class Tarif_Form(FlaskForm):
 
 
 class Facturation_Form(FlaskForm):
-    Reference_client=StringField('Reference client',
+    Reference_client=IntegerField('Reference client',
                            render_kw={'readonly':True})
 
     Demarrer=StringField('Demarrer',
@@ -639,7 +639,7 @@ class Client_Form(FlaskForm):
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    Reference=StringField("Reference")
+    Reference=IntegerField("Reference")
     
     Date_Creation=StringField("Date_Creation",
                            render_kw={'readonly':True})
@@ -721,8 +721,8 @@ class Client_edit(FlaskForm):
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    Reference=StringField("Reference",
-                           render_kw={'readonly':True})
+    Reference=IntegerField('Reference',
+                           validators=[DataRequired()])
     
     Date_Creation=StringField("Date_Creation",
                            render_kw={'readonly':True})
@@ -841,9 +841,18 @@ class Negotiateur_Form1(FlaskForm):
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
 class Suivi_Client(FlaskForm):
+    def validate_email(self,email):
+        email = Expert.query.filter(and_(Expert.trigramme==email.data.lower(),Expert.trigramme!='')).first()
+
+        if email is None:
+            raise ValidationError("cette expert n'existe pas,veuillez re saisie le trigramme")
+
+    expert=StringField("Trigramme Expert",
+                        validators=[DataRequired(),validate_email])
 
     commentaire=StringField("commentaire",
                         validators=[DataRequired()])
+
     submit = SubmitField('enregistrer')
 
 
@@ -862,10 +871,10 @@ class Mission_add(FlaskForm):
             raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
 
 
-    Reference_client=StringField("Reference Client",
+    Reference_client=IntegerField("Reference Client",
                         validators=[DataRequired(),validate_client])
 
-    ID_Concessionaire=StringField("ID Concessionaire",
+    ID_Concessionaire=IntegerField("ID Concessionaire",
                         validators=[DataRequired(),validate_email])
 
     ABONNEMENT=StringField("ABONNEMENT",
@@ -885,7 +894,7 @@ class Mission_add(FlaskForm):
                         
     DATE_FACT_REGLEE =DateField("DATE_FACT_REGLEE",render_kw={'readonly':True})
 
-    ID_INTERV=StringField("ID_INTERV",
+    ID_INTERV=IntegerField("ID_INTERV",
                         validators=[DataRequired(),validate_email])
     
     Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
@@ -936,22 +945,22 @@ class Mission_add(FlaskForm):
     Prix_ht_chiffrage=DecimalField("Prix_ht_chiffrage",
                         validators=[DataRequired()])
     
-    POURCENTAGE_suiveur_chiffrage=StringField("POURCENTAGE_suiveur_chiffrage",
+    POURCENTAGE_suiveur_chiffrage=DecimalField("POURCENTAGE_suiveur_chiffrage",
                         validators=[DataRequired()])
 
-    POURCENTAGE_AS_chiffrage=StringField("POURCENTAGE_AS_chiffrage",
+    POURCENTAGE_AS_chiffrage=DecimalField("POURCENTAGE_AS_chiffrage",
                         validators=[DataRequired()])
     
-    POURCENTAGE_manager_chiffrage=StringField("POURCENTAGE_manager_chiffrage",
+    POURCENTAGE_manager_chiffrage=DecimalField("POURCENTAGE_manager_chiffrage",
                         validators=[DataRequired()])
     
-    ID_manager_chiffrage=StringField("ID_manager_chiffrage",
+    ID_manager_chiffrage=IntegerField("ID_manager_chiffrage",
                         validators=[DataRequired(),validate_email])
 
-    POURCENTAGE_agent_chiffrage =StringField("POURCENTAGE_agent_chiffrage",
+    POURCENTAGE_agent_chiffrage =DecimalField("POURCENTAGE_agent_chiffrage",
                         validators=[DataRequired()])
     
-    ID_agent_chiffrage =StringField("ID_agent_chiffrage",
+    ID_agent_chiffrage =IntegerField("ID_agent_chiffrage",
                         validators=[DataRequired(),validate_email])
 
     TYPE_EDL=StringField("TYPE_EDL",
@@ -974,15 +983,15 @@ class Mission_add(FlaskForm):
 
     Ref_commande=StringField("Ref_commande")
     
-    POURCENTAGE_COM_AS_DU_CLIENT=StringField("POURCENTAGE_COM_AS_DU_CLIENT",
+    POURCENTAGE_COM_AS_DU_CLIENT=DecimalField("POURCENTAGE_COM_AS_DU_CLIENT",
                         validators=[DataRequired()])
     
-    ID_Respon_Cell_Dev=StringField("ID_Respon_Cell_Dev",
+    ID_Respon_Cell_Dev=IntegerField("ID_Respon_Cell_Dev",
                         validators=[DataRequired(),validate_email])
 
-    POURCENTAGE_Respon_Cell_Dev=StringField("POURCENTAGE_Respon_Cell_Dev")
+    POURCENTAGE_Respon_Cell_Dev=DecimalField("POURCENTAGE_Respon_Cell_Dev")
 
-    ID_agent_Cell_Dev=StringField("ID_agent_Cell_Dev",
+    ID_agent_Cell_Dev=IntegerField("ID_agent_Cell_Dev",
                         validators=[DataRequired(),validate_email])
     
     TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
@@ -995,37 +1004,37 @@ class Mission_add(FlaskForm):
     TYPE_DE_BIEN = StringField("TYPE_DE_BIEN",
                         validators=[DataRequired()]) 
     
-    POURCENTAGE_Agent_Cell_Dev =  StringField("POURCENTAGE_Agent_Cell_Dev")	
+    POURCENTAGE_Agent_Cell_Dev =  DecimalField("POURCENTAGE_Agent_Cell_Dev")	
 
-    ID_Agent_CellTech = StringField("ID_Agent_CellTech",
+    ID_Agent_CellTech = IntegerField("ID_Agent_CellTech",
                         validators=[DataRequired(),validate_email]) 	
 
-    POURCENTAGE_Agent_Cell_Tech =StringField("POURCENTAGE_Agent_Cell_Tech")  	
+    POURCENTAGE_Agent_Cell_Tech =DecimalField("POURCENTAGE_Agent_Cell_Tech")  	
 
-    ID_Respon_Cell_Tech = StringField("ID_Respon_Cell_Tech",
+    ID_Respon_Cell_Tech = IntegerField("ID_Respon_Cell_Tech",
                         validators=[DataRequired(),validate_email]) 
     
-    POURCENTAGE_Respon_Cell_Tech = StringField("POURCENTAGE_Respon_Cell_Tech")
+    POURCENTAGE_Respon_Cell_Tech = DecimalField("POURCENTAGE_Respon_Cell_Tech")
     
-    ID_Suiveur_Cell_Tech =  StringField("ID_Suiveur_Cell_Tech",
+    ID_Suiveur_Cell_Tech =  IntegerField("ID_Suiveur_Cell_Tech",
                         validators=[DataRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Tech = StringField("POURCENTAGE_Suiveur_Cell_Tech") 	
+    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("POURCENTAGE_Suiveur_Cell_Tech") 	
 
-    ID_Respon_Cell_Planif =StringField("ID_Respon_Cell_Planif",
+    ID_Respon_Cell_Planif =IntegerField("ID_Respon_Cell_Planif",
                         validators=[DataRequired(),validate_email])  
 
-    POURCENTAGE_Respon_Cell_Planif = StringField("POURCENTAGE_Respon_Cell_Planif") 
+    POURCENTAGE_Respon_Cell_Planif = DecimalField("POURCENTAGE_Respon_Cell_Planif") 
     
-    ID_Suiveur_Cell_Planif =  StringField("ID_Suiveur_Cell_Planif",
+    ID_Suiveur_Cell_Planif =  IntegerField("ID_Suiveur_Cell_Planif",
                         validators=[DataRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Planif	 = StringField("POURCENTAGE_Suiveur_Cell_Planif") 	
+    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("POURCENTAGE_Suiveur_Cell_Planif") 	
 
-    ID_Agent_saisie_Cell_Planif =StringField("ID_Agent_saisie_Cell_Planif",
+    ID_Agent_saisie_Cell_Planif =IntegerField("ID_Agent_saisie_Cell_Planif",
                         validators=[DataRequired(),validate_email])  	
 
-    POURCENTAGE_Agent_saisie_CEll_planif = StringField("POURCENTAGE_Agent_saisie_CEll_planif") 
+    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("POURCENTAGE_Agent_saisie_CEll_planif") 
 
     misid =HiddenField()
     
@@ -1051,7 +1060,7 @@ class Mission_editForm(FlaskForm):
             raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
 
 
-    Reference_client=StringField("Reference Client",
+    Reference_client=IntegerField("Reference Client",
                         validators=[DataRequired(),validate_client])
 
     ID_Concessionaire=IntegerField("ID Concessionaire",
@@ -1073,7 +1082,7 @@ class Mission_editForm(FlaskForm):
                         
     DATE_FACT_REGLEE =StringField("DATE_FACT_REGLEE",render_kw={'readonly':True})
 
-    ID_INTERV=StringField("ID_INTERV",
+    ID_INTERV=IntegerField("ID_INTERV",
                         validators=[DataRequired(),validate_email])
     
     Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
@@ -1124,22 +1133,22 @@ class Mission_editForm(FlaskForm):
     Prix_ht_chiffrage=DecimalField("Prix_ht_chiffrage",
                         validators=[DataRequired()])
     
-    POURCENTAGE_suiveur_chiffrage=StringField("POURCENTAGE_suiveur_chiffrage",
+    POURCENTAGE_suiveur_chiffrage=DecimalField("POURCENTAGE_suiveur_chiffrage",
                         validators=[DataRequired()])
 
-    POURCENTAGE_AS_chiffrage=StringField("POURCENTAGE_AS_chiffrage",
+    POURCENTAGE_AS_chiffrage=DecimalField("POURCENTAGE_AS_chiffrage",
                         validators=[DataRequired()])
     
-    POURCENTAGE_manager_chiffrage=StringField("POURCENTAGE_manager_chiffrage",
+    POURCENTAGE_manager_chiffrage=DecimalField("POURCENTAGE_manager_chiffrage",
                         validators=[DataRequired()])
     
-    ID_manager_chiffrage=StringField("ID_manager_chiffrage",
+    ID_manager_chiffrage=IntegerField("ID_manager_chiffrage",
                         validators=[DataRequired(),validate_email])
 
-    POURCENTAGE_agent_chiffrage =StringField("POURCENTAGE_agent_chiffrage",
+    POURCENTAGE_agent_chiffrage =DecimalField("POURCENTAGE_agent_chiffrage",
                         validators=[DataRequired()])
     
-    ID_agent_chiffrage =StringField("ID_agent_chiffrage",
+    ID_agent_chiffrage =IntegerField("ID_agent_chiffrage",
                         validators=[DataRequired(),validate_email])
 
     TYPE_EDL=StringField("TYPE_EDL",
@@ -1162,15 +1171,15 @@ class Mission_editForm(FlaskForm):
 
     Ref_commande=StringField("Ref_commande")
     
-    POURCENTAGE_COM_AS_DU_CLIENT=StringField("POURCENTAGE_COM_AS_DU_CLIENT",
+    POURCENTAGE_COM_AS_DU_CLIENT=DecimalField("POURCENTAGE_COM_AS_DU_CLIENT",
                         validators=[DataRequired()])
     
-    ID_Respon_Cell_Dev=StringField("ID_Respon_Cell_Dev",
+    ID_Respon_Cell_Dev=IntegerField("ID_Respon_Cell_Dev",
                         validators=[DataRequired(),validate_email])
 
-    POURCENTAGE_Respon_Cell_Dev=StringField("POURCENTAGE_Respon_Cell_Dev")
+    POURCENTAGE_Respon_Cell_Dev=DecimalField("POURCENTAGE_Respon_Cell_Dev")
 
-    ID_agent_Cell_Dev=StringField("ID_agent_Cell_Dev",
+    ID_agent_Cell_Dev=IntegerField("ID_agent_Cell_Dev",
                         validators=[DataRequired(),validate_email])
     
     TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
@@ -1183,36 +1192,36 @@ class Mission_editForm(FlaskForm):
     TYPE_DE_BIEN = StringField("TYPE_DE_BIEN",
                         validators=[DataRequired()]) 
     
-    POURCENTAGE_Agent_Cell_Dev =  StringField("POURCENTAGE_Agent_Cell_Dev")	
+    POURCENTAGE_Agent_Cell_Dev =  DecimalField("POURCENTAGE_Agent_Cell_Dev")	
 
-    ID_Agent_CellTech = StringField("ID_Agent_CellTech",
+    ID_Agent_CellTech = IntegerField("ID_Agent_CellTech",
                         validators=[DataRequired(),validate_email]) 	
 
-    POURCENTAGE_Agent_Cell_Tech =StringField("POURCENTAGE_Agent_Cell_Tech")  	
+    POURCENTAGE_Agent_Cell_Tech =DecimalField("POURCENTAGE_Agent_Cell_Tech")  	
 
-    ID_Respon_Cell_Tech = StringField("ID_Respon_Cell_Tech",
+    ID_Respon_Cell_Tech = IntegerField("ID_Respon_Cell_Tech",
                         validators=[DataRequired(),validate_email]) 
-    POURCENTAGE_Respon_Cell_Tech = StringField("POURCENTAGE_Respon_Cell_Tech") 
+    POURCENTAGE_Respon_Cell_Tech = DecimalField("POURCENTAGE_Respon_Cell_Tech") 
     
-    ID_Suiveur_Cell_Tech =  StringField("ID_Suiveur_Cell_Tech",
+    ID_Suiveur_Cell_Tech =  IntegerField("ID_Suiveur_Cell_Tech",
                         validators=[DataRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Tech = StringField("POURCENTAGE_Suiveur_Cell_Tech") 	
+    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("POURCENTAGE_Suiveur_Cell_Tech") 	
 
-    ID_Respon_Cell_Planif =StringField("ID_Respon_Cell_Planif",
+    ID_Respon_Cell_Planif =IntegerField("ID_Respon_Cell_Planif",
                         validators=[DataRequired(),validate_email])  
 
-    POURCENTAGE_Respon_Cell_Planif = StringField("POURCENTAGE_Respon_Cell_Planif") 
+    POURCENTAGE_Respon_Cell_Planif = DecimalField("POURCENTAGE_Respon_Cell_Planif") 
     
-    ID_Suiveur_Cell_Planif =  StringField("ID_Suiveur_Cell_Planif",
+    ID_Suiveur_Cell_Planif =  IntegerField("ID_Suiveur_Cell_Planif",
                         validators=[DataRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Planif	 = StringField("POURCENTAGE_Suiveur_Cell_Planif") 	
+    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("POURCENTAGE_Suiveur_Cell_Planif") 	
 
-    ID_Agent_saisie_Cell_Planif =StringField("ID_Agent_saisie_Cell_Planif",
+    ID_Agent_saisie_Cell_Planif =IntegerField("ID_Agent_saisie_Cell_Planif",
                         validators=[DataRequired(),validate_email])  	
 
-    POURCENTAGE_Agent_saisie_CEll_planif = StringField("POURCENTAGE_Agent_saisie_CEll_planif") 
+    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("POURCENTAGE_Agent_saisie_CEll_planif") 
 
     misid =HiddenField()
     
