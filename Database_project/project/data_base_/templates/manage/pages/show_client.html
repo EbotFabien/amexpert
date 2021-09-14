@@ -97,15 +97,17 @@
 				
 			</div>
 			{% if legend == "client" %}
-				<div class='column is-2-tablet is-4-mobile has-text-centered'>
-					<p class='stat-val'>{{tarif.id}}</p>
-					<p class='stat-key'>ID_Tarif</p>
-				</div>
-			
-				<div class='column is-2-tablet is-4-mobile has-text-centered'>
-					<p class='stat-val'>{{tarif.referent__data.nom}}</p>
-					<p class='stat-key'>AS</p>
-				</div>
+				{% if tarif != None %}
+					<div class='column is-2-tablet is-4-mobile has-text-centered'>
+						<p class='stat-val'>{{tarif.id}}</p>
+						<p class='stat-key'>ID_Tarif</p>
+					</div>
+				
+					<div class='column is-2-tablet is-4-mobile has-text-centered'>
+						<p class='stat-val'>{{tarif.referent__data.nom}}</p>
+						<p class='stat-key'>AS</p>
+					</div>
+				{% endif %}
 			{% endif %}
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-key'><strong>Date historique</strong></p>

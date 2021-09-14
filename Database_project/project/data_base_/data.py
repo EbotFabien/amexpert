@@ -1912,14 +1912,14 @@ def Missions1(loc):
           
              	
             ID_INTERV = IV ,
-            NRO_FACTURE = name[8]  ,
+            NRO_FACTURE = int(name[8])  ,
             PRIX_HT_EDL = name[13] ,
             TVA_EDL = name[14] ,
             PRIX_TTC_EDL = name[15] ,
             Reference_LOCATAIRE	 =  name[20] ,
             Adresse1_Bien	 = name[21] ,  
             Adresse2_Bien	 = name[22] , 
-            CP_Bien	 = name[23] ,  
+            CP_Bien	 = int(name[23]) ,  
             Ville_Bien	 = name[24] , 
             
             CA_HT_AS = name[25] , 	

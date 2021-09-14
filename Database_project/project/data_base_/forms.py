@@ -1,127 +1,170 @@
 from flask_wtf import FlaskForm,RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField, TextAreaField,HiddenField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField,DecimalField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
-from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur
+from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
+from datetime import date,timedelta,datetime
 
 
 
+def validatep(self,email):
+        try :
+            int(email.data)
+        except:
+            raise ValidationError("Le numero n'a pas ete bien saisie")
 
 class RegistrationForm(FlaskForm):
-    username =StringField("Identifiant",
-                                validators=[DataRequired(),length(min=4 ,max=20)])
-    
-    Numero =StringField('Tel',
-                                validators=[DataRequired(),length(min=4 ,max=20)])
-
-    email =StringField('E-mail',
-                           validators=[DataRequired(),Email()])
-
-    password =PasswordField('Mot de pass',
-                                  validators=[length(min=8 ,max=20)])
-    confirm_password =PasswordField('Confirmer le mot de pass',
-                                  validators=[EqualTo('password')])
-
-    Type_Expert=SelectField('Type d\'expert',
-                             choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
-
-    Sexe=SelectField('Sexe',
-                             choices=[('MME', 'MME'), ('M.', 'M.')])
-
-    submit = SubmitField('enregistrer')
-
-    modifier = SubmitField('modifier')
-    
-    def validate_username(self,username): 
-        user = Expert.query.filter_by(nom=username.data).first()
-
-        if user:
-            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
-
     def validate_email(self,email):
         email = Expert.query.filter_by(email=email.data).first()
 
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
+    def validate_username(self,username): 
+        user = Expert.query.filter_by(nom=username.data).first()
 
-class Expert_editForm(FlaskForm):
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
     username =StringField("Identifiant",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[DataRequired(),validatep,length(min=4 ,max=20)])
 
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email()])
+                           validators=[DataRequired(),Email(),validate_email])
 
-    email_perso =StringField('E-mail perso', validators=[DataRequired(),Email()])
+    password =PasswordField('Mot de pass',
+                                  validators=[length(min=8 ,max=20)])
+
+    confirm_password =PasswordField('Confirmer le mot de pass',
+                                  validators=[EqualTo('password')])
+    
+    email_perso =StringField('E-mail perso')
+
+    Type_Expert=SelectField('Type d\'expert',
+                             choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
+
+    Sexe=SelectField('Genre',
+                             choices=[('MME', 'MME'), ('M.', 'M.')])
+    
+    secteur =StringField('Secteur')
+
+
+    siret =IntegerField('siret')
+
+    trigramme =StringField('trigramme')
+
+    code_tva =StringField('Code tva')
+                        
+    taux_tva =DecimalField('Taux tva')
+
+    actif_parti =SelectField('actif_parti',
+                             choices=[('ACTIF', 'ACTIF'), ('PARTI', 'PARTI')])
+
+    ville =StringField('Ville')
+    
+    type_certification=StringField('Type certification',
+                           validators=[DataRequired()])
+    date_certification=DateField('Date de certification',
+                           validators=[DataRequired()])
+    date_certification_renouv=DateField('Date de recertification')
+    adresse=StringField('Adresse 1')
+
+    adresse2=StringField('Adresse 2')
+
+    cp=IntegerField('CP')
+    login_google=StringField('login google')
+    pwd_google=StringField('Pwd google')
+    login_backof=StringField('login_backof')
+    pwd_backof=StringField('pwd_backof') #endeavour to hash all passwords
+    login_extranet=StringField('login_extranet')
+    pwd_extranet=StringField('pwd_extranet')
+    pwd_gsuite=StringField('pwd_gsuite')
+    Expert_id=HiddenField()
+    observations_de_suivi=StringField('observations_de_suivi')
+
+    submit = SubmitField('enregistrer')
+
+    modifier = SubmitField('modifier')
+    
+    
+
+    
+
+
+class Expert_editForm(FlaskForm):
+    def validate2(self,email,expert):
+        email = Expert.query.filter(and_(Expert.email==email,Expert.id!=expert)).first()
+
+        if email:
+            return True
+
+    username =StringField("Identifiant",
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    
+    Numero =StringField('Tel',
+                                validators=[DataRequired(),validatep,length(min=4 ,max=20)])
+
+    email =StringField('E-mail')
+
+    email_perso =StringField('E-mail perso')
 
 
     Sexe=SelectField('Genre',
                              choices=[('MME', 'MME'), ('M.', 'M.')])
 
 
-    Type =StringField('Type',  validators=[DataRequired()])
+    Type =SelectField('Type',
+                             choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
 
-    secteur =StringField('Secteur', validators=[DataRequired()])
+
+    secteur =StringField('Secteur')
 
 
-    siret =StringField('siret',
-                                  validators=[DataRequired()])
+    siret =IntegerField('siret')
 
-    trigramme =StringField('trigramme',
-                                validators=[DataRequired()])
+    trigramme =StringField('trigramme')
 
-    code_tva =StringField('Code tva',
-                            validators=[DataRequired()])
+    code_tva =StringField('Code tva')
                         
-    taux_tva =StringField('Taux tva',
-                            validators=[DataRequired()])
+    taux_tva =DecimalField('Taux tva')
 
-    actif_parti =StringField('Actif parti',
-                            validators=[DataRequired()])
+    actif_parti =SelectField('actif_parti',
+                             choices=[('ACTIF', 'ACTIF'), ('PARTI', 'PARTI')])
 
-    ville =StringField('Ville',
-                        validators=[DataRequired()])
+    ville =StringField('Ville')
     
     type_certification=StringField('Type certification',
-                        validators=[DataRequired()])
-    date_certification=DateField('Date de certification', validators=[DataRequired()])
-    date_certification_renouv=DateField('Date de recertification', validators=[DataRequired()])
+                           validators=[DataRequired()])
+    date_certification=DateField('Date de certification',
+                           validators=[DataRequired()])
+    date_certification_renouv=DateField('Date de recertification')
     
     date_entree=StringField('Date de entree',render_kw={'readonly':True})
 
 
     mdp=DateField('Date de sortie')
 
-    adresse=StringField('Adresse 1',
-                        validators=[DataRequired()])
+    adresse=StringField('Adresse 1')
 
-    adresse2=StringField('Adresse 2',
-                        validators=[DataRequired()])
+    adresse2=StringField('Adresse 2')
 
-    cp=StringField('CP',
-                        validators=[DataRequired()])
-    login_google=StringField('login google',
-                        validators=[DataRequired()])
-    pwd_google=StringField('Pwd google',
-                        validators=[DataRequired()])
-    login_backof=StringField('login_backof',
-                        validators=[DataRequired()])
-    pwd_backof=StringField('pwd_backof',
-                        validators=[DataRequired()]) #endeavour to hash all passwords
-    login_extranet=StringField('login_extranet',
-                        validators=[DataRequired()])
-    pwd_extranet=StringField('pwd_extranet',
-                        validators=[DataRequired()])
-    pwd_gsuite=StringField('pwd_gsuite',
-                        validators=[DataRequired()])
-    observations_de_suivi=StringField('observations_de_suivi',
-                        validators=[DataRequired()])
+    cp=IntegerField('CP')
+    login_google=StringField('login google')
+    pwd_google=StringField('Pwd google')
+    login_backof=StringField('login_backof')
+    pwd_backof=StringField('pwd_backof') #endeavour to hash all passwords
+    login_extranet=StringField('login_extranet')
+    pwd_extranet=StringField('pwd_extranet')
+    pwd_gsuite=StringField('pwd_gsuite')
+    Expert_id=HiddenField()
+    observations_de_suivi=StringField('observations_de_suivi')
 
     modifier = SubmitField('modifier')
 
@@ -162,9 +205,15 @@ class tableform(FlaskForm):
 
 
 class Tarif_Form(FlaskForm):
+    def validate_email(self,email):
+        email = Expert.query.filter_by(id=email.data).first()
+
+        if email is None :
+            raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
+
     def validate_price_STD(self,edl_prix_std): 
             base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='STD')).first()
-            if edl_prix_std.data == 0:
+            if edl_prix_std == 0:
                 raise ValidationError("Veuillez mettre une bonne valeur") 
 
             if base.Prix_EDL>edl_prix_std.data:
@@ -437,79 +486,81 @@ class Tarif_Form(FlaskForm):
             if base.Prix_EDL>chif_pav_villa_prix_t8.data:
                 raise ValidationError("le tarif de base T8 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
 
-    edl_prix_std=IntegerField('edl_prix_std', validators=[DataRequired(),validate_price_STD])     
-    edl_appt_prix_f1=IntegerField('edl_appt_prix_f1', validators=[DataRequired(),validate_price_F1])
-    edl_appt_prix_f2=IntegerField('edl_appt_prix_f2', validators=[DataRequired(),validate_price_F2]) 
-    edl_appt_prix_f3=IntegerField('edl_appt_prix_f3', validators=[DataRequired(),validate_price_F3])
-    edl_appt_prix_f4=IntegerField('edl_appt_prix_f4', validators=[DataRequired(),validate_price_F4]) 
-    edl_appt_prix_f5=IntegerField('edl_appt_prix_f5', validators=[DataRequired(),validate_price_F5])
-    edl_appt_prix_f6=IntegerField('edl_appt_prix_f6', validators=[DataRequired(),validate_price_F6])
-    edl_pav_villa_prix_t1=IntegerField('edl_pav_villa_prix_t1', validators=[DataRequired(),validate_price_T1])
-    edl_pav_villa_prix_t2=IntegerField('edl_pav_villa_prix_t2', validators=[DataRequired(),validate_price_T2])
-    edl_pav_villa_prix_t3=IntegerField('edl_pav_villa_prix_t3', validators=[DataRequired(),validate_price_T3])
-    edl_pav_villa_prix_t4=IntegerField('edl_pav_villa_prix_t4', validators=[DataRequired(),validate_price_T4]) 
-    edl_pav_villa_prix_t5=IntegerField('edl_pav_villa_prix_t5', validators=[DataRequired(),validate_price_T5])
-    edl_pav_villa_prix_t6=IntegerField('edl_pav_villa_prix_t6', validators=[DataRequired(),validate_price_T6])
-    edl_pav_villa_prix_t7=IntegerField('edl_pav_villa_prix_t7', validators=[DataRequired(),validate_price_T7]) 
-    edl_pav_villa_prix_t8=IntegerField('edl_pav_villa_prix_t8', validators=[DataRequired(),validate_price_T8])
-    chif_appt_prix_stu=IntegerField('chif_appt_prix_stu', validators=[DataRequired(),validate_chif_STD])
-    chif_appt_prix_f1 =IntegerField('chif_appt_prix_f1', validators=[DataRequired(),validate_chif_F1]) 
-    chif_appt_prix_f2 =IntegerField('chif_appt_prix_f2', validators=[DataRequired(),validate_chif_F2]) 
-    chif_appt_prix_f3 =IntegerField('chif_appt_prix_f3', validators=[DataRequired(),validate_chif_F3]) 
-    chif_appt_prix_f4 =IntegerField('chif_appt_prix_f4', validators=[DataRequired(),validate_chif_F4]) 
-    chif_appt_prix_f5 =IntegerField('chif_appt_prix_f5', validators=[DataRequired(),validate_chif_F5]) 
-    chif_appt_prix_f6 =IntegerField('chif_appt_prix_f6', validators=[DataRequired(),validate_chif_F6]) 
-    chif_pav_villa_prix_t1=IntegerField('chif_pav_villa_prix_t1', validators=[DataRequired(),validate_chif_T1])
-    chif_pav_villa_prix_t2=IntegerField('chif_pav_villa_prix_t2', validators=[DataRequired(),validate_chif_T2]) 
-    chif_pav_villa_prix_t3=IntegerField('chif_pav_villa_prix_t3', validators=[DataRequired(),validate_chif_T3])
-    chif_pav_villa_prix_t4=IntegerField('chif_pav_villa_prix_t4', validators=[DataRequired(),validate_chif_T4])
-    chif_pav_villa_prix_t5=IntegerField('chif_pav_villa_prix_t5', validators=[DataRequired(),validate_chif_T5])
-    chif_pav_villa_prix_t6=IntegerField('chif_pav_villa_prix_t6', validators=[DataRequired(),validate_chif_T6])
-    chif_pav_villa_prix_t7=IntegerField('chif_pav_villa_prix_t7', validators=[DataRequired(),validate_chif_T7]) 
-    chif_pav_villa_prix_t8=IntegerField('chif_pav_villa_prix_t8', validators=[DataRequired(),validate_chif_T8])
-    prix_autre=IntegerField('prix_autre', validators=[Optional()])
+    edl_prix_std=DecimalField('edl_prix_std', validators=[validate_price_STD])     
+    edl_appt_prix_f1=DecimalField('edl_appt_prix_f1', validators=[validate_price_F1])
+    edl_appt_prix_f2=DecimalField('edl_appt_prix_f2', validators=[validate_price_F2]) 
+    edl_appt_prix_f3=DecimalField('edl_appt_prix_f3', validators=[validate_price_F3])
+    edl_appt_prix_f4=DecimalField('edl_appt_prix_f4', validators=[validate_price_F4]) 
+    edl_appt_prix_f5=DecimalField('edl_appt_prix_f5', validators=[validate_price_F5])
+    edl_appt_prix_f6=DecimalField('edl_appt_prix_f6', validators=[validate_price_F6])
+    edl_pav_villa_prix_t1=DecimalField('edl_pav_villa_prix_t1', validators=[validate_price_T1])
+    edl_pav_villa_prix_t2=DecimalField('edl_pav_villa_prix_t2', validators=[validate_price_T2])
+    edl_pav_villa_prix_t3=DecimalField('edl_pav_villa_prix_t3', validators=[validate_price_T3])
+    edl_pav_villa_prix_t4=DecimalField('edl_pav_villa_prix_t4', validators=[validate_price_T4]) 
+    edl_pav_villa_prix_t5=DecimalField('edl_pav_villa_prix_t5', validators=[validate_price_T5])
+    edl_pav_villa_prix_t6=DecimalField('edl_pav_villa_prix_t6', validators=[validate_price_T6])
+    edl_pav_villa_prix_t7=DecimalField('edl_pav_villa_prix_t7', validators=[validate_price_T7]) 
+    edl_pav_villa_prix_t8=DecimalField('edl_pav_villa_prix_t8', validators=[validate_price_T8])
+    chif_appt_prix_stu=DecimalField('chif_appt_prix_stu', validators=[validate_chif_STD])
+    chif_appt_prix_f1 =DecimalField('chif_appt_prix_f1', validators=[validate_chif_F1]) 
+    chif_appt_prix_f2 =DecimalField('chif_appt_prix_f2', validators=[validate_chif_F2]) 
+    chif_appt_prix_f3 =DecimalField('chif_appt_prix_f3', validators=[validate_chif_F3]) 
+    chif_appt_prix_f4 =DecimalField('chif_appt_prix_f4', validators=[validate_chif_F4]) 
+    chif_appt_prix_f5 =DecimalField('chif_appt_prix_f5', validators=[validate_chif_F5]) 
+    chif_appt_prix_f6 =DecimalField('chif_appt_prix_f6', validators=[validate_chif_F6]) 
+    chif_pav_villa_prix_t1=DecimalField('chif_pav_villa_prix_t1', validators=[validate_chif_T1])
+    chif_pav_villa_prix_t2=DecimalField('chif_pav_villa_prix_t2', validators=[validate_chif_T2]) 
+    chif_pav_villa_prix_t3=DecimalField('chif_pav_villa_prix_t3', validators=[validate_chif_T3])
+    chif_pav_villa_prix_t4=DecimalField('chif_pav_villa_prix_t4', validators=[validate_chif_T4])
+    chif_pav_villa_prix_t5=DecimalField('chif_pav_villa_prix_t5', validators=[validate_chif_T5])
+    chif_pav_villa_prix_t6=DecimalField('chif_pav_villa_prix_t6', validators=[validate_chif_T6])
+    chif_pav_villa_prix_t7=DecimalField('chif_pav_villa_prix_t7', validators=[validate_chif_T7]) 
+    chif_pav_villa_prix_t8=DecimalField('chif_pav_villa_prix_t8', validators=[validate_chif_T8])
+    prix_autre=DecimalField('prix_autre', validators=[Optional()])
 
     code_tva= StringField('code tva', validators=[Optional()])
 
-    taux_meuble= StringField('taux_meuble', validators=[Optional()])
+    taux_meuble= IntegerField('taux_meuble', validators=[Optional()])
 
-    referent_as_client= StringField('referent_as_client', validators=[DataRequired()])
+    referent_as_client= IntegerField('referent_as_client', validators=[DataRequired(),validate_email])
 
     com_as_sur_ca_client=StringField('com_as_sur_ca_client', validators=[DataRequired()])
 
-    cell_dev_ref_responsable = StringField('cell_dev_ref_responsable', validators=[DataRequired()])
+    cell_dev_ref_responsable = IntegerField('cell_dev_ref_responsable', validators=[DataRequired(),validate_email])
 
     com_cell_dev_ref_responsable = StringField('com_cell_dev_ref_responsable', validators=[DataRequired()])
 
-    cell_dev_ref_agent = StringField('cell_dev_ref_agent', validators=[DataRequired()])
+    cell_dev_ref_agent = IntegerField('cell_dev_ref_agent', validators=[DataRequired(),validate_email])
 
     com_cell_dev_ref_agent = StringField('com_cell_dev_ref_agent', validators=[DataRequired()])
 
-    cell_tech_ref_agent = StringField('cell_tech_ref_agent', validators=[DataRequired()])
+    cell_tech_ref_agent = IntegerField('cell_tech_ref_agent', validators=[DataRequired(),validate_email])
 
     com_cell_tech_Ref_agent = StringField('com_cell_tech_Ref_agent', validators=[DataRequired()])
 
-    cell_tech_ref_responsable  = StringField('cell_tech_ref_responsable', validators=[DataRequired()])
+    cell_tech_ref_responsable  = IntegerField('cell_tech_ref_responsable', validators=[DataRequired(),validate_email])
 
-    com_cell_tech_ref_responsable = StringField('com_cell_tech_ref_responsable', validators=[DataRequired()])
+    com_cell_tech_ref_responsable = StringField('com_cell_tech_ref_responsable')
 
-    cell_tech_ref_suiveur = StringField('cell_tech_ref_suiveur', validators=[DataRequired()])
+    cell_tech_ref_suiveur = IntegerField('cell_tech_ref_suiveur', validators=[DataRequired(),validate_email])
 
-    com_cell_tech_ref_suiveur  = StringField('com_cell_tech_ref_suiveur', validators=[DataRequired()])
+    com_cell_tech_ref_suiveur  = StringField('com_cell_tech_ref_suiveur')
 
-    cell_planif_ref_responsable = StringField('cell_planif_ref_responsable', validators=[DataRequired()])
+    cell_planif_ref_responsable = IntegerField('cell_planif_ref_responsable', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_responsable = StringField('com_cell_planif_ref_responsable', validators=[DataRequired()])
+    com_cell_planif_ref_responsable = StringField('com_cell_planif_ref_responsable')
 
-    cell_planif_ref_suiveur = StringField('cell_planif_ref_suiveur', validators=[DataRequired()])
+    cell_planif_ref_suiveur = IntegerField('cell_planif_ref_suiveur', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_suiveur  =  StringField('com_cell_planif_ref_suiveur', validators=[DataRequired()])
+    com_cell_planif_ref_suiveur  =  StringField('com_cell_planif_ref_suiveur')
 
-    cell_planif_ref_agent_saisie  =  StringField('cell_planif_ref_agent_saisie', validators=[DataRequired()])
+    cell_planif_ref_agent_saisie  =  IntegerField('cell_planif_ref_agent_saisie', validators=[DataRequired(),validate_email])
 
-    com_cell_planif_ref_agent_saisie  =  StringField('com_cell_planif_ref_agent_saisie', validators=[DataRequired()])
+    com_cell_planif_ref_agent_saisie  =  StringField('com_cell_planif_ref_agent_saisie')
 
     commentaire_libre = TextAreaField('commentaire_libre', validators=[Optional()])
+
+    tafid =HiddenField()
     
     submit = SubmitField('enregistrer')
 
@@ -570,36 +621,36 @@ class Client_Form(FlaskForm):
                            validators=[DataRequired(),Email()])
 
     Numero =StringField('Tel',
-                           validators=[DataRequired()])
+                           validators=[validatep])
 
-    Adresse1=StringField('Adresse1 ',
-                           validators=[DataRequired()])
+    Adresse1=StringField('Adresse1')
     
-    Adresse2=StringField('Adresse2 ',
-                           validators=[DataRequired()])
+    Adresse2=StringField('Adresse2')
 
-    CP=StringField('Code Postal',
+    CP=IntegerField('Code Postal',
                            validators=[DataRequired()])
     
     Ville=StringField('Ville',
                            validators=[DataRequired()])
     
-    Siret=StringField("Siret N°",
+    Siret=IntegerField("Siret N°",
                            validators=[DataRequired()])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
 
-    Reference=StringField("Reference",
-                           validators=[DataRequired()])
+    Reference=StringField("Reference")
     
     Date_Creation=StringField("Date_Creation",
                            render_kw={'readonly':True})
 
-    EtatClient=StringField("Etat du client")
+    EtatClient=SelectField("EtatClient", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
+                        validators=[DataRequired()])
+
     LoginExtranet = StringField("Login Extranet")
 
     MdpExtranet = StringField("MdpExtranet")
+
 
     Enseigne=StringField("Enseigne")
 
@@ -621,12 +672,136 @@ class Client_Form(FlaskForm):
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
+class Client_edit(FlaskForm):
+
+    def validate2(self,email,client):
+        email = Client.query.filter(and_(Client.email==email,Client.id!=client)).first()
+
+        if email:
+            return True
+        
+    def validate3(self,email,client):
+        email = prospect.query.filter(and_(prospect.email==email,prospect.id!=client)).first()
+
+        if email:
+            return True
+    
+    
+
+    Type=SelectField('Type',
+                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
+
+    Societe =StringField('Société',
+                           validators=[DataRequired()])
+
+    Sexe=SelectField('Titre',
+                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+
+    NOM =StringField('Nom et prénom',
+                           validators=[DataRequired()])
+    
+    email =StringField('E-mail')
+
+    Numero =StringField('Tel',
+                           validators=[validatep])
+
+    Adresse1=StringField('Adresse1')
+    
+    Adresse2=StringField('Adresse2')
+
+    CP=IntegerField('Code Postal',
+                           validators=[DataRequired()])
+    
+    Ville=StringField('Ville',
+                           validators=[DataRequired()])
+    
+    Siret=IntegerField("Siret N°",
+                           validators=[DataRequired()])
+
+    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
+                        validators=[DataRequired()])
+
+    Reference=StringField("Reference",
+                           render_kw={'readonly':True})
+    
+    Date_Creation=StringField("Date_Creation",
+                           render_kw={'readonly':True})
+
+    EtatClient=StringField("Etat du client")
+    LoginExtranet = StringField("Login Extranet")
+
+    MdpExtranet = StringField("MdpExtranet")
+
+    client_id = HiddenField()
+
+    Enseigne=StringField("Enseigne")
+
+    submit = SubmitField('enregistrer')
+
+    modifier = SubmitField('modifier')
+
+
+
+    def validate_username(self,username):
+        user = Client.query.filter_by(nom=username.data).first()
+
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
 
 class Negotiateur_Form(FlaskForm):
+
+    def nego(self,email,cont):
+        email = Client_negotiateur.query.filter(and_(Client_negotiateur.email==email,Client_negotiateur.id!=cont)).first()
+
+        if email:
+            return True
        
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+
+    NOM =StringField('Nom et prénom',
+                           validators=[DataRequired()])
+    
+    email =StringField('E-mail')
+
+    Numero =StringField('Tel',
+                           validators=[validatep])
+
+    Adresse=StringField('Adresse')
+
+    CP=IntegerField('Code Postal',
+                           validators=[DataRequired()])
+    
+    Ville=StringField('Ville')
+    
+    client_id = HiddenField()
+
+    Date_Creation=StringField("Date_Creation",
+                           render_kw={'readonly':True})
+
+    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')])
+
+    submit = SubmitField('enregistrer')
+
+    modifier = SubmitField('modifier')
+
+
+
+    def validate_username(self,username):
+        user = Client_negotiateur.query.filter_by(nom=username.data).first()
+
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
+    
+    
+
+class Negotiateur_Form1(FlaskForm):  
+
+    Sexe=SelectField('Titre',
+                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[DataRequired()])
@@ -635,20 +810,17 @@ class Negotiateur_Form(FlaskForm):
                            validators=[DataRequired(),Email()])
 
     Numero =StringField('Tel',
-                           validators=[DataRequired()])
+                           validators=[validatep])
 
-    Adresse=StringField('Adresse ',
-                           validators=[DataRequired()])
+    Adresse=StringField('Adresse')
 
-    CP=StringField('Code Postal',
+    CP=IntegerField('Code Postal',
                            validators=[DataRequired()])
     
-    Ville=StringField('Ville',
-                           validators=[DataRequired()])
+    Ville=StringField('Ville')
     
 
-    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
-                        validators=[DataRequired()])
+    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')])
 
     submit = SubmitField('enregistrer')
 
@@ -675,32 +847,377 @@ class Suivi_Client(FlaskForm):
     submit = SubmitField('enregistrer')
 
 
+
 class Mission_add(FlaskForm):
+    def validate_email(self,email):
+        email = Expert.query.filter_by(id=email.data).first()
 
-    Reference_client=StringField("N° Client",
+        if email is None :
+            raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
+
+    def validate_client(self,email):
+        email = Client.query.filter_by(reference=email.data).first()
+
+        if email is None :
+            raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
+
+
+    Reference_client=StringField("Reference Client",
+                        validators=[DataRequired(),validate_client])
+
+    ID_Concessionaire=StringField("ID Concessionaire",
+                        validators=[DataRequired(),validate_email])
+
+    ABONNEMENT=StringField("ABONNEMENT",
+                        validators=[DataRequired()])
+    
+    PRIX_HT_EDL=DecimalField("PRIX_HT_EDL",
+                        validators=[DataRequired()])
+    
+    DATE_REALISE_EDL=DateField("DATE_REALISE_EDL",
+                        validators=[DataRequired()])
+    
+    DATE_FACTURE=DateField("DATE_FACTURE",render_kw={'readonly':True})
+
+    NRO_FACTURE=StringField("NRO_FACTURE",render_kw={'readonly':True})
+
+    COMMENTAIRE_FACTURE=StringField("COMMENTAIRE_FACTURE",render_kw={'readonly':True})
+                        
+    DATE_FACT_REGLEE =DateField("DATE_FACT_REGLEE",render_kw={'readonly':True})
+
+    ID_INTERV=StringField("ID_INTERV",
+                        validators=[DataRequired(),validate_email])
+    
+    Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
+                        validators=[DataRequired()])
+    
+    Adresse1_Bien=StringField("Adresse1_Bien",
+                        validators=[DataRequired()])
+    
+    Adresse2_Bien=StringField("Adresse2_Bien",
+                        validators=[DataRequired()])
+      
+    CP_Bien=IntegerField("CP_Bien",
+                        validators=[DataRequired()])
+    
+    Ville_Bien=StringField("Ville_Bien",
+                        validators=[DataRequired()])
+    
+    TVA_EDL=DecimalField("TVA_EDL",
+                        validators=[DataRequired()])
+    
+    PRIX_TTC_EDL=DecimalField("PRIX_TTC_EDL",
+                        validators=[DataRequired()])
+    
+    CA_HT_AS=DecimalField("CA_HT_AS",
                         validators=[DataRequired()])
 
-    ID_Concessionaire=StringField("N° Concessionaire",
+    TVA_AS=DecimalField("TVA_AS",
                         validators=[DataRequired()])
+    
+    CA_TTC_AS=DecimalField("CA_TTC_AS",
+                        validators=[DataRequired()])
+    
+    CA_HT_AC=DecimalField("CA_HT_AC",
+                        validators=[DataRequired()])
+    
+    CA_TTC_AC=DecimalField("CA_TTC_AC",
+                        validators=[DataRequired()])
+    
+    CA_HT_TRUST=DecimalField("CA_HT_TRUST",
+                        validators=[DataRequired()])
+    
+    TVA_TRUST=DecimalField("TVA_TRUST",
+                        validators=[DataRequired()])
+    
+    Date_chiffrage_regle=DateField("Date_chiffrage_regle",
+                        validators=[DataRequired()])
+    
+    Prix_ht_chiffrage=DecimalField("Prix_ht_chiffrage",
+                        validators=[DataRequired()])
+    
+    POURCENTAGE_suiveur_chiffrage=StringField("POURCENTAGE_suiveur_chiffrage",
+                        validators=[DataRequired()])
+
+    POURCENTAGE_AS_chiffrage=StringField("POURCENTAGE_AS_chiffrage",
+                        validators=[DataRequired()])
+    
+    POURCENTAGE_manager_chiffrage=StringField("POURCENTAGE_manager_chiffrage",
+                        validators=[DataRequired()])
+    
+    ID_manager_chiffrage=StringField("ID_manager_chiffrage",
+                        validators=[DataRequired(),validate_email])
+
+    POURCENTAGE_agent_chiffrage =StringField("POURCENTAGE_agent_chiffrage",
+                        validators=[DataRequired()])
+    
+    ID_agent_chiffrage =StringField("ID_agent_chiffrage",
+                        validators=[DataRequired(),validate_email])
+
+    TYPE_EDL=StringField("TYPE_EDL",
+                        validators=[DataRequired()])
+    
+    TITREPROPRIO=SelectField('Titre PROPRIO',
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
+
+    NOMPROPRIO=StringField("NOMPROPRIO",
+                        validators=[DataRequired()])
+
+
+    CODE_AMEXPERT=StringField("CODE_AMEXPERT",
+                        validators=[DataRequired()])
+
+    
+
+    surface_logement1=DecimalField("surface_logement1",
+                        validators=[DataRequired()])
+
+    Ref_commande=StringField("Ref_commande")
+    
+    POURCENTAGE_COM_AS_DU_CLIENT=StringField("POURCENTAGE_COM_AS_DU_CLIENT",
+                        validators=[DataRequired()])
+    
+    ID_Respon_Cell_Dev=StringField("ID_Respon_Cell_Dev",
+                        validators=[DataRequired(),validate_email])
+
+    POURCENTAGE_Respon_Cell_Dev=StringField("POURCENTAGE_Respon_Cell_Dev")
+
+    ID_agent_Cell_Dev=StringField("ID_agent_Cell_Dev",
+                        validators=[DataRequired(),validate_email])
+    
+    TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
+                        validators=[DataRequired()])	
+
+    LOGEMENT_MEUBLE = StringField("LOGEMENT_MEUBLE",
+                        validators=[DataRequired()]) 	
+    CODE_FACTURATION =StringField("CODE_FACTURATION",
+                        validators=[DataRequired()])  	
+    TYPE_DE_BIEN = StringField("TYPE_DE_BIEN",
+                        validators=[DataRequired()]) 
+    
+    POURCENTAGE_Agent_Cell_Dev =  StringField("POURCENTAGE_Agent_Cell_Dev")	
+
+    ID_Agent_CellTech = StringField("ID_Agent_CellTech",
+                        validators=[DataRequired(),validate_email]) 	
+
+    POURCENTAGE_Agent_Cell_Tech =StringField("POURCENTAGE_Agent_Cell_Tech")  	
+
+    ID_Respon_Cell_Tech = StringField("ID_Respon_Cell_Tech",
+                        validators=[DataRequired(),validate_email]) 
+    
+    POURCENTAGE_Respon_Cell_Tech = StringField("POURCENTAGE_Respon_Cell_Tech")
+    
+    ID_Suiveur_Cell_Tech =  StringField("ID_Suiveur_Cell_Tech",
+                        validators=[DataRequired(),validate_email])	
+
+    POURCENTAGE_Suiveur_Cell_Tech = StringField("POURCENTAGE_Suiveur_Cell_Tech") 	
+
+    ID_Respon_Cell_Planif =StringField("ID_Respon_Cell_Planif",
+                        validators=[DataRequired(),validate_email])  
+
+    POURCENTAGE_Respon_Cell_Planif = StringField("POURCENTAGE_Respon_Cell_Planif") 
+    
+    ID_Suiveur_Cell_Planif =  StringField("ID_Suiveur_Cell_Planif",
+                        validators=[DataRequired(),validate_email])	
+
+    POURCENTAGE_Suiveur_Cell_Planif	 = StringField("POURCENTAGE_Suiveur_Cell_Planif") 	
+
+    ID_Agent_saisie_Cell_Planif =StringField("ID_Agent_saisie_Cell_Planif",
+                        validators=[DataRequired(),validate_email])  	
+
+    POURCENTAGE_Agent_saisie_CEll_planif = StringField("POURCENTAGE_Agent_saisie_CEll_planif") 
+
+    misid =HiddenField()
+    
    
     submit = SubmitField('enregistrer')
+
+    modifier = SubmitField('enregistre')
 
 
 class Mission_editForm(FlaskForm):
 
   
-    TYPE_LOGEMENT =  StringField("TYPE LOGEMENT",
+    def validate_email(self,email):
+        email = Expert.query.filter_by(id=email.data).first()
+
+        if email is None :
+            raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
+
+    def validate_client(self,email):
+        email = Client.query.filter_by(reference=email.data).first()
+
+        if email is None :
+            raise ValidationError("Cette utilisateur n'existe pas, utilisé  un autre utilisateur")
+
+
+    Reference_client=StringField("Reference Client",
+                        validators=[DataRequired(),validate_client])
+
+    ID_Concessionaire=IntegerField("ID Concessionaire",
+                        validators=[DataRequired()])
+
+    ABONNEMENT=StringField("ABONNEMENT",
+                        validators=[DataRequired()])
+    
+    PRIX_HT_EDL=DecimalField("PRIX_HT_EDL",
+                        validators=[DataRequired()])
+    
+    DATE_REALISE_EDL=StringField("DATE_REALISE_EDL",render_kw={'readonly':True})
+    
+    DATE_FACTURE=StringField("DATE_FACTURE",render_kw={'readonly':True})
+
+    NRO_FACTURE=StringField("NRO_FACTURE",render_kw={'readonly':True})
+
+    COMMENTAIRE_FACTURE=StringField("COMMENTAIRE_FACTURE",render_kw={'readonly':True})
+                        
+    DATE_FACT_REGLEE =StringField("DATE_FACT_REGLEE",render_kw={'readonly':True})
+
+    ID_INTERV=StringField("ID_INTERV",
+                        validators=[DataRequired(),validate_email])
+    
+    Reference_LOCATAIRE=StringField("Reference_LOCATAIRE",
+                        validators=[DataRequired()])
+    
+    Adresse1_Bien=StringField("Adresse1_Bien",
+                        validators=[DataRequired()])
+    
+    Adresse2_Bien=StringField("Adresse2_Bien",
+                        validators=[DataRequired()])
+      
+    CP_Bien=IntegerField("CP_Bien",
+                        validators=[DataRequired()])
+    
+    Ville_Bien=StringField("Ville_Bien",
+                        validators=[DataRequired()])
+    
+    TVA_EDL=DecimalField("TVA_EDL",
+                        validators=[DataRequired()])
+    
+    PRIX_TTC_EDL=DecimalField("PRIX_TTC_EDL",
+                        validators=[DataRequired()])
+    
+    CA_HT_AS=DecimalField("CA_HT_AS",
+                        validators=[DataRequired()])
+
+    TVA_AS=DecimalField("TVA_AS",
+                        validators=[DataRequired()])
+    
+    CA_TTC_AS=DecimalField("CA_TTC_AS",
+                        validators=[DataRequired()])
+    
+    CA_HT_AC=DecimalField("CA_HT_AC",
+                        validators=[DataRequired()])
+    
+    CA_TTC_AC=DecimalField("CA_TTC_AC",
+                        validators=[DataRequired()])
+    
+    CA_HT_TRUST=DecimalField("CA_HT_TRUST",
+                        validators=[DataRequired()])
+    
+    TVA_TRUST=DecimalField("TVA_TRUST",
+                        validators=[DataRequired()])
+    
+    Date_chiffrage_regle=DateField("Date_chiffrage_regle",format="%Y-%m-%dT%H:%M:%S",default=datetime.today(),#.strftime('%y. %m. %d'),
+                        validators=[DataRequired()])
+    
+    Prix_ht_chiffrage=DecimalField("Prix_ht_chiffrage",
+                        validators=[DataRequired()])
+    
+    POURCENTAGE_suiveur_chiffrage=StringField("POURCENTAGE_suiveur_chiffrage",
+                        validators=[DataRequired()])
+
+    POURCENTAGE_AS_chiffrage=StringField("POURCENTAGE_AS_chiffrage",
+                        validators=[DataRequired()])
+    
+    POURCENTAGE_manager_chiffrage=StringField("POURCENTAGE_manager_chiffrage",
+                        validators=[DataRequired()])
+    
+    ID_manager_chiffrage=StringField("ID_manager_chiffrage",
+                        validators=[DataRequired(),validate_email])
+
+    POURCENTAGE_agent_chiffrage =StringField("POURCENTAGE_agent_chiffrage",
+                        validators=[DataRequired()])
+    
+    ID_agent_chiffrage =StringField("ID_agent_chiffrage",
+                        validators=[DataRequired(),validate_email])
+
+    TYPE_EDL=StringField("TYPE_EDL",
+                        validators=[DataRequired()])
+    
+    TITREPROPRIO=SelectField('Titre PROPRIO',
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
+
+    NOMPROPRIO=StringField("NOMPROPRIO",
+                        validators=[DataRequired()])
+
+
+    CODE_AMEXPERT=StringField("CODE_AMEXPERT",
+                        validators=[DataRequired()])
+
+    
+
+    surface_logement1=DecimalField("surface_logement1",
+                        validators=[DataRequired()])
+
+    Ref_commande=StringField("Ref_commande")
+    
+    POURCENTAGE_COM_AS_DU_CLIENT=StringField("POURCENTAGE_COM_AS_DU_CLIENT",
+                        validators=[DataRequired()])
+    
+    ID_Respon_Cell_Dev=StringField("ID_Respon_Cell_Dev",
+                        validators=[DataRequired(),validate_email])
+
+    POURCENTAGE_Respon_Cell_Dev=StringField("POURCENTAGE_Respon_Cell_Dev")
+
+    ID_agent_Cell_Dev=StringField("ID_agent_Cell_Dev",
+                        validators=[DataRequired(),validate_email])
+    
+    TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
                         validators=[DataRequired()])	
 
-    LOGEMENT_MEUBLE = StringField("LOGEMENT MEUBLE",
+    LOGEMENT_MEUBLE = StringField("LOGEMENT_MEUBLE",
                         validators=[DataRequired()]) 	
-    CODE_FACTURATION =StringField("CODE FACTURATION",
+    CODE_FACTURATION =StringField("CODE_FACTURATION",
                         validators=[DataRequired()])  	
-    TYPE_DE_BIEN = StringField("TYPE DE BIEN",
-                        validators=[DataRequired()]) 	
+    TYPE_DE_BIEN = StringField("TYPE_DE_BIEN",
+                        validators=[DataRequired()]) 
+    
+    POURCENTAGE_Agent_Cell_Dev =  StringField("POURCENTAGE_Agent_Cell_Dev")	
+
+    ID_Agent_CellTech = StringField("ID_Agent_CellTech",
+                        validators=[DataRequired(),validate_email]) 	
+
+    POURCENTAGE_Agent_Cell_Tech =StringField("POURCENTAGE_Agent_Cell_Tech")  	
+
+    ID_Respon_Cell_Tech = StringField("ID_Respon_Cell_Tech",
+                        validators=[DataRequired(),validate_email]) 
+    POURCENTAGE_Respon_Cell_Tech = StringField("POURCENTAGE_Respon_Cell_Tech") 
+    
+    ID_Suiveur_Cell_Tech =  StringField("ID_Suiveur_Cell_Tech",
+                        validators=[DataRequired(),validate_email])	
+
+    POURCENTAGE_Suiveur_Cell_Tech = StringField("POURCENTAGE_Suiveur_Cell_Tech") 	
+
+    ID_Respon_Cell_Planif =StringField("ID_Respon_Cell_Planif",
+                        validators=[DataRequired(),validate_email])  
+
+    POURCENTAGE_Respon_Cell_Planif = StringField("POURCENTAGE_Respon_Cell_Planif") 
+    
+    ID_Suiveur_Cell_Planif =  StringField("ID_Suiveur_Cell_Planif",
+                        validators=[DataRequired(),validate_email])	
+
+    POURCENTAGE_Suiveur_Cell_Planif	 = StringField("POURCENTAGE_Suiveur_Cell_Planif") 	
+
+    ID_Agent_saisie_Cell_Planif =StringField("ID_Agent_saisie_Cell_Planif",
+                        validators=[DataRequired(),validate_email])  	
+
+    POURCENTAGE_Agent_saisie_CEll_planif = StringField("POURCENTAGE_Agent_saisie_CEll_planif") 
+
+    misid =HiddenField()
+    
 
     modifier = SubmitField('enregistre')
-
 
 
 class Agenda_form(FlaskForm):
@@ -759,11 +1276,11 @@ class Tarif_edit(FlaskForm):
     Type=StringField("Type",
                         render_kw={'readonly':True})
 
-    prix=StringField("prix",
-                        validators=[DataRequired()])
+    prix=DecimalField("prix")
+    
+    tafid=HiddenField()
 
-    surface=StringField("surface",
-                        validators=[DataRequired()])
+    surface=IntegerField("surface")
 
     submit = SubmitField('enregistrer')
 class time(FlaskForm):
@@ -780,8 +1297,9 @@ class Tarif_Base(FlaskForm):
                         validators=[DataRequired()])
     Nombre_de_piece=StringField("Nombre de piece",
                     validators=[DataRequired()])   
-    Prix_EDL=StringField("Prix EDL",
+    Prix_EDL=DecimalField("Prix EDL",
                 validators=[DataRequired()])
-    Prix_Chiffrage=StringField("Prix EDL",
+    Prix_Chiffrage=DecimalField("Prix_Chiffrage",
                 validators=[DataRequired()])      
     submit = SubmitField('enregistrer')
+

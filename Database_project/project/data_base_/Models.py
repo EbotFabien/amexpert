@@ -4,7 +4,7 @@ from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
 from flask_login import UserMixin
-from sqlalchemy import Float
+from sqlalchemy import Float,DECIMAL
 import json
 
 
@@ -28,7 +28,7 @@ class Client(db.Model):
     nom = db.Column(db.String)
     email = db.Column(db.String)
     numero = db.Column(db.String)
-    siret=db.Column(db.String)
+    siret=db.Column(db.Integer)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
   
@@ -53,19 +53,18 @@ class Expert(db.Model,UserMixin):
     __tablename__ = 'Expert'
 
     id = db.Column(db.Integer,primary_key=True)
-    old= db.Column(db.String)
     new= db.Column(db.String)
     genre  = db.Column(db.String)	
     nom = db.Column(db.String)
     trigramme=db.Column(db.String)
     TYPE=db.Column(db.String)
     date_entree=db.Column(db.DateTime,default=datetime.utcnow)
-    siret=db.Column(db.String) 
+    siret=db.Column(db.Integer) 
     email = db.Column(db.String)#unique
-    email_perso = db.Column(db.String)
+    email_perso = db.Column(db.String,unique=True)
     numero = db.Column(db.String)
     code_tva=db.Column(db.String)
-    taux_tva=db.Column(db.String)
+    taux_tva=db.Column(db.DECIMAL(65,2))
     password = db.Column(db.String(60))
     visibility =db.Column(db.Boolean,default=True)
     
@@ -98,7 +97,7 @@ class Client_History(db.Model):
     adresse1  = db.Column(db.String)
     adresse2 = db.Column(db.String)
     etat_client=db.Column(db.String)
-    cp 	 = db.Column(db.String)
+    cp 	 = db.Column(db.Integer)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
     login_extranet= db.Column(db.String)
@@ -127,7 +126,7 @@ class Client_negotiateur(db.Model):
             backref=db.backref('client__nego',  uselist=False),  uselist=False) 	
     sexe = db.Column(db.String) 	
     nom = db.Column(db.String)
-    email = db.Column(db.String,unique=True)
+    email = db.Column(db.String)
     numero = db.Column(db.String)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
@@ -152,7 +151,7 @@ class Negotiateur_History(db.Model):
     negotiateur_id = db.Column(db.Integer, ForeignKey('Client_negotiateur.id', onupdate="CASCADE", ondelete="CASCADE"))   	
     adresse  = db.Column(db.String)	
     etat_client=db.Column(db.Boolean,default=True)
-    cp 	 = db.Column(db.String)
+    cp 	 = db.Column(db.Integer)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
     abonnement=db.Column(db.String)
@@ -207,7 +206,7 @@ class prospect(db.Model):
     nom = db.Column(db.String)
     email = db.Column(db.String)
     numero = db.Column(db.String)
-    siret=db.Column(db.String)
+    siret=db.Column(db.Integer)
     date_creation =db.Column(db.DateTime,default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
   
@@ -233,8 +232,9 @@ class prospect_History(db.Model):
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     prospect = db.Column(db.Integer, ForeignKey('prospect.id', onupdate="CASCADE", ondelete="CASCADE"))   		
-    adresse  = db.Column(db.String)	
-    cp 	 = db.Column(db.String)
+    adresse1  = db.Column(db.String)
+    adresse2 = db.Column(db.String)
+    cp 	 = db.Column(db.Integer)
     ville  = db.Column(db.String)
     pays= db.Column(db.String)
     etat_client=db.Column(db.String)
@@ -335,11 +335,11 @@ class Expert_History(db.Model):
     actif_parti=db.Column(db.String)
     secteur=db.Column(db.String)
     type_certification=db.Column(db.String)
-    date_certification_initiale=db.Column(db.String)#check this
-    date_renouv_certification=db.Column(db.String)#check this
+    date_certification_initiale=db.Column(db.DateTime())#check this
+    date_renouv_certification=db.Column(db.DateTime())#check this
     adresse1 = db.Column(db.String)
     adresse2 = db.Column(db.String)
-    cp=db.Column(db.String)
+    cp=db.Column(db.Integer)
     login_backof=db.Column(db.String)
     pwd_backof=db.Column(db.String) 
     login_extranet=db.Column(db.String)
@@ -423,8 +423,8 @@ class Tarif_base(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     pav_appartement=db.Column(db.String) 
     Type  = db.Column(db.String) 
-    surface = db.Column(db.String) 
-    Prix_EDL = db.Column(db.Integer) 
+    surface = db.Column(db.Integer) 
+    Prix_EDL = db.Column(db.DECIMAL(65,2)) 
     visibility =db.Column(db.Boolean,default=True)
 
     def __repr__(self):
@@ -441,38 +441,38 @@ class Tarifs(db.Model):
     data_client=db.relationship("Client", 
         primaryjoin=(reference_client == Client.id),
         backref=db.backref('data_client',  uselist=False),  uselist=False)
-    edl_prix_std=db.Column(Float)     
-    edl_appt_prix_f1=db.Column(Float) 
-    edl_appt_prix_f2=db.Column(Float) 
-    edl_appt_prix_f3=db.Column(Float) 
-    edl_appt_prix_f4=db.Column(Float) 
-    edl_appt_prix_f5=db.Column(Float) 
-    edl_appt_prix_f6=db.Column(Float) 
-    edl_pav_villa_prix_t1=db.Column(Float) 
-    edl_pav_villa_prix_t2=db.Column(Float) 
-    edl_pav_villa_prix_t3=db.Column(Float) 
-    edl_pav_villa_prix_t4=db.Column(Float) 
-    edl_pav_villa_prix_t5=db.Column(Float) 
-    edl_pav_villa_prix_t6=db.Column(Float) 
-    edl_pav_villa_prix_t7=db.Column(Float) 
-    edl_pav_villa_prix_t8=db.Column(Float) 
-    chif_appt_prix_stu=db.Column(Float) 
-    chif_appt_prix_f1 =db.Column(Float) 
-    chif_appt_prix_f2 =db.Column(Float) 
-    chif_appt_prix_f3 =db.Column(Float) 
-    chif_appt_prix_f4 =db.Column(Float) 
-    chif_appt_prix_f5 =db.Column(Float) #f6
-    chif_appt_prix_f6 =db.Column(Float)
-    chif_pav_villa_prix_t1=db.Column(Float) 
-    chif_pav_villa_prix_t2=db.Column(Float) 
-    chif_pav_villa_prix_t3=db.Column(Float) 
-    chif_pav_villa_prix_t4=db.Column(Float) 
-    chif_pav_villa_prix_t5=db.Column(Float) 
-    chif_pav_villa_prix_t6=db.Column(Float) 
-    chif_pav_villa_prix_t7=db.Column(Float) 
-    chif_pav_villa_prix_t8=db.Column(Float) 
+    edl_prix_std=db.Column(DECIMAL(65,2))     
+    edl_appt_prix_f1=db.Column(DECIMAL(65,2)) 
+    edl_appt_prix_f2=db.Column(DECIMAL(65,2)) 
+    edl_appt_prix_f3=db.Column(DECIMAL(65,2)) 
+    edl_appt_prix_f4=db.Column(DECIMAL(65,2)) 
+    edl_appt_prix_f5=db.Column(DECIMAL(65,2)) 
+    edl_appt_prix_f6=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t1=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t2=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t3=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t4=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t5=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t6=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t7=db.Column(DECIMAL(65,2)) 
+    edl_pav_villa_prix_t8=db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_stu=db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_f1 =db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_f2 =db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_f3 =db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_f4 =db.Column(DECIMAL(65,2)) 
+    chif_appt_prix_f5 =db.Column(DECIMAL(65,2)) #f6
+    chif_appt_prix_f6 =db.Column(DECIMAL(65,2))
+    chif_pav_villa_prix_t1=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t2=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t3=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t4=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t5=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t6=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t7=db.Column(DECIMAL(65,2)) 
+    chif_pav_villa_prix_t8=db.Column(DECIMAL(65,2)) 
     code_tva=db.Column(db.String)
-    taux_meuble=db.Column(db.String)
+    taux_meuble=db.Column(db.Integer)#Is thisFloat??
     referent_as_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     referent__data=db.relationship("Expert", 
         primaryjoin=(referent_as_client == Expert.id),
@@ -564,13 +564,13 @@ class Mission(db.Model):
     Bailleur__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)
-    NRO_FACTURE	 = db.Column(db.String)
+    NRO_FACTURE	 = db.Column(db.String)#try putting facture as foreign key,think
     ABONNEMENT	 = db.Column(db.String)
     ID_AS	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     AS__data=db.relationship("Expert", 
         primaryjoin=(ID_AS == Expert.id),
         backref=db.backref('CONCESS__data',  uselist=False),  uselist=False)
-    PRIX_HT_EDL	 = db.Column(Float)  
+    PRIX_HT_EDL	 = db.Column(DECIMAL(65,2))  
     DATE_REALISE_EDL =db.Column(db.DateTime(),default=datetime.utcnow) 	
     ID_INTERV = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     INTERV__data=db.relationship("Expert", 
@@ -579,27 +579,27 @@ class Mission(db.Model):
     Reference_LOCATAIRE	 =  db.Column(db.String) 
     Adresse1_Bien	 = db.Column(db.String)  
     Adresse2_Bien	 = db.Column(db.String) 
-    CP_Bien	 = db.Column(db.String)  
+    CP_Bien	 = db.Column(db.Integer)  
     Ville_Bien	 = db.Column(db.String)  
-    TVA_EDL = db.Column(db.String)
-    PRIX_TTC_EDL = db.Column(db.String)
-    CA_HT_AS = db.Column(db.String) 	
-    TVA_AS	 = db.Column(db.String) 
-    CA_TTC_AS = db.Column(db.String) 	
-    CA_HT_AC = db.Column(db.String) 	
-    CA_TTC_AC	 = db.Column(db.String) 
-    CA_HT_TRUST	 = db.Column(db.String) 
-    TVA_TRUST	 = db.Column(db.String) 
-    Date_chiffrage_regle = db.Column(db.String) 
-    Prix_ht_chiffrage	 = db.Column(db.String) 
-    POURCENTAGE_suiveur_chiffrage	 = db.Column(db.String) 
-    POURCENTAGE_AS_chiffrage = db.Column(db.String) 	
-    POURCENTAGE_manager_chiffrage  = db.Column(db.String) 	
+    TVA_EDL = db.Column(db.DECIMAL(65,2))
+    PRIX_TTC_EDL = db.Column(db.DECIMAL(65,2))#float
+    CA_HT_AS = db.Column(db.DECIMAL(65,2)) #float	
+    TVA_AS	 = db.Column(db.DECIMAL(65,2)) #float
+    CA_TTC_AS = db.Column(db.DECIMAL(65,2)) #float	
+    CA_HT_AC = db.Column(db.DECIMAL(65,2)) #float	
+    CA_TTC_AC	 = db.Column(db.DECIMAL(65,2)) #float
+    CA_HT_TRUST	 = db.Column(db.DECIMAL(65,2)) #float
+    TVA_TRUST	 = db.Column(db.DECIMAL(65,2)) #float
+    Date_chiffrage_regle = db.Column(db.DateTime()) 
+    Prix_ht_chiffrage	 = db.Column(db.DECIMAL(65,2)) 
+    POURCENTAGE_suiveur_chiffrage	 = db.Column(db.String) #float
+    POURCENTAGE_AS_chiffrage = db.Column(db.String) 	#float
+    POURCENTAGE_manager_chiffrage  = db.Column(db.String) #float	
     ID_manager_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     manager_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_manager_chiffrage == Expert.id),
         backref=db.backref('manager_chiffrage__data',  uselist=False),  uselist=False)	
-    POURCENTAGE_agent_chiffrage = db.Column(db.String) 	
+    POURCENTAGE_agent_chiffrage = db.Column(db.String) 	#float
     ID_agent_chiffrage  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_chiffrage == Expert.id),
@@ -608,56 +608,56 @@ class Mission(db.Model):
     DATE_FACTURE = db.Column(db.DateTime()) # db.Column(db.DateTime())
     TITREPROPRIO = db.Column(db.String) 		
     NOMPROPRIO = db.Column(db.String) 	
-    DATE_FACT_REGLEE = db.Column(db.String) 	
+    DATE_FACT_REGLEE = db.Column(db.DateTime()) 	
     TYPE_LOGEMENT = db.Column(db.String) 	
     CODE_AMEXPERT = db.Column(db.String) 	
     COMMENTAIRE_FACTURE = db.Column(db.String) 	 	
     LOGEMENT_MEUBLE = db.Column(db.String) 	
     CODE_FACTURATION = db.Column(db.String) 	
     TYPE_DE_BIEN = db.Column(db.String) 	
-    surface_logement1 = db.Column(db.String) 		
+    surface_logement1 = db.Column(db.DECIMAL(65,2)) 	#float	
     Ref_commande = db.Column(db.String) 	
-    POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.String) 	
+    POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.String) 	#float
     ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Dev == Expert.id),
         backref=db.backref('Respon_Cell_Dev__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Respon_Cell_Dev = db.Column(db.String) 	
+    POURCENTAGE_Respon_Cell_Dev = db.Column(db.String) 	#float
     ID_agent_Cell_Dev = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 	
     agent_Cell_Dev__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_Cell_Dev == Expert.id),
         backref=db.backref('agent_Cell_Dev__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Agent_Cell_Dev = db.Column(db.String) 	
+    POURCENTAGE_Agent_Cell_Dev = db.Column(db.String) 	#float
     ID_Agent_CellTech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)  	
     Agent_CellTech__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_CellTech == Expert.id),
         backref=db.backref('Agent_CellTech__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Agent_Cell_Tech = db.Column(db.String) 	
+    POURCENTAGE_Agent_Cell_Tech = db.Column(db.String) 	#float
     ID_Respon_Cell_Tech = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) #######
     Respon_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Tech == Expert.id),
         backref=db.backref('Respon_Cell_Tech__data',  uselist=False),  uselist=False)	
-    POURCENTAGE_Respon_Cell_Tech = db.Column(db.String) 	
+    POURCENTAGE_Respon_Cell_Tech = db.Column(db.String) #float	
     ID_Suiveur_Cell_Tech  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Tech__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Tech == Expert.id),
         backref=db.backref('Suiveur_Cell_Tech__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Suiveur_Cell_Tech	 = db.Column(db.String) 
+    POURCENTAGE_Suiveur_Cell_Tech	 = db.Column(db.String) #float
     ID_Respon_Cell_Planif = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Respon_Cell_Planif == Expert.id),
         backref=db.backref('Respon_Cell_Planif__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Respon_Cell_Planif  = db.Column(db.String) 	
+    POURCENTAGE_Respon_Cell_Planif  = db.Column(db.String) 	#float
     ID_Suiveur_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Suiveur_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Suiveur_Cell_Planif == Expert.id),
         backref=db.backref('Suiveur_Cell_Planif__data',  uselist=False),  uselist=False)
-    POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(db.String) 
+    POURCENTAGE_Suiveur_Cell_Planif	 = db.Column(db.String) #float
     ID_Agent_saisie_Cell_Planif  = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
     Agent_saisie_Cell_Planif__data=db.relationship("Expert", 
         primaryjoin=(ID_Agent_saisie_Cell_Planif == Expert.id),
         backref=db.backref('Agent_saisie_Cell_Planif__data',  uselist=False),  uselist=False)  	
-    POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) 
+    POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.String) #float
 
     Anomalie  = db.Column(db.Boolean,default=False)
     coherent  = db.Column(db.Boolean,default=True)
@@ -727,6 +727,7 @@ class facturation_mission(db.Model):
 
     def __repr__(self):
         return '<facturation_mission %r>' %self.id
+
 
 
 

@@ -91,6 +91,28 @@
                                 </div>
                             <hr/>
                             <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                  <label class="label" style="text-align: left;"><small>{{form.email_perso.label(class="form-control-label")}}</small></label></div>
+                                  <div class="field-body">
+                                    <div class="field"><!---->
+                                        <div class="control">
+                                         {% if form.email_perso.errors %}
+                                          {{form.email_perso(class="input is-invalid") }}
+                                      <div class="invalid-feedback">
+                                          {% for error in form.email_perso.errors %}
+                                              <span>{{ error }}</span>
+                                          {% endfor %}
+                                      </div>
+                                          {% else %}
+                                              {{form.email_perso(class="input")}}
+                                          {% endif %}
+                                        </div>
+                                          <p class="help"> Requis. L'email est requis</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                              <hr/>
+                            <div class="field is-horizontal">
                               <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.Sexe.label(class="form-control-label")}}</small></label></div>
                                 <div class="field-body">
@@ -134,6 +156,464 @@
                                   </div>
                                 </div>
                             <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.adresse.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.adresse.errors %}
+                                        {{form.adresse(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.adresse.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.adresse(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. La adresse est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.adresse2.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.adresse2.errors %}
+                                        {{form.adresse2(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.adresse2.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.adresse2(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. </p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                               <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                  <label class="label" style="text-align: left;"><small>{{form.cp.label(class="form-control-label")}}</small></label></div>
+                                  <div class="field-body">
+                                    <div class="field"><!---->
+                                        <div class="control">
+                                         {% if form.cp.errors %}
+                                          {{form.cp(class="input is-invalid") }}
+                                      <div class="invalid-feedback">
+                                          {% for error in form.cp.errors %}
+                                              <span>{{ error }}</span>
+                                          {% endfor %}
+                                      </div>
+                                          {% else %}
+                                              {{form.cp(class="input")}}
+                                          {% endif %}
+                                        </div>
+                                          <p class="help"> Requis. Le code postal est requis</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                              <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.code_tva.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.code_tva.errors %}
+                                        {{form.code_tva(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.code_tva.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.code_tva(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le code tva est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.taux_tva.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.taux_tva.errors %}
+                                        {{form.taux_tva(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.taux_tva.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.taux_tva(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le taux tva est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.trigramme.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.trigramme.errors %}
+                                        {{form.trigramme(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.trigramme.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.trigramme(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le trigramme est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.siret.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.siret.errors %}
+                                        {{form.siret(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.siret.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.siret(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le siret est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.secteur.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!--secteur-->
+                                      <div class="control">
+                                       {% if form.secteur.errors %}
+                                        {{form.secteur(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.secteur.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.secteur(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le nom est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.actif_parti.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.actif_parti.errors %}
+                                        {{form.actif_parti(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.actif_parti.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.actif_parti(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le parti actif est requis</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                  <label class="label" style="text-align: left;"><small>{{form.ville.label(class="form-control-label")}}</small></label></div>
+                                  <div class="field-body">
+                                    <div class="field"><!---->
+                                        <div class="control">
+                                         {% if form.ville.errors %}
+                                          {{form.ville(class="input is-invalid") }}
+                                      <div class="invalid-feedback">
+                                          {% for error in form.ville.errors %}
+                                              <span>{{ error }}</span>
+                                          {% endfor %}
+                                      </div>
+                                          {% else %}
+                                              {{form.ville(class="input")}}
+                                          {% endif %}
+                                        </div>
+                                          <p class="help"> Requis. La ville est requis</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                              <hr/>   
+                              <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.login_backof.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.login_backof.errors %}
+                                        {{form.login_backof(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.login_backof.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.login_backof(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.pwd_backof.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.pwd_backof.errors %}
+                                        {{form.pwd_backof(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.pwd_backof.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.pwd_backof(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.login_extranet.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.login_extranet.errors %}
+                                        {{form.login_extranet(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.login_extranet.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.login_extranet(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.pwd_extranet.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.pwd_extranet.errors %}
+                                        {{form.pwd_extranet(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.pwd_extranet.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.pwd_extranet(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.pwd_gsuite.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.pwd_gsuite.errors %}
+                                        {{form.pwd_gsuite(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.pwd_gsuite.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.pwd_gsuite(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.login_google.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.login_google.errors %}
+                                        {{form.login_google(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.login_google.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.login_google(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.pwd_google.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.pwd_google.errors %}
+                                        {{form.pwd_google(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.pwd_google.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.pwd_google(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.observations_de_suivi.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.observations_de_suivi.errors %}
+                                        {{form.observations_de_suivi(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.observations_de_suivi.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.observations_de_suivi(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.type_certification.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.type_certification.errors %}
+                                        {{form.type_certification(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.type_certification.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.type_certification(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label" style="text-align: left;"><small>{{form.date_certification.label(class="form-control-label")}}</small></label>
+                                </div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.date_certification.errors %}
+                                        {{form.date_certification(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.date_certification.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                        {% else %}
+                                            {{form.date_certification(class="input")}}
+                                        {% endif %}
+                                      </div>
+                                        <p class="help"> Requis.</p>
+                                    </div>
+                                  </div>
+                                </div>                    
+                             <hr/>
                             <div class="columns">
                                 <div class="column">
                                     <div class="field is-vertical">

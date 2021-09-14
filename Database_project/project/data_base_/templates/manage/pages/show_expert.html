@@ -114,15 +114,19 @@
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-key'><strong>Date de certification initial</strong></p>
-				<p class='stat-val'>{% if history.date_certification_initiale == '' %}
-					{{history.date_certification_initiale.strftime('%d. %m. %Y')}}
-             {%endif%}</p>				
+				<p class='stat-val'>{% if history.date_certification_initiale == '' or None %}
+
+					{% else %}
+			 			{{history.date_certification_initiale.strftime('%d. %m. %Y')}}
+			 		{%endif%}
+			</p>				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-key'><strong>Date de recertification </strong></p>
-				<p class='stat-val'> {% if history.date_renouv_certification == '' %}
-					{{history.date_renouv_certification.strftime('%d. %m. %Y')}}
-             {%endif%}</p>				
+				<p class='stat-val'> {% if history.date_renouv_certification == '' or None %}
+					{% else %}
+						{{history.date_renouv_certification.strftime('%d. %m. %Y')}}
+             		{%endif%}</p>				
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-key'><strong>Date d'entree</strong></p>
@@ -132,7 +136,7 @@
 			</div>
 			<div class='column is-2-tablet is-4-mobile has-text-centered'>
 				<p class='stat-key'><strong>Date de sortie</strong></p>
-				<p class='stat-val'> {% if history.date_sortie == '' %}
+				<p class='stat-val'> {% if history.date_sortie == '' or None %}
              {{history.date_sortie.strftime('%d. %m. %Y')}}
              {%endif%}</p>				
 			</div>

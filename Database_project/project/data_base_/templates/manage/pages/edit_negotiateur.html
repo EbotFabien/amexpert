@@ -24,7 +24,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                        <form class="user form-padding" method="POST" action="{{url_for('users.update_negotiateur', id=client.id)}}">
+                        <form class="user form-padding" method="POST" >
                                 {{ form.hidden_tag() }}
                                  <div class="field is-horizontal">
                               <div class="field-label is-normal">
@@ -131,7 +131,29 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>                                  
+                                    <hr/>   
+                                    <div class="field is-horizontal">
+                                      <div class="field-label is-normal">
+                                        <label class="label" style="text-align: left;"><small>{{form.Date_Creation.label(class="form-control-label")}}</small></label></div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Date_Creation.errors %}
+                                                {{form.Date_Creation(class="input is-invalid", value=client.date_creation.strftime('%d. %m. %Y')) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Date_Creation.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                                {% else %}
+                                                    {{form.Date_Creation(class="input", value=client.date_creation.strftime('%d. %m. %Y'))}}
+                                                {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <hr/>                               
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Adresse.label(class="form-control-label")}}</small></label></div>
@@ -198,7 +220,7 @@
                                           </div>
                                         </div>
                                     <hr/>
-                                     <!-- <div class="field is-horizontal">
+                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
@@ -219,7 +241,7 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/> -->
+                                    <hr/> 
                                 <div class="field is-horizontal">
                                     <div class="field-label is-normal"></div>
                                         <div class="field-body">

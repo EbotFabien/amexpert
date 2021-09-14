@@ -1708,3 +1708,14 @@ select.input,.select:not(.not) {
 }
 .h-42{height: 42px!important}
 .border-rounded{border-radius: 6px!important;}
+
+.invalid-feedback span{
+  color: red;
+  font-size: small;
+}
+
+.table-container > .alert {
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+}

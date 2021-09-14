@@ -30,7 +30,7 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                <form class="user form-padding" method="POST" action="{{url_for('users.update_client', id=client.id)}}">
+                <form class="user form-padding" method="POST">
                 {{ form.hidden_tag() }}
                  <div class="field is-horizontal">
                       <div class="field-label is-normal">
@@ -83,14 +83,18 @@
                                   <div class="field"><!---->
                                       <div class="control">
                                        {% if form.Sexe.errors %}
-                                    {{form.Siret(class="input is-invalid", value=client.sexe) }}
+                                    {{form.Sexe(class="input is-invalid", value=client.titre) }}
                                     <div class="invalid-feedback">
                                         {% for error in form.Sexe.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                         {% else %}
-                                            {{form.Sexe(class="input", value=client.sexe)}}
+                                        <select class="input" id="Sexe" name="Sexe" value="Monsieur">
+                                          <option value="Monsieur" {% if client.titre == 'Monsieur'%} selected {% endif %}>Monsieur</option>
+                                          <option value="Madame" {% if client.titre == 'Madame' %} selected {% endif %}>Madame</option>
+                                          <option value="Mademoiselle" {% if client.titre == 'Mademoiselle'%} selected {% endif %}>Mademoiselle</option>
+                                        </select>
                                         {% endif %}
                                       </div>
                                         <p class="help"> Requis. Le titre est requis</p>
@@ -112,7 +116,10 @@
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Type(class="input")}}
+                                                <select class="input" id="Type" name="Type">
+                                                  <option value="Professionnel" {% if client.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
+                                                  <option value="Particulier" {% if client.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
+                                                </select>
                                                 {% endif %}
                                               </div>
                                                 <p class="help"> Requis. Le type est requis</p>
@@ -254,7 +261,7 @@
                                             </div>
                                           </div>
                                         </div>
-                                    <hr/>                          
+                                    <hr/>                       
                                      <div class="field is-horizontal">
                                       <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Numero.label(class="form-control-label")}}</small></label></div>
@@ -379,7 +386,10 @@
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Pays(class="input", value=history.pays)}}
+                                                <select class="input" id="Pays" name="Pays" required="" value="France">
+                                                  <option value="France" {% if history.pays == 'France' %} selected {% endif %}>France</option>
+                                                  <option value="Belgique" {% if history.pays == 'Belgique' %} selected {% endif %}>Belgique</option>
+                                                </select>
                                                 {% endif %}
                                               </div>
                                                 <p class="help"> Requis. Le pays est requis</p>

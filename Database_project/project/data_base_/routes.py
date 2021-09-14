@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit)
+from project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
 from project.data_base_ import bcrypt
 from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from project.data_base_.utils import send_reset_email
@@ -49,12 +49,16 @@ def ajouter_client():
     if current_user.TYPE == "Admin":
         form=Client_Form()
         if form.validate_on_submit():
-            user=Client(TYPE=form.Type.data,reference=form.Reference.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
+            user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
             db.session.add(user)
             db.session.commit()
-            user_history=Client.query.filter(or_(Client.email == form.email.data,Client.nom == form.NOM.data)).first()
-            user_his=Client_History(client_id=user_history.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
-            db.session.add(user_his)
+            user_history=Client.query.filter(and_(Client.email == form.email.data,Client.nom == form.NOM.data)).first()
+            client_history=Client_History(client_id=user_history.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
+            db.session.add(client_history)
+            db.session.commit()
+            client_history.etat_client = form.EtatClient.data
+            client_history.mpd_extranet =form.MdpExtranet.data
+            client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Client créé avec succès','success')
             return redirect(url_for('users.client'))
@@ -129,8 +133,12 @@ def show_client(id):
     if current_user.TYPE == "Admin":
         client = Client.query.filter_by(id=id).first_or_404()
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
-        client_Tarif=Tarifs.query.filter_by(reference_client=id).first_or_404()
-        return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="client",tarif=client_Tarif, highlight='client')
+        try:
+            client_Tarif=Tarifs.query.filter_by(reference_client=id).first()
+        
+            return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="client",tarif=client_Tarif, highlight='client')
+        except:
+            return render_template('manage/pages/show_client.html', client=client,history=client_history,legend="client",tarif=None, highlight='client')
 
 
 
@@ -148,46 +156,52 @@ def delete_client(id):
         flash(f'Les donnes du client ont été  suprimmer','success')
         return redirect(url_for('users.client'))
 
-@users.route('/edit/<int:id>/client', methods=['GET'])
+@users.route('/edit/<int:id>/client', methods=['GET','POST'])
 @login_required
 def edit_client(id):
     if current_user.TYPE == "Admin":
-        form = Client_Form()
+        form = Client_edit()
         client = Client.query.filter_by(id=id).first_or_404()
+        form.client_id.data=id
+        
+        if form.validate_on_submit():
+            f=form.validate2(form.email.data,form.client_id.data)
+            if f==True:
+                flash(f"l'email es Deja pris",'Warning')
+                return redirect(url_for('users.edit_client', id=client.id))
+            
+            if client.id==int(form.client_id.data):
+            
+                client_history=Client_History(client_id=id)
+                db.session.add(client_history)
+                db.session.commit()
+                client_history.ville = form.Ville.data
+                client_history.pays = form.Pays.data
+                client_history.cp = form.CP.data
+                client_history.adresse1 = form.Adresse1.data
+                client_history.adresse2 = form.Adresse2.data
+                client_history.etat_client = form.EtatClient.data
+                client_history.mpd_extranet =form.MdpExtranet.data
+                client_history.login_extranet=form.LoginExtranet.data
+                db.session.commit()
+                client.reference=form.Reference.data
+                client.email = form.email.data
+                client.siret = form.Siret.data
+                client.societe = form.Societe.data
+                client.numero = form.Numero.data
+                client.titre = form.Sexe.data
+                client.TYPE = form.Type.data
+                client.enseigne =form.Enseigne.data
+                client.nom = form.NOM.data
+                db.session.commit()
+                flash(f'Informations client modifiées','success')
+                return redirect(url_for('users.client'))
+                
+                
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
         return render_template('manage/pages/edit_client.html', highlight='client', client=client,history=client_history,form=form,legend="client")
 
-@users.route('/update/<int:id>/client', methods=['POST','GET'])
-@login_required
-def update_client(id):
-    if current_user.TYPE == "Admin":
-        client = Client.query.filter_by(id=id).first_or_404()
-        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse1'] :
-            client_check=Client_History(client_id=id)
-            db.session.add(client_check)
-            db.session.commit()
-            client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
-            client_history.ville = request.form['Ville']
-            client_history.pays = request.form['Pays']
-            client_history.cp = request.form['CP']
-            client_history.adresse1 = request.form['Adresse1']
-            client_history.adresse2 = request.form['Adresse2']
-            db.session.commit()
-            
-        client.reference=request.form['Reference']
-        client.email = request.form['email']
-        client.siret = request.form['email']
-        client.societe = request.form['Societe']
-        client.numero = request.form['Numero']
-        client.titre = request.form['Sexe']
-        client.TYPE = request.form['Type']
-        client.enseigne = request.form['Enseigne']
-        client.etat_client = request.form['EtatClient']
-        client.nom = request.form['NOM']
-        db.session.commit()
-        flash(f'Informations client modifiées','success')
-        return redirect(url_for('users.client', id=id))
-    return redirect(url_for('users.edit_client', id=id))
+
        
 
 
@@ -591,7 +605,8 @@ def show_fac(id):
 def client_mission(id):
     if current_user.TYPE == "Admin":
         mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
-        return render_template('manage/pages/client_mission.html',missions=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
+        client = Client.query.filter_by(id=id).first()
+        return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
     
     return redirect(url_for('users.main'))
 
@@ -600,18 +615,25 @@ def client_mission(id):
 def facturation(id):
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.filter(and_(facturation_client.client==id,facturation_client.visibility==True)).all())#add visibility
-        failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==facturation[0].id,Facturation_history.visibility==True)).all())
-        fac=facturation_mission.query.filter_by(fact_mission=facturation[0].id).all()
-        abnormal =list()
-        facture = list(facturation_mission.query.filter_by(fact_mission=facturation[0].id).all())
-        
-        for i in facture:
-            if i.mission__data_.Anomalie == True:
-                abnormal.append(i)
-        f=len(failed)
-        s=len(fac)
-        a=len(abnormal)
-        return render_template('manage/pages/facturation.html',legend="facturation",facturations=facturation,f=f,s=s,a=a, highlight="facturation") 
+        client = Client.query.filter_by(id=id).first()
+        if facturation !=[]:
+            failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==facturation[0].id,Facturation_history.visibility==True)).all())
+            fac=facturation_mission.query.filter_by(fact_mission=facturation[0].id).all()
+            abnormal =list()
+            facture = list(facturation_mission.query.filter_by(fact_mission=facturation[0].id).all())
+            
+            for i in facture:
+                if i.mission__data_.Anomalie == True:
+                    abnormal.append(i)
+            f=len(failed)
+            s=len(fac)
+            a=len(abnormal)
+            return render_template('manage/pages/facturation.html',legend="facturation",client=client,facturations=facturation,f=f,s=s,a=a, highlight="facturation") 
+        else:
+            f=0
+            s=0
+            a=0
+            return render_template('manage/pages/facturation.html',legend="facturation",client=client,facturations=facturation,f=f,s=s,a=a, highlight="facturation") 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -675,19 +697,81 @@ def ajouter_mission():
             check=Client.query.filter_by(reference=form.Reference_client.data).first()
             ID_=Expert.query.filter_by(id=int(form.ID_Concessionaire.data)).first()
             if check and ID_.id:
-                mission=Mission(check.id,0,ID_.id,0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,0,0,
-                0,0,0)
+                mission=Mission(Reference_BAILLEUR=check.id,
+            ABONNEMENT	 = form.ABONNEMENT.data ,
+            ID_AS	 = form.ID_Concessionaire.data ,
+        
+          
+            DATE_REALISE_EDL =form.DATE_REALISE_EDL.data , 	
+            ID_INTERV = form.ID_INTERV.data ,
+            PRIX_HT_EDL = form.PRIX_HT_EDL.data ,
+            TVA_EDL = form.TVA_EDL.data ,
+            PRIX_TTC_EDL = form.PRIX_TTC_EDL.data ,
+            Reference_LOCATAIRE	 =  form.Reference_LOCATAIRE.data ,
+            Adresse1_Bien	 = form.Adresse1_Bien.data ,  
+            Adresse2_Bien	 = form.Adresse2_Bien.data , 
+            CP_Bien	 = form.CP_Bien.data ,  
+            Ville_Bien	 = form.Ville_Bien.data , 
+            
+            CA_HT_AS = form.CA_HT_AS.data , 	
+            TVA_AS	 = form.TVA_AS.data , 
+            CA_TTC_AS = form.CA_TTC_AS.data , 	
+            CA_HT_AC = form.CA_HT_AC.data, 	
+            CA_TTC_AC	 = form.CA_TTC_AC.data , 
+            CA_HT_TRUST	 = form.CA_HT_TRUST.data , 
+            TVA_TRUST	 = form.TVA_TRUST.data ,
+            Date_chiffrage_regle = form.Date_chiffrage_regle.data ,
+            Prix_ht_chiffrage	 = form.Prix_ht_chiffrage.data , 
+            POURCENTAGE_suiveur_chiffrage	 = form.POURCENTAGE_suiveur_chiffrage.data ,
+            POURCENTAGE_AS_chiffrage = form.POURCENTAGE_AS_chiffrage.data ,	
+            POURCENTAGE_manager_chiffrage  = form.POURCENTAGE_manager_chiffrage.data , 	
+            ID_manager_chiffrage  = form.ID_manager_chiffrage.data ,
+                
+            POURCENTAGE_agent_chiffrage = form.POURCENTAGE_agent_chiffrage.data ,	
+            ID_agent_chiffrage  = form.ID_agent_chiffrage.data ,	
+            
+            TYPE_EDL = form.TYPE_EDL.data ,	
+            TITREPROPRIO = form.TITREPROPRIO.data , 		
+            NOMPROPRIO = form.NOMPROPRIO.data , 		
+            TYPE_LOGEMENT = form.TYPE_LOGEMENT.data , 	
+            CODE_AMEXPERT = form.CODE_AMEXPERT.data , 	 	
+            LOGEMENT_MEUBLE =form.LOGEMENT_MEUBLE.data , 	
+            CODE_FACTURATION = form.CODE_FACTURATION.data , 	
+            TYPE_DE_BIEN = form.TYPE_DE_BIEN.data , 	
+            surface_logement1 = form.surface_logement1.data , 		
+            POURCENTAGE_COM_AS_DU_CLIENT = form.POURCENTAGE_COM_AS_DU_CLIENT.data , 	
+            ID_Respon_Cell_Dev	 =form.ID_Respon_Cell_Dev.data ,
+            POURCENTAGE_Respon_Cell_Dev = form.POURCENTAGE_Respon_Cell_Dev.data ,
+            Ref_commande = form.Ref_commande.data ,
+            POURCENTAGE_Agent_Cell_Dev= form.POURCENTAGE_Agent_Cell_Dev.data ,
+            POURCENTAGE_Agent_Cell_Tech= form.POURCENTAGE_Agent_Cell_Tech.data ,
+            POURCENTAGE_Suiveur_Cell_Tech= form.POURCENTAGE_Suiveur_Cell_Tech.data ,
+            POURCENTAGE_Respon_Cell_Planif= form.POURCENTAGE_Respon_Cell_Planif.data ,
+            POURCENTAGE_Suiveur_Cell_Planif= form.POURCENTAGE_Suiveur_Cell_Planif.data ,
+            POURCENTAGE_Agent_saisie_CEll_planif= form.POURCENTAGE_Agent_saisie_CEll_planif.data , 
+            POURCENTAGE_Respon_Cell_Tech = form.POURCENTAGE_Respon_Cell_Tech.data,
+
+            ID_agent_Cell_Dev = form.ID_agent_Cell_Dev.data, 	
+            
+           
+            ID_Agent_CellTech = form.ID_Agent_CellTech.data,  	
+            
+            	
+            ID_Respon_Cell_Tech = form.ID_Respon_Cell_Tech.data, #######
+                
+            	
+            ID_Suiveur_Cell_Tech  = form.ID_Suiveur_Cell_Tech.data ,
+            
+            
+            ID_Respon_Cell_Planif = form.ID_Respon_Cell_Planif.data,
+            
+           
+            ID_Suiveur_Cell_Planif  = form.ID_Suiveur_Cell_Planif.data,
+            
+             
+            ID_Agent_saisie_Cell_Planif  = form.ID_Agent_saisie_Cell_Planif.data
+                  
+             )
 
                 db.session.add(mission)
                 db.session.commit()
@@ -697,96 +781,80 @@ def ajouter_mission():
                 return redirect(url_for('users.ajouter_mission'))
         return render_template('manage/pages/add_mission.html',form=form, legend="mission",highlight='mission')
 
-@users.route('/edit/<int:id>/mission', methods=['GET'])
+@users.route('/edit/<int:id>/mission', methods=['GET','POST'])
 @login_required
 def edit_mission(id):
     if current_user.TYPE == 'Admin':
-        form = Mission_editForm()
-
+        form=Mission_editForm()
         mission = Mission.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
-
-@users.route('/update/<int:id>/mission', methods=['POST', 'PUT'])
-@login_required
-def update_mission(id):
-    if current_user.TYPE == 'Admin':
-        form = Mission_editForm()
-        mission = Mission.query.filter_by(id=id).first_or_404()
-
-        mission.TYPE_LOGEMENT = request.form['TYPE_LOGEMENT']
-        mission.LOGEMENT_MEUBLE = request.form['LOGEMENT_MEUBLE']
-        mission.CODE_FACTURATION = request.form['CODE_FACTURATION']
-        mission.TYPE_DE_BIEN = request.form['TYPE_DE_BIEN']
-        '''mission.NRO_FACTURE = request.form['NRO_FACTURE']
-        mission.DATE_REALISE_EDL = request.form['DATE_REALISE_EDL']
-        mission.PRIX_HT_EDL = request.form['PRIX_HT_EDL']
-        mission.TVA_EDL = request.form['TVA_EDL']
-        mission.PRIX_TTC_EDL = request.form['PRIX_TTC_EDL']
-        mission.ID_INTERV = request.form['ID_INTERV']
-        mission.Reference_LOCATAIRE = request.form['Reference_LOCATAIRE']
-        mission.CA_HT_AS = request.form['CA_HT_AS']
-        mission.TVA_AS = request.form['TVA_AS']
-        mission.CA_TTC_AS = request.form['CA_TTC_AS']
-        mission.CA_HT_AC = request.form['CA_HT_AC']
-        mission.CA_TTC_AC = request.form['CA_TTC_AC']
-        mission.CA_HT_TRUST = request.form['CA_HT_TRUST']
-        mission.TVA_TRUST = request.form['TVA_TRUST']
-        mission.Date_chiffrage_regle = request.form['Date_chiffrage_regle']
-        mission.Prix_ht_chiffrage = request.form['Prix_ht_chiffrage'] 
-        mission.POURCENTAGE_suiveur_chiffrage = request.form['POURCENTAGE_suiveur_chiffrage']
-        mission.POURCENTAGE_AS_chiffrage = request.form['POURCENTAGE_AS_chiffrage']
-        mission.POURCENTAGE_manager_chiffrage = request.form['POURCENTAGE_manager_chiffrage']
-        mission.ID_manager_chiffrage = request.form['ID_manager_chiffrage']
-        mission.POURCENTAGE_agent_chiffrage = request.form['POURCENTAGE_agent_chiffrage']
-        mission.ID_agent_chiffrage = request.form['ID_agent_chiffrage']
-        mission.TYPE_EDL = request.form['TYPE_EDL']
-        mission.DATE_FACTURE = request.form['DATE_FACTURE']
-        mission.NOMPROPRIO  = request.form['NOMPROPRIO']
-        mission.DATE_FACT_REGLEE = request.form['DATE_FACT_REGLEE']
-        mission.DATE_COM_REGLEE_AS = request.form['DATE_COM_REGLEE_AS']
-        mission.MONTANT_COM_REGLEE_AS = request.form['MONTANT_COM_REGLEE_AS ']
-        mission.DATE_COM_REGLEE_AC  = request.form['DATE_COM_REGLEE_AC']
-        mission.MONTANT_COM_REGLEE_AC = request.form['MONTANT_COM_REGLEE_AC']
-        mission.NBRE_EDL_ABOONEMENT = request.form['NBRE_EDL_ABOONEMENT']
-        mission.MAIL_CONTACT_ENVOI_FACT = request.form['MAIL_CONTACT_ENVOI_FACT']
-        mission.DATE_saisie_enregistrement = request.form['DATE_saisie_enregistrement']
-        mission.CODE_AMEXPERT = request.form['CODE_AMEXPERT']
-        mission.COMMENTAIRE_FACTURE = request.form['COMMENTAIRE_FACTURE']
-        mission.TYPE_PAIEMENT = request.form['TYPE_PAIEMENT']
-        mission.N_REMISE_DE_CHEQUE = request.form['N_REMISE_DE_CHEQUE']
-        mission.SAISIE_TRAITE_PAR = request.form['SAISIE_TRAITE_PAR']
-        mission.infos_et_TRAITEMENT = request.form['infos_et_TRAITEMENT']
-        mission.LOGEMENT_MEUBLE = request.form['LOGEMENT_MEUBLE']
-        mission.CODE_FACTURATION = request.form['CODE_FACTURATION']
-        mission.TYPE_DE_BIEN = request.form['TYPE_DE_BIEN']
-        mission.surface_logement1  = request.form['surface_logement1']
-        mission.ETAGE = request.form['ETAGE']
-        mission.POINTAGE = request.form['POINTAGE']
-        mission.DATE_POINTAGE = request.form['DATE_POINTAGE']
-        mission.DEVEL = request.form['DEVEL']
-        mission.DATE_EXTRACTION_COMPTABLE  = request.form['DATE_EXTRACTION_COMPTABLE']
-        mission.POURCENTAGE_COM_AS_DU_CLIENT = request.form['POURCENTAGE_COM_AS_DU_CLIENT']
-        mission.ID_Respon_Cell_Dev = request.form['ID_Respon_Cell_Dev']
-        mission.POURCENTAGE_Respon_Cell_Dev = request.form['POURCENTAGE_Respon_Cell_Dev']
-        mission.ID_agent_Cell_Dev = request.form['ID_agent_Cell_Dev']
-        mission.POURCENTAGE_Agent_Cell_Dev = request.form['POURCENTAGE_Agent_Cell_Dev']
-        mission.ID_Agent_CellTech = request.form['ID_Agent_CellTech']
-        mission.POURCENTAGE_Agent_Cell_Tech = request.form['POURCENTAGE_Agent_Cell_Tech']
-        mission.ID_Respon_Cell_Tech  = request.form['ID_Respon_Cell_Tech']
-        mission.POURCENTAGE_Respon_Cell_Tech = request.form['POURCENTAGE_Respon_Cell_Tech']
-        mission.ID_Suiveur_Cell_Tech = request.form['ID_Suiveur_Cell_Tech']
-        mission.POURCENTAGE_Suiveur_Cell_Tech = request.form['POURCENTAGE_Suiveur_Cell_Tech']
-        mission.ID_Respon_Cell_Planif = request.form['ID_Respon_Cell_Planif']
-        mission.POURCENTAGE_Respon_Cell_Planif = request.form['POURCENTAGE_Respon_Cell_Planif']
-        mission.ID_Suiveur_Cell_Planif = request.form['ID_Suiveur_Cell_Planif']
-        mission.POURCENTAGE_Suiveur_Cell_Planif	 = request.form['POURCENTAGE_Suiveur_Cell_Planif']
-        mission.ID_Agent_saisie_Cell_Planif = request.form['ID_Agent_saisie_Cell_Planif']
-        mission.POURCENTAGE_Agent_saisie_CEll_planif = request.form['POURCENTAGE_Agent_saisie_CEll_planif'] '''
-
-        db.session.commit()
+        form.misid.data = mission.id
         
-        flash(f"Les information de l\'expert a ete modifier", "success")
-        return redirect(url_for('users.mission'))
+        
+        if form.validate_on_submit():
+            if int(form.misid.data) == mission.id:
+                check=Client.query.filter_by(reference=form.Reference_client.data).first()
+                if check:
+                    mission.Reference_BAILLEUR = check.id
+                    mission.ABONNEMENT = form.ABONNEMENT.data
+                    mission.ID_AS=form.ID_Concessionaire.data
+                    mission.TYPE_LOGEMENT = form.TYPE_LOGEMENT.data
+                    mission.LOGEMENT_MEUBLE = form.LOGEMENT_MEUBLE.data
+                    mission.CODE_FACTURATION = form.CODE_FACTURATION.data
+                    mission.TYPE_DE_BIEN = form.TYPE_DE_BIEN.data
+                    mission.PRIX_HT_EDL = form.PRIX_HT_EDL.data
+                    mission.TVA_EDL = form.TVA_EDL.data
+                    mission.PRIX_TTC_EDL = form.PRIX_TTC_EDL.data
+                    mission.ID_INTERV = form.ID_INTERV.data
+                    mission.Adresse1_Bien = form.Adresse1_Bien.data
+                    mission.Adresse2_Bien = form.Adresse2_Bien.data
+                    mission.CP_Bien =form.CP_Bien.data
+                    mission.Ville_Bien =form.Ville_Bien.data
+                    mission.Reference_LOCATAIRE = form.Reference_LOCATAIRE.data
+                    mission.CA_HT_AS = form.CA_HT_AS.data
+                    mission.TVA_AS = form.TVA_AS.data
+                    mission.CA_TTC_AS = form.CA_TTC_AS.data
+                    mission.CA_HT_AC = form.CA_HT_AC.data
+                    mission.CA_TTC_AC = form.CA_TTC_AC.data
+                    mission.CA_HT_TRUST = form.CA_HT_TRUST.data
+                    mission.TVA_TRUST = form.TVA_TRUST.data
+                    mission.Date_chiffrage_regle = form.Date_chiffrage_regle.data
+                    mission.Prix_ht_chiffrage = form.Prix_ht_chiffrage.data 
+                    mission.POURCENTAGE_suiveur_chiffrage = form.POURCENTAGE_suiveur_chiffrage.data
+                    mission.POURCENTAGE_AS_chiffrage = form.POURCENTAGE_AS_chiffrage.data
+                    mission.POURCENTAGE_manager_chiffrage = form.POURCENTAGE_manager_chiffrage.data
+                    mission.ID_manager_chiffrage = form.ID_manager_chiffrage.data
+                    mission.POURCENTAGE_agent_chiffrage = form.POURCENTAGE_agent_chiffrage.data
+                    mission.ID_agent_chiffrage = form.ID_agent_chiffrage.data
+                    mission.TYPE_EDL = form.TYPE_EDL.data
+                    mission.TITREPROPRIO  = form.TITREPROPRIO.data
+                    mission.NOMPROPRIO  = form.NOMPROPRIO.data
+                    mission.CODE_AMEXPERT = form.CODE_AMEXPERT.data
+                    mission.surface_logement1  = form.surface_logement1.data
+                    mission.Ref_commande  = form.Ref_commande.data
+                    mission.POURCENTAGE_COM_AS_DU_CLIENT = form.POURCENTAGE_COM_AS_DU_CLIENT.data
+                    mission.ID_Respon_Cell_Dev = form.ID_Respon_Cell_Dev.data
+                    mission.POURCENTAGE_Respon_Cell_Dev = form.POURCENTAGE_Respon_Cell_Dev.data
+                    mission.ID_agent_Cell_Dev = form.ID_agent_Cell_Dev.data
+                    mission.POURCENTAGE_Agent_Cell_Dev = form.POURCENTAGE_Agent_Cell_Dev.data
+                    mission.ID_Agent_CellTech = form.ID_Agent_CellTech.data
+                    mission.POURCENTAGE_Agent_Cell_Tech = form.POURCENTAGE_Agent_Cell_Tech.data
+                    mission.ID_Respon_Cell_Tech  = form.ID_Respon_Cell_Tech.data
+                    mission.POURCENTAGE_Respon_Cell_Tech = form.POURCENTAGE_Respon_Cell_Tech.data
+                    mission.ID_Suiveur_Cell_Tech = form.ID_Suiveur_Cell_Tech.data
+                    mission.POURCENTAGE_Suiveur_Cell_Tech = form.POURCENTAGE_Suiveur_Cell_Tech.data
+                    mission.ID_Respon_Cell_Planif = form.ID_Respon_Cell_Planif.data
+                    mission.POURCENTAGE_Respon_Cell_Planif = form.POURCENTAGE_Respon_Cell_Planif.data
+                    mission.ID_Suiveur_Cell_Planif = form.ID_Suiveur_Cell_Planif.data
+                    mission.POURCENTAGE_Suiveur_Cell_Planif	 = form.POURCENTAGE_Suiveur_Cell_Planif.data
+                    mission.ID_Agent_saisie_Cell_Planif = form.ID_Agent_saisie_Cell_Planif.data
+                    mission.POURCENTAGE_Agent_saisie_CEll_planif = form.POURCENTAGE_Agent_saisie_CEll_planif.data 
+
+                    db.session.commit()
+                    
+                    flash(f"Les information de la mission a ete modifier", "success")
+                    return redirect(url_for('users.mission'))
+        
+        return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
     return redirect(url_for('users.main'))   
 
 @users.route('/delete/<int:id>/mission', methods=['GET'])
@@ -811,12 +879,14 @@ def expert():
 
     return redirect(url_for('users.main'))
 
-@users.route('/show/<int:id>/expert', methods=['GET'])
+@users.route('/show/<int:id>/expert', methods=['GET','POST'])
 @login_required 
 def show_expert(id):
     if current_user.TYPE == "Admin":
         expert = Expert.query.filter_by(id=id).first_or_404()
+        print(1)
         client_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
+        print(2)
         return render_template('manage/pages/show_expert.html', expert=expert,history=client_history,legend="expert",highlight='expert')
 
 
@@ -827,11 +897,29 @@ def ajouter_expert():
         form = RegistrationForm()
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-            user=Expert(sexe=form.Sexe.data,nom=form.username.data,numero=form.Numero.data,TYPE=form.Type_Expert.data, email=form.email.data)
+            user=Expert(genre=form.Sexe.data,siret=form.siret.data,email_perso=form.email_perso.data,nom=form.username.data,trigramme = form.trigramme.data,numero=form.Numero.data,code_tva=form.code_tva.data,taux_tva=form.taux_tva.data,TYPE=form.Type_Expert.data, email=form.email.data)
             db.session.add(user)
             db.session.commit()
-            expert_check=Expert_History(expert_id=user.id)#check if tables are modified from table expert_history
-            db.session.add(expert_check)
+            expert_history=Expert_History(expert_id=user.id,)
+            db.session.add(expert_history)
+            expert_history.ville = form.ville.data
+            expert_history.secteur = form.secteur.data
+            expert_history.type_certification =  form.type_certification.data
+            
+            expert_history.cp = form.cp.data
+            expert_history.actif_parti  = form.actif_parti.data
+            
+            expert_history.login_backof = form.login_backof.data
+            expert_history.pwd_backof = form.pwd_backof.data
+            
+            expert_history.adresse1 = form.adresse.data
+            expert_history.adresse2 = form.adresse2.data
+            expert_history.login_extranet = form.login_extranet.data
+            expert_history.pwd_extranet = form.pwd_extranet.data
+            expert_history.trigramme = form.trigramme.data
+            expert_history.date_certification_initiale = form.date_certification.data
+
+            expert_history.observations_de_suivi = form.observations_de_suivi.data
             user.password=hashed_password
             db.session.commit()
             return redirect(url_for('users.expert'))
@@ -841,12 +929,59 @@ def ajouter_expert():
 
 
 
-@users.route('/edit/<int:id>/expert', methods=['GET'])
+@users.route('/edit/<int:id>/expert', methods=['GET','POST'])
 @login_required
 def edit_expert(id):
     if current_user.TYPE == 'Admin':
         form = Expert_editForm()
         expert = Expert.query.filter_by(id=id).first_or_404()
+        form.Expert_id.data=id
+        if form.validate_on_submit():
+            
+            f=form.validate2(form.email.data,form.Expert_id.data)
+            if f==True:
+                flash(f"l'email es Deja pris",'Warning')
+                return redirect(url_for('users.edit_expert', id=expert.id))
+            if expert.id==int(form.Expert_id.data):
+                expert_history=Expert_History(expert_id=id)
+                db.session.add(expert_history)
+                db.session.commit()
+                expert_history.ville = form.ville.data
+                expert_history.secteur = form.secteur.data
+                expert_history.type_certification =  form.type_certification.data
+                
+                expert_history.cp = form.cp.data
+                expert_history.actif_parti  = form.actif_parti.data
+                
+                expert_history.login_backof = form.login_backof.data
+                expert_history.pwd_backof = form.pwd_backof.data
+                
+                expert_history.adresse1 = form.adresse.data
+                expert_history.adresse2 = form.adresse2.data
+                expert_history.login_extranet = form.login_extranet.data
+                expert_history.pwd_extranet = form.pwd_extranet.data
+        
+                
+                expert_history.date_renouv_certification = form.date_certification.data
+
+                expert_history.observations_de_suivi = form.observations_de_suivi.data
+                
+                if form.mdp.data:
+                    expert_history.date_sortie = form.mdp.data
+
+                db.session.commit()
+                expert.genre= form.Sexe.data
+                expert.nom = form.username.data
+                expert.numero = int(form.Numero.data)
+                expert.email = form.email.data
+                expert.siret= form.siret.data
+                expert.trigramme=form.trigramme.data
+                expert.code_tva=form.code_tva.data
+                expert.taux_tva=form.taux_tva.data
+                db.session.commit()
+                flash(f'Les information de l\'expert a ete modifier', 'success')
+                return redirect(url_for('users.expert'))
+
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
         return render_template('manage/pages/edit_expert.html', highlight='expert', form=form,history=expert_history,expert=expert)
 
@@ -864,58 +999,7 @@ def delete_expert(id):
         flash(f'Les donnes de l"expert ont été  suprimmer','success')
         return redirect(url_for('users.expert'))
 
-@users.route('/update/<int:id>/expert', methods=['POST', 'PUT'])
-@login_required
-def update_expert(id):
-    if current_user.TYPE == 'Admin':
-        form = Expert_editForm()
-        expert = Expert.query.filter_by(id=id).first_or_404()
-        print(47)
-        if request.form['ville'] !=None: #or  request.form['type_certification'] !="None" or request.form['adresse'] !="None" or  request.form['cp'] !="None" or request.form['login_backof'] !="None" or request.form['pwd_backof'] !="None" or request.form['login_extranet'] !="None" or request.form['pwd_extranet'] !="None" or request.form['pwd_gsuite'] !="None" or request.form['observations_de_suivi'] !="None" :
-        
-            expert_check=Expert_History(expert_id=id)
-            db.session.add(expert_check)
-            db.session.commit()
-            expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
-            expert_history.ville = request.form['ville']
-            
-            expert_history.type_certification =  request.form['type_certification']
-            
-            expert_history.cp = request.form['cp']
-            expert_history.actif_parti  = request.form['actif_parti']
-            
-            expert_history.login_backof = request.form['login_backof']
-            expert_history.pwd_backof = request.form['pwd_backof']
-            
-            expert_history.adresse1 = request.form['adresse']
-            expert_history.adresse2 = request.form['adresse2']
-            expert_history.login_extranet = request.form['login_extranet']
-            expert_history.pwd_extranet = request.form['pwd_extranet']
-            expert_history.date_certification = request.form['pwd_extranet']
-            
-            expert_history.date_certification_initiale = request.form['date_certification']
 
-            expert_history.observations_de_suivi = request.form['observations_de_suivi']
-            if  request.form['type_certification'] != "None" or "Nan":
-                expert_history.date_renouv_certification= expert_history.date
-                db.session.commit()
-            
-            if request.form['mdp']:
-                expert_history.date_sortie = request.form['date_sortie']
-
-            db.session.commit()
-      
-        expert.genre= request.form['Sexe']
-        expert.nom = request.form['username']
-        expert.numero = request.form['Numero']
-        expert.email = request.form['email']
-        expert.siret= request.form['siret']
-        expert.trigramme=request.form['trigramme']
-        db.session.commit()
-
-        flash(f'Les information de l\'expert a ete modifier', 'success')
-        return redirect(url_for('users.expert'))
-    return redirect(url_for('users.main'))
 
 @users.route('/tarifs')
 @login_required
@@ -926,28 +1010,25 @@ def tarif_base():
 
     return redirect(url_for('users.main'))
 
-@users.route('/edit/<int:id>/tarifb', methods=['GET'])
+@users.route('/edit/<int:id>/tarifb', methods=['GET','POST'])
 @login_required
 def edit_tarifb(id):
     if current_user.TYPE == 'Admin':
         form = Tarif_edit()
         Tarif = Tarif_base.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
-
-
-@users.route('/update/<int:id>/tarifb', methods=['POST', 'PUT'])
-@login_required
-def update_tarifb(id):
-    if current_user.TYPE == 'Admin':
-        tarif = Tarif_base.query.filter_by(id=id).first_or_404()
-        tarif.Prix_EDL=request.form['prix']    
-        tarif.surface=request.form['surface']
+        form.tafid.data = Tarif.id
+        if  form.validate_on_submit():
+            if form.tafid.data == Tarif.id:
+                Tarif.Prix_EDL=form.prix.data    
+                Tarif.surface=form.surface.data
+                
+                db.session.commit()
+                flash(f'Les donnes du tarif a été modifiées','success')
+                return redirect(url_for('users.tarif_base'))
         
-        db.session.commit()
-        flash(f'Les donnes du tarif a été modifiées','success')
-        return redirect(url_for('users.tarif_base'))
-    return redirect(url_for('users.edit_tarifb', id=id))
-
+        return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
+        #return redirect(url_for('users.edit_tarifb', id=id))
+    
 
 @users.route('/ajouter/tarifs')
 @login_required
@@ -989,8 +1070,7 @@ def ajouter_tarif(id):
         form = Tarif_Form()
         client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            if form.validate_price_STD(form.edl_prix_std.data):
-                print('ok5')
+            
             tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
             ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
             chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
@@ -1000,7 +1080,7 @@ def ajouter_tarif(id):
             com_cell_planif_ref_responsable=form.com_cell_planif_ref_responsable.data,cell_planif_ref_suiveur=form.cell_planif_ref_suiveur.data,com_cell_planif_ref_suiveur=form.com_cell_planif_ref_suiveur.data,cell_planif_ref_agent_saisie=form.cell_planif_ref_agent_saisie.data,com_cell_planif_ref_agent_saisie=form.com_cell_planif_ref_agent_saisie.data,
             commentaire_libre=form.commentaire_libre.data,chif_appt_prix_f6=form.chif_appt_prix_f6.data)
             db.session.add(tarif)
-            #db.session.commit()
+            db.session.commit()
             flash(f'Le tarif a été créé avec succès', 'success')
             return redirect(url_for('users.tarifs',id=id))
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert", highlight='tarif')
@@ -1017,218 +1097,98 @@ def delete_tarif(id):
         flash(f'Les donnes de Tarifs ont été  suprimmer','success')
         return redirect(url_for('users.tarifs'))
 
-@users.route('/edit/<int:id>/tarif')
+@users.route('/edit/<int:id>/tarif', methods=['GET','POST'])
 @login_required
 def edit_tarif(id):
     if current_user.TYPE == "Admin":
         form = Tarif_Form()
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
+        form.tafid.data = tarif.id
+        if  form.validate_on_submit():
+            if form.tafid.data == tarif.id:
+                tarif.edl_prix_std=form.edl_prix_std.data    
+                tarif.edl_appt_prix_f1=form.edl_appt_prix_f1.data
+                tarif.edl_appt_prix_f2=form.edl_appt_prix_f2.data
+                tarif.edl_appt_prix_f3=form.edl_appt_prix_f3.data
+                tarif.edl_appt_prix_f4 =form.edl_appt_prix_f4.data
+                tarif.edl_appt_prix_f5=form.edl_appt_prix_f5.data
+                tarif.edl_appt_prix_f6=form.edl_appt_prix_f6.data
+                tarif.edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data
+                tarif.edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
+                tarif.edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data
+                tarif.edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data
+                tarif.edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data
+                tarif.edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data
+                tarif.edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data
+                tarif.edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data
+                tarif.chif_appt_prix_stu=form.chif_appt_prix_stu.data
+                tarif.chif_appt_prix_f1 =form.chif_appt_prix_f1.data
+                tarif.chif_appt_prix_f2  =form.chif_appt_prix_f2.data
+                tarif.chif_appt_prix_f3  =form.chif_appt_prix_f3.data
+                tarif.chif_appt_prix_f4  =form.chif_appt_prix_f4.data
+                tarif.chif_appt_prix_f5=form.chif_appt_prix_f5.data
+                tarif.chif_appt_prix_f6  =form.chif_appt_prix_f6.data
+                tarif.chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data
+                tarif.chif_pav_villa_prix_t2 =form.chif_pav_villa_prix_t2.data
+                tarif.chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data
+                tarif.chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data
+                tarif.chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data
+                tarif.chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data
+                tarif.chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data
+                tarif.chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data
+                tarif.prix_autre=form.prix_autre.data
+
+                tarif.code_tva=form.code_tva.data
+
+                tarif.taux_meuble=form.taux_meuble.data
+
+                tarif.referent_as_client=form.referent_as_client.data
+
+                tarif.com_as_sur_ca_client=form.com_as_sur_ca_client.data
+
+                tarif.cell_dev_ref_responsable =form.cell_dev_ref_responsable.data
+
+                tarif.com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data 
+
+                tarif.cell_dev_ref_agent =form.cell_dev_ref_agent.data
+
+                tarif.com_cell_dev_ref_agent =form.com_cell_dev_ref_agent.data
+
+                tarif.cell_tech_ref_agent  =form.cell_tech_ref_agent.data
+
+                tarif.com_cell_tech_Ref_agent =form.com_cell_tech_Ref_agent.data
+
+                tarif.cell_tech_ref_responsable =form.cell_tech_ref_responsable.data
+
+                tarif.com_cell_tech_ref_responsable =form.com_cell_tech_ref_responsable.data
+
+                tarif.cell_tech_ref_suiveur =form.cell_tech_ref_suiveur.data
+
+                tarif.com_cell_tech_ref_suiveur =form.com_cell_tech_ref_suiveur.data
+
+                tarif.cell_planif_ref_responsable =form.cell_planif_ref_responsable.data
+
+                tarif.com_cell_planif_ref_responsable =form.com_cell_planif_ref_responsable.data
+
+                tarif.cell_planif_ref_suiveur =form.cell_planif_ref_suiveur.data
+
+                tarif.com_cell_planif_ref_suiveur =form.com_cell_planif_ref_suiveur.data
+
+                tarif.cell_planif_ref_agent_saisie =form.cell_planif_ref_agent_saisie.data
+
+                tarif.com_cell_planif_ref_agent_saisie =form.com_cell_planif_ref_agent_saisie.data
+
+                tarif.commentaire_libre =form.commentaire_libre.data
+                
+                db.session.commit()
+                flash(f'Les donnes du tarif a été modifiées','success')
+                return redirect(url_for('users.tarifs',id=id))
+
         return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
+        #return redirect(url_for('users.edit_tarif', id=id))
 
-@users.route('/update/<int:id>/tarif', methods=['POST', 'PUT'])
-@login_required
-def update_tarif(id):
-    if current_user.TYPE == 'Admin':
-        tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        tarif.edl_prix_std=request.form['edl_prix_std']    
-        tarif.edl_appt_prix_f1=request.form['edl_appt_prix_f1']
-        tarif.edl_appt_prix_f2=request.form['edl_appt_prix_f2']
-        tarif.edl_appt_prix_f3=request.form['edl_appt_prix_f3']
-        tarif.edl_appt_prix_f4 =request.form['edl_appt_prix_f4']
-        tarif.edl_appt_prix_f5=request.form['edl_appt_prix_f5']
-        tarif.edl_appt_prix_f6=request.form['edl_appt_prix_f6']
-        tarif.edl_pav_villa_prix_t1=request.form['edl_pav_villa_prix_t1']
-        tarif.edl_pav_villa_prix_t2=request.form['edl_pav_villa_prix_t2']
-        tarif.edl_pav_villa_prix_t3=request.form['edl_pav_villa_prix_t3']
-        tarif.edl_pav_villa_prix_t4=request.form['edl_pav_villa_prix_t4']
-        tarif.edl_pav_villa_prix_t5=request.form['edl_pav_villa_prix_t5']
-        tarif.edl_pav_villa_prix_t6=request.form['edl_pav_villa_prix_t6']
-        tarif.edl_pav_villa_prix_t7=request.form['edl_pav_villa_prix_t7']
-        tarif.edl_pav_villa_prix_t8=request.form['edl_pav_villa_prix_t8']
-        tarif.chif_appt_prix_stu=request.form['chif_appt_prix_stu']
-        tarif.chif_appt_prix_f1 =request.form['chif_appt_prix_f1']
-        tarif.chif_appt_prix_f2  =request.form['chif_appt_prix_f2']
-        tarif.chif_appt_prix_f3  =request.form['chif_appt_prix_f3']
-        tarif.chif_appt_prix_f4  =request.form['chif_appt_prix_f4']
-        tarif.chif_appt_prix_f5=request.form['chif_appt_prix_f5']
-        tarif.chif_appt_prix_f6  =request.form['chif_appt_prix_f6']
-        tarif.chif_pav_villa_prix_t1=request.form['chif_pav_villa_prix_t1']
-        tarif.chif_pav_villa_prix_t2 =request.form['chif_pav_villa_prix_t2']
-        tarif.chif_pav_villa_prix_t3=request.form['chif_pav_villa_prix_t3']
-        tarif.chif_pav_villa_prix_t4=request.form['chif_pav_villa_prix_t4']
-        tarif.chif_pav_villa_prix_t5=request.form['chif_pav_villa_prix_t5']
-        tarif.chif_pav_villa_prix_t6=request.form['chif_pav_villa_prix_t6']
-        tarif.chif_pav_villa_prix_t7=request.form['chif_pav_villa_prix_t7']
-        tarif.chif_pav_villa_prix_t8=request.form['chif_pav_villa_prix_t8']
-        tarif.prix_autre=request.form['prix_autre']
 
-        tarif.code_tva=request.form['code_tva']
-
-        tarif.taux_meuble=request.form['taux_meuble']
-
-        tarif.referent_as_client=request.form['referent_as_client']
-
-        tarif.com_as_sur_ca_client=request.form['com_as_sur_ca_client']
-
-        tarif.cell_dev_ref_responsable =request.form['cell_dev_ref_responsable']
-
-        tarif.com_cell_dev_ref_responsable=request.form['com_cell_dev_ref_responsable'] 
-
-        tarif.cell_dev_ref_agent =request.form['cell_dev_ref_agent']
-
-        tarif.com_cell_dev_ref_agent =request.form['com_cell_dev_ref_agent']
-
-        tarif.cell_tech_ref_agent  =request.form['cell_tech_ref_agent']
-
-        tarif.com_cell_tech_Ref_agent =request.form['com_cell_tech_Ref_agent']
-
-        tarif.cell_tech_ref_responsable =request.form['cell_tech_ref_responsable']
-
-        tarif.com_cell_tech_ref_responsable =request.form['com_cell_tech_ref_responsable']
-
-        tarif.cell_tech_ref_suiveur =request.form['cell_tech_ref_suiveur']
-
-        tarif.com_cell_tech_ref_suiveur =request.form['com_cell_tech_ref_suiveur']
-
-        tarif.cell_planif_ref_responsable =request.form['cell_planif_ref_responsable']
-
-        tarif.com_cell_planif_ref_responsable =request.form['com_cell_planif_ref_responsable']
-
-        tarif.cell_planif_ref_suiveur =request.form['cell_planif_ref_suiveur']
-
-        tarif.com_cell_planif_ref_suiveur =request.form['com_cell_planif_ref_suiveur']
-
-        tarif.cell_planif_ref_agent_saisie =request.form['cell_planif_ref_agent_saisie']
-
-        tarif.com_cell_planif_ref_agent_saisie =request.form['com_cell_planif_ref_agent_saisie']
-
-        tarif.commentaire_libre =request.form['commentaire_libre']
-        
-        db.session.commit()
-        flash(f'Les donnes du tarif a été modifiées','success')
-        return redirect(url_for('users.tarifs',id=id))
-    return redirect(url_for('users.edit_tarif', id=id))
        
-
-
-
-@users.route('/agendas')
-@login_required
-def agendas():
-    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
-        agenda = Agenda.query.all()
-        return render_template('manage/pages/edit_agenda.html', agendas=agenda,  highlight='agendas')
-
-
-
-@users.route('/client/<int:id>/agenda')
-@login_required
-def agenda(id):
-    if current_user.TYPE == "Audit":
-        #agenda_=list(Agenda.query.filter(_and(Agenda.client_id==id,Agenda.visibility=True)).all())
-        return render_template('manage/pages/agenda.html',legend="agenda",Agenda=agenda_, highlight='agenda') #correct
-
-    return redirect(url_for('users.main'))
-
-@users.route('/show/<int:id>/agenda', methods=['GET'])
-@login_required 
-def show_agenda(id):
-    if current_user.TYPE == "Admin":
-        tarif_ = Agenda.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/show_agenda.html', tarif=tarif_,legend="agenda", highlight='agenda')
-
-
-@users.route('/ajoutez/<int:id>/agenda')
-@login_required
-def ajouter_agenda (id):
-    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
-        form = Agenda_form()
-        if form.validate_on_submit():#fix data
-            agenda=Agenda(client_id=id,Organisateur=current_user.id,
-            Titre_du_Rdv=form.Titre_du_Rdv.data,Adresse1_Rdv=form.Adresse1_Rdv.data,
-            Adresse2_Rdv=form.Adresse2_Rdv.data,Code_postal_Rdv=form.Code_postal_Rdv.data,
-            Ville_du_Rdv=form.Ville_du_Rdv.data,Date_Rdv=form.Date_Rdv.data,Heure_début_Rdv=form.Heure_début_Rdv.data,
-            Heure_fin_Rdv=form.Heure_fin_Rdv.data,Date_Rdv_annulé=form.Date_Rdv_annulé.data,
-            Informations_réservées_service_planification=form.Informations_réservées_service_planification.data,
-            Informations_générales=form.Informations_générales.data,Informations_de_suivi_de_Rdv=form.Informations_de_suivi_de_Rdv.data,
-            Chemin_de_fichier_joint=form.Chemin_de_fichier_joint.data)
-            
-            db.session.add(agenda)
-            db.session.commit()
-            flash(f'Agenda du client a ete ajouter','success')
-            return redirect(url_for('users.ajouter_agenda',id=id))
-        return render_template('manage/pages/ajouter_agenda.html', legend="agenda", highlight='agenda')
-
-    return redirect(url_for('users.main'))
-
-@users.route('/edit/<int:id>/agenda')
-@login_required
-def edit_agenda(id):
-    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
-        form = Agenda_form()
-        tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form, highlight='agenda')
-
-@users.route('/update/<int:id>/agenda', methods=['POST', 'PUT'])
-@login_required
-def update_agenda(id):
-    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
-        agenda = Agenda.query.filter_by(id=id).first_or_404()
-        agenda.Titre_du_Rdv=request.form['Titre_du_Rdv']
-        agenda.Adresse1_Rdv=request.form['Adresse1_Rdv']
-        agenda.Adresse2_Rdv=request.form['Adresse2_Rdv']
-        agenda.Code_postal_Rdv=request.form['Code_postal_Rdv']
-        agenda.Ville_du_Rdv=request.form['Ville_du_Rdv']
-        agenda.Date_Rdv=request.form['Date_Rdv']
-        agenda.Heure_début_Rdv=request.form['Heure_début_Rdv']
-        agenda.Heure_fin_Rdv=request.form['Heure_fin_Rdv']
-        agenda.Date_Rdv_annulé =request.form['Date_Rdv_annulé']
-        agenda.Informations_réservées_service_planification=request.form['Informations_réservées_service_planification']
-        agenda.Informations_générales =request.form['Informations_générales']
-        agenda.Informations_de_suivi_de_Rdv=request.form['Informations_de_suivi_de_Rdv']
-        agenda.Chemin_de_fichier_joint=request.form['Chemin_de_fichier_joint']
-        
-        db.session.commit()
-        flash(f'Les donnes du tarif a été modifiées','success')
-        return redirect(url_for('users.agenda'))
-    return redirect(url_for('users.edit_agenda', id=id))
-
-
-@users.route('/invite/<int:id>/agenda')
-@login_required
-def invite_agenda(id):
-    if current_user.TYPE == "Admin"  or current_user.TYPE == "Audit":
-        form = Invitation_Agenda()
-        if form.validate_on_submit():
-
-            agenda = Agenda_expert(agenda_taken=id ,Participant_invité=form.Expert_invite.data)
-            db.session.add(user)
-            db.session.commit()
-            flash(f"L'invitation a été envoyes","success")# you need to send a mail
-            return redirect(url_for('users.agenda'))
-
-        return render_template('manage/pages/edit_agenda.html', tarif=tarif,form=form, highlight='agenda')
-
-
-@users.route('/delete/<int:id>/agenda', methods=['GET'])
-@login_required
-def delete_agenda(id):
-    if current_user.TYPE == "Admin":
-        agenda = Agenda.query.filter_by(id=id).first_or_404()
-        participants=list(Agenda_expert.query.filter_by(agenda_taken=id).all())
-        agenda.visibility=False
-        db.session.commit()
-        for i in participants:
-            i.visibility=False
-            db.session.commit()
-        flash(f"Les donnes de l'agenda ont été  suprimmer",'success')
-        return redirect(url_for('users.negotiateur', id=id))
-
-
-
-
-
-
 
 
 
@@ -1327,19 +1287,6 @@ def logout():
 
 
 
-@users.route('/ajoutez/agenda', methods = ['GET', 'POST'])
-def ajout_agenda(): 
-    if request.method == 'POST':
-        print('ok1')
-        client = Client.query.get(request.form.get('id'))
-        #expert_audit=Expert.query.filter(and_(Expert.NOM == str(current_user.NOM), Expert.TYPE =='audit_planner')).first() #type='audit_planner'
-     #   agen=Agenda(client.id,int(request.form['Audit_planner']),int(request.form['Agent_referent'])
-     #   request.form['Lieu'],request.form['Date'])
-     #   db.session.add(agen)
-     #   db.session.commit()
-      #  return redirect(url_for('users.agenda'))
-    return render_template('manage/pages/ajouter_agenda.html', legend="agenda", highlight='agenda')
-    #return redirect(url_for('users.client'))
 
 
 @users.route('/',methods=['GET','POST'])
@@ -1429,13 +1376,13 @@ def delete_negotiateur(id):
 @login_required
 def ajouter_negotiateur(id):
     if current_user.TYPE == "Admin":
-        form=Negotiateur_Form()
+        form=Negotiateur_Form1()
         client=Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
             user=Client_negotiateur(client.id,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data)
             db.session.add(user)
             db.session.commit()
-            user_history=Client_negotiateur.query.filter(or_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.NOM.data)).first()
+            user_history=Client_negotiateur.query.filter(and_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.NOM.data)).first()
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
@@ -1448,50 +1395,55 @@ def ajouter_negotiateur(id):
 
 
 
-@users.route('/show/<int:id>/negotiateur', methods=['GET'])
+@users.route('/show/<int:id>/negotiateur', methods=['GET','POST'])
 @login_required
 def show_negotiateur(id):
+    
     if current_user.TYPE == "Admin":
+        print('ok')
         client = Client_negotiateur.query.filter_by(id=id).first_or_404()
+        print(client)
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
+        
         return render_template('manage/pages/show_nego.html', client=client,history=client_history,legend="negotiateur")
 
 
-@users.route('/edit/<int:id>/negotiateur', methods=['GET'])
+@users.route('/edit/<int:id>/negotiateur', methods=['GET','POST'])
 @login_required
 def edit_negotiateur(id):
     if current_user.TYPE == "Admin":
         form = Negotiateur_Form()
         client = Client_negotiateur.query.filter_by(id=id).first_or_404()
+        form.client_id.data=id
+        
+        if form.validate_on_submit():
+            f=form.nego(form.email.data,form.client_id.data)
+        
+            if f==True:
+                flash(f"l'email es Deja pris",'Warning')
+                return redirect(url_for('users.edit_negotiateur', id=client.id))
+            
+            if client.id==int(form.client_id.data):
+            
+                client_check=Negotiateur_History(negotiateur_id=id)
+                db.session.add(client_check)
+                db.session.commit()
+                client_check.ville = form.Ville.data
+                client_check.pays = form.Pays.data 
+                client_check.cp = form.CP.data
+                client_check.adresse = form.Adresse.data
+                db.session.commit()
+
+                client.email = form.email.data
+                client.numero = form.Numero.data
+                client.sexe = form.Sexe.data
+                client.nom = form.NOM.data
+
+                db.session.commit()
+                flash(f'Les donnes du negotiateur a été modifiées','success')
+                return redirect(url_for('users.negotiateur', id=client.client_id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
-
-@users.route('/update/<int:id>/negotiateur', methods=['POST', 'PUT'])#fix pages for action on form
-@login_required
-def update_negotiateur(id):
-    if current_user.TYPE == "Admin":
-        client = Client_negotiateur.query.filter_by(id=id).first_or_404()
-        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse'] :
-            client_check=Negotiateur_History(negotiateur_id=id)
-            db.session.add(client_check)
-            db.session.commit()
-            client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
-            client_history.ville = request.form['Ville']
-           # client_history.pays = request.form['Pays'] fix this edit
-            client_history.cp = request.form['CP']
-            client_history.adresse = request.form['Adresse']
-            db.session.commit()
-
-        client.email = request.form['email']
-        client.numero = request.form['Numero']
-        client.sexe = request.form['Sexe']
-        client.nom = request.form['NOM']
-
-        db.session.commit()
-        flash(f'Les donnes du negotiateur a été modifiées','success')
-        return redirect(url_for('users.negotiateur', id=client.client_id))
-
-    return redirect(url_for('users.edit_negotiateur', id=id))
 
 
 
@@ -1520,12 +1472,15 @@ def ajouter_prospect():
             user=prospect(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data)
             db.session.add(user)
             db.session.commit()
-            user_history=prospect.query.filter(or_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
-            user_history.siret==form.Siret.data
+            user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
+            user_history.siret=form.Siret.data
             db.session.commit()
-            print(user_history.id)
-            user_his=prospect_History(prospect=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
-            db.session.add(user_his)
+            client_history=prospect_History(prospect=user_history.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
+            db.session.add(client_history)
+            db.session.commit()
+            client_history.etat_client = form.EtatClient.data
+            client_history.mpd_extranet =form.MdpExtranet.data
+            client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Prospect créé avec succès','success')
             return redirect(url_for('users.prospect_'))
@@ -1561,48 +1516,50 @@ def show_prospect(id):
         return render_template('manage/pages/show_client.html', highlight='prospect', client=client,history=client_history,legend='prospect')
 
 
-@users.route('/edit/<int:id>/prospect', methods=['GET'])
+@users.route('/edit/<int:id>/prospect', methods=['GET','POST'])
 @login_required
 def edit_prospect(id):
     if current_user.TYPE == "Admin":
-        form = Client_Form()
         client = prospect.query.filter_by(id=id).first_or_404()
+        form = Client_edit()
+        form.client_id.data=id
+        
+        if form.validate_on_submit():
+            f=form.validate3(form.email.data,form.client_id.data)
+            if f==True:
+                flash(f"l'email es Deja pris",'Warning')
+                return redirect(url_for('users.edit_prospect', id=client.id))
+            
+            if client.id==int(form.client_id.data):
+            
+                client_history=prospect_History(prospect=id)
+                db.session.add(client_history)
+                db.session.commit()
+                
+                client_history.ville = form.Ville.data
+                client_history.pays = form.Pays.data
+                client_history.cp = form.CP.data
+                client_history.adresse1 = form.Adresse1.data
+                client_history.adresse2 = form.Adresse2.data
+                client_history.login_extranet =form.LoginExtranet.data# add this and 2  to client
+                client_history.mpd_extranet = form.MdpExtranet.data
+                client_history.etat_client = form.EtatClient.data
+                db.session.commit()
+                client.reference=form.Reference.data
+                client.email = form.email.data
+                client.siret = form.Siret.data
+                client.societe = form.Societe.data
+                client.numero = form.Numero.data#do validation error for numbers
+                client.titre = form.Sexe.data
+                client.TYPE = form.Type.data
+                client.enseigne =form.Enseigne.data
+                client.nom = form.NOM.data
+                db.session.commit()
+                flash(f'Informations Prospect modifiées','success')
+                return redirect(url_for('users.prospect_'))
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
         return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
 
-@users.route('/update/<int:id>/prospect', methods=['POST', 'PUT'])#fix pages for action on form
-@login_required
-def update_prospect(id):
-    if current_user.TYPE == "Admin":
-        client = prospect.query.filter_by(id=id).first_or_404()
-        if request.form['Ville'] or  request.form['Pays'] or request.form['CP'] or  request.form['Adresse1'] :
-            client_check=prospect_History(prospect=id)
-            db.session.add(client_check)
-            db.session.commit()
-            client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
-            client_history.ville = request.form['Ville']
-            client_history.pays = request.form['Pays']
-            client_history.cp = request.form['CP']
-            client_history.adresse1 = request.form['Adresse1']
-            client_history.adresse2 = request.form['Adresse2']
-            client_history.login_extranet = request.form['LoginExtranet']
-            client_history.mpd_extranet = request.form['MdpExtranet']
-            client_history.etat_client = request.form['EtatClient']
-            db.session.commit()
-        client.email = request.form['email']
-        client.siret = request.form['Siret']
-        client.societe = request.form['Societe']
-        client.enseigne = request.form['Enseigne']
-        client.numero = request.form['Numero']
-        client.titre = request.form['Sexe']
-        client.TYPE = request.form['Type']
-        client.nom = request.form['NOM']
-        
-
-        db.session.commit()
-        flash(f'Les donnes du negotiateur a été modifiées','success')
-        return redirect(url_for('users.prospect_'))
-    return redirect(url_for('users.edit_prospect', id=id))
 
 
 
@@ -1674,18 +1631,20 @@ def update_suivip(id):
 @users.route("/televeser", methods=['GET','POST'])
 #@login_required
 def up():
+    #db.create_all()
     db.create_all()
-    '''db.create_all()
     expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert1)
     db.session.add(expert)
     db.session.commit()
     expert1.id =0
+    expert1.visibility =False
+    expert.visibility =False
     hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     expert.password=hashed_password
     db.session.commit()
-    print('po')'''
+    print('po')
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()
@@ -1779,9 +1738,9 @@ def profil():
 
 
 
-#@users.app_errorhandler(404)
-#def error_404(error):
- #   return render_template('errors/404.html'),404
+@users.app_errorhandler(404)
+def error_404(error):
+    return render_template('errors/404.html'),404
 
 @users.app_errorhandler(403)
 def error_403(error):

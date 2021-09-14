@@ -20,9 +20,9 @@
                       </main>
 
 
+action="{{url_for('users.update_client', id=client.id)}}"method="PATCH"
 
 
-                                    
                       acme==1.1.0
                       alembic==1.6.5
                       attrs==19.3.0
@@ -144,4 +144,181 @@
                       zope.hookable==5.0.0
                       zope.interface==4.7.1
 
+To edit mission avec anomalie
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier cette Mission</h2>
+        <a href="{{url_for('users.mission')}}" title="Consultez la liste des missions" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
+    </div>
+      <div class="table-container" style="">
+        <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+            <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;">
+                <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+            </header>
+                        <div class="">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form method="POST" class="user" action="{{url_for('users.update_mission', id=mission.id)}}" style="padding: 5px">
+                                {{ form.hidden_tag() }}
+
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label" style="text-align: left;"><small>{{form.TYPE_LOGEMENT.label(class="form-control-label")}}</small></label>
+                                    </div>
+                                    <div class="field-body">
+                                      <div class="field"><!---->
+                                          <div class="control">
+                                           {% if form.TYPE_LOGEMENT.errors %}
+                                            {{form.TYPE_LOGEMENT(class="input is-invalid", value=mission.TYPE_LOGEMENT) }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.TYPE_LOGEMENT.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                            {% else %}
+                                                {{form.TYPE_LOGEMENT(class="input", value=mission.TYPE_LOGEMENT)}}
+                                            {% endif %}
+                                          </div>
+                                            <p class="help"> Requis.</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <hr />
+                             
+
+                                <div class="columns">
+                                   
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.LOGEMENT_MEUBLE.label(class="form-control-label")}}</small>
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.LOGEMENT_MEUBLE.errors %}
+                                                    {{form.LOGEMENT_MEUBLE(class="input is-invalid", value=mission.LOGEMENT_MEUBLE) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.LOGEMENT_MEUBLE.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.LOGEMENT_MEUBLE(class="input", value=mission.LOGEMENT_MEUBLE)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help">Requis.</p>
+                                                </div>
+                                          </div>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                                <hr />
+
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.CODE_FACTURATION.label(class="form-control-label")}}</small>
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.CODE_FACTURATION.errors %}
+                                                    {{form.CODE_FACTURATION(class="input is-invalid", value=mission.CODE_FACTURATION) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.CODE_FACTURATION.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.CODE_FACTURATION(class="input", value=mission.CODE_FACTURATION)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help"> Requis.</p>
+                                                </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.TYPE_DE_BIEN.label(class="form-control-label")}}</small>
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   {% if form.TYPE_DE_BIEN.errors %}
+                                                    {{form.TYPE_DE_BIEN(class="input is-invalid", value=mission.TYPE_DE_BIEN) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.TYPE_DE_BIEN.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.TYPE_DE_BIEN(class="input", value=mission.TYPE_DE_BIEN)}}
+                                                    {% endif %}
+                                                  </div>
+                                                    <p class="help">Requis.</p>
+                                                </div>
+                                          </div>
+                                        </div>
+                                    </div>                                 
+                                </div>
+                                <hr />
+
+                                
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal"></div>
+                                    <div class="field-body">
+                                      <div class="field">
+                                        <div class="control">
+                                          {{form.modifier(class="button is-primary is-small")}}   
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+                                         <div class="field-body">
+                                          <div class="field">
+                                            <div class="control">
+                                                <a onclick="window.history.back()" class="button is-danger is-small">       
+                                                Annuler
+                                                </a>
+                                             
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+
+
+                            
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock%}
+                                    
                                     

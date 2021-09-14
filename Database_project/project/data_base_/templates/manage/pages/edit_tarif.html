@@ -30,7 +30,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form class="user" method="POST" style="padding: 10px;" action="{{url_for('users.update_tarif', id=expert.id)}}">
+                            <form class="user" method="POST" style="padding: 10px;" >
                                     {{ form.hidden_tag() }}
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">

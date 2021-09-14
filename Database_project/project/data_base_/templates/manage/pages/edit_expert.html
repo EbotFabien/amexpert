@@ -22,14 +22,14 @@
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
-                <form method="POST" class="user" action="{{url_for('users.update_expert', id=expert.id)}}" style="padding: 5px">
+                <form method="POST" class="user" style="padding: 5px">
                     {{ form.hidden_tag() }}
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.username.label(class="form-control-label")}}</small></label>
                         </div>
                         <div class="field-body">
-                          <div class="field"><!---->
+                          <div class="field"><!--secteur-->
                               <div class="control">
                                {% if form.username.errors %}
                                 {{form.username(class="input is-invalid", value=expert.nom) }}
@@ -40,6 +40,29 @@
                             </div>
                                 {% else %}
                                     {{form.username(class="input", value=expert.nom)}}
+                                {% endif %}
+                              </div>
+                                <p class="help"> Requis. Le nom est requis</p>
+                            </div>
+                          </div>
+                        </div>
+                    <hr/>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.secteur.label(class="form-control-label")}}</small></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field"><!--secteur-->
+                              <div class="control">
+                               {% if form.secteur.errors %}
+                                {{form.secteur(class="input is-invalid", value=history.secteur) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.secteur.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                                {% else %}
+                                    {{form.secteur(class="input", value=history.secteur)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le nom est requis</p>
@@ -85,7 +108,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Type(class="input", value=expert.TYPE)}}
+                                <select class="input" id="Type" name="Type">
+                                    <option value="Professionnel" {% if expert.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
+                                    <option value="Particulier" {% if expert.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
+                                  </select>
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis.</p>
@@ -154,7 +180,11 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Sexe(class="input", value=expert.genre)}}
+                                <select class="input" id="Sexe" name="Sexe" value="Monsieur">
+                                    <option value="Monsieur" {% if expert.ge == 'Monsieur'%} selected {% endif %}>Monsieur</option>
+                                    <option value="Madame" {% if client.titre == 'Madame' %} selected {% endif %}>Madame</option>
+                                    <option value="Mademoiselle" {% if client.titre == 'Mademoiselle'%} selected {% endif %}>Mademoiselle</option>
+                                  </select>
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le sexe est requis</p>
@@ -285,14 +315,14 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.mdp.errors %}
-                                {{form.mdp(class="input is-invalid", value=expert.mdp) }}
+                                {{form.mdp(class="input is-invalid", value=history.mdp) }}
                             <div class="invalid-feedback">
                                 {% for error in form.mdp.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.mdp(class="input", value=expert.mdp)}}
+                                    {{form.mdp(class="input", value=history.mdp)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. </p>
