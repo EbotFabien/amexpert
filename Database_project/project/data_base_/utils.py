@@ -1,6 +1,7 @@
 from Database_project.project.data_base_ import mail
 from flask import  url_for
 from flask_mail import Message
+import random
 
 
 def send_reset_email(user):
@@ -14,3 +15,11 @@ def send_reset_email(user):
                 if you did not make this request then simply ignore this email and no changes will be made
                 '''
     mail.send(msg)
+
+def generate(lis):
+            ref= int(random.randrange(100000, 999999))
+            try:
+                if lis.index(ref):
+                    generate(lis)
+            except:
+                return ref

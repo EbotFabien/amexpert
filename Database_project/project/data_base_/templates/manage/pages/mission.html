@@ -27,7 +27,7 @@
                   <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
                 </div>
               </form>      
-              <form method="POST" action="{{url_for('users.mission')}}">
+              <form method="GET" action="{{url_for('users.mission')}}">
                 <div class="colums" style="display: flex;">
                 <span class="select is-small is-fullwidth">
                   <select name="table" class="not">
@@ -108,10 +108,31 @@
 		                {%endfor%} 
                     {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
                     {% if page_num %}
-                      {% if Mission.page == page_num %}
-                      <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                      {% if key %}
+                        {% if request.referrer[30:37] == 'keyword' %}
+                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                        {% else %} 
+                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                        {% endif %}
+                      {% endif %}
+                      {% if date %}
+                        {% if request.referrer[30:34] == 'date' %}
+                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                        {% else %} 
+                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                        {% endif %}
+                      {% endif %}
+                      {% if table and table2 %}
+                      <a class="btn btn-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
                       {% else %} 
-                      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                      {% endif %}
+                      {% if not date and not key and not table %}
+                        {% if Mission.page == page_num %}
+                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                        {% else %} 
+                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                        {% endif %}
                       {% endif %}
                     {% else %}
                         ....

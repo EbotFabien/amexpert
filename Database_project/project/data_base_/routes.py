@@ -7,14 +7,14 @@ from Database_project.project.data_base_.client_data  import lient
 from Database_project.project.data_base_.expert_data  import xpert
 from Database_project.project.data_base_.tarif_data  import arif
 from Database_project.project.data_base_.Suivi  import suiv
-from Database_project.project.data_base_.utils import send_reset_email
+from Database_project.project.data_base_.utils import send_reset_email,generate
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime
-import random
+
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -53,14 +53,16 @@ def client():
 def ajouter_client():
     if current_user.TYPE == "Admin":
         form=Client_Form()
-        def generate():
-            return int(random.randrange(100000, 999999))
+        
         if form.validate_on_submit():
             user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
             db.session.add(user)
             db.session.commit()
-            tous=list(Client.query.all())
-            user.reference =generate()
+            tous=[]
+            alll=list(Client.query.all())
+            for i in alll:
+                tous.append(alll.reference)
+            user.reference =generate(tous)
             db.session.commit()
             client_history=Client_History(client_id=user.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(client_history)
@@ -221,76 +223,74 @@ def mission():
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
         date=request.args.get('date')
-        print(request.method)
-        
-
         
         if key:
             try:
                 Cli=Client.query.filter_by(reference=key).first()
                 if Cli:
                     mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
                 expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
                 if expert:
                     mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
                 else:
                     try:
                         mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
                     except:
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
             except:
             
                 mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
             
         if date:
             mission_=Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL==date,Mission.DATE_FACTURE==date),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
-        if request.method == 'POST':
-            table =  request.form['table']
-            table2 =  request.form['table2']
+            return render_template('manage/pages/mission.html',Mission=mission_,date=date,legend="mission", highlight='mission')
+        if request.method == 'GET':
+            table =  request.args.get('table')
+            table2 =  request.args.get('table2')
+
         
         
             if table and table2:
                 if table == "mission":
                     if table2 == "asc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                     if table2 == "desc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
                 if table == "edl" :
                     if table2 == "asc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                     if table2 == "desc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table == "ht" :
                     if table2 == "asc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                     if table2 == "desc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table == "ht" :
                     if table2 == "asc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                     if table2 == "desc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table == "fac" :
                     if table2 == "asc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                     if table2 == "desc" :
                         mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
 
         else:
             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
@@ -339,6 +339,21 @@ def choose(Type,id=None):
                         if mission.CODE_FACTURATION[0:2] == 'TS':
                             price.append(mission.CODE_FACTURATION[3:-1])
                         if mission.CODE_FACTURATION[0:2] == 'TN':
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                                    
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                        meuble=float(tarif.edl_prix_std)/2
+                                        if mission.PRIX_HT_EDL==None:
+                                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                        
+                                    else:
+                                        if mission.PRIX_HT_EDL==None:
+                                            mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
                                 
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
@@ -1324,56 +1339,12 @@ def logout():
 @login_required
 def main():
     if current_user.is_authenticated:
-        clients = Client.query.all()
-        missions = list(Mission.query.all())
-        facturations = list(Facturation.query.all())
-        form = tableform()
-        expert_admin=Expert.query.filter(and_(Expert.nom == str(current_user.nom), Expert.TYPE =='Admin')).first() #type='admin'
-        expert_concess=Expert.query.filter(and_(Expert.nom == str(current_user.nom), Expert.TYPE =='CONCESS')).first() #type='Concess'
-        expert_audit=Expert.query.filter(and_(Expert.nom == str(current_user.nom), Expert.TYPE =='audit_planner')).first() #type='audit_planner'
-    # hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
-    # expert_admin.password = hashed_password
-        #db.session.commit()
-
-        # clients=list(Client.query.all())
+        clients = Client.query.filter_by(visibility=True).count()
+        missions = Mission.query.filter_by(Visibility=True).count()
+        Experts = Expert.query.filter_by(visibility=True).count()
+        facturations =facturation_client.query.filter_by(visibility=True).count()
         
-        if current_user.is_authenticated and  expert_admin :
-            if form.validate_on_submit:
-                data=form.table.data
-                if data == "mission":
-                    return redirect(url_for('users.mission'))
-                if data == "client":
-                    return redirect(url_for('users.client'))
-                if data == "expert":
-                    return redirect(url_for('users.expert'))
-                if data == "facturation":
-                    return redirect(url_for('users.facturation'))
-                if data == "chiffrage":
-                    return redirect(url_for('users.chiffrage'))
-                if data == "tarifs":
-                    return redirect(url_for('users.tarifs'))
-                if data == "expert":
-                    return redirect(url_for('users.expert'))
-                if data == "agenda":
-                    return redirect(url_for('users.agenda'))
-        
-        if current_user.is_authenticated and  expert_concess :
-            if form.validate_on_submit:
-                data=form.table.data
-                if data == "chiffrage":
-                    return redirect(url_for('users.chiffrage'))
-                if data == "agenda":
-                    return redirect(url_for('users.agenda'))
-
-        if current_user.is_authenticated and  expert_audit :
-            if form.validate_on_submit:
-                data=form.table.data
-                if data == "agenda":
-                    return redirect(url_for('users.agenda'))
-
-        else:
-            #flash(f"Vous n'est pas autorise a acceder cette table",'danger')
-            return render_template('manage/dashboard.html',title='Portail', form=form, clients=clients, missions=missions, facturations=facturations, highlight='dashboard')
+        return render_template('manage/dashboard.html',title='Portail', client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
     return redirect(url_for('users.login'))
 
 @users.route('/client/<int:id>/négociateurs')
@@ -1502,6 +1473,12 @@ def ajouter_prospect():
         if form.validate_on_submit():
             user=prospect(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data)
             db.session.add(user)
+            db.session.commit()
+            tous=[]
+            alll=list(prospect.query.all())
+            for i in alll:
+                tous.append(alll.reference)
+            user.reference =generate(tous)
             db.session.commit()
             user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
             user_history.siret=form.Siret.data
@@ -1884,6 +1861,22 @@ def choosev(Type):
                             if mission.CODE_FACTURATION[0:2] == 'TS':
                                 price[i].append(mission.CODE_FACTURATION[3:-1])
                             if mission.CODE_FACTURATION[0:2] == 'TN':
+
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                                    
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                        meuble=float(tarif.edl_prix_std)/2
+                                        if mission.PRIX_HT_EDL==None:
+                                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                            db.session.commit()
+                                        price[i].append(float(mission.PRIX_HT_EDL))
+                                        
+                                    else:
+                                        if mission.PRIX_HT_EDL==None:
+                                            mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                            db.session.commit()
+                                        price[i].append(float(mission.PRIX_HT_EDL))
                                 
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1' :
                                     
@@ -2213,7 +2206,20 @@ def choosep():
                     if mission.CODE_FACTURATION[0:2] == 'TS':
                         price.append(mission.CODE_FACTURATION[3:-1])
                     if mission.CODE_FACTURATION[0:2] == 'TN':
-                    
+                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                            tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                            if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                meuble=float(tarif.edl_prix_std)/2
+                                if mission.PRIX_HT_EDL==None:
+                                    mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                    db.session.commit()
+                                price[i].append(float(mission.PRIX_HT_EDL))
+                                
+                            else:
+                                if mission.PRIX_HT_EDL==None:
+                                    mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                    db.session.commit()
+                                price.append(float(mission.PRIX_HT_EDL))
                         if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
                             
                             tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
