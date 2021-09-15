@@ -218,6 +218,7 @@ def edit_client(id):
 @users.route('/mission',methods=['GET','POST'])
 @login_required
 def mission():
+    print(current_user.TYPE)
     if current_user.TYPE == "Admin":
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
