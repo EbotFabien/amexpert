@@ -231,21 +231,24 @@ def mission():
         
         if key:
             try:
-                Cli=Client.query.filter_by(reference=key).first()
-                if Cli:
-                    mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
-                expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
-                if expert:
-                    mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
-                else:
-                    try:
-                        mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                try:
+                    int(key)
+                    Cli=Client.query.filter_by(reference=key).first()
+                    if Cli:
+                        mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
-                    except:
-                        mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                except:
+                    expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
+                    if expert:
+                        mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                    else:
+                        try:
+                            mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                        except:
+                            mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
             except:
             
                 mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
