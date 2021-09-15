@@ -1578,7 +1578,7 @@ def Missions2(loc,n):
                             
                         else:
                             
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
+                            mission.PRIX_HT_EDL = tarif.edl_prix_std
                             db.session.commit()
 
                     if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':

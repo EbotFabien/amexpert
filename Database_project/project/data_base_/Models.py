@@ -683,7 +683,7 @@ class facturation_client(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     n_facture = db.Column(db.String)   
-    Montant_HT = db.Column(db.String)
+    Montant_HT = db.Column(db.DECIMAL(65,2))
     client	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     client__data_=db.relationship("Client", 
         primaryjoin=(client == Client.id),
