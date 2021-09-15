@@ -122,12 +122,14 @@
                         <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
                         {% endif %}
                       {% endif %}
-                      {% if table and table2 %}
-                      <a class="btn btn-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
-                      {% else %} 
-                      <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                      {% if table  %}
+                        {% if table2!= None %}
+                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
+                        {% else %} 
+                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                        {% endif %}
                       {% endif %}
-                      {% if not date and not key and not table %}
+                      {% if not date and not key and not table  %}
                         {% if Mission.page == page_num %}
                         <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
                         {% else %} 
