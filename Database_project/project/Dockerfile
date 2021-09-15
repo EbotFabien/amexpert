@@ -33,6 +33,7 @@ COPY . ./docker-entrypoint.sh
 
 EXPOSE 5000
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]
-RUN FLASK_DEBUG=True
+RUN FLASK_DEBUG=FALSE
+RUN flask_env=production
 RUN FLASK_APP=run.py
 ENTRYPOINT ["./docker-entrypoint.sh"]

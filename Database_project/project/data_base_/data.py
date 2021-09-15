@@ -6,7 +6,7 @@ import openpyxl#panNNdas
 import flask as pd     
 from sqlalchemy import or_, and_
 import datetime
-from Database_project.project.data_base_.client_data  import regex1
+from project.data_base_.client_data  import regex1
 
 def checktarif(a,p,c):
     taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
