@@ -6,7 +6,7 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Tarifs</h2>
     </div>
  	<section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available; width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fas fa-file-invoice"></i></span>
             
@@ -63,7 +63,11 @@
 	</div>
     <script type="text/javascript">
         $(document).ready(function() {
-            var table = $('#table_id').DataTable();
+            var table = $('#table_id').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                }
+            });
         
             $('#table_id tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {

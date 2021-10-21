@@ -16,7 +16,7 @@
             <div class="display-flex" style="margin-top: 20px; margin-bottom: 10px;justify-content: space-evenly;">
               <form method="GET" action="{{url_for('users.mission')}}">
                 <div class="columns">
-                  <input type="text" name="keyword" placeholder="Recherche reference client ,Prix ht edl" class="input is-small " required value="{{search}}">
+                  <input type="text" name="keyword" placeholder="Nom expert,reference client" class="input is-small " required value="{{search}}">
                   <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
                 </div>
               </form>    
@@ -58,7 +58,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table"  style="overflow-x: scroll;min-width: 800px;"> 
+            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
 	                    <thead class="">
                        
 	                	<tr>    <th scope="col">ID</th>
@@ -170,7 +170,12 @@
 	    </div>
       <script type="text/javascript">
         $(document).ready(function() {
-            var table = $('#table_id').DataTable();
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                })
+            });
         
             $('#table_id tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {

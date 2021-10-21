@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
+from project.data_base_.forms import (RegistrationForm1,RegistrationForm, Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
 from project.data_base_ import bcrypt
 from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from project.data_base_.client_data  import lient
@@ -1074,7 +1074,7 @@ def edit_tarifb(id):
                 flash(f'Les donnes du tarif a été modifiées','success')
                 return redirect(url_for('users.tarif_base'))
         
-        return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
+        return render_template('manage/pages/edit_tb.html', highlight='tarif_base', form=form,Tarif=Tarif)
         #return redirect(url_for('users.edit_tarifb', id=id))
     
 
@@ -1301,7 +1301,7 @@ def forgot_password ():
        return redirect(url_for('users.main'))
     form = RequestResetForm()
     if form.validate_on_submit():
-        expert=Expert.query.filter_by(EMAIL=form.email.data).first()
+        expert=Expert.query.filter_by(email=form.email.data).first()
         if expert:
             send_reset_email(expert)
             flash('An email has been sent with instructions to reset your Password.','info')
@@ -1731,12 +1731,18 @@ def uploader_():
     #return redirect(url_for('users.login'))
 
 
-@users.route('/profil')
+@users.route('/profil' , methods=['GET','POST'])
 @login_required
 def profil():
     if current_user.TYPE == 'Admin':
-        form = RegistrationForm()
+        form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
+        if form.validate_on_submit():
+            client.nom =form.username.data
+            client.email=form.email.data
+            db.session.commit()
+            flash(f"Vous avez modifier avec success",'success')
+            return redirect(url_for('users.main'))
     return render_template('manage/pages/profile.html',form=form,client=client)
 
 
@@ -2114,7 +2120,24 @@ def choosev(Type):
 
 
 
+@users.route('/compte_mensuel_facturation_expert', methods=['GET', 'POST'])
+@login_required
+def compte_mensuel_facturation_expert():
+    form=time()
+    #form2=Facturation_Form()
+    return render_template('manage/pages/ajouter_facturation_expert.html', form=form,legend="time", highlight='expert')
 
+@users.route('/facturation_experts_generees', methods=['GET', 'POST'])
+@login_required
+def facturation_experts_generees():
+    #form2=Facturation_Form()
+    return render_template('manage/pages/factures_generer.html', highlight='expert')
+
+@users.route('/facturation_expert_mission', methods=['GET', 'POST'])
+@login_required
+def facturation_expert_mission():
+    #form2=Facturation_Form()
+    return render_template('manage/pages/facture_missions.html', highlight='expert')
 
 
 @users.route('/create_facturem/',methods=['GET','POST'])
@@ -2490,7 +2513,7 @@ def create_facturep():
 def menufactures():
     if current_user.TYPE == "Admin":
                 
-            return render_template('manage/pages/option_facture.html')
+            return render_template('manage/pages/option_facture.html', highlight='facturation')
     return redirect(url_for('users.main'))
 
 

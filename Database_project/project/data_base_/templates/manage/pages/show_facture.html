@@ -28,7 +28,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table inner-shadow" style="overflow-x: scroll;min-width: 800px; height: 400px; overflow: overlay"> 
+            <table class="table inner-shadow" id='table_id' style="overflow-x: scroll;min-width: 800px; height: 400px; overflow: overlay"> 
                                 <thead class="">
                                 <tr>
                                     <th>No Mission</th>
@@ -92,7 +92,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table table-bordered" id="dataTable" style="width:100%">
+            <table class="table table-bordered" id="table_id" style="width:100%">
                 <thead class="">
                     <tr>
                         <th>No Mission</th>
@@ -160,7 +160,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table table-bordered" id="dataTable" style="width:100%">
+            <table class="table table-bordered" id="" style="width:100%">
                 <thead class="">
                     <tr>
                         <th>No Mission</th>
@@ -284,5 +284,30 @@
         modal.classList.toggle('show-client-information')
         modal.classList.toggle('show-client-information-inner-box')
     })
-</script>
+    </script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                })
+            });
+        
+            $('#table_id tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#button').click( function () {
+                table.row('.selected').remove().draw( false );
+            } );
+        } );
+    </script>
+    </script>
 {%endblock%}

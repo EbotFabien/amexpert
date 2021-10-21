@@ -19,6 +19,14 @@ if it's not present, don't show loader */
   box-sizing: border-box;
   font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
 }
+.dataTables_scrollHeadInner {
+            
+            width: 100% !important;
+        }
+        .dataTables_scrollHeadInner table{
+            
+            width: 100% !important;
+        }
 .admin-dropdown {
  background: #373737;
     border: 1px solid #373737;
@@ -26,7 +34,9 @@ if it's not present, don't show loader */
     color: #db7b1d;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
-.admin-dropdown:hover{
+
+h6 { font-weight: bold!important; } 
+ .admin-dropdown:hover{
   border-color: #373737;
   color: #db7b1d;
 }
@@ -251,7 +261,8 @@ main {
  width: 250px;
  height: 100vh;
  left: 0px;
- overflow: hidden;
+ z-index: 1;
+ /*overflow: hidden;*/
  transition: all .5s ease-in-out;
  box-shadow: rgba(136, 165, 191, 0.48) 0px 2px 16px 0px, 
  rgba(255, 255, 255, 0.8) -2px -2px 16px 0px;
@@ -301,21 +312,37 @@ a{
 }
 .side-menu {
  padding: 0px;
- overflow: hidden;
+ /*overflow: hidden;*/
 }
 .side-menu > li {
  padding: 5px 0px 5px 0px;
- display: flex;
+ /*display: flex;*/
  justify-content: space-between;
  align-items: center;
  /*width: 230px;*/
  transition: all .1s ease-in-out;
 }
 .side-menu > li:hover {
-  border: 1px solid #E4A031;
-    border-top-left-radius: 6px;
-    border-bottom-left-raduis: 6px;
+  /*border: 1px solid #E4A031;*/
+  border-top-left-radius: 6px;
+  border-bottom-left-raduis: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.side-menu li.has-submenu:hover .sub-menu {
+  display: block;
+}
+
+.sub-menu {
+  padding: 5px 0px 5px 5px;
+  position: absolute;
+  background: #db7b1d;
+  color: #373737!important;
+  display: none;
+  width: 70%;
+  z-index: 222222;
+  left: 100%;
+  top: 0;
 }
 .fa-arrow-alt-circle-left:before {
   color: #000;
@@ -1718,4 +1745,13 @@ select.input,.select:not(.not) {
   border-radius: 6px;
   margin-bottom: 10px;
   padding: 5px 10px;
+}
+
+.x5-px {
+  font-size: 50px;
+}
+
+hr {
+  background-color: #f5f5f5;
+  margin: .5rem 0;
 }

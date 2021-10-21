@@ -6,7 +6,7 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Expert</h2>
     </div>
  	<section class="tile" style="margin-top: 10px;">
-    <div class="box" style="  width: -webkit-fill-available;">
+    <div class="box" style="  width: -webkit-fill-available; width: 100%;">
       <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
      
         	<span><i class="fas fa-user"></i></span>
@@ -15,152 +15,311 @@
          	AS AC AP: {{expert.TYPE}}
         </div>
       </div>
-      <div class='columns'>
-	  <div class='container'>
-	    <div class='section profile-heading'>
-	      <div class='columns is-mobile is-multiline'>
-	        
-	        <div class='column is-6-tablet is-10-mobile name'>
-	          <p>
-	            <span class='title is-bold' style="font-size: larger;">{{expert.nom}}</span>
-	            <br>
-	            <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>
-	              Modifier
-	            </a>
-	            <br>
-	          </p>
-	        
-	             <p class='tagline'>
-	          <strong>Adresse:</strong> {{history.adresse1}}, <br/>
-			  <strong>CP:</strong> {{history.cp}}, <br/>
-			  <strong>Ville:</strong> {{history.ville}}, <br/>
-			  <strong>Pays:</strong> {{history.pays}}, <br/> 
-	          </p>
-	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <strong><p class='stat-val'><strong>Tel</strong></p></strong>
-	          <p class='stat-key'>{{expert.numero}}</p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Siret</p></strong>
-	          	<p class='stat-val'>{{expert.siret}}</p>	          
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Email</p></strong>
-	          	<p class='stat-val'>{{expert.email}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Email perso</p></strong>
-	          	<p class='stat-val'>{{expert.email_perso}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>actif/parti</p></strong>
-	          	<p class='stat-val'>{{history.actif_parti}}</p>	         
-	        </div>
-	         <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Secteur</p></strong>
-	          	<p class='stat-val'>{{history.secteur}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Trigramme</p></strong>
-	          	<p class='stat-val'>{{expert.trigramme}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Code Tva</p></strong>
-	          	<p class='stat-val'>{{expert.code_tva}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	        	<strong><p class='stat-key'>Taux Tva</p></strong>
-	          	<p class='stat-val'>{{expert.taux_tva}}</p>	         
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Login Backof</strong></p>
-				<p class='stat-val'>{{history.login_backof}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Pwd backof</strong></p>
-				<p class='stat-val'>{{history.pwd_backof}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Login Extranet</strong></p>
-				<p class='stat-val'>{{history.login_extranet}}</p>
+	  <div class="container">
+		<div class="main-body">		
+			  <div class="columns">
+				<div class="column is-one-quarter mb-3">
+				  <div class="card">
+					<div class="card-body">
+					  <div class="is-flex is-flex-direction-column align-items-center has-text-centered">
+						<i class="fa fa-user x5-px"></i>						
+						<div class="mt-3">
+						  <p class="text-secondary mb-1">{{expert.TYPE}}</p>
+						  <small class=''>{{expert.etat_client}}</small>
+						  <p class="text-muted font-size-sm">{{history.cp}}, {{history.ville}}, {{history.pays}}</p>
+						  <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>
+							Modifier
+						  </a>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  <div class="card mt-3">
+					<ul class="list-group list-group-flush">
+					  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+						<h6 class="mb-0">Login Backof</h6>
+						<span class="text-secondary">{{history.login_backof}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">Pwd backof</h6>
+						<span class="text-secondary">{{history.pwd_backof}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">Login Extranet</h6>
+						<span class="text-secondary">{{history.login_extranet}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">MDP Extranet</h6>
+						<span class="text-secondary">{{history.pwd_extranet}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">Login Google</h6>
+						<span class="text-secondary">{{history.login_google}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">MDP Google</h6>
+						<span class="text-secondary">{{history.pwd_google}}</span>
+					  </li>
+					  <li class="list-group-item is-flex is-justify-content-space-between align-items-center flex-wrap">
+						<h6 class="mb-0">MDP Gsuite</h6>
+						<span class="text-secondary">{{history.pwd_gsuite}}</span>
+					  </li>
+					</ul>
+				  </div>
+				</div>
+				<div class="column is-three-quarter">
+					<div class="card mb-3">
+					  <div class="card-body">
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Nom</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							  {{expert.nom}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Email</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							{{expert.email}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+						  <h6 class="mb-0">Secteur</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							  {{history.secteur}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+						  <h6 class="mb-0">Email perso</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							{{expert.email_perso}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+						  <h6 class="mb-0">Trigramme</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							{{expert.trigramme}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Actif/Parti</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{history.actif_parti}}
+							</div>
+						  </div>
+						  <hr>
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Code TVA</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{expert.code_tva}}
+							</div>
+						  </div>
+						<hr>
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Taux TVA</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{expert.taux_tva}}
+							</div>
+						  </div>
+						<hr>
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Observations de suivi</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{history.observations_de_suivi}}
+							</div>
+						  </div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+						  <h6 class="mb-0">Siret</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							  {{expert.siret}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Société</h6>
+						  </div>
+						  <div class="column is-three-quarter text-secondary">
+							  {{expert.societe}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Mobile</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							  {{expert.numero}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Date de certification initial</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							{% if history.date_certification_initiale != 'None' %}
+							{% else %}
+								{{history.date_certification_initiale.strftime('%d. %m. %Y')}}
+							{%endif%}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Date de recertification</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							{% if history.date_renouv_certification != 'None' %}
+							{% else %}
+								{{history.date_renouv_certification.strftime('%d. %m. %Y')}}
+							{%endif%}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Type de certification</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							{{history.type_certification}}
+						  </div>
+						</div>
+						{% if legend == "client" %}
+						  {% if tarif != None %}
+							  <hr>
+							  <div class="columns">
+								  <div class="column is-one-quarter">
+								  <h6 class="mb-0">Identifiant du Tarif</h6>
+								  </div>
+								  <div class="column is-three-quarter">
+									  {{tarif.id}}
+								  </div>
+							  </div>
+							  <hr>
+							  <div class="columns">
+								  <div class="column is-one-quarter">
+								  <h6 class="mb-0">AS</h6>
+								  </div>
+								  <div class="column is-three-quarter">
+									  {{tarif.referent__data.nom}}
+								  </div>
+							  </div>
+							{% endif %}
+						{% endif %}
+						<hr>
+						{% if(history.adresse1 != '') %}
+						  <div class="columns">
+							  <div class="column is-one-quarter">
+							  <h6 class="mb-0">Address 1</h6>
+							  </div>
+							  <div class="column is-three-quarter text-secondary">
+								  {{history.adresse1}}
+							  </div>
+						  </div>
+						{% endif %}
+						<hr>
+						{% if(history.adresse2 != '') %}
+						  <div class="columns">
+							  <div class="column is-one-quarter">
+							  <h6 class="mb-0">Address 2</h6>
+							  </div>
+							  <div class="column is-three-quarter text-secondary">
+								  {{history.adresse2}}
+							  </div>
+						  </div>
+						<hr>
+						{% endif %}
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Date Creation</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							  
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Login Extranet</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							  {{history.login_extranet}}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">MDP Extranet</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							  {{history.mpd_extranet}}
+						  </div>
+						</div>
+						<hr>
+  
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Date D'entree</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+						  {% if (expert.date_entree != 'None') %} {{expert.date_entree.strftime('%d. %m. %Y')}} {% endif %}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Date Sortie</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+							{% if history.date_sortie == '' or None %}
+							{{history.date_sortie.strftime('%d. %m. %Y')}}
+							{%endif%}
+						  </div>
+						</div>
+						<hr>
+						<div class="columns">
+						  <div class="column is-one-quarter">
+							<h6 class="mb-0">Historique Date</h6>
+						  </div>
+						  <div class="column is-three-quarter">
+						  {% if (history.date_sortie != 'None') %} {{history.date.strftime('%d. %m. %Y')}} {% endif %}
+						  </div>
+						</div>
+					  </div>
+					</div>	
+				  </div>
+				</div>
 				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>MDP Extranet</strong></p>
-				<p class='stat-val'>{{history.pwd_extranet}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Login Google</strong></p>
-				<p class='stat-val'>{{history.login_google}}</p>
-				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>MDP Google</strong></p>
-				<p class='stat-val'>{{history.pwd_google}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>MDP Gsuite</strong></p>
-				<p class='stat-val'>{{history.pwd_gsuite}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Observations de suivi</strong></p>
-				<p class='stat-val'>{{history.observations_de_suivi}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Type de certification</strong></p>
-				<p class='stat-val'>{{history.type_certification}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date de certification initial</strong></p>
-				<p class='stat-val'>{% if history.date_certification_initiale == '' or None %}
-
-					{% else %}
-			 			{{history.date_certification_initiale.strftime('%d. %m. %Y')}}
-			 		{%endif%}
-			</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date de recertification </strong></p>
-				<p class='stat-val'> {% if history.date_renouv_certification == '' or None %}
-					{% else %}
-						{{history.date_renouv_certification.strftime('%d. %m. %Y')}}
-             		{%endif%}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date d'entree</strong></p>
-				<p class='stat-val'> 
-             {{expert.date_entree.strftime('%d. %m. %Y')}}
-             </p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date de sortie</strong></p>
-				<p class='stat-val'> {% if history.date_sortie == '' or None %}
-             {{history.date_sortie.strftime('%d. %m. %Y')}}
-             {%endif%}</p>				
-			</div>
-	      </div>
-
-	      <div>
-	      	
+			  </div>
 	
-		
-			
-			<strong>Genre:</strong> {{expert.genre}}<br> 
-			
-	    	<strong>Adresse2 :</strong> <small>{{history.adresse2}}</small> <br> 
-           
-			<strong>date_historique:</strong> {{history.date.strftime('%d. %m. %Y')}}<br>
-            
-           
-            
-         </p>	
-            
-	      </div>
-
-	    </div>
-	  </div>
+			</div>
+		</div>
 	</div>
 				
 		</div>
