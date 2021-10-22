@@ -2514,10 +2514,11 @@ def create_facturep():
 
             return redirect(url_for('users.facturation',id=request.form['Reference_client']))
         else:
-            flash(f'Erreur de Codification ','warning')
+            flash(f'Erreur de Codificationddddddddddd ','warning')
             return redirect(url_for('users.facturation',id=request.form['Reference_client']))
     return redirect(url_for('users.main'))
         
+
 
 
 
