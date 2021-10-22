@@ -603,6 +603,37 @@ class Facturation_Form(FlaskForm):
 
     submit = SubmitField('enregistrer')
 
+class Facturationex_Form(FlaskForm):
+    
+    Demarrer=StringField('Demarrer',
+                           render_kw={'readonly':True})
+
+    Fin=StringField('Fin',
+                           render_kw={'readonly':True})
+    
+    Montant_HT =StringField('Montant HT€',
+                             render_kw={'readonly':True})
+    
+    Total_HT =StringField('Total HT€',
+                             render_kw={'readonly':True})
+
+
+    Date_EDL=StringField('Date EDL',
+                           render_kw={'readonly':True})
+    Data=HiddenField()
+
+    Missions=HiddenField()
+
+    Mission =StringField('Mission ID',
+                             render_kw={'readonly':True})
+
+    
+    Statut=SelectField('Statut',
+                             choices=[('paye', 'paye'), ('attente', 'attente')])
+    
+
+    submit = SubmitField('enregistrer')
+
 
 class Client_Form(FlaskForm):
        
@@ -1313,3 +1344,25 @@ class Tarif_Base(FlaskForm):
                 validators=[DataRequired()])      
     submit = SubmitField('enregistrer')
 
+
+class UpdateAccountForm(FlaskForm):
+    username =StringField('UserName',
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    email =StringField('Email',
+                           validators=[DataRequired(),Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg','png'])])
+    submit = SubmitField('Update')
+    
+    def validate_username(self,username):
+        if username.data != current_user.username:
+            user = Expert.query.filter_by(Nom=username.data).first()
+
+            if user:
+                raise ValidationError('This username is taken.Please choose a different name')
+
+    def validate_email(self,email):
+        if email.data != current_user.email:
+            user = Expert.query.filter_by(email=email.data).first()
+
+            if user:
+                raise ValidationError('This email is already used by  another user')

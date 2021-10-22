@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history
-from Database_project.project.data_base_.forms import (RegistrationForm, Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert,Facturationex_Form
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from Database_project.project.data_base_.client_data  import lient
@@ -1736,7 +1736,7 @@ def uploader_():
 @login_required
 def profil():
     if current_user.TYPE == 'Admin':
-        form = RegistrationForm()
+        form = UpdateAccountForm()
         client=Expert.query.filter_by(id=current_user.id).first()
     return render_template('manage/pages/profile.html',form=form,client=client)
 
@@ -2513,3 +2513,138 @@ def menusearch():
             flash(f'La reference es incorrect','warning')
             return redirect(url_for('users.menufactures'))
     return redirect(url_for('users.main'))
+
+
+@users.route('/choose/date/mensuel',methods=['GET','POST'])
+@login_required
+def chooseef():
+    if current_user.TYPE == "Admin":
+        form=time()
+        form2=Facturationex_Form()
+        if form.validate_on_submit():  
+            start=datetime.combine(form.Demarrer.data,datetime.min.time())
+            end=datetime.combine(start+timedelta(days=30),datetime.min.time())
+            
+            price=list()
+            
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.DATE_REALISE_EDL<=end)).order_by(asc(Mission.id)).all())#check query
+            for i in mission_:
+                price.append(i.PRIX_HT_EDL)
+            
+            total=sum(price)
+
+            return render_template('manage/pages/ajouter_facturtione.html', mission=mission_,form=form,sum=total,start=start,stop=end)
+        return render_template('manage/pages/choosefe.html',form=form,legend="time")
+
+
+@users.route('/create_facturee/',methods=['GET','POST'])
+@login_required
+def create_facturee():
+    if current_user.TYPE == "Admin":
+        form=Facturationex_Form()
+        #def ex(id):
+
+        
+        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
+        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
+        #option for prix ht_edl = None
+        for i in mission:
+            #implement facture number
+            
+            ex=Expert.query.filter_by(id=i.ID_INTERV).first()
+            if i.DATE_FACT_REGLEE != None:
+                mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],prix_mission=i.PRIX_HT_EDL,etat=True,commission_ac=0.4*i.PRIX_HT_EDL)
+                db.session.add(mensuel)
+                db.session.commit()
+            else:
+                mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],prix_mission=i.PRIX_HT_EDL,etat=False,commission_ac=0.4*i.PRIX_HT_EDL)
+                db.session.add(mensuel)
+                db.session.commit()
+
+            hta={1:i.ID_AS,2:i.ID_AS,4:i.ID_Suiveur_Cell_Tech,5:i.ID_Agent_CellTech,
+                6:i.ID_Respon_Cell_Tech,7:i.ID_Respon_Cell_Dev,8:i.ID_agent_Cell_Dev,
+                9:i.ID_Suiveur_Cell_Planif,10:i.ID_Agent_saisie_Cell_Planif,11:i.ID_Respon_Cell_Planif}
+
+            chiffa={12:i.ID_agent_chiffrage,13:i.ID_AS,14:i.ID_manager_chiffrage}
+
+            for R in hta:
+                #facture
+                Type=Type_expert.query.filter_by(id=R).first()
+                expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id,commision=i.PRIX_HT_EDL*Type.pourcentage)
+                db.session.add(expert)
+                db.session.commit()
+            for R in chiffa:
+                Type=Type_expert.query.filter_by(id=R).first()
+                expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id,commision=i.Prix_ht_chiffrage*Type.pourcentage)
+                db.session.add(expert)
+                db.session.commit()
+        for i in _mission:
+            #implement facture number
+            
+            ex=Expert.query.filter_by(id=i.ID_INTERV).first()
+            if i.DATE_FACT_REGLEE != None:
+                mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],anomalie=True,etat=True)
+                db.session.add(mensuel)
+                db.session.commit()
+            else:
+                mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],anomalie=True,etat=False)
+                db.session.add(mensuel)
+                db.session.commit()
+
+            hta={1:i.ID_AS,2:i.ID_AS,4:i.ID_Suiveur_Cell_Tech,5:i.ID_Agent_CellTech,
+                6:i.ID_Respon_Cell_Tech,7:i.ID_Respon_Cell_Dev,8:i.ID_agent_Cell_Dev,
+                9:i.ID_Suiveur_Cell_Planif,10:i.ID_Agent_saisie_Cell_Planif,11:i.ID_Respon_Cell_Planif}
+
+            chiffa={12:i.ID_agent_chiffrage,13:i.ID_AS,14:i.ID_manager_chiffrage}
+
+            for R in hta:
+                #facture
+                Type=Type_expert.query.filter_by(id=R).first()
+                expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id)
+                db.session.add(expert)
+                db.session.commit()
+            for R in chiffa:
+                Type=Type_expert.query.filter_by(id=R).first()
+                expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id)
+                db.session.add(expert)
+                db.session.commit()
+
+        return redirect(url_for('users.allex'))
+    return redirect(url_for('users.main'))
+
+@users.route('/tous/facturation/mensuel',methods=['GET','POST'])
+@login_required
+def allex():
+    if current_user.TYPE == "Admin":
+           facture=compte_mensuel.query.all() 
+
+           return render_template('manage/pages/all_facturem.html',facture=facture)
+
+    return redirect(url_for('users.main'))
+
+@users.route('/tous/mission/<int:id>/expert',methods=['GET','POST'])
+@login_required
+def factme(id):
+    if current_user.TYPE == "Admin":
+           facture=expert_facturation.query.filter_by(mission=id).all() 
+
+           return render_template('manage/pages/all_factureme.html',facture=facture)
+
+    return redirect(url_for('users.main'))
+
+@users.route('/choose/<int:id>/date/generation',methods=['GET','POST'])
+@login_required
+def choosedg(id):
+    if current_user.TYPE == "Admin":
+        form=time()
+        if form.validate_on_submit():  
+            start=datetime.combine(form.Demarrer.data,datetime.min.time())
+            facture=compte_mensuel.query.filter_by(id=id).first()
+            
+            facture.date_generation=start
+            db.session.commit()
+            flash(f'Date generee avec sucess pour facture numero '+str(id),'success')
+            return redirect(url_for('users.allex'))
+
+            return render_template('manage/pages/ajouter_facturtione.html')
+        return render_template('manage/pages/dgeneration.html',form=form,legend="time")
