@@ -1,0 +1,110 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem; margin-bottom: 10px;">Mes Factures</h2>
+      
+    </div>
+    <div class="tile box" style="width: fit-content; margin: 0 auto;">
+        <form action="">
+            <div class="columns">
+                <div class="column">
+                    <div class="select is-small">
+                        <select>
+                            <option selected disabled>---type de facture---</option>
+                            <option value="nouvelle">Nouvelle</option>
+                            <option value="ancienne">Ancienne</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="select is-small">
+                        <select>
+                            <option selected disabled>---type de relever---</option>
+                            <option value="1">1</option>
+                            <option value="1">2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="buttons are-small">
+                        <button class="button is-success">Filtrer</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa fa-file-invoice"></i></span>
+            
+          </div>
+          <div class="table-container" style="position: relative;">
+            {% with messages = get_flashed_messages(with_categories=true)%}
+                {% if messages %}
+                    {%for category,message in messages%}
+                    <div class="alert alert-{{category}} p-1">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">  
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Mission ID</th>
+                        <th>Expert ID</th>
+                        <th>ID Type d'expert</th>
+                        <th>Date d'arret de compte mensuel</th>
+                        <th>Prix de la mission</th>
+                        <th>Commission Ac <br/>Mission réalise</th>
+                        <th>Etat de la facture (En controle / Non acquitté)</th>
+                        <th>Commision</th>
+                        <th></th>
+                        <th></th> 
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+	            </div>
+                 <!-- Pagination Links-->
+              
+            <!--end of pagination -->
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                }
+        });
+        
+            $('#table_id tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#button').click( function () {
+                table.row('.selected').remove().draw( false );
+            } );
+        } );
+    </script>
+
+</div>
+{% endblock %}

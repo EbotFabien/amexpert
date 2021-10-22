@@ -34,6 +34,9 @@
             <li class="{% if highlight == 'tarif_base' %} active {% endif %}">
               <a href="/tarifs"><span class="menu_icon"><i class="fas fa-money-check"></i></span> <span class="menu_text">Tarifs</span></a>
             </li>
+            <li class="{% if highlight == 'mes_factures' %} active {% endif %}">
+              <a href="/mes_factures"><span class="menu_icon"><i class="fas fa-file-invoice"></i></span> <span class="menu_text">Mes Factures</span></a>
+            </li>
             <!--               
               <li class="{% if highlight == 'facturation' %} active {% endif %}">
                 <a href="{{url_for('users.menufactures')}}"><span class="menu_icon"><i class="fas fa-wallet"></i></span> <span class="menu_text">Facturation</span></a>

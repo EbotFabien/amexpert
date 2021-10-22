@@ -1711,6 +1711,15 @@ table th {
   vertical-align: middle!important;
 }
 
+.box {
+  background-color: #fff;
+  border-radius: 0px!important; 
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 5%), 0 0 0 1px rgb(10 10 10 / 2.5%);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem;
+}
+
 
 .title {
   font-weight: 700!important;

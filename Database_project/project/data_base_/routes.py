@@ -160,7 +160,7 @@ def delete_client(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes du client ont été  suprimmer','success')
+        flash(f'Le client a été supprimé','success')
         return redirect(url_for('users.client'))
 
 @users.route('/edit/<int:id>/client', methods=['GET','POST'])
@@ -1074,7 +1074,7 @@ def edit_tarifb(id):
                 flash(f'Les donnes du tarif a été modifiées','success')
                 return redirect(url_for('users.tarif_base'))
         
-        return render_template('manage/pages/edit_tb.html', highlight='tarif_base', form=form,Tarif=Tarif)
+        return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
         #return redirect(url_for('users.edit_tarifb', id=id))
     
 
@@ -1499,7 +1499,10 @@ def ajouter_prospect():
     else:
         return redirect(url_for('users.main'))
 
-
+@users.route('/mes_factures', methods=['GET'])
+@login_required
+def mes_factures():
+    return render_template('manage/pages/mes_factures.html',legend="mes facture", highlight='mes_factures')
 
 @users.route('/delete/<int:id>/prospect', methods=['GET'])
 @login_required
@@ -2120,24 +2123,7 @@ def choosev(Type):
 
 
 
-@users.route('/compte_mensuel_facturation_expert', methods=['GET', 'POST'])
-@login_required
-def compte_mensuel_facturation_expert():
-    form=time()
-    #form2=Facturation_Form()
-    return render_template('manage/pages/ajouter_facturation_expert.html', form=form,legend="time", highlight='expert')
 
-@users.route('/facturation_experts_generees', methods=['GET', 'POST'])
-@login_required
-def facturation_experts_generees():
-    #form2=Facturation_Form()
-    return render_template('manage/pages/factures_generer.html', highlight='expert')
-
-@users.route('/facturation_expert_mission', methods=['GET', 'POST'])
-@login_required
-def facturation_expert_mission():
-    #form2=Facturation_Form()
-    return render_template('manage/pages/facture_missions.html', highlight='expert')
 
 
 @users.route('/create_facturem/',methods=['GET','POST'])
@@ -2469,6 +2455,33 @@ def choosep():
     return redirect(url_for('users.main'))
 
 
+@users.route('/compte_mensuel_facturation_expert', methods=['GET', 'POST'])
+@login_required
+def compte_mensuel_facturation_expert():
+    form=time()
+    #form2=Facturation_Form()
+    return render_template('manage/pages/ajouter_facturation_expert.html', form=form,legend="time", highlight='expert')
+
+@users.route('/facturation_experts_generees', methods=['GET', 'POST'])
+@login_required
+def facturation_experts_generees():
+    #form2=Facturation_Form()
+    return render_template('manage/pages/factures_generer.html', highlight='expert')
+
+@users.route('/facturation_expert_mission', methods=['GET', 'POST'])
+@login_required
+def facturation_expert_mission():
+    #form2=Facturation_Form()
+    return render_template('manage/pages/facture_missions.html', highlight='expert')
+
+
+@users.route('/facturation_expert_relever', methods=['GET', 'POST'])
+@login_required
+def facturation_relever():
+    #form2=Facturation_Form()
+    return render_template('manage/pages/facture_missions.html', highlight='expert')
+
+
 
 
 @users.route('/create_facturep/',methods=['GET','POST'])
@@ -2513,7 +2526,7 @@ def create_facturep():
 def menufactures():
     if current_user.TYPE == "Admin":
                 
-            return render_template('manage/pages/option_facture.html', highlight='facturation')
+            return render_template('manage/pages/option_facture.html')
     return redirect(url_for('users.main'))
 
 

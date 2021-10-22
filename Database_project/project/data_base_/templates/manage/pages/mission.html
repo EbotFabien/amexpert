@@ -6,27 +6,50 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Missions</h2>
       <a href="/ajouter/mission" class="button is-primary is-small" title="Ajouter une mission"><i class="fa fa-plus"></i></a>
     </div>
-
+    <div class="tile box" style="width: fit-content; margin: 0 auto;">
+      <form method="GET" action="{{url_for('users.mission')}}">
+        <div class="columns"> 
+            <div class="column">
+              <div class="field">
+                <div class="control is-small">
+                  <input class="input is-small"  name="keyword" value="{{search}}" placeholder="Nom expert,reference client" type="text">
+                </div>
+              </div>
+          </div>
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- / date -->
+      <form method="GET" action="{{url_for('users.mission')}}">
+        <div class="columns"> 
+            <div class="column">
+              <div class="field">
+                <div class="control is-small">
+                  <input type="date" name="date" placeholder="Recherche Mission" class="input is-small" required value="{{search}}">
+                </div>
+                <small> <p style="font-size: x-small;"><em>Trier par date edl</em></p> </small>
+              </div>
+          </div>
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; width:100%;">
           <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
           </div>
-          <div>
+          <!-- <div>
             <div class="display-flex" style="margin-top: 20px; margin-bottom: 10px;justify-content: space-evenly;">
-              <form method="GET" action="{{url_for('users.mission')}}">
-                <div class="columns">
-                  <input type="text" name="keyword" placeholder="Nom expert,reference client" class="input is-small " required value="{{search}}">
-                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
-                </div>
-              </form>    
-              <form method="GET" action="{{url_for('users.mission')}}">
-                <div class="columns">
-                  <h>Trier par date edl</h>
-                  <input type="date" name="date" placeholder="Recherche Mission" class="input is-small" required value="{{search}}">
-                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
-                </div>
-              </form>      
+                   
               <form method="GET" action="{{url_for('users.mission')}}">
                 <div class="colums" style="display: flex;">
                 <span class="select is-small is-fullwidth">
@@ -47,7 +70,7 @@
                 </div>
               </form>      
             </div>
-          </div>
+          </div> -->
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
@@ -95,7 +118,7 @@
                                   {% if mission_.DATE_FACTURE == None %}
                                     aucune date
                                   {% else %}
-                                    {{ mission_.DATE_FACTURE }}
+                                    {{ mission_.DATE_FACTURE.strftime('%d. %m. %Y') }}
                                   {% endif %}                              
                                 </td>   	 	  	  
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
@@ -169,7 +192,7 @@
         </section>
 	    </div>
       <script type="text/javascript">
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             var table = $('#table_id').DataTable({
                 'scrollX':true,
                 language: {
@@ -190,7 +213,7 @@
             $('#button').click( function () {
                 table.row('.selected').remove().draw( false );
             } );
-        } );
+        } );*/
     </script>
 
 {% endblock %}
