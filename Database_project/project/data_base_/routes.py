@@ -1,17 +1,17 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient
-from Database_project.project.data_base_.expert_data  import xpert
-from Database_project.project.data_base_.tarif_data  import arif
-from Database_project.project.data_base_.Suivi  import suiv
-from Database_project.project.data_base_.utils import send_reset_email,generate
+from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from project.data_base_ import bcrypt
+from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from project.data_base_.client_data  import lient
+from project.data_base_.expert_data  import xpert
+from project.data_base_.tarif_data  import arif
+from project.data_base_.Suivi  import suiv
+from project.data_base_.utils import send_reset_email,generate
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from Database_project.project.data_base_ import create_app
+from project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone
 
@@ -1958,6 +1958,10 @@ def edit_suivip(id):
 
 
 
+@users.route("/exporter", methods=['GET','POST'])
+@login_required
+def export():
+    return render_template('manage/pages/exporter.html')
 
 @users.route("/televeser", methods=['GET','POST'])
 #@login_required
