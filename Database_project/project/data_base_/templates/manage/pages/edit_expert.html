@@ -108,16 +108,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                <select class="input" id="Type" name="Type" value="intervenant de constat">
-                                    <option value="Interv" {% if (expert.TYPE == 'Interv') %} selected {% endif %}>Interv</option>
-                                    <option value="CONCESS" {% if (expert.TYPE == 'CONCESS') %} selected {% endif %}>CONCESS</option>
-                                    <option value="agent Cell Dev" {% if (expert.TYPE == 'agent Cell Dev') %} selected {% endif %}>agent Cell Dev</option>
-                                    <option value="Interv" {% if (expert.TYPE == 'Interv') %} selected {% endif %}>Interv</option>
-                                    <option value="Suiveur Cell Tech" {% if (expert.TYPE == 'Suiveur Cell Tech') %} selected {% endif %}>Suiveur Cell Tech</option>
-                                    <option value="Suiveur Cell Planif" {% if (expert.TYPE == 'Suiveur Cell Planif') %} selected {% endif %}>Suiveur Cell Planif</option>
-                                    <option value="Admin" {% if (expert.TYPE == 'Admin') %} selected {% endif %}>Admin</option>
-                                    <option value="Audit" {% if (expert.TYPE == 'Audit') %} selected {% endif %}>Audit</option>
-                                </select>
+                                <select class="input" id="Type" name="Type">
+                                    <option value="Professionnel" {% if expert.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
+                                    <option value="Particulier" {% if expert.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
+                                  </select>
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis.</p>
@@ -186,10 +180,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    <select class="input" id="Sexe" name="Sexe" value="">
-                                        <option value="MME" {% if(expert.genre == 'MME') %} selected {% endif %}>MME</option>
-                                        <option value="M." {% if(expert.genre == 'M.') %} selected {% endif %}>M.</option>
-                                    </select>
+                                <select class="input" id="Sexe" name="Sexe" value="Monsieur">
+                                    <option value="MME" {% if expert.genre == 'MME'%} selected {% endif %}>Madame</option>
+                                    <option value="M." {% if expert.genre == 'M.' %} selected {% endif %}>Monsieur</option> 
+                                  </select>
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le sexe est requis</p>
@@ -304,10 +298,7 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                <select class="input" id="actif_parti" name="actif_parti" value="actif">
-                                    <option value="ACTIF" {% if (history.actif_parti == 'ACTIF') %} selected {% endif %}>ACTIF</option>
-                                    <option value="PARTI" {% if (history.actif_parti == 'PARTIR') %} selected {% endif %}>PARTI</option>
-                                </select>
+                                    {{form.actif_parti(class="input", value=history.actif_parti)}}
                                 {% endif %}
                               </div>
                                 <p class="help"> Requis. Le parti actif est requis</p>

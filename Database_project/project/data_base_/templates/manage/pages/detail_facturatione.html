@@ -1,0 +1,133 @@
+{% extends 'manage/index.html'%}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter une Facturation</h2>
+    
+    </div>
+
+   <div class="table-container" style="">
+        <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+            <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
+                <p class="card-header-title"><span class="icon"><i class="fas fa-file"></i></span></p>
+                <div class="card-header-title">
+                  <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+                </div>
+                <div class="card-header-title">
+                    <span>Total:{{sum}}</span>
+                </div>
+                                       
+            </header>
+
+                        <div class="">
+                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form class="user" method="POST" style="padding:10px; " action="{{url_for('users.create_facturee')}}" >
+                                {{ form.hidden_tag() }}
+                               
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        {{form.Demarrer.label(class="form-control-label")}}
+                                    
+                                        {% if form.Demarrer.errors %}
+                                            {{ form.Demarrer(class="input is-small is-invalid",value=start) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Demarrer.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Demarrer(class="input is-small",value=start)}}
+                                            {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {{form.Fin.label(class="form-control-label")}}
+                                    
+                                        {% if form.Fin.errors %}
+                                            {{ form.Fin(class="input is-small is-invalid",value=end)}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.Fin.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                {{form.Fin(class="input is-small",value=end)}}
+                                            {% endif %}
+                                    </div>
+                                </div>
+                                {%for i  in mission %}
+                                    
+                                    <div>
+                                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                                {{form.Mission.label(class="form-control-label")}}
+                                                
+                                            {% if form.Mission.errors %}
+                                                {{ form.Mission(class="input is-small is-invalid",value=i.id) }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.Mission.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                    {{form.Mission(class="is-small input",value=i.id)}}
+                                                {% endif %}
+                                            </div>
+                                            
+                                            
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                                    {{form.Montant_HT.label(class="form-control-label")}}
+                                                    
+                                                {% if form.Montant_HT.errors %}
+                                                    {{ form.Montant_HT(class="input is-small is-invalid",value=i.PRIX_HT_EDL) }}
+                                                    <div class="invalid-feedback">
+                                                        {% for error in form.Montant_HT.errors %}
+                                                            <span>{{ error }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% else %}
+                                                        {{form.Montant_HT(class="is-small input",value=i.PRIX_HT_EDL)}}
+                                                    {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 mb-3 mb-sm-0">
+                                                    {{form.Date_EDL.label(class="form-control-label")}}
+                                                    
+                                                {% if form.Date_EDL.errors %}
+                                                    {{ form.Date_EDL(class="input is-small is-invalid",value=i.DATE_REALISE_EDL) }}
+                                                    <div class="invalid-feedback">
+                                                        {% for error in form.Date_EDL.errors %}
+                                                            <span>{{ error }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% else %}
+                                                        {{form.Date_EDL(class="is-small input",value=i.DATE_REALISE_EDL)}}
+                                                    {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                {%endfor%}
+                  
+                                <div class="form-group">
+                                    {{form.submit(class="button is-small is-success")}}   
+                                </div>
+                           
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	   
+{%endblock%}

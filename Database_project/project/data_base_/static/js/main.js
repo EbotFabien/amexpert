@@ -1,4 +1,4 @@
-const toggleBtn = document.getElementById('toggleBtn')
+/*const toggleBtn = document.getElementById('toggleBtn')
 
 toggleBtn.addEventListener('click', function (e) {
     const sideMenu = document.getElementById('sideMenu')
@@ -12,10 +12,10 @@ toggleBtn.addEventListener('click', function (e) {
         sideMenu.classList.toggle('close')
         main.classList.toggle('increase_size')
     }
-    // if menu is open then close it
+    if menu is open then close it
     console.log(e)
-    // else open it
-})
+    else open it
+})*/
 
 const toggleSmallMenu = document.getElementById('toggleSmallMenu')
 

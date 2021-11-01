@@ -3,25 +3,25 @@
  <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Prospect(s)</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Prospect(s)</h2>
       <a href="/ajouter/prospect" title="Ajouter un propect" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
      <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
           </div>
-          <div class="table-container" style="overflow-x: scroll;position: relative;">
+          <div class="table-container" style="position: relative;">
              {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
                     {%for category,message in messages%}
                     <div class="alert alert-{{category}} p-1">
-                        {{message}}
+                        {{message}} 
                     </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
+            <table class="table is-hoverable is-striped is-bordered" id="table_id" style="min-width: 800px;"> 
              <thead class="">
                 <tr>
                     <th scope="col">ID</th>
@@ -33,16 +33,15 @@
                     <th>Societé</th>
                     <th scope="col">Email</th>
                     <th scope="col">Tel</th>
-                    <th>Adresse1</th>
-                    <th>Adresse2</th>
-                    <th>Code Postal</th>
+                    <th>Adresse</th>
+                    <th>Code <br/>Postal</th>
                     <th>Ville</th>
                     <th>Pays</th>
                    
-                    <th>Etats Client</th>
-                    <th>Date creation</th>
-                    <th>Login extranet</th>
-                    <th>Mdp extranet</th>
+                    <th>Etats <br/>Client</th>
+                    <th>Date <br/>creation</th>
+                    <th>Login<br/>extranet</th>
+                    <th>Mdp <br/>extranet</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -51,7 +50,7 @@
             <tbody>
                 {%for client_,history in Client %}
                     <tr>
-                        <th scope="row">{{client_.id}}</th>
+                        <td scope="row">{{client_.id}}</td>
                         <td>{{client_.reference}}</td>
                         <td>{{client_.siret}}</td>
                         <td>{{client_.TYPE}}</td>
@@ -61,8 +60,8 @@
                         <td>{{client_.email }}</td>
                         <td>{{client_.numero}}</td>
                         <td>{{history.adresse1}}</td>
-                        <td>{{history.adresse2}}</td>
                         <td>{{history.cp}}</td>
+                        
                         <td>{{history.ville}}</td>
                         <td>{{history.pays}}</td>
                      
@@ -87,7 +86,15 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#table_id').DataTable();
+        var table = $('#table_id').DataTable({
+        'scrollY': '500px',
+        'scrollX': true,
+        'scrollCollapse': true,
+        'paging':true,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+        }
+      });
     
         $('#table_id tbody').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {

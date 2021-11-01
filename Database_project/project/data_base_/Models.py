@@ -702,7 +702,6 @@ class facturation_client(db.Model):
     visibility =db.Column(db.Boolean,default=True)
 #valider=db.Column(db.Boolean,default=False)
 
-
     def __repr__(self):
         return '<facturation_client %r>' %self.id
 
@@ -805,13 +804,19 @@ class expert_facturation(db.Model):
     commision=db.Column(db.DECIMAL(65,2))
     date_retrait_facture=db.Column(db.DateTime())
     anomalie=db.Column(db.Boolean)
-    envoye=db.Column(db.Boolean,default=False) #(True/False)
-    mission__data=db.relationship("Mission", 
-            primaryjoin=(mission == Mission.id),
+    envoye=db.Column(db.Boolean,default=False)  #(True/False)
+    mission__data=db.relationship("compte_mensuel", 
+            primaryjoin=(mission == compte_mensuel.id),
             backref=db.backref('mission__expert',  uselist=False),  uselist=False)
+    releve_data=db.relationship("Type_expert", 
+            primaryjoin=(type_expert == Type_expert.id),
+            backref=db.backref('releve_data',  uselist=False),  uselist=False)
+    expert_data=db.relationship("Expert", 
+        primaryjoin=(expert_id == Expert.id),
+        backref=db.backref('expert_data',  uselist=False),  uselist=False)
 	
     def __repr__(self):
-        return '<expert_facturation %r>' %self.id
+        return '<expert_facturation %r>' %self.id 
 
     
 
@@ -825,3 +830,5 @@ class expert_facturation(db.Model):
 	
 	
 	
+
+

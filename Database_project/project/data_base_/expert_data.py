@@ -4,7 +4,7 @@ import openpyxl
 import xlrd,xlwt
 from Database_project.project.data_base_ import db
 from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
-import pandas as pd
+import flask as pd
 from Database_project.project.data_base_.client_data  import regex1
 
 def failed1(av):

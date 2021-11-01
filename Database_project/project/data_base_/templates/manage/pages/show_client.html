@@ -10,118 +10,8 @@
 		{%endif%}
     </div>
 	<section class="tile" style="margin-top: 10px;">
-    <div class="box" style="  width: -webkit-fill-available;">
-      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fas fa-user"></i></span>
-        <div class="control has-icons-left has-icons-right">
-        	{{client.TYPE}}
-        </div>
-      </div>
-      <div class='columns'>
-	  <div class='container'>
-	    <div class='section profile-heading'>
-	      <div class='columns is-mobile is-multiline'>
-	        <div class='column is-5 is-6-tablet is-10-mobile name'>
-	          <p>
-	            <span class='title is-bold' style="font-size: larger;">{{client.nom}}</span>
-	            <br>
-	            <a class='button is-primary is-small' href="{{url_for('users.edit_client', id=client.id)}}" id='edit-preferences' style='margin: 5px 0'>
-	              Modifier
-	            </a>
-	            <br>
-	          </p>
-	          <p class='tagline'>
-	          <strong>Adresse:</strong> {{history.adresse1}}, <br/> 
-	          </p>
-
-	          <p class='tagline'>
-	          <strong>Adresse 2:</strong> {{history.adresse2}}, <br/> 
-	          </p>
-	          
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Tel</strong></p>
-	          <p class='stat-key'>{{client.numero}}</p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Email</strong></p>
-	          <p class='stat-key'>{{client.email}}</p>
-	        </div>
-			<div class='column is-2-tablet is-12-mobile'>
-				<p class='stat-val'><strong>Société</strong></p>
-				<p class='stat-key'>{{client.societe}}</p>
-			</div>
-			<div class='column is-2-tablet is-12-mobile'>
-				<p class='stat-val'><strong>Etat du client</strong></p>
-				<p class='stat-key'>{{history.etat_client}}</p>
-			</div>
-			<div class='column is-2-tablet is-12-mobile'>
-				<p class='stat-val'><strong>L'enseigne</strong></p>
-				<p class='stat-key'>{{client.enseigne}}</p>
-			</div>
-			 <div class='column is-2-tablet is-4-mobile has-text-centered'>
-			 	<p class='stat-key'><strong>Reference</strong></p>
-				<p class='stat-val'>{{client.reference}}</p>
-				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Siret</strong></p>
-				<p class='stat-val'>{{client.siret}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>CP</strong></p>
-				<p class='stat-val'>{{history.cp}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Login Extranet</strong></p>
-				<p class='stat-val'>{{history.login_extranet}}</p>
-				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>MDP Extranet</strong></p>
-				<p class='stat-val'>{{history.mpd_extranet}}</p>
-				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Societe</strong></p>
-				<p class='stat-val'>{{client.societe}}</p>				
-			</div>
-			
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Ville</strong></p>
-				<p class='stat-val'>{{history.ville}}</p>				
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Pays</strong></p>
-				<p class='stat-val'>{{history.pays}}</p>
-				
-			</div>
-			{% if legend == "client" %}
-				{% if tarif != None %}
-					<div class='column is-2-tablet is-4-mobile has-text-centered'>
-						<p class='stat-val'>{{tarif.id}}</p>
-						<p class='stat-key'>ID_Tarif</p>
-					</div>
-				
-					<div class='column is-2-tablet is-4-mobile has-text-centered'>
-						<p class='stat-val'>{{tarif.referent__data.nom}}</p>
-						<p class='stat-key'>AS</p>
-					</div>
-				{% endif %}
-			{% endif %}
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date historique</strong></p>
-				<p class='stat-val'>{{history.date|string|truncate(13, True)}}</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-key'><strong>Date creation</strong></p>
-				<p class='stat-val'>{{client.date_creation|string|truncate(13, True)}}</p>
-			</div> 
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	{% if legend == "client" %}
+    <div class="box" style="  width: -webkit-fill-available; width: 100%;">
+    	{% if legend == "client" %}
 		<div class="columns">
 		  	<div class="column">
 		  		<a href="{{url_for('users.suivi_client_', id=client.id)}}" style="color: #fff; background: #073B3A;" title="modifier" class="button is-small is-fullwidth">Voir Suivi</a>
@@ -155,13 +45,193 @@
 	{% if legend == "prospect" %}
 		<div class="columns">
 			<div class="column">
-		  		<a href="{{url_for('users.suivi_prospect_', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a>
+		  		<a href="{{url_for('users.suivi_prospect_', id=client.id)}}" title="modifier" style="color: #fff; background: #219EBC;" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.ajouter_suivip', id=client.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth">Cree Suivi</a>
+		  		<a href="{{url_for('users.ajouter_suivip', id=client.id)}}" title="modifier" style="color: #fff; background: #023047;" class="button is-outlined-black is-small is-fullwidth">Cree Suivi</a>
 		  	</div>
 		</div>
-	{% endif %}			
+	{% endif %}	
+	  <div class="container">
+		<div class="main-body">		
+			  <div class="columns">
+				<div class="column is-one-quarter mb-3">
+				  <div class="card">
+					<div class="card-body">
+					  <div class="is-flex is-flex-direction-column align-items-center has-text-centered">
+						<i class="fa fa-user x5-px"></i>						
+						<div class="mt-3">
+						  <p class="text-secondary mb-1">{{client.TYPE}}</p>
+						  <small class=''>{{history.etat_client}}</small>
+						  <p class="text-muted font-size-sm">{{history.cp}}, {{history.ville}}, {{history.pays}}</p>
+						  {% if legend == "prospect" %} 
+						  <a class='button is-primary is-small' href="{{url_for('users.edit_prospect', id=client.id)}}" id='edit-preferences' style='margin: 5px 0'>
+							Modifier
+						  </a>
+						  {% endif %}
+						  {% if legend == "client" %} 
+						  <a class='button is-primary is-small' href="{{url_for('users.edit_client', id=client.id)}}" id='edit-preferences' style='margin: 5px 0'>
+							Modifier
+						  </a>
+						  {% endif %}
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<div class="column is-three-quarter">
+				  <div class="card mb-3">
+					<div class="card-body">
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Nom</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+							{{client.nom}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Email</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+						  {{client.email}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						<h6 class="mb-0">L'enseigne</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+							{{client.enseigne}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						<h6 class="mb-0">Reference</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+							{{client.reference}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						<h6 class="mb-0">Siret</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+							{{client.siret}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Société</h6>
+						</div>
+						<div class="column is-three-quarter text-secondary">
+							{{client.societe}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Mobile</h6>
+						</div>
+						<div class="column is-three-quarter">
+							{{client.numero}}
+						</div>
+					  </div>
+					  {% if legend == "client" %}
+						{% if tarif != None %}
+							<hr>
+							<div class="columns">
+								<div class="column is-one-quarter">
+								<h6 class="mb-0">Identifiant du Tarif</h6>
+								</div>
+								<div class="column is-three-quarter">
+									{{tarif.id}}
+								</div>
+							</div>
+							<hr>
+							<div class="columns">
+								<div class="column is-one-quarter">
+								<h6 class="mb-0">AS</h6>
+								</div>
+								<div class="column is-three-quarter">
+									{{tarif.referent__data.nom}}
+								</div>
+							</div>
+					  	{% endif %}
+					  {% endif %}
+					  <hr>
+					  {% if(history.adresse1 != '') %}
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Address 1</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{history.adresse1}}
+							</div>
+						</div>
+					  {% endif %}
+					  <hr>
+					  {% if(history.adresse2 != '') %}
+						<div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Address 2</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{history.adresse2}}
+							</div>
+						</div>
+					  <hr>
+					  {% endif %}
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Date Creation</h6>
+						</div>
+						<div class="column is-three-quarter">
+							{% if (client.date_creation == None) %} {% else %} {{client.date_creation.strftime('%d %m, %Y')}} {% endif %}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Login Extranet</h6>
+						</div>
+						<div class="column is-three-quarter">
+							{{history.login_extranet}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">MDP Extranet</h6>
+						</div>
+						<div class="column is-three-quarter">
+							{{history.mpd_extranet}}
+						</div>
+					  </div>
+					  <hr>
+					  <div class="columns">
+						<div class="column is-one-quarter">
+						  <h6 class="mb-0">Historique Date</h6>
+						</div>
+						<div class="column is-three-quarter">
+							{% if (history.date == None) %} {% else %} {{history.date.strftime('%d %m, %Y')}} {% endif %}
+						</div>
+					  </div>
+					</div>
+				  </div>	
+				</div>
+			  </div>
+	
+			</div>
+		</div>
+			
 		</div>
 	</section>
 </div>

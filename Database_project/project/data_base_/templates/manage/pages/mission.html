@@ -6,27 +6,50 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Missions</h2>
       <a href="/ajouter/mission" class="button is-primary is-small" title="Ajouter une mission"><i class="fa fa-plus"></i></a>
     </div>
-
+    <div class="tile box" style="width: fit-content; margin: 0 auto;">
+      <form method="GET" action="{{url_for('users.mission')}}">
+        <div class="columns"> 
+            <div class="column">
+              <div class="field">
+                <div class="control is-small">
+                  <input class="input is-small"  name="keyword" value="{{search}}" placeholder="Nom expert,reference client" type="text">
+                </div>
+              </div>
+          </div>
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- / date -->
+      <form method="GET" action="{{url_for('users.mission')}}">
+        <div class="columns"> 
+            <div class="column">
+              <div class="field">
+                <div class="control is-small">
+                  <input type="date" name="date" placeholder="Recherche Mission" class="input is-small" required value="{{search}}">
+                </div>
+                <small> <p style="font-size: x-small;"><em>Trier par date edl</em></p> </small>
+              </div>
+          </div>
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
     <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available; width:100%;">
           <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
           </div>
-          <div>
-            <div class="display-flex" style="margin-top: 20px;justify-content: space-evenly;">
-              <form method="GET" action="{{url_for('users.mission')}}">
-                <div class="columns">
-                  <input type="text" name="keyword" placeholder="Recherche reference client ,Prix ht edl" class="input is-small is-white" required value="{{search}}">
-                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
-                </div>
-              </form>    
-              <form method="GET" action="{{url_for('users.mission')}}">
-                <div class="columns">
-                  <h>Trier par date edl</h>
-                  <input type="date" name="date" placeholder="Recherche Mission" class="input is-small is-white" required value="{{search}}">
-                  <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
-                </div>
-              </form>      
+          <!-- <div>
+            <div class="display-flex" style="margin-top: 20px; margin-bottom: 10px;justify-content: space-evenly;">
+                   
               <form method="GET" action="{{url_for('users.mission')}}">
                 <div class="colums" style="display: flex;">
                 <span class="select is-small is-fullwidth">
@@ -47,7 +70,7 @@
                 </div>
               </form>      
             </div>
-          </div>
+          </div> -->
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
@@ -58,7 +81,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table"  style="overflow-x: scroll;min-width: 800px;"> 
+            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
 	                    <thead class="">
                        
 	                	<tr>    <th scope="col">ID</th>
@@ -95,7 +118,7 @@
                                   {% if mission_.DATE_FACTURE == None %}
                                     aucune date
                                   {% else %}
-                                    {{ mission_.DATE_FACTURE }}
+                                    {{ mission_.DATE_FACTURE.strftime('%d. %m. %Y') }}
                                   {% endif %}                              
                                 </td>   	 	  	  
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
@@ -104,54 +127,78 @@
                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                     
                                 </td>
-		                    </tr>
-		                {%endfor%} 
+		                    </tr> 
+		                {%endfor%}                     
+		            </tbody>         
+	             </table>
+	            </div>
+                 <!-- Pagination Links-->
+                <nav class="pagination" role="navigation" aria-label="pagination">
+                  <ul class="pagination-list">
                     {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
                     {% if page_num %}
                       {% if key %}
                         {% if request.referrer[30:37] == 'keyword' %}
-                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                          <li>
+                            <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                          </li>
                         {% else %} 
-                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                          <li>
+                          <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                          </li>
                         {% endif %}
                       {% endif %}
                       {% if date %}
                         {% if request.referrer[30:34] == 'date' %}
-                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
-                        {% else %} 
-                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                          {% else %} 
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                            </li>
                         {% endif %}
                       {% endif %}
                       {% if table  %}
                         {% if table2!= None %}
-                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
-                        {% else %} 
-                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                          {% else %} 
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                            </li>
                         {% endif %}
                       {% endif %}
                       {% if not date and not key and not table  %}
                         {% if Mission.page == page_num %}
-                        <a class="btn btn-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
-                        {% else %} 
-                        <a class="btn btn-outline-info mb-4" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                            </li>
+                          {% else %} 
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                            </li>
                         {% endif %}
                       {% endif %}
                     {% else %}
                         ....
                     {% endif %}
-                  {% endfor %}                     
-		            </tbody>         
-	             </table>
-	            </div>
-                 <!-- Pagination Links-->
-              
+                  {% endfor %}
+                  </ul>
+                </nav>
             <!-- / fin de la pagination -->
 	        </div>
         </section>
 	    </div>
       <script type="text/javascript">
-        $(document).ready(function() {
-            var table = $('#table_id').DataTable();
+        /*$(document).ready(function() {
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                })
+            });
         
             $('#table_id tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {
@@ -166,7 +213,7 @@
             $('#button').click( function () {
                 table.row('.selected').remove().draw( false );
             } );
-        } );
+        } );*/
     </script>
 
 {% endblock %}

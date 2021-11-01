@@ -4,16 +4,11 @@
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facturation Client</h2>
-      <form method="GET" action="{{url_for('users.menusearch')}}">
-        <div class="columns">
-          <input type="text" name="keyword" placeholder="Reférence du client" class="input is-small is-white" required value="{{search}}">
-          <button class="button is-small is-primary"> <i class="fas fa-search fa-sm"></i></button>
-        </div>
-      </form>      
+         
     </div>
 
      <section class="tile" style="margin-top: 30px;">
-                <div class="box" style="  width: -webkit-fill-available;">
+                <div class="box" style="  width: -webkit-fill-available; width: 100%;">
                   <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <h2 class="title">Les actions</h2>
                     <div class="control has-icons-left has-icons-right">

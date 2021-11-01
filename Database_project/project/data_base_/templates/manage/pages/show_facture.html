@@ -28,7 +28,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table inner-shadow" style="overflow-x: scroll;min-width: 800px; height: 400px; overflow: overlay"> 
+            <table class="table inner-shadow" id='table_id' style="overflow-x: scroll;min-width: 800px; height: 400px; overflow: overlay"> 
                                 <thead class="">
                                 <tr>
                                     <th>No Mission</th>
@@ -42,6 +42,7 @@
                                     <th>LOGEMENT MEUBLE</th>
                                     <th>Surface/m<sup>2</sup></th>
                                     <th>Tarif ht/€</th>
+                                
                                     
                                     
 
@@ -92,7 +93,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table table-bordered" id="dataTable" style="width:100%">
+            <table class="table table-bordered" id="table_id" style="width:100%">
                 <thead class="">
                     <tr>
                         <th>No Mission</th>
@@ -160,7 +161,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table table-bordered" id="dataTable" style="width:100%">
+            <table class="table table-bordered" id="" style="width:100%">
                 <thead class="">
                     <tr>
                         <th>No Mission</th>
@@ -175,6 +176,7 @@
                         <th>LOGEMENT MEUBLE</th>
                         <th>Anomalie</th>
                         <th>Rectifier</th>
+                        
                     </tr>
                     </thead>
                     <tbody>
@@ -192,7 +194,7 @@
                                 <td>{{fac.mission__data.LOGEMENT_MEUBLE}}</td>
                                 <td>{{fac.mission__data.surface_logement1}}</td>
                                 <td>{{fac.mission__data.reason}}</td>
-                                <td> <a href="#" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a></td>    
+                                <td> <a href="{{url_for('users.rectify', id=fac.mission)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a></td>    
                             </tr>    
                         {%endfor%}
                     </tbody>
@@ -284,5 +286,30 @@
         modal.classList.toggle('show-client-information')
         modal.classList.toggle('show-client-information-inner-box')
     })
-</script>
+    </script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                })
+            });
+        
+            $('#table_id tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#button').click( function () {
+                table.row('.selected').remove().draw( false );
+            } );
+        } );
+    </script>
+    </script>
 {%endblock%}

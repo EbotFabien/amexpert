@@ -6,7 +6,7 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Tarifs</h2>
     </div>
      <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available; width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fas fa-file-invoice"></i></span>
             <div class="control has-icons-left has-icons-right">
@@ -16,7 +16,7 @@
           <div class="table-container" style="overflow-x: scroll;position: relative;">
           	 <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label" style="text-align: left;"><small>Tarifs de {{tarif.data_client.titre}} </small>{{tarif.data_client.nom}}</label>
+                    <label class="label" style="text-align: left;"><small>Tarifs de {{tarif.data_client.titre}} </small>{{tarif.data_client.nom.title()}}</label>
                 </div>
                 
                 </div>
@@ -30,7 +30,12 @@
                         </div>
                         <div class="field-body">
                             <div class="field">
-                              {{tarif.edl_prix_std}} €                                                   
+                              {% if (tarif.edl_prix_std != None) %} 
+                               {{tarif.edl_prix_std}} 
+                              {% else %}
+                                0
+                              {% endif %}
+                              €                                                   
                             </div>
                       </div>
                     </div>
@@ -38,12 +43,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F1</small>
+                            <label class="label"><small>EDL APPT PRIX F1</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f1}} €                                 
+                                {% if (tarif.edl_appt_prix_f1 != None) %} 
+                          		    {{tarif.edl_appt_prix_f1}}
+                                {% else %}
+                                    0
+                                {% endif %} 
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -51,12 +61,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F2</small>
+                            <label class="label"><small>EDL APPT PRIX F2</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f2}} €                                 
+                                {% if (tarif.edl_appt_prix_f2 != None) %}
+                          		    {{tarif.edl_appt_prix_f2}}
+                                {% else %}
+                                    0
+                                {% endif %} 
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -64,12 +79,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F3</small>
+                            <label class="label"><small>EDL APPT PRIX F3</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f3}} €                                 
+                                {% if (tarif.edl_appt_prix_f3 != None) %}
+                          		    {{tarif.edl_appt_prix_f3}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -80,12 +100,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F4</small>
+                            <label class="label"><small>EDL APPT PRIX F4</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f4}} €                                 
+                                {% if (tarif.edl_appt_prix_f4 != None) %}
+                          		    {{tarif.edl_appt_prix_f4}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -93,12 +118,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F5</small>
+                            <label class="label"><small>EDL APPT PRIX F5</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f5}} €                                 
+                                {% if (tarif.edl_appt_prix_f5 != None) %}
+                          		    {{tarif.edl_appt_prix_f5}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -106,12 +136,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL APPT prix F6</small>
+                            <label class="label"><small>EDL APPT PRIX F6</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_appt_prix_f6}} €                                 
+                                {% if (tarif.edl_appt_prix_f6 != None) %}
+                          		    {{tarif.edl_appt_prix_f6}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -122,12 +157,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>CHIF APPT prix F1</small>
+                            <label class="label"><small>CHIF APPT PRIX F1</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_appt_prix_f1}} €                                 
+                                {% if (tarif.chif_appt_prix_f1 != None) %}
+                          		    {{tarif.chif_appt_prix_f1}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -135,12 +175,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>CHIF APPT prix F2</small>
+                            <label class="label"><small>CHIF APPT PRIX F2</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_appt_prix_f2}} €                                 
+                                {% if (tarif.chif_appt_prix_f2 != None) %}
+                          		    {{tarif.chif_appt_prix_f2}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -148,12 +193,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>CHIF APPT prix F3</small>
+                            <label class="label"><small>CHIF APPT PRIX F3</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_appt_prix_f3}} €                                 
+                                {% if (tarif.chif_appt_prix_f3 != None) %}
+                          		    {{tarif.chif_appt_prix_f3}}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -161,12 +211,17 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>CHIF APPT prix F4</small>
+                            <label class="label"><small>CHIF APPT PRIX F4</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_appt_prix_f4}} €                                 
+                                {% if (tarif.chif_appt_prix_f4 != None) %}
+                          		    {{tarif.chif_appt_prix_f4}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -179,7 +234,12 @@
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_appt_prix_f5}} €                                 
+                                {% if (tarif.chif_appt_prix_f5 != None) %}
+                          		    {{tarif.chif_appt_prix_f5}} 
+                                {% else %}
+                                    0
+                                {% endif %}
+                                €                                 
                             </div>
                       </div>
                     </div>
@@ -190,12 +250,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T1</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T1</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                              {{tarif.edl_pav_villa_prix_t1}} €                                                   
+                                {% if (tarif.edl_pav_villa_prix_t1 != None) %}
+                                    {{tarif.edl_pav_villa_prix_t1}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                                   
                             </div>
                       </div>
                     </div>
@@ -203,12 +267,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T2</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T2</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t2}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t2 != None) %}
+                          		    {{tarif.edl_pav_villa_prix_t2}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -216,12 +284,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T3</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T3</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t3}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t3 != None) %}
+                          		    {{tarif.edl_pav_villa_prix_t3}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -229,12 +301,15 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix F4</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX F4</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t4}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t4 != None) %}
+                          		{{tarif.edl_pav_villa_prix_t4}} {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -244,12 +319,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T5</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T5</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                              {{tarif.edl_pav_villa_prix_t5}} €                                                   
+                                {% if (tarif.edl_pav_villa_prix_t5 != None) %}
+                                    {{tarif.edl_pav_villa_prix_t5}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                                   
                             </div>
                       </div>
                     </div>
@@ -257,12 +336,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T6</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T6</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t6}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t6 != None) %}
+                          		{{tarif.edl_pav_villa_prix_t6}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -270,12 +353,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix T7</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX T7</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t7}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t7 != None) %}
+                          		    {{tarif.edl_pav_villa_prix_t7}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -283,12 +370,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>EDL PAV villa prix F8</small>
+                            <label class="label"><small>EDL PAV VILLA PRIX F8</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.edl_pav_villa_prix_t8}} €                                 
+                                {% if (tarif.edl_pav_villa_prix_t8 != None) %}
+                          		{{tarif.edl_pav_villa_prix_t8}} 
+                                {% else %}
+                                    0
+                                {% endif%}€                                 
                             </div>
                       </div>
                     </div>
@@ -297,11 +388,17 @@
             <hr />
              <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label" style="text-align: left;"><small>CHIF APPT prix stu</small></label>
+                    <label class="label" style="text-align: left;"><small>CHIF APPT PRIX STU</small></label>
                 </div>
                 <div class="field-body is-normal">
                   	<div class="field"><!---->
-                      	<p>{{tarif.chif_appt_prix_stu}} €</p>
+                      	<p>
+                            {% if (tarif.chif_appt_prix_stu != None) %}
+                                {{tarif.chif_appt_prix_stu}} 
+                            {% else %}
+                                    0
+                            {% endif%}€
+                        </p>
                     </div>
                   </div>
                 </div>
@@ -310,12 +407,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t1</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T1</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                              {{tarif.chif_pav_villa_prix_t1}} €                                                   
+                                {% if (tarif.chif_pav_villa_prix_t1 != None) %} 
+                                    {{tarif.chif_pav_villa_prix_t1}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                                   
                             </div>
                       </div>
                     </div>
@@ -323,12 +424,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t2</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T2</small>
                         </label>
                         </div>
                         <div class="field-body">
-                          	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t2}} €                                 
+                          	<div class="field">                                
+                                {% if (tarif.chif_pav_villa_prix_t2 != None) %} 
+                          		    {{tarif.chif_pav_villa_prix_t2}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                 
                             </div>
                       </div>
                     </div>
@@ -336,12 +441,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t3</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T3</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t3}} €                                 
+                                {% if (tarif.chif_pav_villa_prix_t3 != None) %} 
+                          		    {{tarif.chif_pav_villa_prix_t3}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                 
                             </div>
                       </div>
                     </div>
@@ -349,12 +458,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t4</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T4</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t4}} €                                 
+                                {% if (tarif.chif_pav_villa_prix_t4 != None) %}
+                          		    {{tarif.chif_pav_villa_prix_t4}}
+                                {% else %}
+                                    0
+                                {% endif %} €                                 
                             </div>
                       </div>
                     </div>
@@ -364,12 +477,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t5</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T5</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                              {{tarif.chif_pav_villa_prix_t5}} €                                                   
+                                {% if (tarif.chif_pav_villa_prix_t5 != None) %}
+                                    {{tarif.chif_pav_villa_prix_t5}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                                   
                             </div>
                       </div>
                     </div>
@@ -377,12 +494,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t6</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T6</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t6}} €                                 
+                                {% if (tarif.chif_pav_villa_prix_t6 != None) %}
+                          		    {{tarif.chif_pav_villa_prix_t6}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                 
                             </div>
                       </div>
                     </div>
@@ -390,12 +511,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t7</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T7</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t7}} €                                 
+                                {% if (tarif.chif_pav_villa_prix_t7 != None) %}
+                          		    {{tarif.chif_pav_villa_prix_t7}} 
+                                {% else %}
+                                    0
+                                {% endif %}€                                 
                             </div>
                       </div>
                     </div>
@@ -403,12 +528,16 @@
                 <div class="column">
                     <div class="field is-vertical">
                         <div class="is-normal">
-                            <label class="label"><small>Chif pav villa prix t8</small>
+                            <label class="label"><small>CHIF PAV VILLA PRIX T8</small>
                         </label>
                         </div>
                         <div class="field-body">
                           	<div class="field">
-                          		{{tarif.chif_pav_villa_prix_t8}} €                                 
+                                {% if (tarif.chif_pav_villa_prix_t8 != None) %}
+                          		    {{tarif.chif_pav_villa_prix_t8}} 
+                                {% else %}
+                                    0
+                                {% endif %} €                                 
                             </div>
                       </div>
                     </div>

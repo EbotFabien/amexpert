@@ -3,17 +3,17 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Experts</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Experts</h2>
       <a href="/ajouter/expert" title="Ajouter un expert" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
 
     <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available;">
+        <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
             
           </div>
-          <div class="table-container" style="overflow-x: scroll;position: relative;">
+          <div class="table-container" style="position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
                     {%for category,message in messages%}
@@ -26,36 +26,36 @@
             <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">  
                     <thead>
                     <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Nom et prenom</th>
+                        <th scope="col">id</th> 
+                        <th scope="col">Nom <br/>et prenom</th>
                         <th scope="col">Type</th>
                         <th scope="col">Email</th>
-                        <th>Email Perso</th>
+                        <th>Email <br/>Perso</th>
                         <th scope="col">Numero</th>
                         <th scope="col">Trigramme</th>
                         <th scope="col">Siret</th>
                         <th scope="col">Genre</th>
                         <th scope="col">Actif/Parti</th>
                         <th>Code TVA</th>
-                        <th>Taux de TVA</th>
+                        <th>Taux <br/>de TVA</th>
                         <th>Secteur</th>
-                        <th>Type de certification</th>
-                        <th>Date de certification initial</th>
-                        <th>Date de recertification</th>
+                        <th>Type de <br/> certification</th>
+                        <th>Date de <br/> certification initial</th>
+                        <th>Date de <br/>u recertification</th>
                         <th scope="col">Adresse1</th>
                         <th scope="col">Adresse2</th>
                         <th scope="col">CP</th>
                         <th scope="col">Ville</th>
                         <th scope="col">Pays</th>
-                        <th scope="col">Login Backof</th>
-                        <th scope="col">Pwd Backof</th>
-                        <th>Login Extranet</th>
-                        <th scope="col">Pwd extranet</th>
-                        <th>Pwd Gsuite</th>
-                        <th>Login Tablette</th>
-                        <th>Pwd Backof</th>
-                        <th scope="col">Observations de suivi</th>
-                        <th>Date d'entrée</th>
+                        <th scope="col">Login <br/>Backof</th>
+                        <th scope="col">Pwd <br/>Backof</th>
+                        <th>Login <br/>Extranet</th>
+                        <th scope="col">Pwd <br/>extranet</th>
+                        <th>Pwd <br/>Gsuite</th>
+                        <th>Login <br/>Tablette</th>
+                        <th>Pwd <br/>Backof</th>
+                        <th scope="col">Observations <br/>de suivi</th>
+                        <th>Date <br/> d'entrée</th>
                         <!-- <th>Date de sortie</th> -->
                         <th></th>
                         <th></th> 
@@ -65,7 +65,7 @@
                     <tbody>
                         {%for expert,history in Expert %}
                             <tr>
-                                <th scope="row">{{expert.id}}</th>
+                                <td scope="row">{{expert.id}}</td>
                                 <td>{{expert.TITRE}} {{expert.nom}}</td>
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.email}}</td>
@@ -120,7 +120,12 @@
     <!-- Content Row -->
     <script type="text/javascript">
         $(document).ready(function() {
-            var table = $('#table_id').DataTable();
+            var table = $('#table_id').DataTable({
+                'scrollX':true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                }
+        });
         
             $('#table_id tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {

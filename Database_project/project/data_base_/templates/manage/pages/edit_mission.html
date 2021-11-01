@@ -32,14 +32,14 @@
                                       <div class="field"><!---->
                                           <div class="control">
                                            {% if form.Reference_client.errors %}
-                                            {{form.Reference_client(class="input is-invalid", value=mission.Reference_client) }}
+                                            {{form.Reference_client(class="input is-invalid", value=mission.Reference_BAILLEUR) }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Reference_client.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                             {% else %}
-                                                {{form.Reference_client(class="input", value=mission.Reference_client)}}
+                                                {{form.Reference_client(class="input", value=mission.Reference_BAILLEUR)}}
                                             {% endif %}
                                           </div>
                                             <p class="help">Requis.</p>

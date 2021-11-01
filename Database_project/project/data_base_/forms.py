@@ -17,6 +17,26 @@ def validatep(self,email):
         except:
             raise ValidationError("Le numero n'a pas ete bien saisie")
 
+class RegistrationForm1(FlaskForm):
+    
+    username =StringField("Identifiant",
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail',
+                           validators=[DataRequired(),Email()])#,validate_email])
+
+    submit = SubmitField('enregistrer')
+
+class rectify_Form(FlaskForm):
+    
+    TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
+                        validators=[DataRequired()])	
+
+    CODE_FACTURATION =StringField("CODE_FACTURATION",
+                        validators=[DataRequired()])  	
+
+    submit = SubmitField('Modifier')
+
 class RegistrationForm(FlaskForm):
     def validate_email(self,email):
         email = Expert.query.filter_by(email=email.data).first()
@@ -34,7 +54,7 @@ class RegistrationForm(FlaskForm):
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=4 ,max=20)])
+                                validators=[DataRequired(),validatep,length(min=4 ,max=9)])
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email(),validate_email])
@@ -173,7 +193,7 @@ class RequestResetForm(FlaskForm):
                            validators=[DataRequired(),Email()])
     submit = SubmitField('Request Password Reset')
 
-    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
+    #recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
 
     def validate_username(self,username):
         user = Expert.query.filter_by(EMAIL=email.data).first()## add visibility
@@ -194,7 +214,6 @@ class LoginForm(FlaskForm):
     password =PasswordField('Mot de passe',
                                   validators=[DataRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
 
-    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
     remember = BooleanField('Remember me')                              
     submit = SubmitField('Se connecter')
     

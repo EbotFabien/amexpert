@@ -23,31 +23,32 @@
                                 </p><!---->
                             </header>
                             <div class="card-content">
-                                <form>
-                                    <div class="field is-horizontal">
+                                <form method="POST">
+                                  {{ form.hidden_tag() }}
+                                    <!--<div class="field is-horizontal">
                                         <div class="field-label is-normal">
                                             <label class="label">Avatar</label>
                                         </div>
                                         <div class="field-body">
-                                            <div class="field"><!---->
-                                                <div class="field file"><!---->
+                                            <div class="field">
+                                                <div class="field file">
                                                     <label class="upload control">
                                                         <a class="button is-primary is-small"><span class="icon"><i class="fas fa-upload"></i>
                                                         </span><span>Choisissez un fichier</span></a>
                                                         <input type="file">
-                                                    </label><!----><!---->
-                                                </div><!----></div>
-                                            </div><!----></div>
-                                            <hr>
+                                                    </label>
+                                                </div></div>
+                                            </div></div>
+                                            <hr> -->
                                             <div class="field is-horizontal">
                                                 <div class="field-label is-normal">
                                                     <label class="label">{{form.username.label(class="form-control-label")}}</label></div>
                                                     <div class="field-body"><div class="field"><!---->
                                                         <div class="control">
                                                           {% if form.username.errors %}
-                                                          {{form.Siret(class="input is-invalid", value=client.nom) }}
+                                                          {{form.username(class="input is-invalid", value=client.nom) }}
                                                           <div class="invalid-feedback">
-                                                              {% for error in form.Sexe.errors %}
+                                                              {% for error in form.username.errors %}
                                                                   <span>{{ error }}</span>
                                                               {% endfor %}
                                                           </div>
@@ -84,7 +85,7 @@
                                                             <div class="field-body">
                                                                 <div class="field"><!---->
                                                                     <div class="control">
-                                                                        <button type="submit" class="button is-primary is-small"> Modifier </button>
+                                                                      {{form.submit(class="button is-success is-fullwidth is-small")}}
                                                                     </div><!---->
                                                                 </div>
                                                             </div>
@@ -127,7 +128,7 @@
                     </div>
                   </div>
                   <div class="table-container" style="">
-                    <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+                    <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc; display: none;">
                         <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;"><p class="card-header-title"><span class="icon"><i class="fas fa-lock"></i></span><span>Changer le mot de passe</span></p><!----></header>
                       <form class="" style="margin-top: 50px; padding: 5px;">
                         <div class="field is-horizontal">
