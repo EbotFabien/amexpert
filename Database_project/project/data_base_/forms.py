@@ -45,7 +45,7 @@ class RegistrationForm(FlaskForm):
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=4 ,max=20)])
+                                validators=[DataRequired(),validatep,length(min=4 ,max=9)])
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email(),validate_email])

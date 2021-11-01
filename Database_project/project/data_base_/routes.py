@@ -60,7 +60,7 @@ def ajouter_client():
             tous=[]
             alll=list(Client.query.all())
             for i in alll:
-                tous.append(alll.reference)
+                tous.append(i.reference)
             user.reference =generate(tous)
             db.session.commit()
             client_history=Client_History(client_id=user.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
@@ -70,7 +70,7 @@ def ajouter_client():
             client_history.mpd_extranet =form.MdpExtranet.data
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
-            flash(f'Client créé avec succès','success')
+            flash(f'Le client a été créé avec succès','success')
             return redirect(url_for('users.client'))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client", highlight='client')
@@ -970,6 +970,7 @@ def ajouter_expert():
             user.password=hashed_password
             db.session.commit()
             db.session.commit()
+            flash(f'L"expert a ete ajouter avec success','success')
             return redirect(url_for('users.expert'))
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
@@ -988,7 +989,7 @@ def edit_expert(id):
             
             f=form.validate2(form.email.data,form.Expert_id.data)
             if f==True:
-                flash(f"l'email es Deja pris",'Warning')
+                flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.edit_expert', id=expert.id))
             if expert.id==int(form.Expert_id.data):
                 expert_history=Expert_History(expert_id=id)
@@ -1027,7 +1028,7 @@ def edit_expert(id):
                 expert.code_tva=form.code_tva.data
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
-                flash(f'Les information de l\'expert a ete modifier', 'success')
+                flash(f'Modification réussie', 'success')
                 return redirect(url_for('users.expert'))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
@@ -1044,7 +1045,7 @@ def delete_expert(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes de l"expert ont été  suprimmer','success')
+        flash(f'L\'expert a été supprimé','success')
         return redirect(url_for('users.expert'))
 
 
@@ -1071,7 +1072,7 @@ def edit_tarifb(id):
                 Tarif.surface=form.surface.data
                 
                 db.session.commit()
-                flash(f'Les donnes du tarif a été modifiées','success')
+                flash(f'Modification réussie','success')
                 return redirect(url_for('users.tarif_base'))
         
         return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
