@@ -36,6 +36,16 @@
                     </tr>
                 </thead>
                     <tbody>
+                        {%for mission in facture %}
+                            <tr>
+                                <td scope="row">{{mission.id}}</td>
+                                <td>{{mission.type_expert}}</td>
+                                <td>{{mission.releve_data.type_ex}}</td>
+                                <td>{{mission.expert_data.nom}}</td>
+                                <td>{{mission.commision}}</td>
+                                <td>{{mission.envoye}}</td>  
+                            </tr>    
+                        {%endfor%}
 
                     </tbody>
                 </table>

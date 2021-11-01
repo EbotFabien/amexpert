@@ -7,12 +7,12 @@
       
     </div>
     <div class="tile box" style="width: fit-content; margin: 0 auto;">
-        <form action="">
+        <form method="GET" action="{{url_for('users.mes_factures',id=9)}}">
             <div class="columns">
                 <div class="column">
                     <div class="select is-small">
-                        <select>
-                            <option selected disabled>---type de facture---</option>
+                        <select name="time">
+                            <option  selected disabled>---type de facture---</option>
                             <option value="nouvelle">Nouvelle</option>
                             <option value="ancienne">Ancienne</option>
                         </select>
@@ -20,10 +20,11 @@
                 </div>
                 <div class="column">
                     <div class="select is-small">
-                        <select>
-                            <option selected disabled>---type de relever---</option>
-                            <option value="1">1</option>
-                            <option value="1">2</option>
+                        <select name="releve">
+                            <option  selected disabled>---type de relever---</option>
+                            {%for releve  in rel %}
+                                <option value={{releve}}>{{releve}}</option>
+                            {%endfor%}
                         </select>
                     </div>
                 </div>
@@ -56,19 +57,28 @@
                     <tr>
                         <th>id</th>
                         <th>Mission ID</th>
-                        <th>Expert ID</th>
-                        <th>ID Type d'expert</th>
+                        <th>Intervenant</th>
                         <th>Date d'arret de compte mensuel</th>
                         <th>Prix de la mission</th>
                         <th>Commission Ac <br/>Mission réalise</th>
-                        <th>Etat de la facture (En controle / Non acquitté)</th>
+                        <th>Type d'expert</th>
                         <th>Commision</th>
-                        <th></th>
-                        <th></th> 
-                        <th></th>
+                        <th>Etat de la facture (En controle / Non acquitté)</th>
                     </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        {%for mission_ in new_rel %}
+                            <td>{{mission_.id}}</td> 
+                            <td>{{mission_.mission__data.mission}}</td>
+                            <td>{{mission_.mission__data.intervenant}}</td>      	   
+                            <td>{{mission_.mission__data.date_cmpte_mensuel}}</td>
+                            <td>{{mission_.mission__data.prix_mission}}</td>
+                            <td>{{mission_.mission__data.commission_ac}}</td>
+                            <td>{{mission_.releve_data.type_ex}}</td> 
+                            <td>{{mission_.commision}}</td>	
+                            <td>{{mission_.mission__data.etat}}</td> <!-- True or False-->  
+                        {%endfor%}
+                    </tbody>
                 </table>
 	            </div>
                  <!-- Pagination Links-->

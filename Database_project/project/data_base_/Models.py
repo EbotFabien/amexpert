@@ -1,5 +1,5 @@
 from flask import current_app
-from project.data_base_ import  db,login_manager
+from Database_project.project.data_base_ import  db,login_manager
 from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
@@ -441,36 +441,36 @@ class Tarifs(db.Model):
     data_client=db.relationship("Client", 
         primaryjoin=(reference_client == Client.id),
         backref=db.backref('data_client',  uselist=False),  uselist=False)
-    edl_prix_std=db.Column(DECIMAL(65,2))     
-    edl_appt_prix_f1=db.Column(DECIMAL(65,2)) 
-    edl_appt_prix_f2=db.Column(DECIMAL(65,2)) 
-    edl_appt_prix_f3=db.Column(DECIMAL(65,2)) 
-    edl_appt_prix_f4=db.Column(DECIMAL(65,2)) 
-    edl_appt_prix_f5=db.Column(DECIMAL(65,2)) 
-    edl_appt_prix_f6=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t1=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t2=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t3=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t4=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t5=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t6=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t7=db.Column(DECIMAL(65,2)) 
-    edl_pav_villa_prix_t8=db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_stu=db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_f1 =db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_f2 =db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_f3 =db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_f4 =db.Column(DECIMAL(65,2)) 
-    chif_appt_prix_f5 =db.Column(DECIMAL(65,2)) #f6
-    chif_appt_prix_f6 =db.Column(DECIMAL(65,2))
-    chif_pav_villa_prix_t1=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t2=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t3=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t4=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t5=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t6=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t7=db.Column(DECIMAL(65,2)) 
-    chif_pav_villa_prix_t8=db.Column(DECIMAL(65,2)) 
+    edl_prix_std=db.Column(DECIMAL(65,2),default=0)     
+    edl_appt_prix_f1=db.Column(DECIMAL(65,2),default=0) 
+    edl_appt_prix_f2=db.Column(DECIMAL(65,2),default=0) 
+    edl_appt_prix_f3=db.Column(DECIMAL(65,2),default=0) 
+    edl_appt_prix_f4=db.Column(DECIMAL(65,2),default=0) 
+    edl_appt_prix_f5=db.Column(DECIMAL(65,2),default=0) 
+    edl_appt_prix_f6=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t1=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t2=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t3=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t4=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t5=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t6=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t7=db.Column(DECIMAL(65,2),default=0) 
+    edl_pav_villa_prix_t8=db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_stu=db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_f1 =db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_f2 =db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_f3 =db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_f4 =db.Column(DECIMAL(65,2),default=0) 
+    chif_appt_prix_f5 =db.Column(DECIMAL(65,2),default=0) #f6
+    chif_appt_prix_f6 =db.Column(DECIMAL(65,2),default=0)
+    chif_pav_villa_prix_t1=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t2=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t3=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t4=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t5=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t6=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t7=db.Column(DECIMAL(65,2),default=0) 
+    chif_pav_villa_prix_t8=db.Column(DECIMAL(65,2),default=0) 
     code_tva=db.Column(db.String)
     taux_meuble=db.Column(db.Integer)#Is thisFloat??
     referent_as_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
@@ -702,7 +702,6 @@ class facturation_client(db.Model):
     visibility =db.Column(db.Boolean,default=True)
 #valider=db.Column(db.Boolean,default=False)
 
-
     def __repr__(self):
         return '<facturation_client %r>' %self.id
 
@@ -758,3 +757,78 @@ class Facturation_history(db.Model):
 
 
     
+class compte_mensuel(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+    __tablename__ = 'compte_mensuel'
+    id = db.Column(db.Integer,primary_key=True)
+    mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE"))
+    facture = db.Column(db.String)
+    intervenant=db.Column(db.String)
+    date_cmpte_mensuel=db.Column(db.DateTime())
+    date_generation= db.Column(db.DateTime())
+    date_envoie_Facture=db.Column(db.DateTime())
+    prix_mission=db.Column(db.DECIMAL(65,2))
+    commission_ac =db.Column(db.DECIMAL(65,2))
+    etat= db.Column(db.Boolean)#(En contrôle/Non acquitté)
+    anomalie=db.Column(db.Boolean)
+    total=db.Column(db.DECIMAL(65,2))
+    mission__data=db.relationship("Mission", 
+        primaryjoin=(mission == Mission.id),
+        backref=db.backref('mission__cmpte',  uselist=False),  uselist=False)
+	
+    def __repr__(self):
+        return '<compte_mensuel %r>' %self.id
+    
+class Type_expert(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+    __tablename__ = 'Type_expert'
+    id = db.Column(db.Integer,primary_key=True)
+    type_ex = db.Column(db.String)
+    type_releve=db.Column(db.Integer)
+    pourcentage =db.Column(db.DECIMAL(65,2))
+    
+    def __repr__(self):
+        return '<Type_expert %r>' %self.id
+
+class expert_facturation(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+    __tablename__ = 'expert_facturation'
+    id = db.Column(db.Integer,primary_key=True)
+    facture = db.Column(db.String)
+    mission = db.Column(db.Integer, ForeignKey('compte_mensuel.id', onupdate="CASCADE", ondelete="CASCADE"))
+    expert_id= db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))
+    type_expert = db.Column(db.Integer, ForeignKey('Type_expert.id', onupdate="CASCADE", ondelete="CASCADE"))
+    commision=db.Column(db.DECIMAL(65,2))
+    date_retrait_facture=db.Column(db.DateTime())
+    anomalie=db.Column(db.Boolean)
+    envoye=db.Column(db.Boolean,default=False)  #(True/False)
+    mission__data=db.relationship("compte_mensuel", 
+            primaryjoin=(mission == compte_mensuel.id),
+            backref=db.backref('mission__expert',  uselist=False),  uselist=False)
+    releve_data=db.relationship("Type_expert", 
+            primaryjoin=(type_expert == Type_expert.id),
+            backref=db.backref('releve_data',  uselist=False),  uselist=False)
+    expert_data=db.relationship("Expert", 
+        primaryjoin=(expert_id == Expert.id),
+        backref=db.backref('expert_data',  uselist=False),  uselist=False)
+	
+    def __repr__(self):
+        return '<expert_facturation %r>' %self.id 
+
+    
+
+
+
+
+	
+
+    
+	
+	
+	
+	
+
+

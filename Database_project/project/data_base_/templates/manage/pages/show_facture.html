@@ -42,6 +42,7 @@
                                     <th>LOGEMENT MEUBLE</th>
                                     <th>Surface/m<sup>2</sup></th>
                                     <th>Tarif ht/€</th>
+                                
                                     
                                     
 
@@ -175,6 +176,7 @@
                         <th>LOGEMENT MEUBLE</th>
                         <th>Anomalie</th>
                         <th>Rectifier</th>
+                        
                     </tr>
                     </thead>
                     <tbody>
@@ -192,7 +194,7 @@
                                 <td>{{fac.mission__data.LOGEMENT_MEUBLE}}</td>
                                 <td>{{fac.mission__data.surface_logement1}}</td>
                                 <td>{{fac.mission__data.reason}}</td>
-                                <td> <a href="#" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a></td>    
+                                <td> <a href="{{url_for('users.rectify', id=fac.mission)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a></td>    
                             </tr>    
                         {%endfor%}
                     </tbody>

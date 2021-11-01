@@ -19,10 +19,13 @@
                         <table class="table table-bordered" id="table_id" style="width:100%">
                             <thead class="">
                             <tr>
-                                <th scope="col">id</th>
-                                <!-- <th scope="col">Reference</th> -->
-                                <th scope="col">Type</th>                           
-                                <th scope="col">Nom</th>                            
+                                <th scope="col">ID</th>
+                                <th scope="col">Reference</th>
+                                <th>Siret</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">SOCIETE</th> 
+                                <th scope="col">Nom et prenom</th>
+                                <th scope="col">L'enseigne</th> 
                                 <th scope="col">Email</th>
                                 <th scope="col">Tel</th>
                                                            
@@ -34,11 +37,14 @@
                             <tbody>
                                 {%for client_ in clients %}
                                     <tr>
-                                        <th scope="row">{{client_.id}}</th>
-                                        {#<td>{{client_.Reference}}</td>#}
-                                        <td>{{client_.TYPE}}</td>                                   
-                                        <td> {{client_.nom|truncate(15, True)}}</td>                               
-                                        <td>{{client_.email}}</td>
+                                        <td scope="row">{{client_.id}}</td>
+                                        <td>{{client_.reference}}</td>
+                                        <td>{{client_.siret}}</td>
+                                        <td>{{client_.TYPE}}</td>
+                                        <td>{{client_.societe}}</td>
+                                        <td>{{client_.titre}} {{client_.nom }}</td>
+                                        <td>{{client_.enseigne}}</td>
+                                        <td>{{client_.email }}</td>
                                         <td>{{client_.numero}}</td>
                                         <!--td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
                                         <td>{{client_.VILLE|truncate(12, True)}}</td-->   
@@ -47,7 +53,51 @@
                                             <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
                                         </td>  
                                         <td> <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class=" is-small is-primary is-fullwidth button"><i class="fa fa-eye"></i></a></td>   
-                                        <td> <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
+                                        <td> <a href="{{url_for('users.delete_client', id=client_.id)}}" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
+                                    </tr>     
+                                {%endfor%}
+                            </tbody>
+                        </table>
+			        {%endif%}
+                    {% if table == 'prospect' %}
+                        <table class="table table-bordered" id="table_id" style="width:100%">
+                            <thead class="">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Reference</th>
+                                <th>Siret</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">SOCIETE</th> 
+                                <th scope="col">Nom et prenom</th>
+                                <th scope="col">L'enseigne</th> 
+                                <th scope="col">Email</th>
+                                <th scope="col">Tel</th>
+                                                           
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {%for client_ in prospects %}
+                                    <tr>
+                                        <td scope="row">{{client_.id}}</td>
+                                        <td>{{client_.reference}}</td>
+                                        <td>{{client_.siret}}</td>
+                                        <td>{{client_.TYPE}}</td>
+                                        <td>{{client_.societe}}</td>
+                                        <td>{{client_.titre}} {{client_.nom }}</td>
+                                        <td>{{client_.enseigne}}</td>
+                                        <td>{{client_.email }}</td>
+                                        <td>{{client_.numero}}</td>
+                                        <!--td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
+                                        <td>{{client_.VILLE|truncate(12, True)}}</td-->   
+                                        <td>
+                                            <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen"></i></a> <!-- &nbsp; -->
+                                            <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
+                                        </td>  
+                                        <td> <a href="{{url_for('users.show_prospect', id=client_.id)}}" title="voir tout les details" class=" is-small is-primary is-fullwidth button"><i class="fa fa-eye"></i></a></td>   
+                                        <td> <a href="{{url_for('users.delete_prospect', id=client_.id)}}" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
                                     </tr>     
                                 {%endfor%}
                             </tbody>
@@ -91,29 +141,43 @@
 			        	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">id</th>
-                            <th scope="col">Nom</th>
+                            <th scope="col">id</th> 
+                            <th scope="col">Nom <br/>et prenom</th>
                             <th scope="col">Type</th>
                             <th scope="col">Email</th>
+                            <th>Email <br/>Perso</th>
                             <th scope="col">Numero</th>
+                            <th scope="col">Trigramme</th>
+                            <th scope="col">Siret</th>
+                            <th scope="col">Genre</th>
+                            <th>Code TVA</th>
+                            <th>Taux <br/>de TVA</th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                             {%for expert in experts %}
                                 <tr>
-                                    <th scope="row">{{expert.id}}</th>
-                                    <td>{{expert.titre}} {{expert.nom}}</td>
+                                    <td scope="row">{{expert.id}}</td>
+                                    <td>{{expert.TITRE}} {{expert.nom}}</td>
                                     <td>{{expert.TYPE}}</td>
                                     <td>{{expert.email}}</td>
+                                    <td>{{expert.email_perso}}</td>
                                     <td>{{expert.numero}}</td>
+                                    <td>{{expert.trigramme}}</td>
+                                    <td>{{expert.siret}}</td>
+                                    <td>{{expert.genre}}</td>
+                                    <td>{{expert.code_tva}}</td>
+                                    <td>{{expert.taux_tva}}</td>
                                    <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="button is-outlined-black is-small is-fullwidth center"><i class="fa fa-pen"></i></a></td>
-                                <td style="">
-                                    <a href="{{url_for('users.show_expert', id=expert.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                    
-                                </td>
-                                <!-- <td><a href="#" class="button center is-primary is-small"><i class="fa fa-eye"></i></a></td> -->
-                                <td> <a href="{{url_for('users.delete_expert', id=expert.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class="center is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> 
+                                    <td style="">
+                                        <a href="{{url_for('users.show_expert', id=expert.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                        
+                                    </td>
+                                    <!-- <td><a href="#" class="button center is-primary is-small"><i class="fa fa-eye"></i></a></td> -->
+                                    <td> <a href="{{url_for('users.delete_expert', id=expert.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class="center is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> 
                                 </tr>
                             {%endfor%}
                         </tbody>

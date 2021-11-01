@@ -2,10 +2,10 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db
-from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from Database_project.project.data_base_ import db
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
-from project.data_base_.client_data  import regex1
+from Database_project.project.data_base_.client_data  import regex1
 
 def failed1(av):
     ba=[]

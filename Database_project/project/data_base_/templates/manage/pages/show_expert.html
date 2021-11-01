@@ -130,7 +130,7 @@
 							</div>
 							<div class="column is-three-quarter text-secondary">
 								{{expert.code_tva}}
-							</div>
+							</div> 
 						  </div>
 						<hr>
 						<div class="columns">
@@ -320,6 +320,9 @@
 	
 			</div>
 		</div>
+	</div>
+	<div class="column">
+		<a href="{{url_for('users.mes_factures', id=expert.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
 	</div>
 				
 		</div>

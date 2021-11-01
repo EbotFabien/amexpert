@@ -24,7 +24,8 @@
             <li class="{% if highlight == 'expert' %} active {% endif %} has-submenu" style="position: relative;">
                 <a href="/expert"><span class="menu_icon"><i class="fas fa-users"></i></span> <span class="menu_text">Expert</span>
                 <ul class="sub-menu">
-                    <li> <a href="#" style="color: #000">Faturation Expert</a></li>   
+                    <li> <a href="{{url_for('users.allex')}}" style="color: #000">Factures </a></li>
+                    <li> <a href="{{url_for('users.chooseef')}}" style="color: #000">Faturation Expert</a></li>   
                 </ul>
              </a>
             </li>

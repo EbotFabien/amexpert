@@ -2,9 +2,9 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db
-from project.data_base_.Models import suivi_prospect,suivi_client,Client,prospect
-from project.data_base_.client_data  import regex1
+from Database_project.project.data_base_ import db
+from Database_project.project.data_base_.Models import suivi_prospect,suivi_client,Client,prospect
+from Database_project.project.data_base_.client_data  import regex1
 
 
 

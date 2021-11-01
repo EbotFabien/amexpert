@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField,DecimalField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
-from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
+from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
@@ -27,6 +27,15 @@ class RegistrationForm1(FlaskForm):
 
     submit = SubmitField('enregistrer')
 
+class rectify_Form(FlaskForm):
+    
+    TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
+                        validators=[DataRequired()])	
+
+    CODE_FACTURATION =StringField("CODE_FACTURATION",
+                        validators=[DataRequired()])  	
+
+    submit = SubmitField('Modifier')
 
 class RegistrationForm(FlaskForm):
     def validate_email(self,email):
@@ -610,6 +619,37 @@ class Facturation_Form(FlaskForm):
     #Observations_suivi_paiement=SelectField('Type_',
                             # choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
 
+
+    submit = SubmitField('enregistrer')
+
+class Facturationex_Form(FlaskForm):
+    
+    Demarrer=StringField('Demarrer',
+                           render_kw={'readonly':True})
+
+    Fin=StringField('Fin',
+                           render_kw={'readonly':True})
+    
+    Montant_HT =StringField('Montant HT€',
+                             render_kw={'readonly':True})
+    
+    Total_HT =StringField('Total HT€',
+                             render_kw={'readonly':True})
+
+
+    Date_EDL=StringField('Date EDL',
+                           render_kw={'readonly':True})
+    Data=HiddenField()
+
+    Missions=HiddenField()
+
+    Mission =StringField('Mission ID',
+                             render_kw={'readonly':True})
+
+    
+    Statut=SelectField('Statut',
+                             choices=[('paye', 'paye'), ('attente', 'attente')])
+    
 
     submit = SubmitField('enregistrer')
 
@@ -1323,3 +1363,25 @@ class Tarif_Base(FlaskForm):
                 validators=[DataRequired()])      
     submit = SubmitField('enregistrer')
 
+
+class UpdateAccountForm(FlaskForm):
+    username =StringField('UserName',
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    email =StringField('Email',
+                           validators=[DataRequired(),Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg','png'])])
+    submit = SubmitField('Update')
+    
+    def validate_username(self,username):
+        if username.data != current_user.username:
+            user = Expert.query.filter_by(Nom=username.data).first()
+
+            if user:
+                raise ValidationError('This username is taken.Please choose a different name')
+
+    def validate_email(self,email):
+        if email.data != current_user.email:
+            user = Expert.query.filter_by(email=email.data).first()
+
+            if user:
+                raise ValidationError('This email is already used by  another user')
