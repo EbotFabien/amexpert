@@ -40,7 +40,7 @@
                             <th></th> 
                             <th></th>
                             <th></th>
-                            <th></th>
+                            <th></th> 
                         </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@
                                     <td>
                                         <a href="{{url_for('users.delete_facturation', id=facturation.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	is-small is-fullwidth"><i class="fa fa-trash"></i></a> &nbsp;
                                     </td> 
-                                    <td> <a href="{{url_for('users.datereg', id=facturation.id)}}" onclick="return confirm('Voulez vous reglez cette facture ?')" title="Reglee facture" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                    <td> <a href="{{url_for('users.datereg', id=facturation.id)}}" onclick="return confirm('Voulez vous reglez cette facture ?')" title="Reglee facture" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-calendar" style="text-align: center"></i></a> </td>
                                 </tr>
                                
                             {%endfor%}
