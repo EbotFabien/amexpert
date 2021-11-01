@@ -11,11 +11,11 @@
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
             <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
                 <p class="card-header-title"><span class="icon"><i class="fas fa-file"></i></span></p>
-                <div class="card-header-title">
+                <!--div class="card-header-title">
                   <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
-                </div>
+                </div-->
                 <div class="card-header-title">
-                    <span>Total:{{sum}}</span>
+                    <span style="padding: 10px;position: absolute;right: 10px;">Total:{{sum}} €</span>
                 </div>
                                        
             </header>
@@ -33,91 +33,146 @@
                             <form class="user" method="POST" style="padding:10px; " action="{{url_for('users.create_facturee')}}" >
                                 {{ form.hidden_tag() }}
                                
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        {{form.Demarrer.label(class="form-control-label")}}
-                                    
-                                        {% if form.Demarrer.errors %}
-                                            {{ form.Demarrer(class="input is-small is-invalid",value=start) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Demarrer.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                            {% else %}
-                                                {{form.Demarrer(class="input is-small",value=start)}}
-                                            {% endif %}
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.Demarrer.label(class="form-control-label")}}</small>
+                                            </label>
+                                        </div>
+                                        <div class="field-body">
+                                            <div class="field"><!---->
+                                                <div class="control">
+                                                 {% if form.Demarrer.errors %}
+                                                  {{form.Demarrer(class="input is-invalid") }}
+                                              <div class="invalid-feedback">
+                                                  {% for error in form.Demarrer.errors %}
+                                                      <span>{{ error }}</span>
+                                                  {% endfor %}
+                                              </div>
+                                                  {% else %}
+                                                      {{form.Demarrer(class="input", value=start)}}
+                                                  {% endif %}
+                                                </div>
+                                                  <p class="help"> Requis.</p>
+                                              </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{form.Fin.label(class="form-control-label")}}
-                                    
-                                        {% if form.Fin.errors %}
-                                            {{ form.Fin(class="input is-small is-invalid",value=end)}}
+                                <div class="column">
+                                    <div class="field is-vertical">
+                                        <div class="is-normal">
+                                            <label class="label"><small>{{form.Fin.label(class="form-control-label")}}</small>
+                                        </label>
+                                        </div>
+                                        <div class="field-body">
+                                          <div class="field"><!---->
+                                              <div class="control">
+                                               {% if form.Fin.errors %}
+                                                {{form.Fin(class="input is-invalid") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Fin.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
-                                            {% else %}
-                                                {{form.Fin(class="input is-small",value=end)}}
-                                            {% endif %}
-                                    </div>
-                                </div>
-                                {%for i  in mission %}
-                                    
-                                    <div>
-                                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                                {{form.Mission.label(class="form-control-label")}}
-                                                
-                                            {% if form.Mission.errors %}
-                                                {{ form.Mission(class="input is-small is-invalid",value=i.id) }}
-                                                <div class="invalid-feedback">
-                                                    {% for error in form.Mission.errors %}
-                                                        <span>{{ error }}</span>
-                                                    {% endfor %}
-                                                </div>
                                                 {% else %}
-                                                    {{form.Mission(class="is-small input",value=i.id)}}
+                                                    {{form.Fin(class="input", value=end)}}
                                                 {% endif %}
+                                              </div>
+                                                <p class="help"> Requis.</p>
                                             </div>
-                                            
-                                            
+                                      </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-4 mb-3 mb-sm-0">
-                                                    {{form.Montant_HT.label(class="form-control-label")}}
-                                                    
-                                                {% if form.Montant_HT.errors %}
-                                                    {{ form.Montant_HT(class="input is-small is-invalid",value=i.PRIX_HT_EDL) }}
+                                </div>    
+                                    </div>                                
+                                </div>
+                                {%for key in mission %}
+                                <div class="columns">
+                              
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.Mission.label(class="form-control-label")}}</small>
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                    {% if form.Mission.errors %}
+                                                        {{form.Mission(class="input is-invalid") }}
                                                     <div class="invalid-feedback">
-                                                        {% for error in form.Montant_HT.errors %}
+                                                        {% for error in form.Mission.errors %}
                                                             <span>{{ error }}</span>
                                                         {% endfor %}
                                                     </div>
                                                     {% else %}
-                                                        {{form.Montant_HT(class="is-small input",value=i.PRIX_HT_EDL)}}
+                                                        {{form.Mission(class="input", value=key.id)}}
                                                     {% endif %}
+                                                    
+                                                  </div>
+                                                    <p class="help"> Requis.</p>
+                                                </div>
+                                          </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-4 mb-3 mb-sm-0">
-                                                    {{form.Date_EDL.label(class="form-control-label")}}
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small>{{form.Montant_HT.label(class="form-control-label")}}</small>
+                                            </div>
+
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   
+                                                    {% if form.Montant_HT.errors %}
+                                                    {{form.Montant_HT(class="input is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.Montant_HT.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                    {% else %}
+                                                        {{form.Montant_HT(class="input", value=key.PRIX_HT_EDL)}}
+                                                    {% endif %}
                                                     
-                                                {% if form.Date_EDL.errors %}
-                                                    {{ form.Date_EDL(class="input is-small is-invalid",value=i.DATE_REALISE_EDL) }}
+                                                  </div>
+                                                    <p class="help"> Requis.</p>
+                                                </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="field is-vertical">
+                                            <div class="is-normal">
+                                                <label class="label"><small><label class="form-control-label" for="Date_EDL">Date_EDL</label></small>
+                                            </label>
+                                            </div>
+                                            <div class="field-body">
+                                              <div class="field"><!---->
+                                                  <div class="control">
+                                                   
+                                                        {% if form.Date_EDL.errors %}
+                                                        {{form.Date_EDL(class="input is-invalid") }}
                                                     <div class="invalid-feedback">
                                                         {% for error in form.Date_EDL.errors %}
                                                             <span>{{ error }}</span>
                                                         {% endfor %}
                                                     </div>
-                                                    {% else %}
-                                                        {{form.Date_EDL(class="is-small input",value=i.DATE_REALISE_EDL)}}
-                                                    {% endif %}
+                                                        {% else %}
+                                                            {{form.Date_EDL(class="input", value=key.DATE_REALISE_EDL)}}
+                                                        {% endif %}
+                                                    
+                                                  </div>
+                                                    <p class="help"> Requis.</p>
+                                                </div>
+                                          </div>
                                         </div>
-                                    </div>
-                                    
+                                    </div>  
+                                                                 
+                                </div>
                                 {%endfor%}
                   
                                 <div class="form-group">
