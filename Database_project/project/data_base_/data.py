@@ -1,6 +1,6 @@
-from Database_project.project.data_base_ import db
-from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
+from project.data_base_ import db
+from project.data_base_ import bcrypt
+from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
 import xlrd,xlwt
 import openpyxl#panNNdas
 import flask as pd     
@@ -1776,7 +1776,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
 
 def date_(floa,date):
         try:

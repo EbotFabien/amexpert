@@ -2,8 +2,8 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from Database_project.project.data_base_ import db
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from project.data_base_ import db
+from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
 from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
@@ -27,7 +27,7 @@ def failed1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalieexpert.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalieexpert.xls')
 
 def xpert(loc):
     wb_obj = openpyxl.load_workbook(loc,data_only=True)

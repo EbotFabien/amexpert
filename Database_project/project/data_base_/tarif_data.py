@@ -37,7 +37,7 @@ def good2(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/Tarifbien.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Tarifbien.xls')
 
 def failed(av):
     ba=[]
@@ -58,7 +58,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/Tarifanomalie.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Tarifanomalie.xls')
 
 def arif(loc):
     anomalie=[]

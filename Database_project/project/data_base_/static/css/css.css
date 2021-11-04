@@ -1687,6 +1687,11 @@ input[type='radio']:checked:after {
   background: green;
 }
 
+.alert-warning {
+  color: white;
+  background: red;
+}
+
 .title-box {
   margin-top:20px;
   margin-bottom: 20px; 

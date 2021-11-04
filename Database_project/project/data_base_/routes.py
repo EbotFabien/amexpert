@@ -1,17 +1,17 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient
-from Database_project.project.data_base_.expert_data  import xpert
-from Database_project.project.data_base_.tarif_data  import arif
-from Database_project.project.data_base_.Suivi  import suiv
-from Database_project.project.data_base_.utils import send_reset_email,generate
+from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from project.data_base_ import bcrypt
+from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from project.data_base_.client_data  import lient
+from project.data_base_.expert_data  import xpert
+from project.data_base_.tarif_data  import arif
+from project.data_base_.Suivi  import suiv
+from project.data_base_.utils import send_reset_email,generate
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from Database_project.project.data_base_ import create_app
+from project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone
 
@@ -70,7 +70,7 @@ def ajouter_client():
             client_history.mpd_extranet =form.MdpExtranet.data
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
-            flash(f'Client créé avec succès','success')
+            flash(f'Le client a été créé avec succès','success')
             return redirect(url_for('users.client'))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client", highlight='client')
@@ -1305,7 +1305,7 @@ def edit_expert(id):
             
             f=form.validate2(form.email.data,form.Expert_id.data)
             if f==True:
-                flash(f"l'email es Deja pris",'Warning')
+                flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.edit_expert', id=expert.id))
             if expert.id==int(form.Expert_id.data):
                 expert_history=Expert_History(expert_id=id)
@@ -1344,7 +1344,7 @@ def edit_expert(id):
                 expert.code_tva=form.code_tva.data
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
-                flash(f'Les information de l\'expert a ete modifier', 'success')
+                flash(f'Modification réussie', 'success')
                 return redirect(url_for('users.expert'))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
@@ -1361,7 +1361,7 @@ def delete_expert(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes de l"expert ont été  suprimmer','success')
+        flash(f'L\'expert a été supprimé','success')
         return redirect(url_for('users.expert'))
 
 
@@ -1388,7 +1388,7 @@ def edit_tarifb(id):
                 Tarif.surface=form.surface.data
                 
                 db.session.commit()
-                flash(f'Les donnes du tarif a été modifiées','success')
+                flash(f'Modification réussie','success')
                 return redirect(url_for('users.tarif_base'))
         
         return render_template('manage/pages/edit_tb.html', highlight='expert', form=form,Tarif=Tarif)
@@ -1958,6 +1958,10 @@ def edit_suivip(id):
 
 
 
+@users.route("/exporter", methods=['GET','POST'])
+@login_required
+def export():
+    return render_template('manage/pages/exporter.html')
 
 @users.route("/televeser", methods=['GET','POST'])
 #@login_required
@@ -2942,7 +2946,7 @@ def create_facturee():
     if current_user.TYPE == "Admin":
         form=Facturationex_Form()
         #def ex(id):
-
+        #rint(request)
         
         _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())

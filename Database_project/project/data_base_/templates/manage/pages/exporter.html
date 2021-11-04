@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Importer</h2> 
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Exporter</h2> 
     </div>
       <div class="table-container" style="">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
@@ -26,7 +26,7 @@
                             <form method="POST" class="form-padding"  action="{{url_for('users.uploader_')}}" enctype="multipart/form-data">
                                 <div class="field is-horizontal">
                                   <div class="field-label is-normal">
-                                    <label class="label" style="text-align: left;"><small>Votre fichier</small></label></div>
+                                    <label class="label" style="text-align: left;"><small>Choisiser la Table</small></label></div>
                                     <div class="field-body">
                                       <div class="field"><!---->
                                           <div class="control">
@@ -36,21 +36,11 @@
                                                   <option value="client">Client</option>
                                                   <option value="expert">Expert</option>
                                                   <option value="mission">mission</option>
-                                                  <!--option value="Tarifb">Tarif base</option-->
-                                                  <option value="suivi">Suivi Client</option>
+                                                  <option value="Tarifb">Tarif base</option>
                                                 </select>
                                               </div>
                                             </div>
                                           </div>
-                                            <p class="help"> Requis. Le Type est requis</p>
-                                        </div>
-                                    </div>
-                                    <div class="field-body">
-                                      <div class="field"><!---->
-                                          <div class="control">
-                                             <input type="file" name="file">
-                                          </div>
-                                            <p class="help"> Requis. Le commentaire est requis</p>
                                         </div>
                                     </div>
                                 </div>
@@ -61,7 +51,7 @@
                                   <div class="field">
                                     <div class="control">
                       
-                                      <input type="submit" class="button is-primary is-small" value="Importer">
+                                      <input type="submit" class="button is-primary is-small" value="Exporter">
                                      
                                     </div>
                                   </div>

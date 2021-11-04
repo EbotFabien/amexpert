@@ -2,8 +2,8 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from Database_project.project.data_base_ import db
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from project.data_base_ import db
+from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 
@@ -153,7 +153,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalieclient.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalieclient.xls')
 
 def failed1(av):
     ba=[]
@@ -174,7 +174,7 @@ def failed1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/AnomaliePROSPECT.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/AnomaliePROSPECT.xls')
 
 def good1(av):
     ba=[]
@@ -195,7 +195,7 @@ def good1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/BienPROSPECT.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/BienPROSPECT.xls')
 
 def good2(av):
     ba=[]
@@ -216,7 +216,7 @@ def good2(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    wb.save('C:/Users/user/Downloads/Telegram Desktop/BienClient.xls')
+    #wb.save('C:/Users/user/Downloads/Telegram Desktop/BienClient.xls')
 
 
 def date_(floa,date):
