@@ -660,6 +660,7 @@ class Mission(db.Model):
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(DECIMAL(65,2)) #float
 
     Anomalie  = db.Column(db.Boolean,default=False)
+    Facex  = db.Column(db.Boolean,default=False)
     coherent  = db.Column(db.Boolean,default=True)
     reason = db.Column(db.String)
     Visibility =db.Column(db.Boolean,default=True)

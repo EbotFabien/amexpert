@@ -5,6 +5,7 @@ import xlrd,xlwt
 from Database_project.project.data_base_ import db
 from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 
 def regex1(data,Type):
     if  Type=='str':
@@ -235,9 +236,9 @@ def lient(loc):
     p=0
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
     sheet=wb_obj.active
+    if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
+                return False
     for i in range(0,sheet.max_row):
-        
-        
             if sheet["J"][i].value!='PROSPECT':
                 v=sheet["M"][i].value
                 

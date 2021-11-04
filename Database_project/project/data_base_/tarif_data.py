@@ -5,6 +5,7 @@ import xlrd,xlwt
 from Database_project.project.data_base_ import db
 from Database_project.project.data_base_.Models import Tarifs,Client,Expert
 from Database_project.project.data_base_.client_data  import regex1
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 
 def ex(name):
     if name == None:
@@ -67,6 +68,8 @@ def arif(loc):
     p=0
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
     sheet=wb_obj.active
+    if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
+                return False
     for i in range(0,sheet.max_row):
         if sheet["J"][i].value!='PROSPECT':
                 v=sheet["M"][i].value

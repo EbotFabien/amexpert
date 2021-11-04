@@ -2009,19 +2009,35 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             if table == 'client':
-                
+                    lient(loc)
+                    if lient(loc) == False:
+                        flash(f"Verifier la structure de votre fichier svp",'warning')
+                        return redirect(url_for('users.up'))
+                    flash(f"Vous avez importer les donnees avec success",'success')
+                    return redirect(url_for('users.client'))
+            
+            if table == 'suivi':
                     suiv(loc)
+                    if suiv(loc) == False:
+                        flash(f"Verifier la structure de votre fichier svp",'warning')
+                        return redirect(url_for('users.up'))
                     flash(f"Vous avez importer les donnees avec success",'success')
                     return redirect(url_for('users.client'))
                 
             if table == 'expert':
                     xpert(loc)
+                    if xpert(loc) == False:
+                        flash(f"Verifier la structure de votre fichier svp",'warning')
+                        return redirect(url_for('users.up'))
                     flash(f"Vous avez importer les donnees avec success",'success')
                     return redirect(url_for('users.expert'))
                
             if table == 'Tarifb':
                 
                 arif(loc)
+                if arif(loc) == False:
+                    flash(f"Verifier la structure de votre fichier svp",'warning')
+                    return redirect(url_for('users.up'))
                 flash(f"Vous avez importer les donnees avec success",'success')
                 return redirect(url_for('users.tarif_base'))
                 
@@ -2032,6 +2048,10 @@ def uploader_():
                 Missions2(loc,'29')
                 Missions2(loc,'31')'''
                 Missions1(loc)
+                if Missions1(loc) == False:
+                        flash(f"Verifier la structure de votre fichier svp",'warning')
+                        return redirect(url_for('users.up'))
+                return redirect(url_for('users.mission'))
                 
                
             # save the file1362
@@ -2127,11 +2147,17 @@ def search ():
                 title = "Expert"
             return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword'))
         elif table == 'mission':
-            try :
-                if isinstance(int(key),int) == True:
-                    missions= Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL.like(search),Mission.NRO_FACTURE.like(search),Mission.DATE_FACTURE.like(search),Mission.DATE_FACT_REGLEE.like(search),Mission.Reference_BAILLEUR==int(key),Mission.ID_CONCESS==int(key)),Mission.Visibility==True)).all()
-            except:    
-                missions = Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL.like(search),Mission.DATE_FACTURE.like(search),Mission.DATE_FACT_REGLEE.like(search)),Mission.Visibility==True)).all()
+            experts = Expert.query.filter(Expert.nom.contains(str(search.lower()))).first()   
+            clients = Client.query.filter(Client.nom.contains(str(search.lower()))).first()
+            if  clients:
+                missions = Mission.query.filter(and_(Mission.Reference_BAILLEUR==clients.id,Mission.Visibility==True)).all()
+            if  experts:
+                missions = Mission.query.filter(and_(or_(Mission.ID_INTERV==clients.id,Mission.ID_manager_chiffrage==clients.id,Mission.ID_agent_chiffrage==clients.id
+                ,Mission.ID_Respon_Cell_Dev==clients.id,Mission.ID_agent_Cell_Dev==clients.id,Mission.ID_Agent_CellTech==clients.id
+                ,Mission.ID_Respon_Cell_Tech==clients.id,Mission.ID_Suiveur_Cell_Tech==clients.id,Mission.ID_Respon_Cell_Planif==clients.id
+                ,Mission.ID_Suiveur_Cell_Planif ==clients.id,Mission.ID_Agent_saisie_Cell_Planif==clients.id),Mission.Visibility==True)).all()
+            else:
+                missions=[]
             if len(missions) > 1:
                 title = "Missions"
             else:
@@ -2889,19 +2915,24 @@ def chooseef():
     if current_user.TYPE == "Admin":
         form=time()
         form2=Facturationex_Form()
+        
         if form.validate_on_submit():  
             start=datetime.combine(form.Demarrer.data,datetime.min.time())
             end=datetime.combine(start+timedelta(days=30),datetime.min.time())
             
             price=list()
             
-            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.DATE_REALISE_EDL<=end)).order_by(asc(Mission.id)).all())#check query
-            for i in mission_:
-                price.append(i.PRIX_HT_EDL)
-            
-            total=sum(price)
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.DATE_REALISE_EDL<=end,Mission.Facex==False)).order_by(asc(Mission.id)).all())#check query
+            if mission_ != price:
+                for i in mission_:
+                    price.append(i.PRIX_HT_EDL)
+                total=sum(price)
             #fix lower page
-            return render_template('manage/pages/detail_facturatione.html', mission=mission_,form=form2,sum=total,start=start,end=end)
+                return render_template('manage/pages/detail_facturatione.html', mission=mission_,form=form2,sum=total,start=start,end=end)
+            else:
+                return redirect(url_for('users.chooseef'))
+            
+            
         return render_template('manage/pages/ajouter_facturation_expert.html',form=form,legend="time")
 
 
@@ -2913,10 +2944,10 @@ def create_facturee():
         #def ex(id):
 
         
-        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
-        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
+        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
+        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -2924,9 +2955,11 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()
+           db.session.commit()'''
         for i in mission:
             #implement facture number
+            i.Facex =True
+            db.session.commit()
             Type=Type_expert.query.filter_by(id=3).first()
             ex=Expert.query.filter_by(id=i.ID_INTERV).first()
             if i.DATE_FACT_REGLEE != None:
@@ -2957,7 +2990,8 @@ def create_facturee():
                 db.session.commit()
         for i in _mission:
             #implement facture number
-            
+            i.Facex =True
+            db.session.commit()
             ex=Expert.query.filter_by(id=i.ID_INTERV).first()
             if i.DATE_FACT_REGLEE != None:
                 mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],anomalie=True,etat=True)

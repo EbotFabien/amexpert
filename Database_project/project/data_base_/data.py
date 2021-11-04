@@ -7,6 +7,7 @@ import flask as pd
 from sqlalchemy import or_, and_
 import datetime
 from Database_project.project.data_base_.client_data  import regex1
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 
 def checktarif(a,p,c):
     taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
@@ -1792,8 +1793,10 @@ def Missions1(loc):
 
     rows=int(sheet.nrows)
     sheet.cell_value(0, 0)
-    print('ok')
-    for i in range(0,rows):
+    Name=sheet.row_values(0)
+    if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
+        return False
+    for i in range(0,rows+1):
         name=sheet.row_values(i)
 
         try:

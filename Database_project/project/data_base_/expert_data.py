@@ -6,6 +6,7 @@ from Database_project.project.data_base_ import db
 from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
 from Database_project.project.data_base_.client_data  import regex1
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 
 def failed1(av):
     ba=[]
@@ -32,6 +33,8 @@ def xpert(loc):
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
     anomalie=[]
     sheet=wb_obj.active
+    if sheet["B"][0].value!='identité agent'and sheet["C"][0].value!='Trigramme'and sheet["D"][0].value!='date entrée'and sheet["P"][0].value!='Ville':
+                return False
     for i in range(1,sheet.max_row):
         n=sheet["M"][i].value
         if type(n) == str:
