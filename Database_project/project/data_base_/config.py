@@ -9,7 +9,7 @@ class Config:
     MAIL_PASSWORD = 'onetouch000100'
     RECAPTCHA_PUBLIC_KEY ='6LcghOIZAAAAAE3zgcS-maNClYmtLTqICZtmHvWi'
     RECAPTCHA_PRIVATE_KEY='6LcghOIZAAAAAFiTeOmn_gN6xW_sGIFTDcVdIO0x'
-    UPLOAD_FOLDER=os.getcwd()+'\\data_base_\\static\\files'
+    UPLOAD_FOLDER=os.getcwd()+'/data_base_/static/files'
     DEBUG = True
     CACHE_TYPE= "simple" # Flask-Caching related configs
     CACHE_DEFAULT_TIMEOUT= 300

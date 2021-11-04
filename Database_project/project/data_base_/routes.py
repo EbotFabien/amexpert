@@ -2915,12 +2915,12 @@ def create_facturee():
     if current_user.TYPE == "Admin":
         form=Facturationex_Form()
         #def ex(id):
-
+        #rint(request)
         
         _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -2928,7 +2928,7 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()
+           db.session.commit()'''
         for i in mission:
             #implement facture number
             Type=Type_expert.query.filter_by(id=3).first()

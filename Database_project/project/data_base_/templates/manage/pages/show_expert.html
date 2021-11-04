@@ -27,9 +27,9 @@
 						  <p class="text-secondary mb-1">{{expert.TYPE}}</p>
 						  <small class=''>{{expert.etat_client}}</small>
 						  <p class="text-muted font-size-sm">{{history.cp}}, {{history.ville}}, {{history.pays}}</p>
-						  <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>
-							Modifier
-						  </a>
+						  <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>	Modifier
+						  </a><a href="{{url_for('users.mes_factures', id=expert.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
+						
 						</div>
 					  </div>
 					</div>
@@ -321,9 +321,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="column">
-		<a href="{{url_for('users.mes_factures', id=expert.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
-	</div>
+	
 				
 		</div>
 	</section>
