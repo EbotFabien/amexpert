@@ -2152,10 +2152,10 @@ def search ():
             if  clients:
                 missions = Mission.query.filter(and_(Mission.Reference_BAILLEUR==clients.id,Mission.Visibility==True)).all()
             if  experts:
-                missions = Mission.query.filter(and_(or_(Mission.ID_INTERV==clients.id,Mission.ID_manager_chiffrage==clients.id,Mission.ID_agent_chiffrage==clients.id
-                ,Mission.ID_Respon_Cell_Dev==clients.id,Mission.ID_agent_Cell_Dev==clients.id,Mission.ID_Agent_CellTech==clients.id
-                ,Mission.ID_Respon_Cell_Tech==clients.id,Mission.ID_Suiveur_Cell_Tech==clients.id,Mission.ID_Respon_Cell_Planif==clients.id
-                ,Mission.ID_Suiveur_Cell_Planif ==clients.id,Mission.ID_Agent_saisie_Cell_Planif==clients.id),Mission.Visibility==True)).all()
+                missions = Mission.query.filter(and_(or_(Mission.ID_INTERV==experts.id,Mission.ID_manager_chiffrage==experts.id,Mission.ID_agent_chiffrage==experts.id
+                ,Mission.ID_Respon_Cell_Dev==experts.id,Mission.ID_agent_Cell_Dev==experts.id,Mission.ID_Agent_CellTech==experts.id
+                ,Mission.ID_Respon_Cell_Tech==experts.id,Mission.ID_Suiveur_Cell_Tech==experts.id,Mission.ID_Respon_Cell_Planif==experts.id
+                ,Mission.ID_Suiveur_Cell_Planif ==experts.id,Mission.ID_Agent_saisie_Cell_Planif==experts.id),Mission.Visibility==True)).all()
             else:
                 missions=[]
             if len(missions) > 1:

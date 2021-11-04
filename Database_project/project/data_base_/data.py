@@ -1796,7 +1796,7 @@ def Missions1(loc):
     Name=sheet.row_values(0)
     if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
         return False
-    for i in range(0,rows+1):
+    for i in range(0,rows):
         name=sheet.row_values(i)
 
         try:
