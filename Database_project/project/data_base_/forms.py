@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField,DecimalField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
-from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
+from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
@@ -651,7 +651,7 @@ class Facturationex_Form(FlaskForm):
                              choices=[('paye', 'paye'), ('attente', 'attente')])
     
 
-    submit = SubmitField('enregistrer')
+    submit = SubmitField('Genere')
 
 
 class Client_Form(FlaskForm):

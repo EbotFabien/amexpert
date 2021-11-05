@@ -9,7 +9,11 @@
  <div class="table-container" style="">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
             <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;">
-                <p class="card-header-title"><span class="">Choisissez la date</span></p>
+                {% if legend == 'genere' %}
+                    <p class="card-header-title"><span class="">Choisissez la date de generation</span></p>
+                {% else %}
+                    <p class="card-header-title"><span class="">Choisissez la date</span></p>
+                {% endif %}
             </header>
                         <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}

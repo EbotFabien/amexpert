@@ -16,7 +16,7 @@
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">
 	            	{% if table == 'client' %}
-                        <table class="table table-bordered" id="table_id" style="width:100%">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead class="">
                             <tr>
                                 <th scope="col">ID</th>
@@ -45,9 +45,7 @@
                                         <td>{{client_.titre}} {{client_.nom }}</td>
                                         <td>{{client_.enseigne}}</td>
                                         <td>{{client_.email }}</td>
-                                        <td>{{client_.numero}}</td>
-                                        <!--td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
-                                        <td>{{client_.VILLE|truncate(12, True)}}</td-->   
+                                        <td>{{client_.numero}}</td> 
                                         <td>
                                             <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen"></i></a> <!-- &nbsp; -->
                                             <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
@@ -60,7 +58,7 @@
                         </table>
 			        {%endif%}
                     {% if table == 'prospect' %}
-                        <table class="table table-bordered" id="table_id" style="width:100%">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead class="">
                             <tr>
                                 <th scope="col">ID</th>
@@ -90,8 +88,6 @@
                                         <td>{{client_.enseigne}}</td>
                                         <td>{{client_.email }}</td>
                                         <td>{{client_.numero}}</td>
-                                        <!--td>{{client_.ADRESSE1|truncate(15, True)}}</td>                                   
-                                        <td>{{client_.VILLE|truncate(12, True)}}</td-->   
                                         <td>
                                             <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen"></i></a> <!-- &nbsp; -->
                                             <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->

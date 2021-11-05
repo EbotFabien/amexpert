@@ -28,7 +28,6 @@
                 <thead class="">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Numéro de Facture</th>
                         <th scope="col">Missions</th>
                         <th scope="col">Intervenants</th>
                         <th scope="col">Prix Mission € HT</th> 
@@ -44,7 +43,6 @@
                         {%for mission in facture %}
                             <tr>
                                 <td scope="row">{{mission.id}}</td>
-                                <td>{{mission.facture}}</td>
                                 <td>{{mission.mission}}</td>
                                 <td>{{mission.intervenant}}</td>
                                 <td>{{mission.prix_mission}}</td>

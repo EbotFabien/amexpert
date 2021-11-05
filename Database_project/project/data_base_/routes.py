@@ -1,22 +1,26 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from project.data_base_ import create_app
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone
+#from flask_wkhtmltopdf import render_template_to_pdf
+from flask_wkhtmltopdf import Wkhtmltopdf
 
 users =Blueprint('users',__name__)
 app= create_app()
+
+wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -2119,7 +2123,7 @@ def search ():
         search = "%{}%".format(request.args.get('keyword'))
         key=request.args.get('keyword')
         if table == 'client':
-            clients = Client.query.filter(and_(or_(Client.nom.like(search),Client.email.like(search),Client.numero.like(search),Client.societe.like(search),Client.visibility==True))).all()
+            clients = Client.query.filter(and_(or_(Client.nom.contains(str(search.lower())),Client.email.contains(str(search.lower())),Client.numero.contains(str(search.lower())),Client.societe.contains(str(search.lower()))),Client.visibility==True)).all()
             if len(clients) > 1:
                 title = "Clients"
             else:
@@ -2951,7 +2955,7 @@ def create_facturee():
         _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -2959,7 +2963,7 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()'''
+           db.session.commit()
         for i in mission:
             #implement facture number
             i.Facex =True
@@ -2982,15 +2986,28 @@ def create_facturee():
             chiffa={12:i.ID_agent_chiffrage,13:i.ID_AS,14:i.ID_manager_chiffrage}
 
             for R in hta:
-                #facture
+                ex=Expert.query.filter_by(id=hta[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
                 expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id,commision=i.PRIX_HT_EDL*Type.pourcentage)
                 db.session.add(expert)
                 db.session.commit()
+                date=str(mensuel.date_cmpte_mensuel)
+                date1=date[0:10]
+                spli=date1.split("-")
+                fac=''.join(spli)
+                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                db.session.commit()
             for R in chiffa:
+                ex=Expert.query.filter_by(id=chiffa[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
                 expert=expert_facturation(mission=mensuel.id,expert_id=chiffa[R],type_expert=Type.id,commision=i.Prix_ht_chiffrage*Type.pourcentage)
                 db.session.add(expert)
+                db.session.commit()
+                date=str(mensuel.date_cmpte_mensuel)
+                date1=date[0:10]
+                spli=date1.split("-")
+                fac=''.join(spli)
+                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
                 db.session.commit()
         for i in _mission:
             #implement facture number
@@ -3013,15 +3030,28 @@ def create_facturee():
             chiffa={12:i.ID_agent_chiffrage,13:i.ID_AS,14:i.ID_manager_chiffrage}
 
             for R in hta:
-                #facture
+                ex=Expert.query.filter_by(id=hta[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
                 expert=expert_facturation(mission=mensuel.id,expert_id=hta[R],type_expert=Type.id)
                 db.session.add(expert)
                 db.session.commit()
+                date=str(mensuel.date_cmpte_mensuel)
+                date1=date[0:10]
+                spli=date1.split("-")
+                fac=''.join(spli)
+                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                db.session.commit()
             for R in chiffa:
+                ex=Expert.query.filter_by(id=chiffa[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
                 expert=expert_facturation(mission=mensuel.id,expert_id=chiffa[R],type_expert=Type.id)
                 db.session.add(expert)
+                db.session.commit()
+                date=str(mensuel.date_cmpte_mensuel)
+                date1=date[0:10]
+                spli=date1.split("-")
+                fac=''.join(spli)
+                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
                 db.session.commit()
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
@@ -3061,7 +3091,7 @@ def choosedg(id):
             flash(f'Date generee avec sucess pour facture numero '+str(id),'success')
             return redirect(url_for('users.allex'))
 
-        return render_template('manage/pages/choose.html',form=form,legend="time")
+        return render_template('manage/pages/choose.html',form=form,legend="genere")
 
 @users.route('/<int:id>/expert', methods=['GET', 'POST'])
 @login_required
@@ -3093,3 +3123,13 @@ def mes_factures(id):
         return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
                                 
     return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
+
+
+@users.route('/download')
+@login_required
+def download():
+    if current_user.TYPE == "Admin": 
+           name="john"
+           return wkhtmltopdf.render_template_to_pdf('manage/pages/test1.html', download=True, save=True,name=name, param='hello')
+
+    return redirect(url_for('users.main'))
