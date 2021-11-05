@@ -14,6 +14,4 @@ class Config:
     DEBUG = True
     CACHE_TYPE= "simple" # Flask-Caching related configs
     CACHE_DEFAULT_TIMEOUT= 300
-    WKHTMLTOPDF_BIN_PATH = r'C:\Program Files\wkhtmltopdf\bin'
-    PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'files')
-    WKHTMLTOPDF_USE_CELERY = True
+   

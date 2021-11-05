@@ -15,12 +15,12 @@ from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+'''from flask_wkhtmltopdf import Wkhtmltopdf'''
 
 users =Blueprint('users',__name__)
 app= create_app()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+'''wkhtmltopdf = Wkhtmltopdf(app)'''
 
 PER_PAGE = 10
 
@@ -3125,11 +3125,11 @@ def mes_factures(id):
     return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
 
 
-@users.route('/download')
+'''@users.route('/download')
 @login_required
 def download():
     if current_user.TYPE == "Admin": 
            name="john"
            return wkhtmltopdf.render_template_to_pdf('manage/pages/test1.html', download=True, save=True,name=name, param='hello')
 
-    return redirect(url_for('users.main'))
+    return redirect(url_for('users.main'))'''
