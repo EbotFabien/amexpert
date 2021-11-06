@@ -62,7 +62,7 @@ class Expert(db.Model,UserMixin):
     siret=db.Column(db.BigInteger) 
     email = db.Column(db.String,default='')#unique
     email_perso = db.Column(db.String,default='')
-    numero = db.Column(db.Integer)
+    numero = db.Column(db.BigInteger)
     code_tva=db.Column(db.String,default='')
     taux_tva=db.Column(db.DECIMAL(65,2))
     password = db.Column(db.String(60))
