@@ -54,7 +54,7 @@ class RegistrationForm(FlaskForm):
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=4 ,max=10)])
+                                validators=[DataRequired(),validatep,length(min=10 ,max=10)])
 
     email =StringField('E-mail',
                            validators=[DataRequired(),Email(),validate_email])
@@ -129,7 +129,7 @@ class Expert_editForm(FlaskForm):
                                 validators=[DataRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=4 ,max=20)])
+                                validators=[DataRequired(),validatep,length(min=10 ,max=10)])
 
     email =StringField('E-mail')
 
@@ -147,11 +147,11 @@ class Expert_editForm(FlaskForm):
     secteur =StringField('Secteur')
 
 
-    siret =IntegerField('siret')
+    siret =IntegerField('siret', validators=[DataRequired(),validatep,length(min=14 ,max=14)])
 
     trigramme =StringField('trigramme')
 
-    code_tva =StringField('Code tva')
+    code_tva =StringField('Code tva', validators=[DataRequired(),validatep,length(min=4 ,max=4)])
                         
     taux_tva =DecimalField('Taux tva')
 
@@ -672,7 +672,7 @@ class Client_Form(FlaskForm):
                            validators=[DataRequired(),Email()])
 
     Numero =StringField('Tel',
-                           validators=[validatep])
+                           validators=[validatep,length(min=10 ,max=10)])
 
     Adresse1=StringField('Adresse1')
     
@@ -685,7 +685,7 @@ class Client_Form(FlaskForm):
                            validators=[DataRequired()])
     
     Siret=IntegerField("Siret N°",
-                           validators=[DataRequired()])
+                           validators=[DataRequired(),length(min=14 ,max=14)])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
@@ -754,7 +754,7 @@ class Client_edit(FlaskForm):
     email =StringField('E-mail')
 
     Numero =StringField('Tel',
-                           validators=[validatep])
+                           validators=[validatep,length(min=10 ,max=10)])
 
     Adresse1=StringField('Adresse1')
     
@@ -767,7 +767,7 @@ class Client_edit(FlaskForm):
                            validators=[DataRequired()])
     
     Siret=IntegerField("Siret N°",
-                           validators=[DataRequired()])
+                           validators=[DataRequired(),length(min=14 ,max=14)])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[DataRequired()])
@@ -818,7 +818,7 @@ class Negotiateur_Form(FlaskForm):
     email =StringField('E-mail')
 
     Numero =StringField('Tel',
-                           validators=[validatep])
+                           validators=[validatep,length(min=10 ,max=10)])
 
     Adresse=StringField('Adresse')
 
