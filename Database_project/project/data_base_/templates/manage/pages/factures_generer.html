@@ -44,12 +44,12 @@
                             <tr>
                                 <td scope="row">{{mission.id}}</td>
                                 <td>{{mission.mission}}</td>
-                                <td>{{mission.intervenant}}</td>
+                                <td>{% if mission.intervenant != '0' %} {{mission.intervenant}} {%endif%}</td>
                                 <td>{{mission.prix_mission}}</td>
-                                <td>{{mission.date_cmpte_mensuel}}</td>
-                                <td>{{mission.date_generation}}</td>
-                                <td>{{mission.date_envoie_Facture}}</td>
-                                <td>{{mission.commission_ac}}</td>
+                                <td>{{mission.date_cmpte_mensuel.strftime('%d/%m/%Y')}}</td>
+                                <td>{% if mission.date_generation != None %} {{mission.date_generation.strftime('%d/%m/%Y')}} {% endif %}</td>
+                                <td>{% if mission.date_envoie_Facture != None %}{{mission.date_envoie_Facture.strftime('%d/%m/%Y')}}{% endif %}</td>
+                                <td>{% if mission.commission_ac != None %}{{mission.commission_ac}}{% endif %}</td>
                                 <td> <a href="{{url_for('users.choosedg', id=mission.id)}}" title="mettre date_generation" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                 <td style="">
                                     <a href="{{url_for('users.factme', id=mission.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>

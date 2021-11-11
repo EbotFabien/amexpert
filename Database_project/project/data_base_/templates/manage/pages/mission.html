@@ -89,9 +89,11 @@
                             <th scope="col">ID CONCESS</th>	  
                             <th scope="col">DATE EDL REALISE</th>  	
                             <th scope="col">PRIX HT EDL</th>	  	     	
-                            <th scope="col">DATE FACTURE</th>  	  		
+                            <th scope="col">DATE FACTURE</th>  	
+                            {% if current_user.TYPE == "Admin" %}  		
                             <th></th>	
                             <th></th>
+                            {%endif%}
                             <th></th>
 	                	</tr>
 	            	</thead>
@@ -99,10 +101,16 @@
 		                {%for mission_ in Mission.items %}
 		                    <tr>    
                                 <td>{{mission_.id}}</td> 
-                                <td>{{mission_.Bailleur__data.reference}}</td>     	   
-                                <td>{{mission_.AS__data.nom}}</td> 	  
+                                <td>{{mission_.Bailleur__data.reference}}</td> 
                                 <td>
-                                  {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d. %m. %Y') }}
+                                {% if mission_.AS__data.nom != "0" %}    	   
+                                  {{mission_.AS__data.nom}}
+                                {% else %}  
+                                
+                                {% endif %}
+                                </td> 
+                                <td>
+                                  {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d/%m/%Y') }}
                                   {% else %}
                                   aucune date
                                   {% endif %}
@@ -118,11 +126,13 @@
                                   {% if mission_.DATE_FACTURE == None %}
                                     aucune date
                                   {% else %}
-                                    {{ mission_.DATE_FACTURE.strftime('%d. %m. %Y') }}
+                                    {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
                                   {% endif %}                              
-                                </td>   	 	  	  
+                                </td>  
+                                {% if current_user.TYPE == "Admin" %} 	 	  	  
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
                                 <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
+                                {% endif%}
                                 <td style="">
                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                     

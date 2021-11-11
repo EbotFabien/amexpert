@@ -55,9 +55,11 @@
             </div> 
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
+              
                 <a href="/profil" class="dropdown-item">
                   Profil
                 </a>
+              {% if current_user.TYPE == "Admin" %}
                 <a href="/televeser" class="dropdown-item">
                   Importer
                 </a>
@@ -65,6 +67,7 @@
                   Exporter
                 </a>
                 <hr class="dropdown-divider">
+              {% endif %}
                 <a href="/logout" class="dropdown-item">
                   <Datag>Déconnexion</Datag>
                 </a>

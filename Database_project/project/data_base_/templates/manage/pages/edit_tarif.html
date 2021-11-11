@@ -1,25 +1,17 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
- <div class="container-fluid">
+ <div class="main-content">
 
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tarif</h1>
-        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
-    </div>
-    <!-- Content Row -->
-
-    <div class="row">
-        <!-- Area Chart -->
-        <div class="col-xl-6 col-lg-6 mx-auto">
-            <div class="card shadow mb-4">
-	        <div class="card-header py-1 justify-content-between d-flex align-items-center">
-	            <h6 class="m-0 font-weight-bold d-inline"><small>{{expert.id}}</small></h6>
-                <a href="/tarifs" class="button is-small is-black">Tous les tarif <!--<i class="fa fa-euro"></i>--></a>
-	        </div>
-	        <div class="card-body">
-	            <div class="row">
-                    <div class="col-lg-12 mx-auto">
+  {% include 'manage/partials/search.html'%}
+  <div class="table-container">
+    <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+        <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
+            <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+            <div class="card-header-title">
+              <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+            </div>
+                                   
+        </header>
                         <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
@@ -39,17 +31,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.edl_prix_std.errors %}
-                                            {{form.edl_prix_std(class="input is-invalid", value=expert.edl_prix_std) }}
+                                            {{form.edl_prix_std(class="input is-invalid", placeholder="Données numérique", value=expert.edl_prix_std) }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.edl_prix_std.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.edl_prix_std(class="input", value=expert.edl_prix_std)}}
+                                                    {{form.edl_prix_std(class="input", placeholder="Données numérique", value=expert.edl_prix_std)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le numero de edl_prix_std est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -61,17 +53,17 @@
                                               <div class="field"><!---->
                                                   <div class="control">
                                                    {% if form.edl_appt_prix_f1.errors %}
-                                                {{form.edl_appt_prix_f1(class="input is-invalid", value=expert.edl_appt_prix_f1) }}
+                                                {{form.edl_appt_prix_f1(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f1) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.edl_appt_prix_f1.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.edl_appt_prix_f1(class="input", value=expert.edl_appt_prix_f1)}}
+                                                        {{form.edl_appt_prix_f1(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f1)}}
                                                     {% endif %}
                                                   </div>
-                                                    <p class="help"> Requis. Le edl_appt_prix_f1 est requis</p>
+                                                    <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -83,17 +75,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_appt_prix_f2.errors %}
-                                                  {{form.edl_appt_prix_f2(class="input is-invalid", value=expert.edl_appt_prix_f2) }}
+                                                  {{form.edl_appt_prix_f2(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f2) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_appt_prix_f2.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_appt_prix_f2(class="input", value=expert.edl_appt_prix_f2)}}
+                                                          {{form.edl_appt_prix_f2(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f2)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_appt_prix_f2 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -105,17 +97,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_appt_prix_f3.errors %}
-                                                  {{form.edl_appt_prix_f3(class="input is-invalid", value=expert.edl_appt_prix_f3) }}
+                                                  {{form.edl_appt_prix_f3(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f3) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_appt_prix_f3.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_appt_prix_f3(class="input", value=expert.edl_appt_prix_f3)}}
+                                                          {{form.edl_appt_prix_f3(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f3)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_appt_prix_f3 est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -127,17 +119,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_appt_prix_f4.errors %}
-                                                  {{form.edl_appt_prix_f4(class="input is-invalid", value=expert.edl_appt_prix_f4) }}
+                                                  {{form.edl_appt_prix_f4(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f4) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_appt_prix_f4.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_appt_prix_f4(class="input", value=expert.edl_appt_prix_f4)}}
+                                                          {{form.edl_appt_prix_f4(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f4)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_appt_prix_f4 est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -149,17 +141,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_appt_prix_f5.errors %}
-                                                  {{form.edl_appt_prix_f5(class="input is-invalid", value=expert.edl_appt_prix_f5) }}
+                                                  {{form.edl_appt_prix_f5(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f5) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_appt_prix_f5.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_appt_prix_f5(class="input", value=expert.edl_appt_prix_f5)}}
+                                                          {{form.edl_appt_prix_f5(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f5)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_appt_prix_f5 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -171,17 +163,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_appt_prix_f6.errors %}
-                                                  {{form.edl_appt_prix_f6(class="input is-invalid", value=expert.edl_appt_prix_f6) }}
+                                                  {{form.edl_appt_prix_f6(class="input is-invalid", placeholder="Données numérique", value=expert.edl_appt_prix_f6) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_appt_prix_f6.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_appt_prix_f6(class="input", value=expert.edl_appt_prix_f6)}}
+                                                          {{form.edl_appt_prix_f6(class="input", placeholder="Données numérique", value=expert.edl_appt_prix_f6)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_appt_prix_f6 est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -193,17 +185,17 @@
                                               <div class="field"><!---->
                                                   <div class="control">
                                                    {% if form.edl_pav_villa_prix_t1.errors %}
-                                                {{form.edl_pav_villa_prix_t1(class="input is-invalid", value=expert.edl_pav_villa_prix_t1) }}
+                                                {{form.edl_pav_villa_prix_t1(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t1) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.edl_pav_villa_prix_t1.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.edl_pav_villa_prix_t1(class="input", value=expert.edl_pav_villa_prix_t1)}}
+                                                        {{form.edl_pav_villa_prix_t1(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t1)}}
                                                     {% endif %}
                                                   </div>
-                                                    <p class="help"> Requis. Le edl_pav_villa_prix_t1 est requis</p>
+                                                    <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -215,17 +207,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t2.errors %}
-                                                  {{form.edl_pav_villa_prix_t2(class="input is-invalid", value=expert.edl_pav_villa_prix_t2) }}
+                                                  {{form.edl_pav_villa_prix_t2(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t2) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t2.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t2(class="input", value=expert.edl_pav_villa_prix_t2)}}
+                                                          {{form.edl_pav_villa_prix_t2(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t2)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t2 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -237,17 +229,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t3.errors %}
-                                                  {{form.edl_pav_villa_prix_t3(class="input is-invalid", value=expert.edl_pav_villa_prix_t3) }}
+                                                  {{form.edl_pav_villa_prix_t3(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t3) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t3.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t3(class="input", value=expert.edl_pav_villa_prix_t3)}}
+                                                          {{form.edl_pav_villa_prix_t3(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t3)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t3 est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -259,17 +251,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t4.errors %}
-                                                  {{form.edl_pav_villa_prix_t4(class="input is-invalid", value=expert.edl_pav_villa_prix_t4) }}
+                                                  {{form.edl_pav_villa_prix_t4(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t4) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t4.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t4(class="input", value=expert.edl_pav_villa_prix_t4)}}
+                                                          {{form.edl_pav_villa_prix_t4(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t4)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t4 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -281,17 +273,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t5.errors %}
-                                                  {{form.edl_pav_villa_prix_t5(class="input is-invalid", value=expert.edl_pav_villa_prix_t5) }}
+                                                  {{form.edl_pav_villa_prix_t5(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t5) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t5.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t5(class="input", value=expert.edl_pav_villa_prix_t5)}}
+                                                          {{form.edl_pav_villa_prix_t5(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t5)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t5 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -303,17 +295,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t6.errors %}
-                                                  {{form.edl_pav_villa_prix_t6(class="input is-invalid", value=expert.edl_pav_villa_prix_t6) }}
+                                                  {{form.edl_pav_villa_prix_t6(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t6) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t6.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t6(class="input", value=expert.edl_pav_villa_prix_t6)}}
+                                                          {{form.edl_pav_villa_prix_t6(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t6)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t6 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -325,17 +317,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t7.errors %}
-                                                  {{form.edl_pav_villa_prix_t7(class="input is-invalid", value=expert.edl_pav_villa_prix_t7) }}
+                                                  {{form.edl_pav_villa_prix_t7(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t7) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t7.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t7(class="input", value=expert.edl_pav_villa_prix_t7)}}
+                                                          {{form.edl_pav_villa_prix_t7(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t7)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t7 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -347,17 +339,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.edl_pav_villa_prix_t8.errors %}
-                                                  {{form.edl_pav_villa_prix_t8(class="input is-invalid", value=expert.edl_pav_villa_prix_t8) }}
+                                                  {{form.edl_pav_villa_prix_t8(class="input is-invalid", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t8) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.edl_pav_villa_prix_t8.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.edl_pav_villa_prix_t8(class="input", value=expert.edl_pav_villa_prix_t8)}}
+                                                          {{form.edl_pav_villa_prix_t8(class="input", placeholder="Données numérique", value=expert.edl_pav_villa_prix_t8)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le edl_pav_villa_prix_t8 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -369,17 +361,17 @@
                                               <div class="field"><!---->
                                                   <div class="control">
                                                    {% if form.chif_appt_prix_stu.errors %}
-                                                    {{form.chif_appt_prix_stu(class="input is-invalid", value=expert.chif_appt_prix_stu) }}
+                                                    {{form.chif_appt_prix_stu(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_stu) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.chif_appt_prix_stu.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.chif_appt_prix_stu(class="input", value=expert.chif_appt_prix_stu)}}
+                                                        {{form.chif_appt_prix_stu(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_stu)}}
                                                     {% endif %}
                                                   </div>
-                                                    <p class="help"> Requis. Le chif_appt_prix_stu est requis</p>
+                                                    <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -391,17 +383,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f1.errors %}
-                                                      {{form.chif_appt_prix_f1(class="input is-invalid", value=expert.chif_appt_prix_f1) }}
+                                                      {{form.chif_appt_prix_f1(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f1) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f1.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f1(class="input", value=expert.chif_appt_prix_f1)}}
+                                                          {{form.chif_appt_prix_f1(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f1)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f1 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -413,17 +405,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f2.errors %}
-                                                      {{form.chif_appt_prix_f2(class="input is-invalid", value=expert.chif_appt_prix_f2) }}
+                                                      {{form.chif_appt_prix_f2(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f2) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f2.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f2(class="input", value=expert.chif_appt_prix_f2)}}
+                                                          {{form.chif_appt_prix_f2(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f2)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f2 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -435,17 +427,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f3.errors %}
-                                                      {{form.chif_appt_prix_f3(class="input is-invalid", value=expert.chif_appt_prix_f3) }}
+                                                      {{form.chif_appt_prix_f3(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f3) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f3.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f3(class="input", value=expert.chif_appt_prix_f3)}}
+                                                          {{form.chif_appt_prix_f3(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f3)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f3 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -457,17 +449,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f4.errors %}
-                                                      {{form.chif_appt_prix_f4(class="input is-invalid", value=expert.chif_appt_prix_f4) }}
+                                                      {{form.chif_appt_prix_f4(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f4) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f4.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f4(class="input", value=expert.chif_appt_prix_f4)}}
+                                                          {{form.chif_appt_prix_f4(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f4)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f4 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -479,17 +471,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f5.errors %}
-                                                      {{form.chif_appt_prix_f5(class="input is-invalid", value=expert.chif_appt_prix_f5) }}
+                                                      {{form.chif_appt_prix_f5(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f5) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f5.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f5(class="input", value=expert.chif_appt_prix_f5)}}
+                                                          {{form.chif_appt_prix_f5(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f5)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f5 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -501,17 +493,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.chif_appt_prix_f6.errors %}
-                                                      {{form.chif_appt_prix_f6(class="input is-invalid", value=expert.chif_appt_prix_f6) }}
+                                                      {{form.chif_appt_prix_f6(class="input is-invalid", placeholder="Données numérique", value=expert.chif_appt_prix_f6) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_appt_prix_f6.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_appt_prix_f6(class="input", value=expert.chif_appt_prix_f6)}}
+                                                          {{form.chif_appt_prix_f6(class="input", placeholder="Données numérique", value=expert.chif_appt_prix_f6)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_appt_prix_f6 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -523,17 +515,17 @@
                                               <div class="field">
                                                   <div class="control">
                                                    {% if form.chif_pav_villa_prix_t1.errors %}
-                                                    {{form.chif_pav_villa_prix_t1(class="input is-invalid", value=expert.chif_pav_villa_prix_t1) }}
+                                                    {{form.chif_pav_villa_prix_t1(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t1) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.chif_pav_villa_prix_t1.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.chif_pav_villa_prix_t1(class="input", value=expert.chif_pav_villa_prix_t1)}}
+                                                        {{form.chif_pav_villa_prix_t1(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t1)}}
                                                     {% endif %}
                                                   </div>
-                                                    <p class="help"> Requis. Le chif_pav_villa_prix_t1 est requis</p>
+                                                    <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -545,17 +537,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t2.errors %}
-                                                      {{form.chif_pav_villa_prix_t2(class="input is-invalid", value=expert.chif_pav_villa_prix_t2) }}
+                                                      {{form.chif_pav_villa_prix_t2(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t2) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t2.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t2(class="input", value=expert.chif_pav_villa_prix_t2)}}
+                                                          {{form.chif_pav_villa_prix_t2(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t2)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t2 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -567,17 +559,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t3.errors %}
-                                                      {{form.chif_pav_villa_prix_t3(class="input is-invalid", value=expert.chif_pav_villa_prix_t3) }}
+                                                      {{form.chif_pav_villa_prix_t3(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t3) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t3.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t3(class="input", value=expert.chif_pav_villa_prix_t3)}}
+                                                          {{form.chif_pav_villa_prix_t3(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t3)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t3 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -589,17 +581,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t4.errors %}
-                                                      {{form.chif_pav_villa_prix_t4(class="input is-invalid", value=expert.chif_pav_villa_prix_t4) }}
+                                                      {{form.chif_pav_villa_prix_t4(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t4) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t4.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t4(class="input", value=expert.chif_pav_villa_prix_t4)}}
+                                                          {{form.chif_pav_villa_prix_t4(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t4)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t4 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -611,17 +603,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t5.errors %}
-                                                      {{form.chif_pav_villa_prix_t5(class="input is-invalid", value=expert.chif_pav_villa_prix_t5) }}
+                                                      {{form.chif_pav_villa_prix_t5(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t5) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t5.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t5(class="input", value=expert.chif_pav_villa_prix_t5)}}
+                                                          {{form.chif_pav_villa_prix_t5(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t5)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t5 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -633,17 +625,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t6.errors %}
-                                                      {{form.chif_pav_villa_prix_t6(class="input is-invalid", value=expert.chif_pav_villa_prix_t6) }}
+                                                      {{form.chif_pav_villa_prix_t6(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t6) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t6.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t6(class="input", value=expert.chif_pav_villa_prix_t6)}}
+                                                          {{form.chif_pav_villa_prix_t6(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t6)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t6 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -655,17 +647,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t7.errors %}
-                                                      {{form.chif_pav_villa_prix_t7(class="input is-invalid", value=expert.chif_pav_villa_prix_t7) }}
+                                                      {{form.chif_pav_villa_prix_t7(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t7) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t7.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t7(class="input", value=expert.chif_pav_villa_prix_t7)}}
+                                                          {{form.chif_pav_villa_prix_t7(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t7)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t7 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -677,17 +669,17 @@
                                                 <div class="field">
                                                     <div class="control">
                                                      {% if form.chif_pav_villa_prix_t8.errors %}
-                                                      {{form.chif_pav_villa_prix_t8(class="input is-invalid", value=expert.chif_pav_villa_prix_t8) }}
+                                                      {{form.chif_pav_villa_prix_t8(class="input is-invalid", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t8) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.chif_pav_villa_prix_t8.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.chif_pav_villa_prix_t8(class="input", value=expert.chif_pav_villa_prix_t8)}}
+                                                          {{form.chif_pav_villa_prix_t8(class="input", placeholder="Données numérique", value=expert.chif_pav_villa_prix_t8)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. Le chif_pav_villa_prix_t8 est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -699,17 +691,17 @@
                                               <div class="field">
                                                   <div class="control">
                                                    {% if form.prix_autre.errors %}
-                                                    {{form.prix_autre(class="input is-invalid", value=expert.prix_autre) }}
+                                                    {{form.prix_autre(class="input is-invalid", placeholder="Données numérique", value=expert.prix_autre) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.prix_autre.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.prix_autre(class="input", value=expert.prix_autre)}}
+                                                        {{form.prix_autre(class="input", placeholder="Données numérique", value=expert.prix_autre)}}
                                                     {% endif %}
                                                   </div>
-                                                    
+                                                     <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -724,17 +716,17 @@
                                               <div class="field"><!---->
                                                   <div class="control">
                                                    {% if form.code_tva.errors %}
-                                                    {{form.code_tva(class="input is-invalid", value=expert.code_tva) }}
+                                                    {{form.code_tva(class="input is-invalid", placeholder="Données numérique", value=expert.code_tva) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.code_tva.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.code_tva(class="input", value=expert.code_tva)}}
+                                                        {{form.code_tva(class="input", placeholder="Données numérique", value=expert.code_tva)}}
                                                     {% endif %}
                                                   </div>
-                                                    
+                                                     <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -746,16 +738,17 @@
                                               <div class="field"><!---->
                                                   <div class="control">
                                                    {% if form.taux_meuble.errors %}
-                                                    {{form.taux_meuble(class="input is-invalid", value=expert.taux_meuble) }}
+                                                    {{form.taux_meuble(class="input is-invalid", placeholder="Données numérique", value=expert.taux_meuble) }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form.taux_meuble.errors %}
                                                         <span>{{ error }}</span>
                                                     {% endfor %}
                                                 </div>
                                                     {% else %}
-                                                        {{form.taux_meuble(class="input", value=expert.taux_meuble)}}
+                                                        {{form.taux_meuble(class="input", placeholder="Données numérique", value=expert.taux_meuble)}}
                                                     {% endif %}
                                                   </div>
+                                                   <p class="help"> Veuillez remplir champ</p>
                                                 </div>
                                               </div>
                                             </div>
@@ -767,17 +760,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.referent_as_client.errors %}
-                                                      {{form.referent_as_client(class="input is-invalid", value=expert.referent_as_client) }}
+                                                      {{form.referent_as_client(class="input is-invalid", placeholder="Données numérique", value=expert.referent_as_client) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.referent_as_client.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.referent_as_client(class="input", value=expert.referent_as_client)}}
+                                                          {{form.referent_as_client(class="input", placeholder="Données numérique", value=expert.referent_as_client)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. referent_as_client est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -789,17 +782,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_as_sur_ca_client.errors %}
-                                                      {{form.com_as_sur_ca_client(class="input is-invalid", value=expert.com_as_sur_ca_client) }}
+                                                      {{form.com_as_sur_ca_client(class="input is-invalid", placeholder="Données numérique", value=expert.com_as_sur_ca_client) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_as_sur_ca_client.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_as_sur_ca_client(class="input", value=expert.com_as_sur_ca_client)}}
+                                                          {{form.com_as_sur_ca_client(class="input", placeholder="Données numérique", value=expert.com_as_sur_ca_client)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_as_sur_ca_client est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -811,17 +804,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_dev_ref_responsable.errors %}
-                                                      {{form.cell_dev_ref_responsable(class="input is-invalid", value=expert.cell_dev_ref_responsable) }}
+                                                      {{form.cell_dev_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.cell_dev_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_dev_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_dev_ref_responsable(class="input", value=expert.cell_dev_ref_responsable)}}
+                                                          {{form.cell_dev_ref_responsable(class="input", placeholder="Données numérique", value=expert.cell_dev_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_dev_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -833,17 +826,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_dev_ref_responsable.errors %}
-                                                      {{form.com_cell_dev_ref_responsable(class="input is-invalid", value=expert.com_cell_dev_ref_responsable) }}
+                                                      {{form.com_cell_dev_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_dev_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_dev_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_dev_ref_responsable(class="input", value=expert.com_cell_dev_ref_responsable)}}
+                                                          {{form.com_cell_dev_ref_responsable(class="input", placeholder="Données numérique", value=expert.com_cell_dev_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_dev_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -855,17 +848,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_dev_ref_agent.errors %}
-                                                      {{form.cell_dev_ref_agent(class="input is-invalid", value=expert.cell_dev_ref_agent) }}
+                                                      {{form.cell_dev_ref_agent(class="input is-invalid", placeholder="Données numérique", value=expert.cell_dev_ref_agent) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_dev_ref_agent.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_dev_ref_agent(class="input", value=expert.cell_dev_ref_agent)}}
+                                                          {{form.cell_dev_ref_agent(class="input", placeholder="Données numérique", value=expert.cell_dev_ref_agent)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_dev_ref_agent est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -877,17 +870,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_dev_ref_agent.errors %}
-                                                      {{form.com_cell_dev_ref_agent(class="input is-invalid", value=expert.com_cell_dev_ref_agent) }}
+                                                      {{form.com_cell_dev_ref_agent(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_dev_ref_agent) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_dev_ref_agent.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_dev_ref_agent(class="input", value=expert.com_cell_dev_ref_agent)}}
+                                                          {{form.com_cell_dev_ref_agent(class="input", placeholder="Données numérique", value=expert.com_cell_dev_ref_agent)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_dev_ref_agent est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -899,17 +892,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_tech_ref_agent.errors %}
-                                                      {{form.cell_tech_ref_agent(class="input is-invalid", value=expert.cell_tech_ref_agent) }}
+                                                      {{form.cell_tech_ref_agent(class="input is-invalid", placeholder="Données numérique", value=expert.cell_tech_ref_agent) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_tech_ref_agent.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_tech_ref_agent(class="input", value=expert.cell_tech_ref_agent)}}
+                                                          {{form.cell_tech_ref_agent(class="input", placeholder="Données numérique", value=expert.cell_tech_ref_agent)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_tech_ref_agent est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -921,17 +914,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_tech_Ref_agent.errors %}
-                                                      {{form.com_cell_tech_Ref_agent(class="input is-invalid", value=expert.com_cell_tech_Ref_agent) }}
+                                                      {{form.com_cell_tech_Ref_agent(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_tech_Ref_agent) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_tech_Ref_agent.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_tech_Ref_agent(class="input", value=expert.com_cell_tech_Ref_agent)}}
+                                                          {{form.com_cell_tech_Ref_agent(class="input", placeholder="Données numérique", value=expert.com_cell_tech_Ref_agent)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_tech_Ref_agent est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -943,17 +936,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_tech_ref_responsable.errors %}
-                                                      {{form.cell_tech_ref_responsable(class="input is-invalid", value=expert.cell_tech_ref_responsable) }}
+                                                      {{form.cell_tech_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.cell_tech_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_tech_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_tech_ref_responsable(class="input", value=expert.cell_tech_ref_responsable)}}
+                                                          {{form.cell_tech_ref_responsable(class="input", placeholder="Données numérique", value=expert.cell_tech_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_tech_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -965,17 +958,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_tech_ref_responsable.errors %}
-                                                      {{form.com_cell_tech_ref_responsable(class="input is-invalid", value=expert.com_cell_tech_ref_responsable) }}
+                                                      {{form.com_cell_tech_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_tech_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_tech_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_tech_ref_responsable(class="input", value=expert.com_cell_tech_ref_responsable)}}
+                                                          {{form.com_cell_tech_ref_responsable(class="input", placeholder="Données numérique", value=expert.com_cell_tech_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_tech_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -987,17 +980,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_tech_ref_suiveur.errors %}
-                                                      {{form.cell_tech_ref_suiveur(class="input is-invalid", value=expert.cell_tech_ref_suiveur) }}
+                                                      {{form.cell_tech_ref_suiveur(class="input is-invalid", placeholder="Données numérique", value=expert.cell_tech_ref_suiveur) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_tech_ref_suiveur.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_tech_ref_suiveur(class="input", value=expert.cell_tech_ref_suiveur)}}
+                                                          {{form.cell_tech_ref_suiveur(class="input", placeholder="Données numérique", value=expert.cell_tech_ref_suiveur)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_tech_ref_suiveur est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1009,17 +1002,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_tech_ref_suiveur.errors %}
-                                                      {{form.com_cell_tech_ref_suiveur(class="input is-invalid", value=expert.com_cell_tech_ref_suiveur) }}
+                                                      {{form.com_cell_tech_ref_suiveur(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_tech_ref_suiveur) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_tech_ref_suiveur.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_tech_ref_suiveur(class="input", value=expert.com_cell_tech_ref_suiveur)}}
+                                                          {{form.com_cell_tech_ref_suiveur(class="input", placeholder="Données numérique", value=expert.com_cell_tech_ref_suiveur)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_tech_ref_suiveur est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1031,17 +1024,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_planif_ref_responsable.errors %}
-                                                      {{form.cell_planif_ref_responsable(class="input is-invalid", value=expert.cell_planif_ref_responsable) }}
+                                                      {{form.cell_planif_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.cell_planif_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_planif_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_planif_ref_responsable(class="input", value=expert.cell_planif_ref_responsable)}}
+                                                          {{form.cell_planif_ref_responsable(class="input", placeholder="Données numérique", value=expert.cell_planif_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_planif_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1053,17 +1046,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_planif_ref_responsable.errors %}
-                                                      {{form.com_cell_planif_ref_responsable(class="input is-invalid", value=expert.com_cell_planif_ref_responsable) }}
+                                                      {{form.com_cell_planif_ref_responsable(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_planif_ref_responsable) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_planif_ref_responsable.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_planif_ref_responsable(class="input", value=expert.com_cell_planif_ref_responsable)}}
+                                                          {{form.com_cell_planif_ref_responsable(class="input", placeholder="Données numérique", value=expert.com_cell_planif_ref_responsable)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_planif_ref_responsable est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1075,17 +1068,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_planif_ref_suiveur.errors %}
-                                                      {{form.cell_planif_ref_suiveur(class="input is-invalid", value=expert.cell_planif_ref_suiveur) }}
+                                                      {{form.cell_planif_ref_suiveur(class="input is-invalid", placeholder="Données numérique", value=expert.cell_planif_ref_suiveur) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_planif_ref_suiveur.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_planif_ref_suiveur(class="input", value=expert.cell_planif_ref_suiveur)}}
+                                                          {{form.cell_planif_ref_suiveur(class="input", placeholder="Données numérique", value=expert.cell_planif_ref_suiveur)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_planif_ref_suiveur est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1097,17 +1090,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_planif_ref_suiveur.errors %}
-                                                      {{form.com_cell_planif_ref_suiveur(class="input is-invalid", value=expert.com_cell_planif_ref_suiveur) }}
+                                                      {{form.com_cell_planif_ref_suiveur(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_planif_ref_suiveur) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_planif_ref_suiveur.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_planif_ref_suiveur(class="input", value=expert.com_cell_planif_ref_suiveur)}}
+                                                          {{form.com_cell_planif_ref_suiveur(class="input", placeholder="Données numérique", value=expert.com_cell_planif_ref_suiveur)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_planif_ref_suiveur est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1119,17 +1112,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.cell_planif_ref_agent_saisie.errors %}
-                                                      {{form.cell_planif_ref_agent_saisie(class="input is-invalid", value=expert.cell_planif_ref_agent_saisie) }}
+                                                      {{form.cell_planif_ref_agent_saisie(class="input is-invalid", placeholder="Données numérique", value=expert.cell_planif_ref_agent_saisie) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.cell_planif_ref_agent_saisie.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.cell_planif_ref_agent_saisie(class="input", value=expert.cell_planif_ref_agent_saisie)}}
+                                                          {{form.cell_planif_ref_agent_saisie(class="input", placeholder="Données numérique", value=expert.cell_planif_ref_agent_saisie)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. cell_planif_ref_agent_saisie est requis</p>
+                                                      <p class="help">Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1141,17 +1134,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.com_cell_planif_ref_agent_saisie.errors %}
-                                                      {{form.com_cell_planif_ref_agent_saisie(class="input is-invalid", value=expert.com_cell_planif_ref_agent_saisie) }}
+                                                      {{form.com_cell_planif_ref_agent_saisie(class="input is-invalid", placeholder="Données numérique", value=expert.com_cell_planif_ref_agent_saisie) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.com_cell_planif_ref_agent_saisie.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.com_cell_planif_ref_agent_saisie(class="input", value=expert.com_cell_planif_ref_agent_saisie)}}
+                                                          {{form.com_cell_planif_ref_agent_saisie(class="input", placeholder="Données numérique", value=expert.com_cell_planif_ref_agent_saisie)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. com_cell_planif_ref_agent_saisie est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1163,17 +1156,17 @@
                                                 <div class="field"><!---->
                                                     <div class="control">
                                                      {% if form.commentaire_libre.errors %}
-                                                      {{form.commentaire_libre(class="input is-invalid", value=expert.commentaire_libre) }}
+                                                      {{form.commentaire_libre(class="input is-invalid", placeholder="Données Alpha-numérique", value=expert.commentaire_libre) }}
                                                   <div class="invalid-feedback">
                                                       {% for error in form.commentaire_libre.errors %}
                                                           <span>{{ error }}</span>
                                                       {% endfor %}
                                                   </div>
                                                       {% else %}
-                                                          {{form.commentaire_libre(class="input", value=expert.commentaire_libre)}}
+                                                          {{form.commentaire_libre(class="input", placeholder="Données Alpha-numérique", value=expert.commentaire_libre)}}
                                                       {% endif %}
                                                     </div>
-                                                      <p class="help"> Requis. commentaire_libre est requis</p>
+                                                      <p class="help"> Veuillez remplir champ</p>
                                                   </div>
                                                 </div>
                                               </div>
@@ -1183,7 +1176,7 @@
                                             <div class="field-body">
                                               <div class="field">
                                                 <div class="control">
-                                                  <button type="submit" class="button is-primary is-small"> Submit </button>
+                                                  <button type="submit" class="button is-primary is-small"> Modifier </button>
                                                 </div>
                                               </div>
                                             </div>

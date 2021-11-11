@@ -6,93 +6,66 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Negotiateur</h2>
     </div>
 	<section class="tile" style="margin-top: 10px;">
-    <div class="box" style="  width: -webkit-fill-available;">
-      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fas fa-user"></i></span>
-        <div class="control has-icons-left has-icons-right">
-         	{{client.TYPE}}
-        </div>
-      </div>
-      <div class='columns'>
-	  <div class='container'>
-	    <div class='section profile-heading'>
-	      <div class='columns is-mobile is-multiline'>
-	        <div class='column is-4-tablet is-10-mobile name'>
-	          <p>
-	            <span class='title is-bold' style="font-size: larger;">{{client.nom}}</span>
-	            <br>
-	            <a class='button is-primary is-small' href="{{url_for('users.edit_negotiateur', id=client.id)}}" id='edit-preferences' style='margin: 5px 0'>
-	              Modifier
-	            </a>
-	            <br>
-	          </p>
-	          <p class='tagline'>
-	            <strong>Address:</strong>{{history.adresse1}}  
-	          </p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Tel</strong></p>
-	          <p class='stat-key'>{{client.numero}}</p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Email</strong></p>
-	          <p class='stat-key'>{{client.email}}</p>
-	        </div>
-	        <div class='column is-2-tablet is-4-mobile has-text-centered'>
-	          <p class='stat-val'><strong>Client concernee</strong></p>
-	          <p class='stat-key'>{{client.client__nego.nom}}</p>
-	        </div>
-			<!-- <div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.titre}}</p>
-				<p class='stat-key'>Titre</p>
+		<div class="box" style="  width: -webkit-fill-available; width: 100%;">
+		  <div class="container">
+			<div class="main-body">		
+				  <div class="columns">
+					<div class="column is-one-quarter mb-3">
+					  <div class="card">
+						<div class="card-body">
+						  <div class="is-flex is-flex-direction-column align-items-center has-text-centered">
+							<i class="fa fa-user x5-px"></i>						
+							<div class="mt-3">
+							  <p class="text-secondary mb-1">{{client.nom}}</p>
+							  <p class="text-muted font-size-sm">{{history.adresse1}} </p>
+							
+							  <a class='button is-primary is-small' href="{{url_for('users.edit_negotiateur', id=client.id)}}" id='edit-preferences' style='margin: 5px 0'>
+								Modifier
+							  </a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<div class="column is-three-quarter">
+					  <div class="card mb-3">
+						<div class="card-body">
+						  <div class="columns">
+							<div class="column is-one-quarter">
+							  <h6 class="mb-0">Téléphone</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{client.numero}}
+							</div>
+						  </div>
+						  <hr>
+						  <div class="columns">
+							<div class="column is-one-quarter">
+							  <h6 class="mb-0">Email</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+							  {{client.email}}
+							</div>
+						  </div>
+						  <hr>
+						  <div class="columns">
+							<div class="column is-one-quarter">
+							<h6 class="mb-0">Client Concerné</h6>
+							</div>
+							<div class="column is-three-quarter text-secondary">
+								{{client.client__nego.nom}}
+							</div>
+						  </div>
+						  
+						</div>
+					  </div>	
+					</div>
+				  </div>
+		
+				</div>
 			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.siret}}</p>
-				<p class='stat-key'>Siret</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.cp}}</p>
-				<p class='stat-key'>CP</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.login_extranet}}</p>
-				<p class='stat-key'>Login Extranet</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.mpd_extranet}}</p>
-				<p class='stat-key'>MDP Extranet:</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.societe}}</p>
-				<p class='stat-key'>Societe</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.societe}}</p>
-				<p class='stat-key'>Societe</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.ville}}</p>
-				<p class='stat-key'>Ville</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.pays}}</p>
-				<p class='stat-key'>Pays</p>
-			</div>
-			
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{history.date|string|truncate(13, True)}}</p>
-				<p class='stat-key'>Date historique:</p>
-			</div>
-			<div class='column is-2-tablet is-4-mobile has-text-centered'>
-				<p class='stat-val'>{{client.date_creation|string|truncate(13, True)}}</p>
-				<p class='stat-key'>Date_creation:</p>
-			</div> -->
-	      </div>
-	    </div>
-	  </div>
-	</div>
 				
-		</div>
+			</div>
 	</section>
 </div>
 {%endblock%}

@@ -223,7 +223,7 @@ def edit_client(id):
 @login_required
 def mission():
 
-    if current_user.TYPE == "Admin":
+    if current_user:
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
         date=request.args.get('date')
@@ -1001,15 +1001,15 @@ def facturationa():
 @login_required
 def datereg(id):
     if current_user.TYPE == "Admin":
-        facturation_mission.query.filter_by(fact_mission=id).all()
-        facture = list(facturation_mission.query.filter_by(fact_mission=id).all())  
+        facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())
+        facture1= list(facturation_mission.query.filter_by(fact_mission=id).all())  
         now_utc = datetime.now(timezone.utc)
         start=datetime.combine(now_utc,datetime.min.time())
-        for i in facture:
+        for i in facture1:
             miss=Mission.query.filter_by(id=i.mission__data_.id).first()
             miss.DATE_FACT_REGLEE = start
             db.session.commit()
-            flash(f'La factures a ete reglee avec success','success')
+            flash(f'La facture a été réglé avec succès','success')
             return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
@@ -1030,7 +1030,11 @@ def show_facm(id):
     if current_user.TYPE == "Admin":
         facture = facturation_mission.query.filter_by(fact_mission=id).all()
         failed = Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all()
-        return render_template('manage/pages/show_facture.html', facture=facture,failed=failed)
+        if facture:
+            nro=facture[0].facturation_client__data_.n_facture   
+        else:
+            nro=''
+        return render_template('manage/pages/show_facture.html',nro=nro, facture=facture,failed=failed)   
 
 @users.route('/delete/<int:id>/facturation', methods=['GET'])
 @login_required
@@ -1049,7 +1053,7 @@ def delete_facturation(id):
 @users.route('/show/<int:id>/mission', methods=['GET'])
 @login_required
 def show_mission(id):
-    if current_user.TYPE == "Admin":
+    if current_user:
         mission = Mission.query.filter_by(id=id).first_or_404()
         return render_template('manage/pages/show_mission.html', mission=mission,legend="show_mission",highlight='mission')
 
@@ -1142,6 +1146,7 @@ def ajouter_mission():
 
                 db.session.add(mission)
                 db.session.commit()
+                flash(f"La Mission a été ajouté avec succès",'success')
                 return redirect(url_for('users.mission'))
             else:
                 flash(f"Le client ou expert n'existe pas dans cette base",'danger')
@@ -1218,7 +1223,7 @@ def edit_mission(id):
 
                     db.session.commit()
                     
-                    flash(f"Les information de la mission a ete modifier", "success")
+                    flash(f"La mission a été modifier avec succès", "success")
                     return redirect(url_for('users.mission'))
         
         return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
@@ -1290,7 +1295,7 @@ def ajouter_expert():
             user.password=hashed_password
             db.session.commit()
             db.session.commit()
-            flash(f'L"expert a ete ajouter avec success','success')
+            flash(f'L"expert a été ajouté avec succès','success')
             return redirect(url_for('users.expert'))
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
@@ -1335,8 +1340,7 @@ def edit_expert(id):
 
                 expert_history.observations_de_suivi = form.observations_de_suivi.data
                 
-                if form.mdp.data:
-                    expert_history.date_sortie = form.mdp.data
+                
 
                 db.session.commit()
                 expert.genre= form.Sexe.data
@@ -1348,7 +1352,7 @@ def edit_expert(id):
                 expert.code_tva=form.code_tva.data
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
-                flash(f'Modification réussie', 'success')
+                flash(f'L"expert a été modifié avec succès', 'success')
                 return redirect(url_for('users.expert'))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
@@ -1550,7 +1554,7 @@ def edit_tarif(id):
                 tarif.commentaire_libre =form.commentaire_libre.data
                 
                 db.session.commit()
-                flash(f'Les donnes du tarif a été modifiées','success')
+                flash(f'Les données du tarif ont été modifiées','success')
                 return redirect(url_for('users.tarifs',id=id))
 
         return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
@@ -1662,15 +1666,15 @@ def logout():
 @login_required
 def main():
     db.create_all()
-    ex=expert_facturation.query.all()
-    print(ex)
-    if current_user.is_authenticated:
+    if current_user.TYPE == "Admin":
         clients = Client.query.filter_by(visibility=True).count()
         missions = Mission.query.filter_by(Visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
         facturations =facturation_client.query.filter_by(visibility=True).count()
-        
         return render_template('manage/dashboard.html',title='Portail', client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+    elif current_user:
+        return redirect (url_for('users.mes_factures',id=current_user.id))
+        
     return redirect(url_for('users.login'))
 
 @users.route('/client/<int:id>/négociateurs')
@@ -1696,8 +1700,8 @@ def delete_negotiateur(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes du negotiateur ont été  suprimmer','success')
-        return redirect(url_for('users.negotiateur', id=id))
+        flash(f'Les donnes du négociateur ont été  suprimmer','success')
+        return redirect(url_for('users.negotiateur', id=client.client_id))
 
 
 @users.route('/ajouter/<int:id>/negotiateur',methods=['GET','POST'])
@@ -1714,7 +1718,7 @@ def ajouter_negotiateur(id):
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
-            flash(f'Negotiateur créé avec succès','success')
+            flash(f'négociateur créé avec succès','success')
             return redirect(url_for('users.negotiateur', id=id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
@@ -1768,7 +1772,7 @@ def edit_negotiateur(id):
                 client.nom = form.NOM.data
 
                 db.session.commit()
-                flash(f'Les donnes du negotiateur a été modifiées','success')
+                flash(f'Les donnes du négociateur ont été modifiées','success')
                 return redirect(url_for('users.negotiateur', id=client.client_id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
@@ -1803,7 +1807,7 @@ def ajouter_prospect():
             tous=[]
             alll=list(prospect.query.all())
             for i in alll:
-                tous.append(alll.reference)
+                tous.append(i.reference)
             user.reference =generate(tous)
             db.session.commit()
             user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
@@ -2021,7 +2025,7 @@ def uploader_():
                     if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                    flash(f"Vous avez importer les donnees avec success",'success')
+                    flash(f"Vous avez importé les données avec succès",'success')
                     return redirect(url_for('users.client'))
             
             if table == 'suivi':
@@ -2085,7 +2089,7 @@ def uploader_():
 @users.route('/profil' , methods=['GET','POST'])
 @login_required
 def profil():
-    if current_user.TYPE == 'Admin':
+    if current_user:
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
@@ -2956,7 +2960,7 @@ def create_facturee():
         _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==None)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=None)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -2964,7 +2968,7 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()'''
+           db.session.commit()
         for i in mission:
             #implement facture number
             i.Facex =True
@@ -2996,7 +3000,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
@@ -3008,7 +3012,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
         for i in _mission:
             #implement facture number
@@ -3040,7 +3044,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
@@ -3052,7 +3056,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
@@ -3073,8 +3077,8 @@ def allex():
 def factme(id):
     if current_user.TYPE == "Admin":
            facture=expert_facturation.query.filter_by(mission=id).all() 
-
-           return render_template('manage/pages/facture_missions.html',facture=facture)
+           miss=facture[0].mission__data.mission
+           return render_template('manage/pages/facture_missions.html',facture=facture,id=id,miss=miss)
 
     return redirect(url_for('users.main'))
 
@@ -3089,7 +3093,7 @@ def choosedg(id):
             
             facture.date_generation=start
             db.session.commit()
-            flash(f'Date generee avec sucess pour facture numero '+str(id),'success')
+            flash(f'Date générée avec succès pour facture numero '+str(id),'success')
             return redirect(url_for('users.allex'))
 
         return render_template('manage/pages/choose.html',form=form,legend="genere")

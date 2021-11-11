@@ -4,7 +4,7 @@
     
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Facture N° ... Mission N° ...</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Facture N° {{id}} Mission N° {{miss}}</h2>
     </div>
 
     <section class="tile" style="margin-top: 10px;">
@@ -41,9 +41,9 @@
                                 <td scope="row">{{mission.id}}</td>
                                 <td>{{mission.type_expert}}</td>
                                 <td>{{mission.releve_data.type_ex}}</td>
-                                <td>{{mission.expert_data.nom}}</td>
+                                <td>{% if mission.expert_data.nom != '0' %} {{mission.expert_data.nom}} {% endif %}</td>
                                 <td>{{mission.commision}}</td>
-                                <td>{{mission.envoye}}</td>  
+                                <td>{% if mission.envoye == false %} <span style="color: red;">Non acquitté</span>{% else %} <span style="color: green;">En control</span>{% endif %}</td>  
                             </tr>    
                         {%endfor%}
 

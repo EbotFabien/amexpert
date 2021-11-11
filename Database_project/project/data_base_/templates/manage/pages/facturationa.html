@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Tous les Factures</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Toutes les Factures</h2>
       <!--a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter une Facture Mensuel" class="button is-primary is-small"><i class="fas fa-plus"></i></a--> 
     </div>
 
@@ -53,13 +53,13 @@
                                     <td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 
                                       
                                     <td style="">
-                                        <a href="{{url_for('users.show_fac', id=facturation.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                        <a href="{{url_for('users.show_fac', id=facturation.id)}}" title="Voir tous les détails" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                         
                                     </td>
                                     <td>
-                                        <a href="{{url_for('users.delete_facturation', id=facturation.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	is-small is-fullwidth"><i class="fa fa-trash"></i></a> &nbsp;
+                                        <a href="{{url_for('users.delete_facturation', id=facturation.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="Supprimer" class="center button is-danger	is-small is-fullwidth"><i class="fa fa-trash"></i></a> &nbsp;
                                     </td> 
-                                    <td> <a href="{{url_for('users.datereg', id=facturation.id)}}" onclick="return confirm('Voulez vous reglez cette facture ?')" title="Reglee facture" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-calendar" style="text-align: center"></i></a> </td>
+                                    <td> <a href="{{url_for('users.datereg', id=facturation.id)}}" onclick="return confirm('Voulez vous reglez cette facture ?')" title="Régler facture" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-calendar" style="text-align: center"></i></a> </td>
                                 </tr>
                                
                             {%endfor%}

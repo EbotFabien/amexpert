@@ -32,17 +32,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Reference_client.errors %}
-                                {{form.Reference_client(class="input is-invalid") }}
+                                {{form.Reference_client(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Reference_client.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Reference_client(class="input")}}
+                                    {{form.Reference_client(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuiller remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -55,17 +55,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Concessionaire.errors %}
-                                {{form.ID_Concessionaire(class="input is-invalid") }}
+                                {{form.ID_Concessionaire(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Concessionaire.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Concessionaire(class="input")}}
+                                    {{form.ID_Concessionaire(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -78,17 +78,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ABONNEMENT.errors %}
-                                {{form.ABONNEMENT(class="input is-invalid") }}
+                                {{form.ABONNEMENT(class="input is-invalid", placeholder="Données Alpla-numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ABONNEMENT.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ABONNEMENT(class="input")}}
+                                    {{form.ABONNEMENT(class="input", placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -101,17 +101,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.PRIX_HT_EDL.errors %}
-                                {{form.PRIX_HT_EDL(class="input is-invalid") }}
+                                {{form.PRIX_HT_EDL(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.PRIX_HT_EDL.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.PRIX_HT_EDL(class="input")}}
+                                    {{form.PRIX_HT_EDL(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -134,7 +134,7 @@
                                     {{form.DATE_REALISE_EDL(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez choisir une date</p>
                             </div>
                           </div>
                         </div>
@@ -147,17 +147,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_INTERV.errors %}
-                                {{form.ID_INTERV(class="input is-invalid") }}
+                                {{form.ID_INTERV(class="input is-invalid", placeholder="Données numériques") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_INTERV.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_INTERV(class="input")}}
+                                    {{form.ID_INTERV(class="input",  placeholder="Données numériques")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -170,17 +170,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Reference_LOCATAIRE.errors %}
-                                {{form.Reference_LOCATAIRE(class="input is-invalid") }}
+                                {{form.Reference_LOCATAIRE(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Reference_LOCATAIRE.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Reference_LOCATAIRE(class="input")}}
+                                    {{form.Reference_LOCATAIRE(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -193,17 +193,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Adresse1_Bien.errors %}
-                                {{form.Adresse1_Bien(class="input is-invalid") }}
+                                {{form.Adresse1_Bien(class="input is-invalid", placeholder="Données Alpha-numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Adresse1_Bien.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Adresse1_Bien(class="input")}}
+                                    {{form.Adresse1_Bien(class="input", placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -216,17 +216,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Adresse2_Bien.errors %}
-                                {{form.Adresse2_Bien(class="input is-invalid") }}
+                                {{form.Adresse2_Bien(class="input is-invalid", placeholder="Données Alpla-numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Adresse2_Bien.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Adresse2_Bien(class="input")}}
+                                    {{form.Adresse2_Bien(class="input", placeholder="Données Alpla-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -239,17 +239,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CP_Bien.errors %}
-                                {{form.CP_Bien(class="input is-invalid") }}
+                                {{form.CP_Bien(class="input is-invalid", placeholder="00000") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CP_Bien.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CP_Bien(class="input")}}
+                                    {{form.CP_Bien(class="input", placeholder="00000")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -262,17 +262,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Ville_Bien.errors %}
-                                {{form.Ville_Bien(class="input is-invalid") }}
+                                {{form.Ville_Bien(class="input is-invalid", placeholder="Données Alpla-numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Ville_Bien.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Ville_Bien(class="input")}}
+                                    {{form.Ville_Bien(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -285,17 +285,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.TVA_EDL.errors %}
-                                {{form.TVA_EDL(class="input is-invalid") }}
+                                {{form.TVA_EDL(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.TVA_EDL.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.TVA_EDL(class="input")}}
+                                    {{form.TVA_EDL(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -308,17 +308,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.PRIX_TTC_EDL.errors %}
-                                {{form.PRIX_TTC_EDL(class="input is-invalid") }}
+                                {{form.PRIX_TTC_EDL(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.PRIX_TTC_EDL.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.PRIX_TTC_EDL(class="input")}}
+                                    {{form.PRIX_TTC_EDL(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -331,17 +331,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CA_HT_AS.errors %}
-                                {{form.CA_HT_AS(class="input is-invalid") }}
+                                {{form.CA_HT_AS(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CA_HT_AS.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CA_HT_AS(class="input")}}
+                                    {{form.CA_HT_AS(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -354,17 +354,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.TVA_AS.errors %}
-                                {{form.TVA_AS(class="input is-invalid") }}
+                                {{form.TVA_AS(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.TVA_AS.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.TVA_AS(class="input")}}
+                                    {{form.TVA_AS(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ.</p>
                             </div>
                           </div>
                         </div>
@@ -377,17 +377,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CA_TTC_AS.errors %}
-                                {{form.CA_TTC_AS(class="input is-invalid") }}
+                                {{form.CA_TTC_AS(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CA_TTC_AS.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CA_TTC_AS(class="input")}}
+                                    {{form.CA_TTC_AS(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -400,17 +400,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CA_HT_AC.errors %}
-                                {{form.CA_HT_AC(class="input is-invalid") }}
+                                {{form.CA_HT_AC(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CA_HT_AC.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CA_HT_AC(class="input")}}
+                                    {{form.CA_HT_AC(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -423,17 +423,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CA_TTC_AC.errors %}
-                                {{form.CA_TTC_AC(class="input is-invalid") }}
+                                {{form.CA_TTC_AC(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CA_TTC_AC.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CA_TTC_AC(class="input")}}
+                                    {{form.CA_TTC_AC(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -446,17 +446,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CA_HT_TRUST.errors %}
-                                {{form.CA_HT_TRUST(class="input is-invalid") }}
+                                {{form.CA_HT_TRUST(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CA_HT_TRUST.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CA_HT_TRUST(class="input")}}
+                                    {{form.CA_HT_TRUST(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -469,17 +469,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.TVA_TRUST.errors %}
-                                {{form.TVA_TRUST(class="input is-invalid") }}
+                                {{form.TVA_TRUST(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.TVA_TRUST.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.TVA_TRUST(class="input")}}
+                                    {{form.TVA_TRUST(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -492,17 +492,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Prix_ht_chiffrage.errors %}
-                                {{form.Prix_ht_chiffrage(class="input is-invalid") }}
+                                {{form.Prix_ht_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Prix_ht_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Prix_ht_chiffrage(class="input")}}
+                                    {{form.Prix_ht_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -525,7 +525,7 @@
                                     {{form.Date_chiffrage_regle(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -538,17 +538,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_suiveur_chiffrage.errors %}
-                                {{form.POURCENTAGE_suiveur_chiffrage(class="input is-invalid") }}
+                                {{form.POURCENTAGE_suiveur_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_suiveur_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_suiveur_chiffrage(class="input")}}
+                                    {{form.POURCENTAGE_suiveur_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -561,17 +561,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_AS_chiffrage.errors %}
-                                {{form.POURCENTAGE_AS_chiffrage(class="input is-invalid") }}
+                                {{form.POURCENTAGE_AS_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_AS_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_AS_chiffrage(class="input")}}
+                                    {{form.POURCENTAGE_AS_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -584,17 +584,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_manager_chiffrage.errors %}
-                                {{form.POURCENTAGE_manager_chiffrage(class="input is-invalid") }}
+                                {{form.POURCENTAGE_manager_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_manager_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_manager_chiffrage(class="input")}}
+                                    {{form.POURCENTAGE_manager_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -607,17 +607,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_manager_chiffrage.errors %}
-                                {{form.ID_manager_chiffrage(class="input is-invalid") }}
+                                {{form.ID_manager_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_manager_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_manager_chiffrage(class="input")}}
+                                    {{form.ID_manager_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -630,17 +630,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_agent_chiffrage.errors %}
-                                {{form.POURCENTAGE_agent_chiffrage(class="input is-invalid") }}
+                                {{form.POURCENTAGE_agent_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_agent_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_agent_chiffrage(class="input")}}
+                                    {{form.POURCENTAGE_agent_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -653,17 +653,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_agent_chiffrage.errors %}
-                                {{form.ID_agent_chiffrage(class="input is-invalid") }}
+                                {{form.ID_agent_chiffrage(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_agent_chiffrage.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_agent_chiffrage(class="input")}}
+                                    {{form.ID_agent_chiffrage(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -686,7 +686,7 @@
                                     {{form.TYPE_EDL(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -709,7 +709,7 @@
                                     {{form.TITREPROPRIO(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -722,17 +722,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.NOMPROPRIO.errors %}
-                                {{form.NOMPROPRIO(class="input is-invalid") }}
+                                {{form.NOMPROPRIO(class="input is-invalid",placeholder="Données Alphabetiques") }}
                             <div class="invalid-feedback">
                                 {% for error in form.NOMPROPRIO.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.NOMPROPRIO(class="input")}}
+                                    {{form.NOMPROPRIO(class="input",placeholder="Données Alphabetiques ")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -752,10 +752,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CODE_AMEXPERT(class="input")}}
+                                    {{form.CODE_AMEXPERT(class="input", placeholder="Données Alpla-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -768,17 +768,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.surface_logement1.errors %}
-                                {{form.surface_logement1(class="input is-invalid") }}
+                                {{form.surface_logement1(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.surface_logement1.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.surface_logement1(class="input")}}
+                                    {{form.surface_logement1(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -791,17 +791,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.Ref_commande.errors %}
-                                {{form.Ref_commande(class="input is-invalid") }}
+                                {{form.Ref_commande(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.Ref_commande.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Ref_commande(class="input")}}
+                                    {{form.Ref_commande(class="input", placeholder="Données Alpla-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -814,17 +814,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
-                                {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-invalid") }}
+                                {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_COM_AS_DU_CLIENT.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input")}}
+                                    {{form.POURCENTAGE_COM_AS_DU_CLIENT(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -837,17 +837,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Respon_Cell_Dev.errors %}
-                                {{form.ID_Respon_Cell_Dev(class="input is-invalid") }}
+                                {{form.ID_Respon_Cell_Dev(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Respon_Cell_Dev.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Respon_Cell_Dev(class="input")}}
+                                    {{form.ID_Respon_Cell_Dev(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -860,17 +860,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Respon_Cell_Dev.errors %}
-                                {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Respon_Cell_Dev(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Respon_Cell_Dev.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Respon_Cell_Dev(class="input")}}
+                                    {{form.POURCENTAGE_Respon_Cell_Dev(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -883,17 +883,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_agent_Cell_Dev.errors %}
-                                {{form.ID_agent_Cell_Dev(class="input is-invalid") }}
+                                {{form.ID_agent_Cell_Dev(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_agent_Cell_Dev.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_agent_Cell_Dev(class="input")}}
+                                    {{form.ID_agent_Cell_Dev(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -916,7 +916,7 @@
                                     {{form.TYPE_LOGEMENT(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -939,7 +939,7 @@
                                     {{form.LOGEMENT_MEUBLE(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -952,17 +952,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.CODE_FACTURATION.errors %}
-                                {{form.CODE_FACTURATION(class="input is-invalid") }}
+                                {{form.CODE_FACTURATION(class="input is-invalid", placeholder="Données Alpla-numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.CODE_FACTURATION.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.CODE_FACTURATION(class="input")}}
+                                    {{form.CODE_FACTURATION(class="input", placeholder="Données Alpla-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -985,7 +985,7 @@
                                     {{form.TYPE_DE_BIEN(class="input")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -998,17 +998,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Agent_Cell_Dev.errors %}
-                                {{form.POURCENTAGE_Agent_Cell_Dev(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Agent_Cell_Dev(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Agent_Cell_Dev.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Agent_Cell_Dev(class="input")}}
+                                    {{form.POURCENTAGE_Agent_Cell_Dev(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1021,17 +1021,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Agent_CellTech.errors %}
-                                {{form.ID_Agent_CellTech(class="input is-invalid") }}
+                                {{form.ID_Agent_CellTech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Agent_CellTech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Agent_CellTech(class="input")}}
+                                    {{form.ID_Agent_CellTech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1044,17 +1044,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Agent_Cell_Tech.errors %}
-                                {{form.POURCENTAGE_Agent_Cell_Tech(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Agent_Cell_Tech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Agent_Cell_Tech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Agent_Cell_Tech(class="input")}}
+                                    {{form.POURCENTAGE_Agent_Cell_Tech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1067,17 +1067,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Respon_Cell_Tech.errors %}
-                                {{form.ID_Respon_Cell_Tech(class="input is-invalid") }}
+                                {{form.ID_Respon_Cell_Tech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Respon_Cell_Tech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Respon_Cell_Tech(class="input")}}
+                                    {{form.ID_Respon_Cell_Tech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1090,17 +1090,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Respon_Cell_Tech.errors %}
-                                {{form.POURCENTAGE_Respon_Cell_Tech(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Respon_Cell_Tech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Respon_Cell_Tech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Respon_Cell_Tech(class="input")}}
+                                    {{form.POURCENTAGE_Respon_Cell_Tech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1113,17 +1113,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Suiveur_Cell_Tech.errors %}
-                                {{form.ID_Suiveur_Cell_Tech(class="input is-invalid") }}
+                                {{form.ID_Suiveur_Cell_Tech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Suiveur_Cell_Tech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Suiveur_Cell_Tech(class="input")}}
+                                    {{form.ID_Suiveur_Cell_Tech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1136,17 +1136,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Suiveur_Cell_Tech.errors %}
-                                {{form.POURCENTAGE_Suiveur_Cell_Tech(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Suiveur_Cell_Tech(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Suiveur_Cell_Tech.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Suiveur_Cell_Tech(class="input")}}
+                                    {{form.POURCENTAGE_Suiveur_Cell_Tech(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1159,17 +1159,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Respon_Cell_Planif.errors %}
-                                {{form.ID_Respon_Cell_Planif(class="input is-invalid") }}
+                                {{form.ID_Respon_Cell_Planif(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Respon_Cell_Planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Respon_Cell_Planif(class="input")}}
+                                    {{form.ID_Respon_Cell_Planif(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1182,17 +1182,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Respon_Cell_Planif.errors %}
-                                {{form.POURCENTAGE_Respon_Cell_Planif(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Respon_Cell_Planif(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Respon_Cell_Planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Respon_Cell_Planif(class="input")}}
+                                    {{form.POURCENTAGE_Respon_Cell_Planif(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1205,17 +1205,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Suiveur_Cell_Planif.errors %}
-                                {{form.ID_Suiveur_Cell_Planif(class="input is-invalid") }}
+                                {{form.ID_Suiveur_Cell_Planif(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Suiveur_Cell_Planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Suiveur_Cell_Planif(class="input")}}
+                                    {{form.ID_Suiveur_Cell_Planif(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1228,17 +1228,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Suiveur_Cell_Planif.errors %}
-                                {{form.POURCENTAGE_Suiveur_Cell_Planif(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Suiveur_Cell_Planif(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Suiveur_Cell_Planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Suiveur_Cell_Planif(class="input")}}
+                                    {{form.POURCENTAGE_Suiveur_Cell_Planif(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1251,17 +1251,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.ID_Agent_saisie_Cell_Planif.errors %}
-                                {{form.ID_Agent_saisie_Cell_Planif(class="input is-invalid") }}
+                                {{form.ID_Agent_saisie_Cell_Planif(class="input is-invalid",placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.ID_Agent_saisie_Cell_Planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ID_Agent_saisie_Cell_Planif(class="input")}}
+                                    {{form.ID_Agent_saisie_Cell_Planif(class="input",placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -1274,17 +1274,17 @@
                           <div class="field"><!---->
                               <div class="control">
                                {% if form.POURCENTAGE_Agent_saisie_CEll_planif.errors %}
-                                {{form.POURCENTAGE_Agent_saisie_CEll_planif(class="input is-invalid") }}
+                                {{form.POURCENTAGE_Agent_saisie_CEll_planif(class="input is-invalid", placeholder="Données numérique") }}
                             <div class="invalid-feedback">
                                 {% for error in form.POURCENTAGE_Agent_saisie_CEll_planif.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.POURCENTAGE_Agent_saisie_CEll_planif(class="input")}}
+                                    {{form.POURCENTAGE_Agent_saisie_CEll_planif(class="input", placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>

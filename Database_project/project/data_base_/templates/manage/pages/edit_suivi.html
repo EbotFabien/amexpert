@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Suivi</h2>
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier le Suivi de {{suivi.suivi__data.nom}}</h2>
 
         <a href="{{url_for('users.suivi_client_', id=current_user.id)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>    
     </div>

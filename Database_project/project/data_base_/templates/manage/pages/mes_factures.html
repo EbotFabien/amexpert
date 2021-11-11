@@ -76,7 +76,9 @@
                             <td>{{mission_.mission__data.commission_ac}}</td>
                             <td>{{mission_.releve_data.type_ex}}</td> 
                             <td>{{mission_.commision}}</td>	
-                            <td>{{mission_.mission__data.etat}}</td> <!-- True or False-->  
+                            <td>
+                                {% if mission_.mission__data.etat == true %} <span style="color: green;">en control</span> {% else %} <span style="color: red"> Non acquitté</span> {% endif %}
+                            </td> <!-- True or False-->  
                         {%endfor%}
                     </tbody>
                 </table>
