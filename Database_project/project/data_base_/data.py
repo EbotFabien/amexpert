@@ -1776,7 +1776,13 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    #wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalie.xls')
+    filename='Mission_failed.xls'
+    file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
+    loc=str(file_path)
+    # set the file path
+    #uploaded_file.save(file_path)
+    wb.save(loc)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
 
 def date_(floa,date):
         try:
@@ -1786,352 +1792,357 @@ def date_(floa,date):
             return floa
 
 def Missions1(loc):
-    wb = xlrd.open_workbook(loc)
+    try:
+        wb = xlrd.open_workbook(loc)
 
-    sheet = wb.sheet_by_index(0)
-    missions_=[]
+        sheet = wb.sheet_by_index(0)
+        missions_=[]
 
-    rows=int(sheet.nrows)
-    sheet.cell_value(0, 0)
-    Name=sheet.row_values(0)
-    if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
+        rows=int(sheet.nrows)
+        sheet.cell_value(0, 0)
+        Name=sheet.row_values(0)
+        if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
+            return False
+        for i in range(0,rows):
+            name=sheet.row_values(i)
+
+            try:
+                cli=Client.query.filter_by(reference=str(int(name[0]))).first()
+            except:
+                cli=None
+            if cli is None:
+                cli=Client.query.filter_by(nom=str(name[3]).lower()).first()
+            if name[11] is None:
+                SA=0
+            else:
+                AS=Expert.query.filter_by(nom=str(name[11].lower())).first()
+                if AS is not None:
+                    SA= AS.id
+                if AS is None :
+                    SA= 0
+            if name[17] is None:
+                IV=0
+            else:
+                INTERV=Expert.query.filter_by(nom=str(name[17].lower())).first()
+                if INTERV is not None:
+                    IV= INTERV.id
+                if INTERV is None  :
+                    IV= 0
+            if name[37] is None:
+                MC=0
+            else:
+                M_C=Expert.query.filter_by(nom=str(name[37].lower())).first()
+                if M_C is not None:
+                    MC= M_C.id
+                if M_C is None  :
+                    MC= 0
+            if name[39] is None:
+                AC=0
+            else:
+                A_C=Expert.query.filter_by(nom=str(name[39].lower())).first()
+                if A_C is not None:
+                    AC= A_C.id
+                if A_C is None  :
+                    AC= 0
+
+            if name[69] is None:
+                RCD=0
+            else:
+                R_CD=Expert.query.filter_by(nom=str(name[69].lower())).first()
+                if R_CD is not None:
+                    RCD= R_CD.id
+                if R_CD is None  :
+                    RCD= 0
+
+            if name[71] is None:
+                ACD=0
+            else:
+                A_CD=Expert.query.filter_by(nom=str(name[71].lower())).first()
+                if A_CD is not None:
+                    ACD= A_CD.id
+                if A_CD is None  :
+                    ACD= 0
+
+            if name[73] is None:
+                ACT=0
+            else:
+                A_CT=Expert.query.filter_by(nom=str(name[73].lower())).first()
+                if A_CT is not None:
+                    ACT= A_CT.id
+                if A_CT is None  :
+                    ACT= 0
+
+            if name[75] is None:
+                RCT=0
+            else:
+                R_CT=Expert.query.filter_by(nom=str(name[75].lower())).first()
+                if R_CT is not None:
+                    RCT= R_CT.id
+                if R_CT is None  :
+                    RCT= 0
+
+            if name[77] is None:
+                SCT=0
+            else:
+                S_CT=Expert.query.filter_by(nom=str(name[77].lower())).first()
+                if S_CT is not None:
+                    SCT= S_CT.id
+                if S_CT is None  :
+                    SCT= 0
+
+            if name[79] is None:
+                RCP=0
+            else:
+                R_CP=Expert.query.filter_by(nom=str(name[79].lower())).first()
+                if R_CP is not None:
+                    RCP= R_CP.id
+                if R_CP is None  :
+                    RCP= 0
+
+            if name[81] is None:
+                SCP=0
+            else:
+                S_CP=Expert.query.filter_by(nom=str(name[81].lower())).first()
+                if S_CP is not None:
+                    SCP= S_CP.id
+                if S_CP is None  :
+                    SCP= 0
+
+            if name[83] is None:
+                ASCP=0
+            else:
+                AS_CP=Expert.query.filter_by(nom=str(name[83].lower())).first()
+                if AS_CP is not None:
+                    ASCP= AS_CP.id
+                if AS_CP is None  :
+                    ASCP= 0
+
+            if cli:
+                
+                mission=Mission(Reference_BAILLEUR=cli.id,
+            # old=sheet["A"],
+                ABONNEMENT	 = name[9] ,
+                ID_AS	 = SA ,
+            
+            
+                    
+                ID_INTERV = IV ,
+                NRO_FACTURE = regex1(name[8],'M')  ,
+                PRIX_HT_EDL = regex1(name[13],'S') ,
+                TVA_EDL = regex1(name[14],'S') ,
+                PRIX_TTC_EDL = regex1(name[15],'S') ,
+                Reference_LOCATAIRE	 =  name[20] ,
+                Adresse1_Bien	 = name[21] ,  
+                Adresse2_Bien	 = name[22] , 
+                CP_Bien	 = regex1(name[23],'M') ,  
+                Ville_Bien	 = name[24] , 
+                
+                CA_HT_AS = regex1(name[25],'S') , 	
+                TVA_AS	 = regex1(name[26],'S') , 
+                CA_TTC_AS = regex1(name[27],'S') , 	
+                CA_HT_AC = regex1(name[28],'S') , 	
+                CA_TTC_AC	 = regex1(name[29],'S') , 
+                CA_HT_TRUST	 = regex1(name[30],'S') , 
+                TVA_TRUST	 = regex1(name[31],'S') ,
+                Prix_ht_chiffrage	 = regex1(name[33],'S') , 
+                POURCENTAGE_suiveur_chiffrage	 = regex1(name[34],'perc') ,
+                POURCENTAGE_AS_chiffrage = regex1(name[35],'perc') ,	
+                POURCENTAGE_manager_chiffrage  = regex1(name[36],'perc') , 	
+                ID_manager_chiffrage  = MC ,
+                    
+                POURCENTAGE_agent_chiffrage = regex1(name[38],'perc')  ,	
+                ID_agent_chiffrage  = AC ,	
+                
+                TYPE_EDL = name[40] ,	
+                TITREPROPRIO = name[42] , 		 
+                NOMPROPRIO = name[43] , 		
+                TYPE_LOGEMENT = name[27] , 	
+                CODE_AMEXPERT = name[34] , 	
+                COMMENTAIRE_FACTURE = name[54] , 	
+                LOGEMENT_MEUBLE =name[59] , 	
+                CODE_FACTURATION = name[60] , 	
+                TYPE_DE_BIEN = name[61] , 	
+                surface_logement1 = regex1(name[62],'S'), 		 	
+                POURCENTAGE_COM_AS_DU_CLIENT = regex1(name[68],'perc')  , 	
+                ID_Respon_Cell_Dev	 =RCD ,
+                
+                POURCENTAGE_Respon_Cell_Dev = regex1(name[70],'perc')  , 	
+                ID_agent_Cell_Dev = ACD, 	
+                
+                POURCENTAGE_Agent_Cell_Dev = regex1(name[72],'perc')  ,	
+                ID_Agent_CellTech = ACT,  	
+                
+                POURCENTAGE_Agent_Cell_Tech = regex1(name[74],'perc')  , 	
+                ID_Respon_Cell_Tech = RCT, #######
+                    
+                POURCENTAGE_Respon_Cell_Tech = regex1(name[76],'perc')  ,	
+                ID_Suiveur_Cell_Tech  = SCT ,
+                
+                POURCENTAGE_Suiveur_Cell_Tech	 = regex1(name[78],'perc') , 
+                ID_Respon_Cell_Planif = RCP,
+                
+                POURCENTAGE_Respon_Cell_Planif  = regex1(name[80],'perc') ,
+                ID_Suiveur_Cell_Planif  = SCP,
+                
+                POURCENTAGE_Suiveur_Cell_Planif	 = regex1(name[82],'perc') , 
+                ID_Agent_saisie_Cell_Planif  = ASCP,
+                    
+                POURCENTAGE_Agent_saisie_CEll_planif  = regex1(name[84],'perc') )
+                db.session.add(mission)
+                db.session.commit()
+                try:
+                    mission.DATE_FACTURE = datetime.datetime(*xlrd.xldate_as_tuple(name[41], wb.datemode))
+                    db.session.commit()
+                except:
+                    mission.DATE_FACTURE=None
+                    db.session.commit()
+                try:
+                    mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
+                    db.session.commit()
+                except:
+                    mission.DATE_FACT_REGLEE=None
+                    db.session.commit()
+                try:
+                    mission.DATE_REALISE_EDL =datetime.datetime(*xlrd.xldate_as_tuple(name[12], wb.datemode)) 
+                    db.session.commit()
+                except:
+                    mission.DATE_REALISE_EDL=None
+                    db.session.commit()
+                try:
+                    if mission.CODE_FACTURATION[-1]=='M':
+                        print(mission.CODE_FACTURATION[2:5])
+                        mission.CODE_FACTURATION[2:5] == 150
+                        A=mission.CODE_FACTURATION[0:-1]
+                        mission.CODE_FACTURATION = A
+                        #print(mission.CODE_FACTURATION)
+                        db.session.commit()
+
+                    if mission.CODE_FACTURATION[-1] == ' ':
+                        print(mission.CODE_FACTURATION[2:5])
+                        B=mission.CODE_FACTURATION[0:-1] 
+                        mission.CODE_FACTURATION = B
+                        db.session.commit()
+
+                    if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
+                            mission.Anomalie = False
+                            mission.reason = None
+                            db.session.commit()
+                except:
+                    mission.coherent = False
+                    mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+                # print(mission)
+                    db.session.commit()
+                print(mission.CODE_FACTURATION)
+                print(mission.TYPE_LOGEMENT)
+                try:
+                    if mission.TYPE_LOGEMENT[-1] == ' ':
+                    # print( mission.TYPE_LOGEMENT)
+                        B=mission.TYPE_LOGEMENT[0:-1] 
+                        mission.TYPE_LOGEMENT = B
+                        db.session.commit()
+
+
+                    if mission.TYPE_LOGEMENT[-1] == 'M':
+                    # print(mission.TYPE_LOGEMENT)
+                        mission.CODE_FACTURATION[2:5] == 150
+                        #print(mission.CODE_FACTURATION)
+                        B=mission.TYPE_LOGEMENT[0:-1] 
+                        mission.TYPE_LOGEMENT = B
+                    # print(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+
+                    if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                        mission.Anomalie = True
+                        mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                        db.session.commit()
+
+                    
+
+                    if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                        if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                            if mission.TYPE_LOGEMENT[0] == "T":
+                                B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                                mission.TYPE_LOGEMENT = B
+                                db.session.commit()
+                            if mission.TYPE_LOGEMENT[0] == "F":
+                                B="APPT-"+str(mission.TYPE_LOGEMENT)
+                                mission.TYPE_LOGEMENT = B
+                                db.session.commit() 
+                        else:
+                            mission.coherent = False 
+                            mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                            db.session.commit()
+                    
+                except:
+                    mission.coherent = False
+                    mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                    db.session.commit()
+                try:
+                    if mission.TYPE_LOGEMENT[-1] == ' ':
+                    # print( mission.TYPE_LOGEMENT)
+                        B=mission.TYPE_LOGEMENT[0:-1] 
+                        mission.TYPE_LOGEMENT = B
+                        db.session.commit()
+
+
+                    if mission.TYPE_LOGEMENT[-1] == 'M':
+                    # print(mission.TYPE_LOGEMENT)
+                        mission.CODE_FACTURATION[2:5] == 150
+                        #print(mission.CODE_FACTURATION)
+                        B=mission.TYPE_LOGEMENT[0:-1] 
+                        mission.TYPE_LOGEMENT = B
+                    # print(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+
+                    if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                        mission.Anomalie = True
+                        mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                        db.session.commit()
+
+                    
+
+                    if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                        if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                            if mission.TYPE_LOGEMENT[0] == "T":
+                                B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                                mission.TYPE_LOGEMENT = B
+                                db.session.commit()
+                            if mission.TYPE_LOGEMENT[0] == "F":
+                                B="APPT-"+str(mission.TYPE_LOGEMENT)
+                                mission.TYPE_LOGEMENT = B
+                                db.session.commit() 
+                        else:
+                            mission.coherent = False 
+                            mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                            db.session.commit()
+                    
+                except:
+                    mission.coherent = False
+                    mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                    db.session.commit()
+                
+            else:
+
+                missions_.append([name[0],name[1],name[2],name[3],name[4],name[5],name[6],name[7],
+                name[8],name[9],name[10],name[11],date_(name[12],wb.datemode),name[13]
+                ,name[14],name[15],name[16],
+                name[17],name[18],name[19],name[20],name[21],name[22],name[23],name[24],
+                name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],
+                name[33],name[34],name[35],name[36],name[37],name[38],name[39],name[40],
+                    date_(name[41],wb.datemode),name[42],
+                name[43],date_(name[44],wb.datemode),
+                name[45],name[46],name[47],name[48],
+                    name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],
+                    name[57],name[58],name[59],name[60],name[61],name[62],name[63],name[64],
+                    name[65],name[66],name[67],name[68],name[69],name[70],name[71],name[72],
+                    name[73],name[74],name[75],name[76],name[77],name[78],name[79],name[80],
+                        name[81],name[82],name[83],name[84]])
+        if missions_==[]:
+            return True
+        else:
+            return failed(missions_)
+    except:
         return False
-    for i in range(0,rows):
-        name=sheet.row_values(i)
-
-        try:
-            cli=Client.query.filter_by(reference=str(int(name[0]))).first()
-        except:
-            cli=None
-        if cli is None:
-            cli=Client.query.filter_by(nom=str(name[3]).lower()).first()
-        if name[11] is None:
-            SA=0
-        else:
-            AS=Expert.query.filter_by(nom=str(name[11].lower())).first()
-            if AS is not None:
-                SA= AS.id
-            if AS is None :
-                SA= 0
-        if name[17] is None:
-            IV=0
-        else:
-            INTERV=Expert.query.filter_by(nom=str(name[17].lower())).first()
-            if INTERV is not None:
-                IV= INTERV.id
-            if INTERV is None  :
-                IV= 0
-        if name[37] is None:
-            MC=0
-        else:
-            M_C=Expert.query.filter_by(nom=str(name[37].lower())).first()
-            if M_C is not None:
-                MC= M_C.id
-            if M_C is None  :
-                MC= 0
-        if name[39] is None:
-            AC=0
-        else:
-            A_C=Expert.query.filter_by(nom=str(name[39].lower())).first()
-            if A_C is not None:
-                AC= A_C.id
-            if A_C is None  :
-                AC= 0
-
-        if name[69] is None:
-            RCD=0
-        else:
-            R_CD=Expert.query.filter_by(nom=str(name[69].lower())).first()
-            if R_CD is not None:
-                RCD= R_CD.id
-            if R_CD is None  :
-                RCD= 0
-
-        if name[71] is None:
-            ACD=0
-        else:
-            A_CD=Expert.query.filter_by(nom=str(name[71].lower())).first()
-            if A_CD is not None:
-                ACD= A_CD.id
-            if A_CD is None  :
-                ACD= 0
-
-        if name[73] is None:
-            ACT=0
-        else:
-            A_CT=Expert.query.filter_by(nom=str(name[73].lower())).first()
-            if A_CT is not None:
-                ACT= A_CT.id
-            if A_CT is None  :
-                ACT= 0
-
-        if name[75] is None:
-            RCT=0
-        else:
-            R_CT=Expert.query.filter_by(nom=str(name[75].lower())).first()
-            if R_CT is not None:
-                RCT= R_CT.id
-            if R_CT is None  :
-                RCT= 0
-
-        if name[77] is None:
-            SCT=0
-        else:
-            S_CT=Expert.query.filter_by(nom=str(name[77].lower())).first()
-            if S_CT is not None:
-                SCT= S_CT.id
-            if S_CT is None  :
-                SCT= 0
-
-        if name[79] is None:
-            RCP=0
-        else:
-            R_CP=Expert.query.filter_by(nom=str(name[79].lower())).first()
-            if R_CP is not None:
-                RCP= R_CP.id
-            if R_CP is None  :
-                RCP= 0
-
-        if name[81] is None:
-            SCP=0
-        else:
-            S_CP=Expert.query.filter_by(nom=str(name[81].lower())).first()
-            if S_CP is not None:
-                SCP= S_CP.id
-            if S_CP is None  :
-                SCP= 0
-
-        if name[83] is None:
-            ASCP=0
-        else:
-            AS_CP=Expert.query.filter_by(nom=str(name[83].lower())).first()
-            if AS_CP is not None:
-                ASCP= AS_CP.id
-            if AS_CP is None  :
-                ASCP= 0
-
-        if cli:
-               
-            mission=Mission(Reference_BAILLEUR=cli.id,
-           # old=sheet["A"],
-            ABONNEMENT	 = name[9] ,
-            ID_AS	 = SA ,
-        
-          
-             	
-            ID_INTERV = IV ,
-            NRO_FACTURE = regex1(name[8],'M')  ,
-            PRIX_HT_EDL = regex1(name[13],'S') ,
-            TVA_EDL = regex1(name[14],'S') ,
-            PRIX_TTC_EDL = regex1(name[15],'S') ,
-            Reference_LOCATAIRE	 =  name[20] ,
-            Adresse1_Bien	 = name[21] ,  
-            Adresse2_Bien	 = name[22] , 
-            CP_Bien	 = regex1(name[23],'M') ,  
-            Ville_Bien	 = name[24] , 
-            
-            CA_HT_AS = regex1(name[25],'S') , 	
-            TVA_AS	 = regex1(name[26],'S') , 
-            CA_TTC_AS = regex1(name[27],'S') , 	
-            CA_HT_AC = regex1(name[28],'S') , 	
-            CA_TTC_AC	 = regex1(name[29],'S') , 
-            CA_HT_TRUST	 = regex1(name[30],'S') , 
-            TVA_TRUST	 = regex1(name[31],'S') ,
-            Prix_ht_chiffrage	 = regex1(name[33],'S') , 
-            POURCENTAGE_suiveur_chiffrage	 = regex1(name[34],'perc') ,
-            POURCENTAGE_AS_chiffrage = regex1(name[35],'perc') ,	
-            POURCENTAGE_manager_chiffrage  = regex1(name[36],'perc') , 	
-            ID_manager_chiffrage  = MC ,
-                
-            POURCENTAGE_agent_chiffrage = regex1(name[38],'perc')  ,	
-            ID_agent_chiffrage  = AC ,	
-            
-            TYPE_EDL = name[40] ,	
-            TITREPROPRIO = name[42] , 		 
-            NOMPROPRIO = name[43] , 		
-            TYPE_LOGEMENT = name[27] , 	
-            CODE_AMEXPERT = name[34] , 	
-            COMMENTAIRE_FACTURE = name[54] , 	
-            LOGEMENT_MEUBLE =name[59] , 	
-            CODE_FACTURATION = name[60] , 	
-            TYPE_DE_BIEN = name[61] , 	
-            surface_logement1 = regex1(name[62],'S'), 		 	
-            POURCENTAGE_COM_AS_DU_CLIENT = regex1(name[68],'perc')  , 	
-            ID_Respon_Cell_Dev	 =RCD ,
-            
-            POURCENTAGE_Respon_Cell_Dev = regex1(name[70],'perc')  , 	
-            ID_agent_Cell_Dev = ACD, 	
-            
-            POURCENTAGE_Agent_Cell_Dev = regex1(name[72],'perc')  ,	
-            ID_Agent_CellTech = ACT,  	
-            
-            POURCENTAGE_Agent_Cell_Tech = regex1(name[74],'perc')  , 	
-            ID_Respon_Cell_Tech = RCT, #######
-                
-            POURCENTAGE_Respon_Cell_Tech = regex1(name[76],'perc')  ,	
-            ID_Suiveur_Cell_Tech  = SCT ,
-            
-            POURCENTAGE_Suiveur_Cell_Tech	 = regex1(name[78],'perc') , 
-            ID_Respon_Cell_Planif = RCP,
-            
-            POURCENTAGE_Respon_Cell_Planif  = regex1(name[80],'perc') ,
-            ID_Suiveur_Cell_Planif  = SCP,
-            
-            POURCENTAGE_Suiveur_Cell_Planif	 = regex1(name[82],'perc') , 
-            ID_Agent_saisie_Cell_Planif  = ASCP,
-                  
-            POURCENTAGE_Agent_saisie_CEll_planif  = regex1(name[84],'perc') )
-            db.session.add(mission)
-            db.session.commit()
-            try:
-                mission.DATE_FACTURE = datetime.datetime(*xlrd.xldate_as_tuple(name[41], wb.datemode))
-                db.session.commit()
-            except:
-                mission.DATE_FACTURE=None
-                db.session.commit()
-            try:
-                mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
-                db.session.commit()
-            except:
-                mission.DATE_FACT_REGLEE=None
-                db.session.commit()
-            try:
-                mission.DATE_REALISE_EDL =datetime.datetime(*xlrd.xldate_as_tuple(name[12], wb.datemode)) 
-                db.session.commit()
-            except:
-                mission.DATE_REALISE_EDL=None
-                db.session.commit()
-            try:
-                if mission.CODE_FACTURATION[-1]=='M':
-                    print(mission.CODE_FACTURATION[2:5])
-                    mission.CODE_FACTURATION[2:5] == 150
-                    A=mission.CODE_FACTURATION[0:-1]
-                    mission.CODE_FACTURATION = A
-                    #print(mission.CODE_FACTURATION)
-                    db.session.commit()
-
-                if mission.CODE_FACTURATION[-1] == ' ':
-                    print(mission.CODE_FACTURATION[2:5])
-                    B=mission.CODE_FACTURATION[0:-1] 
-                    mission.CODE_FACTURATION = B
-                    db.session.commit()
-
-                if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
-                        mission.Anomalie = False
-                        mission.reason = None
-                        db.session.commit()
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
-               # print(mission)
-                db.session.commit()
-            print(mission.CODE_FACTURATION)
-            print(mission.TYPE_LOGEMENT)
-            try:
-                if mission.TYPE_LOGEMENT[-1] == ' ':
-                   # print( mission.TYPE_LOGEMENT)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                    db.session.commit()
-
-
-                if mission.TYPE_LOGEMENT[-1] == 'M':
-                   # print(mission.TYPE_LOGEMENT)
-                    mission.CODE_FACTURATION[2:5] == 150
-                    #print(mission.CODE_FACTURATION)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                   # print(mission.TYPE_LOGEMENT)
-                    db.session.commit()
-
-                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
-                    mission.Anomalie = True
-                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
-                    db.session.commit()
-
-                
-
-                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
-                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
-                        if mission.TYPE_LOGEMENT[0] == "T":
-                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit()
-                        if mission.TYPE_LOGEMENT[0] == "F":
-                            B="APPT-"+str(mission.TYPE_LOGEMENT)
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit() 
-                    else:
-                        mission.coherent = False 
-                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
-                        db.session.commit()
-                
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
-                db.session.commit()
-            try:
-                if mission.TYPE_LOGEMENT[-1] == ' ':
-                   # print( mission.TYPE_LOGEMENT)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                    db.session.commit()
-
-
-                if mission.TYPE_LOGEMENT[-1] == 'M':
-                   # print(mission.TYPE_LOGEMENT)
-                    mission.CODE_FACTURATION[2:5] == 150
-                    #print(mission.CODE_FACTURATION)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                   # print(mission.TYPE_LOGEMENT)
-                    db.session.commit()
-
-                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
-                    mission.Anomalie = True
-                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
-                    db.session.commit()
-
-                
-
-                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
-                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
-                        if mission.TYPE_LOGEMENT[0] == "T":
-                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit()
-                        if mission.TYPE_LOGEMENT[0] == "F":
-                            B="APPT-"+str(mission.TYPE_LOGEMENT)
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit() 
-                    else:
-                        mission.coherent = False 
-                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
-                        db.session.commit()
-                
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
-                db.session.commit()
-            
-        else:
-
-            missions_.append([name[0],name[1],name[2],name[3],name[4],name[5],name[6],name[7],
-            name[8],name[9],name[10],name[11],date_(name[12],wb.datemode),name[13]
-            ,name[14],name[15],name[16],
-            name[17],name[18],name[19],name[20],name[21],name[22],name[23],name[24],
-            name[25],name[26],name[27],name[28],name[29],name[30],name[31],name[32],
-            name[33],name[34],name[35],name[36],name[37],name[38],name[39],name[40],
-                date_(name[41],wb.datemode),name[42],
-            name[43],date_(name[44],wb.datemode),
-            name[45],name[46],name[47],name[48],
-                name[49],name[50],name[51],name[52],name[53],name[54],name[55],name[56],
-                name[57],name[58],name[59],name[60],name[61],name[62],name[63],name[64],
-                name[65],name[66],name[67],name[68],name[69],name[70],name[71],name[72],
-                name[73],name[74],name[75],name[76],name[77],name[78],name[79],name[80],
-                    name[81],name[82],name[83],name[84]])
-    print(missions_)
-    failed(missions_)
     
 
 

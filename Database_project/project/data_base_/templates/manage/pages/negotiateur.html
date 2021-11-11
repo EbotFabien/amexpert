@@ -62,10 +62,10 @@
                                     <!-- <td>{{client_.Zone_de_région_du_client}}</td> -->
                                     <td> <a href="{{url_for('users.edit_negotiateur', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                     <td style="">
-                                        <a href="{{url_for('users.show_negotiateur', id=client_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                        <a href="{{url_for('users.show_negotiateur', id=client_.id)}}" title="voir tous les détails" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                         <!-- <a href="/ajoutez/agenda/{{client_.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{client_.id}}">créer un agenda</a> -->
                                     </td>   
-                                     <td> <a href="{{url_for('users.delete_negotiateur', id=client_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="voir tout les details" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
+                                     <td> <a href="{{url_for('users.delete_negotiateur', id=client_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="Supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>   
                                 </tr>    
                             {%endfor%}
                         </tbody>

@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Expert</h2>
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier Expert</h2>
         <a href="{{url_for('users.expert')}}" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
     </div>
       <div class="table-container" style="">
@@ -39,10 +39,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.username(class="input", value=expert.nom)}}
+                                    {{form.username(class="input", value=expert.nom, placeholder="Données Alphabetiques")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le nom est requis</p>
+                                <p class="help"> Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -62,13 +62,14 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.secteur(class="input", value=history.secteur)}}
+                                    {{form.secteur(class="input", value=history.secteur, placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le nom est requis</p>
-                            </div>
+
+                              <p class="help">Non requis</p>
                           </div>
                         </div>
+                    </div>
                     <hr/>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
@@ -85,40 +86,44 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.Numero(class="input", value=expert.numero)}}
-                                {% endif %}
+                                {{form.Numero(class="input", value=expert.numero, placeholder
+                                ="Données numérique")}}
+                            {% endif %}
+                            </div>
+                                   
+                                <p class="help"> Veuillez remplir ce champ</p>
                               </div>
-                                <p class="help"> Requis. Le numero est requis</p>
+                                
                             </div>
                           </div>
-                        </div>
+                        
                     <hr/>
-                     <div class="field is-horizontal">
+                    {#<div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.Type.label(class="form-control-label")}}</small></label>
                         </div>
                         <div class="field-body">
-                          <div class="field"><!---->
+                          <div class="field">
                               <div class="control">
                                {% if form.Type.errors %}
                                 {{form.Type(class="input is-invalid", value=expert.TYPE) }}
                             <div class="invalid-feedback">
                                 {% for error in form.Type.errors %}
                                     <span>{{ error }}</span>
-                                {% endfor %}
+                                {% endfor %}4
                             </div>
-                                {% else %}
+                               {% else %}
                                 <select class="input" id="Type" name="Type">
                                     <option value="Professionnel" {% if expert.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
                                     <option value="Particulier" {% if expert.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
                                   </select>
-                                {% endif %}
+                                {% endif %} 
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help">Non requis </p>
                             </div>
                           </div>
                         </div>
-                    <hr/>
+                    <hr/>#}
                      <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.email.label(class="form-control-label")}}</small></label>
@@ -134,10 +139,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.email(class="input", value=expert.email)}}
+                                    {{form.email(class="input", value=expert.email, placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. L'email est requis</p>
+                                <p class="help">Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -157,10 +162,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.email_perso(class="input", value=expert.email_perso)}}
+                                    {{form.email_perso(class="input", value=expert.email_perso, placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -186,7 +191,7 @@
                                   </select>
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le sexe est requis</p>
+                                <p class="help"> Veuillez choisir parmis les options</p>
                             </div>
                           </div>
                         </div>
@@ -206,10 +211,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.code_tva(class="input", value=expert.code_tva)}}
+                                    {{form.code_tva(class="input", value=expert.code_tva, placeholder="4 chiffres Max")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le code tva est requis</p>
+                                <p class="help"> Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -229,10 +234,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.taux_tva(class="input", value=expert.taux_tva)}}
+                                    {{form.taux_tva(class="input", value=expert.taux_tva, placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le taux tva est requis</p>
+                                <p class="help">Non requis  </p>
                             </div>
                           </div>
                         </div>
@@ -252,10 +257,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.siret(class="input", value=expert.siret)}}
+                                    {{form.siret(class="input", value=expert.siret, placeholder="Données numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le siret est requis</p>
+                                <p class="help"> Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -275,10 +280,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.trigramme(class="input", value=expert.trigramme)}}
+                                    {{form.trigramme(class="input", value=expert.trigramme, placeholder="Alphabetiques, 3 lettres max")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le trigramme est requis</p>
+                                <p class="help"> Non requis </p>
                             </div>
                           </div>
                         </div>
@@ -301,11 +306,11 @@
                                     {{form.actif_parti(class="input", value=history.actif_parti)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. Le parti actif est requis</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
-                    <hr/>
+                    {# <hr/>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label" style="text-align: left;"><small>{{form.mdp.label(class="form-control-label")}}</small></label>
@@ -321,13 +326,13 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.mdp(class="input", value=history.mdp)}}
+                                    {{form.mdp(class="input", value=history.mdp, placeholder="8 charactères Min")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. </p>
+                                <p class="help"> Non requis </p>
                             </div>
                           </div>
-                        </div>
+                        </div> #}
                     <hr/>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
@@ -344,10 +349,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.ville(class="input", value=history.ville)}}
+                                    {{form.ville(class="input", value=history.ville, placeholder="Données Alphabetiques")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. La ville est requis</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -367,10 +372,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.adresse(class="input", value=history.adresse1)}}
+                                    {{form.adresse(class="input", value=history.adresse1, placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. La adresse est requis</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -390,10 +395,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.adresse2(class="input", value=history.adresse2)}}
+                                    {{form.adresse2(class="input", value=history.adresse2, placeholder="Données Alpha-numérique")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. </p>
+                                <p class="help"> Non requis </p>
                             </div>
                           </div>
                         </div>
@@ -413,10 +418,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.cp(class="input", value=history.cp)}}
+                                    {{form.cp(class="input", value=history.cp, placeholder="00000")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis. La code postal est requis</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -439,7 +444,7 @@
                                     {{form.login_backof(class="input", value=history.login_backof)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -459,10 +464,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.pwd_backof(class="input", value=history.pwd_backof)}}
+                                    {{form.pwd_backof(class="input", value=history.pwd_backof, placeholder="8 charactères minimum")}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -485,7 +490,7 @@
                                     {{form.login_extranet(class="input", value=history.login_extranet)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -508,7 +513,7 @@
                                     {{form.pwd_extranet(class="input", value=history.pwd_extranet)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -531,7 +536,7 @@
                                     {{form.pwd_gsuite(class="input", value=history.pwd_gsuite)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -554,7 +559,7 @@
                                     {{form.login_google(class="input", value=history.login_google)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -577,7 +582,7 @@
                                     {{form.pwd_google(class="input", value=history.pwd_google)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -600,7 +605,7 @@
                                     {{form.observations_de_suivi(class="input", value=history.observations_de_suivi)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Non requis</p>
                             </div>
                           </div>
                         </div>
@@ -620,10 +625,10 @@
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.type_certification(class="input", value=history.type_certification)}}
+                                    {{form.type_certification(class="input", placeholder="Données Alpha-numérique", value=history.type_certification)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>
@@ -646,7 +651,7 @@
                                     {{form.date_certification(class="input", value=history.date_certification)}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help"> Veuillez remplir ce champ</p>
                             </div>
                           </div>
                         </div>                    
@@ -671,7 +676,7 @@
                                     {{form.date_entree(class="input", value=expert.date_entree.strftime('%d. %m. %Y'))}}
                                 {% endif %}
                               </div>
-                                <p class="help"> Requis.</p>
+                                <p class="help">Non requis </p>
                             </div>
                           </div>
                         </div>                    

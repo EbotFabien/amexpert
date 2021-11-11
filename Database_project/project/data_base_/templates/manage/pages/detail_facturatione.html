@@ -15,7 +15,7 @@
                   <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
                 </div-->
                 <div class="card-header-title">
-                    <span style="padding: 10px;position: absolute;right: 10px;">Total:{{sum}} €</span>
+                    <span style="padding: 10px;position: absolute;right: 10px;">Total HT:{{sum}} €</span>
                 </div>
                                        
             </header>
@@ -32,7 +32,10 @@
                             {% endwith %}
                             <form class="user" method="POST" style="padding:10px; " action="{{url_for('users.create_facturee')}}" >
                                 {{ form.hidden_tag() }}
-                               
+                                <div class="form-group">
+                                    {{form.submit(class="button is-small is-success")}}   
+                                </div>
+                           
                                 <div class="columns">
                                     <div class="column">
                                         <div class="field is-vertical">
@@ -51,10 +54,10 @@
                                                   {% endfor %}
                                               </div>
                                                   {% else %}
-                                                      {{form.Demarrer(class="input", value=start)}}
+                                                      {{form.Demarrer(class="input", value=start.strftime('%d/%m/%Y'))}}
                                                   {% endif %}
                                                 </div>
-                                                  <p class="help"> Requis.</p>
+                                                  <p class="help"> </p>
                                               </div>
                                         </div>
                                     </div>
@@ -76,10 +79,10 @@
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Fin(class="input", value=end)}}
+                                                    {{form.Fin(class="input", value=end.strftime('%d/%m/%Y'))}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> </p>
                                             </div>
                                       </div>
                                     </div>
@@ -110,7 +113,7 @@
                                                     {% endif %}
                                                     
                                                   </div>
-                                                    <p class="help"> Requis.</p>
+                                                    <p class="help"> </p>
                                                 </div>
                                           </div>
                                         </div>
@@ -139,7 +142,7 @@
                                                     {% endif %}
                                                     
                                                   </div>
-                                                    <p class="help"> Requis.</p>
+                                                    <p class="help"> </p>
                                                 </div>
                                           </div>
                                         </div>
@@ -162,11 +165,11 @@
                                                         {% endfor %}
                                                     </div>
                                                         {% else %}
-                                                            {{form.Date_EDL(class="input", value=key.DATE_REALISE_EDL)}}
+                                                            {{form.Date_EDL(class="input", value=key.DATE_REALISE_EDL.strftime('%d/%m/%Y'))}}
                                                         {% endif %}
                                                     
                                                   </div>
-                                                    <p class="help"> Requis.</p>
+                                                    <p class="help"> </p>
                                                 </div>
                                           </div>
                                         </div>
@@ -175,10 +178,7 @@
                                 </div>
                                 {%endfor%}
                   
-                                <div class="form-group">
-                                    {{form.submit(class="button is-small is-success")}}   
-                                </div>
-                           
+                               
                             </form>
                         </div>
                     </div>

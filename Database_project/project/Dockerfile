@@ -23,7 +23,7 @@ RUN pip install flask_migrate
 RUN pip install flask_limiter
 RUN pip install flask_wtf
 RUN pip install email_validator
-RUN pip install xlrd
+RUN pip install xlrd==1.2.0
 RUN pip install openpyxl
 RUN pip install xlwt
 RUN pip install psycopg2-binary

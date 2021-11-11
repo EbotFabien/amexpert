@@ -232,7 +232,7 @@ def edit_client(id):
 @login_required
 def mission():
 
-    if current_user.TYPE == "Admin":
+    if current_user:
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
         date=request.args.get('date')
@@ -974,7 +974,7 @@ def show_fac(id):
         
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         
-        return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,factura=factura,nro=NRO,abnormal=abnormal)
+        return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,factura=factura,nro=NRO,abnormal=abnormal,id=id)
   
 @users.route('/client/<int:id>/mission')
 @login_required
@@ -1012,15 +1012,20 @@ def facturationa():
 @login_required
 def datereg(id):
     if current_user.TYPE == "Admin":
-        facturation_mission.query.filter_by(fact_mission=id).all()
-        facture = list(facturation_mission.query.filter_by(fact_mission=id).all())  
+        facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())
+        facture1= list(facturation_mission.query.filter_by(fact_mission=id).all())  
         now_utc = datetime.now(timezone.utc)
         start=datetime.combine(now_utc,datetime.min.time())
-        for i in facture:
+        failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        if failed:
+            flash(f'Veuillez corriger votre factures Numero' +str(id),'Warning')
+            return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation)
+
+        for i in facture1:
             miss=Mission.query.filter_by(id=i.mission__data_.id).first()
             miss.DATE_FACT_REGLEE = start
             db.session.commit()
-            flash(f'La factures a ete reglee avec success','success')
+            flash(f'La facture a été réglé avec succès','success')
             return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
@@ -1035,14 +1040,15 @@ def choosem():
             facture=facturation_client.query.filter_by(Date_mission=start).all()
             return render_template('manage/pages/facturationm.html',legend="facturation",facturations=facture)
 
-@users.route('/show/<int:id>/fac', methods=['GET'])
+'''@users.route('/show/<int:id>/fac', methods=['GET'])
 @login_required
 def show_facm(id):
     if current_user.TYPE == "Admin":
         facture = facturation_mission.query.filter_by(fact_mission=id).all()
         failed = Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all()
-        print(facture[0].facturation_client__data_.n_facture)
-        return render_template('manage/pages/show_facture.html', facture=facture,failed=failed)
+        factura=facture
+        return render_template('manage/pages/show_facture.html',factura=factura,facture=facture,failed=failed)'''
+
 
 @users.route('/delete/<int:id>/facturation', methods=['GET'])
 @login_required
@@ -1061,7 +1067,7 @@ def delete_facturation(id):
 @users.route('/show/<int:id>/mission', methods=['GET'])
 @login_required
 def show_mission(id):
-    if current_user.TYPE == "Admin":
+    if current_user:
         mission = Mission.query.filter_by(id=id).first_or_404()
         return render_template('manage/pages/show_mission.html', mission=mission,legend="show_mission",highlight='mission')
 
@@ -1154,6 +1160,7 @@ def ajouter_mission():
 
                 db.session.add(mission)
                 db.session.commit()
+                flash(f"La Mission a été ajouté avec succès",'success')
                 return redirect(url_for('users.mission'))
             else:
                 flash(f"Le client ou expert n'existe pas dans cette base",'danger')
@@ -1230,7 +1237,7 @@ def edit_mission(id):
 
                     db.session.commit()
                     
-                    flash(f"Les information de la mission a ete modifier", "success")
+                    flash(f"La mission a été modifier avec succès", "success")
                     return redirect(url_for('users.mission'))
         
         return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
@@ -1302,7 +1309,7 @@ def ajouter_expert():
             user.password=hashed_password
             db.session.commit()
             db.session.commit()
-            flash(f'L"expert a ete ajouter avec success','success')
+            flash(f'L"expert a été ajouté avec succès','success')
             return redirect(url_for('users.expert'))
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
@@ -1347,8 +1354,7 @@ def edit_expert(id):
 
                 expert_history.observations_de_suivi = form.observations_de_suivi.data
                 
-                if form.mdp.data:
-                    expert_history.date_sortie = form.mdp.data
+                
 
                 db.session.commit()
                 expert.genre= form.Sexe.data
@@ -1360,7 +1366,7 @@ def edit_expert(id):
                 expert.code_tva=form.code_tva.data
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
-                flash(f'Modification réussie', 'success')
+                flash(f'L"expert a été modifié avec succès', 'success')
                 return redirect(url_for('users.expert'))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
@@ -1562,7 +1568,7 @@ def edit_tarif(id):
                 tarif.commentaire_libre =form.commentaire_libre.data
                 
                 db.session.commit()
-                flash(f'Les donnes du tarif a été modifiées','success')
+                flash(f'Les données du tarif ont été modifiées','success')
                 return redirect(url_for('users.tarifs',id=id))
 
         return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
@@ -1674,15 +1680,15 @@ def logout():
 @login_required
 def main():
     db.create_all()
-    ex=expert_facturation.query.all()
-    print(ex)
-    if current_user.is_authenticated:
+    if current_user.TYPE == "Admin":
         clients = Client.query.filter_by(visibility=True).count()
         missions = Mission.query.filter_by(Visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
         facturations =facturation_client.query.filter_by(visibility=True).count()
-        
         return render_template('manage/dashboard.html',title='Portail', client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+    elif current_user:
+        return redirect (url_for('users.mes_factures',id=current_user.id))
+        
     return redirect(url_for('users.login'))
 
 @users.route('/client/<int:id>/négociateurs')
@@ -1708,8 +1714,8 @@ def delete_negotiateur(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes du negotiateur ont été  suprimmer','success')
-        return redirect(url_for('users.negotiateur', id=id))
+        flash(f'Les donnes du négociateur ont été  suprimmer','success')
+        return redirect(url_for('users.negotiateur', id=client.client_id))
 
 
 @users.route('/ajouter/<int:id>/negotiateur',methods=['GET','POST'])
@@ -1726,7 +1732,7 @@ def ajouter_negotiateur(id):
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
-            flash(f'Negotiateur créé avec succès','success')
+            flash(f'négociateur créé avec succès','success')
             return redirect(url_for('users.negotiateur', id=id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
@@ -1780,7 +1786,7 @@ def edit_negotiateur(id):
                 client.nom = form.NOM.data
 
                 db.session.commit()
-                flash(f'Les donnes du negotiateur a été modifiées','success')
+                flash(f'Les donnes du négociateur ont été modifiées','success')
                 return redirect(url_for('users.negotiateur', id=client.client_id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
@@ -1815,7 +1821,7 @@ def ajouter_prospect():
             tous=[]
             alll=list(prospect.query.all())
             for i in alll:
-                tous.append(alll.reference)
+                tous.append(i.reference)
             user.reference =generate(tous)
             db.session.commit()
             user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
@@ -2034,24 +2040,32 @@ def uploader_():
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     #flash(f"Vous avez importer les donnees avec success",'success')
+                    if lient(loc) == True:
+                        flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
                     return lient(loc)
                     #return redirect(url_for('users.client'))
+
             
             if table == 'suivi':
                     suiv(loc)
                     if suiv(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                    flash(f"Vous avez importer les donnees avec success",'success')
-                    return redirect(url_for('users.client'))
+                    #if lient(loc) == True:
+                    flash(f"Vos données ont été importées avec succès",'success')
+                    return redirect(url_for('users.up'))
+                    #return suiv(loc)
                 
             if table == 'expert':
                     xpert(loc)
                     if xpert(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                    flash(f"Vous avez importer les donnees avec success",'success')
-                    return redirect(url_for('users.expert'))
+                    if xpert(loc) == True:
+                        flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
+                    return xpert(loc)
                
             if table == 'Tarifb':
                 
@@ -2059,8 +2073,7 @@ def uploader_():
                 if arif(loc) == False:
                     flash(f"Verifier la structure de votre fichier svp",'warning')
                     return redirect(url_for('users.up'))
-                flash(f"Vous avez importer les donnees avec success",'success')
-                return redirect(url_for('users.tarif_base'))
+                return arif(loc)
                 
             if table == 'mission':
                 '''Missions2(loc,'26')
@@ -2072,7 +2085,10 @@ def uploader_():
                 if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                return redirect(url_for('users.mission'))
+                if Missions1(loc) == True:
+                        flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
+                return Missions1(loc)
                 
                
             # save the file1362
@@ -2098,7 +2114,7 @@ def uploader_():
 @users.route('/profil' , methods=['GET','POST'])
 @login_required
 def profil():
-    if current_user.TYPE == 'Admin':
+    if current_user:
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
@@ -2563,7 +2579,7 @@ def create_facturem():
 
             return  redirect(url_for('users.facturationa'))   
         else:
-            flash(f'Erreur de Codification ','warning')
+            flash(f'Erreur de Codification Aucune facture générée','warning')
             return redirect(url_for('users.facturationa'))
     return redirect(url_for('users.main'))        
         
@@ -3086,8 +3102,8 @@ def allex():
 def factme(id):
     if current_user.TYPE == "Admin":
            facture=expert_facturation.query.filter_by(mission=id).all() 
-
-           return render_template('manage/pages/facture_missions.html',facture=facture)
+           miss=facture[0].mission__data.mission
+           return render_template('manage/pages/facture_missions.html',facture=facture,id=id,miss=miss)
 
     return redirect(url_for('users.main'))
 
@@ -3102,7 +3118,7 @@ def choosedg(id):
             
             facture.date_generation=start
             db.session.commit()
-            flash(f'Date generee avec sucess pour facture numero '+str(id),'success')
+            flash(f'Date générée avec succès pour facture numero '+str(id),'success')
             return redirect(url_for('users.allex'))
 
         return render_template('manage/pages/choose.html',form=form,legend="genere")
@@ -3182,44 +3198,47 @@ def download(mes,temps,id):
                     fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
-                    send_pdf("touchone0001@gmail.com",name.nom,fil)
+                    send_pdf("touchone0001@gmail.com",name.nom,n)
                     return res
 
     return redirect(url_for('users.main'))
 
-@users.route('/fac/<id>/download', methods=['GET','POST'])
+@users.route('/fac/<int:id>/download',methods=['GET','POST'])
 @login_required
 def gestion(id):
     if current_user.TYPE == "Admin":
         abnormal =list()
-        facture = list(facturation_mission.query.filter_by(fact_mission=id).all())
-        
-        for i in facture:
+        factura = list(facturation_mission.query.filter_by(fact_mission=id).all())
+        NRO=factura[0].facturation_client__data_.n_facture
+        for i in factura:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
 
         s1=set(abnormal)
-        s2=set(facture)
+        s2=set(factura)
         facture = list(s2.difference(s1))
-        name=facture[0].facturation_client__data_.client__data_.nom
+        name=factura[0].facturation_client__data_.client__data_.nom
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         if failed:
             flash(f'Corigee vos factures incorrecte svp','Warning')
-            return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,abnormal=abnormal,id=id)
+            return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
-            res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True, facture=facture,Nom=name)
+            res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name)
             files=os.listdir(app.config['PDF_DIR_PATH'])
             for fil in files:
                 if fil.endswith('.pdf'):
                     f=fil
                     break
-            nom=''.join(name.nom)
+            nom=''.join(name)
             las=nom+'.pdf'
+            #try:
             fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
             n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
             os.rename(fil,n)
-            send_pdf("touchone0001@gmail.com",name.nom,fil)
+            send_pdf("touchone0001@gmail.com",name,n)
             return res
+            #except:
+            #   return redirect(url_for('users.main'))
 
 
   

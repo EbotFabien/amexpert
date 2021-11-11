@@ -35,17 +35,17 @@
                               <div class="field"><!---->
                                   <div class="control">
                                    {% if form.expert.errors %}
-                                    {{form.expert(class="input is-invalid") }}
+                                    {{form.expert(class="input is-invalid", placeholder="Données Alphabetiques (3 charactères max)") }}
                                     <div class="invalid-feedback">
                                         {% for error in form.expert.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                        {{form.expert(class="input")}}
+                                        {{form.expert(class="input", placeholder="Données Alphabetiques (3 charactères max)")}}
                                     {% endif %}
                                   </div>
-                                    <p class="help"> Requis. Le Trigramme est requis</p>
+                                    <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
                               </div>
                             </div>
@@ -57,17 +57,17 @@
                                   <div class="field"><!---->
                                       <div class="control">
                                        {% if form.commentaire.errors %}
-                                        {{form.commentaire(class="input is-invalid") }}
+                                        {{form.commentaire(class="input is-invalid", placeholder="Données Alphabetiques (3 charactères max)") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.commentaire.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                         {% else %}
-                                            {{form.commentaire(class="input")}}
+                                            {{form.commentaire(class="input", placeholder="Données Alphabetiques (100 charactères max)")}}
                                         {% endif %}
                                       </div>
-                                        <p class="help"> Requis. Le commentaire est requis</p>
+                                        <p class="help">Veuillez remplir ce champ</p>
                                     </div>
                                   </div>
                                 </div>

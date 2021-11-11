@@ -1,6 +1,6 @@
 {% extends 'manage/index.html' %}
 {% block manage_content %}
-  <div style="" class="main-content">
+  <div class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between title-box">
         {% if legend == "prospect" %}
@@ -19,7 +19,7 @@
             <a href="{{url_for('users.client')}}" title="Consultez la liste des clients" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
         {% endif %}
     </div>
-      <div class="table-container" style="">
+      <div class="table-container">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
             <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none; align-items: center;">
                 <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
@@ -29,27 +29,7 @@
                                        
             </header>
 
-    <!-- <div class="row"> -->
-        <!-- Area Chart -->
-        <!-- <div class="col-xl-6 col-lg-6 mx-auto"> -->
-            <!-- <div class="card shadow mb-4"> -->
-	       <!--  <div class="card-header py-1 d-flex justify-content-between align-items-center">
-                {% if legend == "client" %}
-                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un client</h6>
-                    <a href="/client" class="button is-black is-small pull-right">Tous les clients</a>
-                {% endif %}
-                {% if legend == "negociateur" %}
-                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un negociateur</h6>
-                    <a href="{{url_for('users.negotiateur', id=ID)}}" class="button is-black is-small pull-right">Tous les negociateurs</a>
-                {% endif %}
-                {% if legend == "prospect" %}
-                    <h6 class="m-0 font-weight-bold is-gray font-weight-light">Ajouter un prospect</h6>
-                    <a href="/prospect" class="button is-black is-small pull-right">Tous les prospect</a>
-                {% endif %}
-	        </div> -->
-	        <!-- <div class="card-body"> -->
-	            <!-- <div class="row"> -->
-                    <!-- <div class="col-lg-11 mx-auto"> -->
+    
                         <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
@@ -69,17 +49,17 @@
                                       <div class="field"><!---->
                                           <div class="control">
                                            {% if form.Siret.errors %}
-                                        {{form.Siret(class="input is-invalid") }}
+                                        {{form.Siret(class="input is-invalid", placeholder="Données numérique à 14 chiffres. example '75271334700041'") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Siret.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                             {% else %}
-                                                {{form.Siret(class="input")}}
+                                                {{form.Siret(class="input", placeholder="Données numérique à 14 chiffres. example '75271334700041'")}}
                                             {% endif %}
                                           </div>
-                                            <p class="help"> Requis. Le numero de siret est requis</p>
+                                            <p class="help"> Veuillez remplir ce champ</p>
                                         </div>
                                       </div>
                                     </div>
@@ -91,17 +71,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.NOM.errors %}
-                                            {{form.Siret(class="input is-invalid") }}
+                                            {{form.Siret(class="input is-invalid", placeholder="Données Alphabetiques. example 'John Doe'") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.NOM.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.NOM(class="input")}}
+                                                    {{form.NOM(class="input", placeholder="Données Alphabetiques. example 'John Doe'")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le nom est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -123,7 +103,7 @@
                                                     {{form.Sexe(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le titre est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -145,7 +125,7 @@
                                                     {{form.Type(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le type est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -157,17 +137,17 @@
                                           <div class="field">
                                               <div class="control">
                                                {% if form.Societe.errors %}
-                                                {{form.Societe(class="input is-invalid") }}
+                                                {{form.Societe(class="input is-invalid",placeholder="Données Alpha-numérique (100 caractères max)") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Societe.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Societe(class="input")}}
+                                                    {{form.Societe(class="input", placeholder="Données Alpha-numérique (100 caractères max)")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le nom est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -179,17 +159,17 @@
                                           <div class="field">
                                               <div class="control">
                                                {% if form.email.errors %}
-                                                {{form.email(class="input is-invalid") }}
+                                                {{form.email(class="input is-invalid", placeholder="Données Alpha-numérique (100 caractères max) exemple: abc@abc.com") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.email.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.email(class="input")}}
+                                                    {{form.email(class="input", placeholder="Données Alpha-numérique (100 caractères max) exemple: abc@abc.com")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'email est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -201,17 +181,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.Numero.errors %}
-                                                {{form.Numero(class="input is-invalid") }}
+                                                {{form.Numero(class="input is-invalid", placeholder="Données numérique à 10 chiffres") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Numero.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Numero(class="input")}}
+                                                    {{form.Numero(class="input", placeholder="Données numérique à 10 chiffres")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le numéro est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -223,17 +203,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.Adresse1.errors %}
-                                                {{form.Adresse1(class="input is-invalid") }}
+                                                {{form.Adresse1(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Adresse1.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Adresse1(class="input")}}
+                                                    {{form.Adresse1(class="input", placeholder="Données Alpha-numérique (100 charactères max)")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -245,17 +225,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.Enseigne.errors %}
-                                                {{form.Enseigne(class="input is-invalid") }}
+                                                {{form.Enseigne(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Enseigne.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Enseigne(class="input")}}
+                                                    {{form.Enseigne(class="input", placeholder="Données Alpha-numérique (100 charactères max)")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -277,7 +257,7 @@
                                                     {{form.EtatClient(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -289,17 +269,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.Adresse2.errors %}
-                                                {{form.Adresse2(class="input is-invalid") }}
+                                                {{form.Adresse2(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Adresse2.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Adresse2(class="input")}}
+                                                    {{form.Adresse2(class="input", placeholder="Données Alphabetiques ")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
+                                                <p class="help"> Non requis</p>
                                             </div>
                                           </div>
                                         </div>
@@ -321,7 +301,7 @@
                                                     {{form.CP(class="input", placeholder="00000")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le code postal est requis</p>
+                                                <p class="help">Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -333,17 +313,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.Ville.errors %}
-                                                {{form.Ville(class="input is-invalid") }}
+                                                {{form.Ville(class="input is-invalid", placeholder="Données Alphabetiques ") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.Ville.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Ville(class="input")}}
+                                                    {{form.Ville(class="input", placeholder="Données Alphabetiques ")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. La ville est requis</p>
+                                                <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
@@ -365,7 +345,7 @@
                                                     {{form.Pays(class="input")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le pays est requis</p>
+                                                <p class="help"> Veuillez choisir parmi les options</p>
                                             </div>
                                           </div>
                                         </div>
@@ -377,17 +357,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.LoginExtranet.errors %}
-                                                {{form.LoginExtranet(class="input is-invalid") }}
+                                                {{form.LoginExtranet(class="input is-invalid", placeholder="Données Alphabetiques") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.LoginExtranet.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.LoginExtranet(class="input")}}
+                                                    {{form.LoginExtranet(class="input", placeholder="Données Alphabetiques")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. </p>
+                                                <p class="help"> Non requis </p>
                                             </div>
                                           </div>
                                         </div>
@@ -399,17 +379,17 @@
                                           <div class="field"><!---->
                                               <div class="control">
                                                {% if form.MdpExtranet.errors %}
-                                                {{form.MdpExtranet(class="input is-invalid") }}
+                                                {{form.MdpExtranet(class="input is-invalid", placeholder="8 charactères minimum") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form.MdpExtranet.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.MdpExtranet(class="input")}}
+                                                    {{form.MdpExtranet(class="input", placeholder="8 charactères minimum")}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. </p>
+                                                <p class="help"> Non requis</p>
                                             </div>
                                           </div>
                                         </div>
@@ -420,7 +400,7 @@
                                         <div class="field-body">
                                           <div class="field">
                                             <div class="control">
-                                              <button type="submit" class="button is-primary is-small"> Submit </button>
+                                              <button type="submit" class="button is-primary is-small"> Enregistrer </button>
                                             </div>
                                           </div>
                                         </div>
@@ -429,15 +409,7 @@
                                      </div>
                             </form>
                         </div>
-                    <!-- </div> -->
-                <!-- </div> -->
-	        <!-- </div> -->
-	    <!-- </div> -->
-	<!-- </div> -->
-    <!-- Pie Chart --> 
-<!-- </div> -->
-
-    <!-- Content Row -->
+                    
 </div>
     <!-- /.container-fluid -->
 {%endblock%}

@@ -1,3 +1,4 @@
+{% if current_user.TYPE == "Admin" %}
 <div id="search-area">
   <div class="form-container">
     <form class="searh-contianer" method="GET" action="/search">
@@ -20,3 +21,4 @@
     </form>
   </div>
 </div>
+{% endif %}

@@ -1,29 +1,23 @@
-{% extends 'manage/index.html' %}
+
+                    {% extends 'manage/index.html' %}
 {% block manage_content %}
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Ajouter un Suivi</h2>
-        {% if legend == "prospect" %}
-            <a href="{{url_for('users.suivi_prospect_', id=ID)}}" class="button is-primary is-small pull-right"> les suivi du prospects</a>
-        {% endif %}
-        {% if legend == "client" %}
-            <a href="{{url_for('users.suivi_client_', id=ID)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>
-        {% endif %}
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier le Suivi de {{suivi.suivi__data.nom}}</h2>
+
+        <a href="{{url_for('users.suivi_prospect_', id=suivi.prospect_id)}}" class="button is-primary is-small pull-right" title="les suivi du client"><i class="fa fa-list"></i></a>    
     </div>
 
-    <div class="row">
-        <!-- Area Chart -->
-        <div class="col-xl-6 col-lg-6 mx-auto">
-            <div class="card shadow mb-4">
-	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
-	            <h6 class="m-0 font-weight-bold is-gray">Modifiers suivi</h6>
-                 <a href="{{url_for('users.suivi_prospect_', id=suivi.prospect_id)}}" class="button is-black is-small pull-right"> les suivi du prospects {{suivi.suivi__data.nom}}</a>
-	        </div>
-	        <div class="card-body">
-	            <div class="row">
-                    <div class="col-lg-12 mx-auto">
-                        <div class="">
+    <div class="table-container" style="">
+        <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
+            <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;">
+                <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+                <div class="card-header-title">
+                  <a onclick="window.history.back()" class="button is-danger is-small" style="padding: 10px;position: absolute;right: 10px;">Annuler</a>
+                </div>
+            </header>
+                <div class="">
                             {% with messages = get_flashed_messages(with_categories=true)%}
                             {% if messages %}
                             {%for category,message in messages%}
@@ -33,62 +27,66 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form method="POST" class="user">
+                            <form method="POST" class="user form-padding"  >
                                 {{ form.hidden_tag() }}
-                                <fieldset class="form-group">
-                                <!-- <legend class="mb4">Créer un Expert</legend> -->
-                                
-                                <div class="row">
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                        {{form.expert.label(class="form-control-label")}}
-                                
-                                        {% if form.expert.errors %}
-                                            {{form.expert(class="input is-small is-invalid", value=suivi.responsable) }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.expert.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
+                                  <div class="field is-horizontal">
+                          <div class="field-label is-normal">
+                            <label class="label" style="text-align: left;"><small>{{form.expert.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                              <div class="field"><!---->
+                                  <div class="control">
+                                   {% if form.expert.errors %}
+                                    {{form.expert(class="input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.expert.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{form.expert(class="input is-small", value=suivi.responsable )}}
+                                    {% endif %}
+                                  </div>
+                                    <p class="help"> Requis. Le Trigramme est requis</p>
+                                </div>
+                              </div>
+                            </div>
+                            <hr/>
+                            <div class="field is-horizontal">
+                              <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.commentaire.label(class="form-control-label")}}</small></label></div>
+                                <div class="field-body">
+                                  <div class="field"><!---->
+                                      <div class="control">
+                                       {% if form.commentaire.errors %}
+                                        {{form.commentaire(class="input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.commentaire.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
                                         {% else %}
-                                            {{form.expert(class="input is-small", value=suivi.responsable )}}
+                                            {{form.commentaire(class="input is-small", value=suivi.commentaire )}}
                                         {% endif %}
+                                      </div>
+                                        <p class="help"> Requis. Le commentaire est requis</p>
                                     </div>
-                                   </div>
+                                  </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                         {{form.commentaire.label(class="form-control-label")}}
-                                 
-                                         {% if form.commentaire.errors %}
-                                             {{form.commentaire(class="input is-small is-invalid", value=suivi.commentaire) }}
-                                             <div class="invalid-feedback">
-                                                 {% for error in form.commentaire.errors %}
-                                                     <span>{{ error }}</span>
-                                                 {% endfor %}
-                                             </div>
-                                         {% else %}
-                                             {{form.commentaire(class="input is-small", value=suivi.commentaire )}}
-                                         {% endif %}
-                                     </div>
+                                <hr/>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal"></div>
+                                <div class="field-body">
+                                  <div class="field">
+                                    <div class="control">
+                                      {{form.submit(class="button is-primary is-small")}}    
+                                     
                                     </div>
-                                 </div>
-                            </fieldset>
-                            <div class="form-group">
-                                    {{form.submit(class="button is-small is-success btn-block")}}    
+                                  </div>
                                 </div>
+                            </div>
                             </form>
                         </div>
                     </div>
                 </div>
-	        </div>
-	    </div>
-	</div>
-    <!-- Pie Chart --> 
-</div>
-
-    <!-- Content Row -->
-</div>
-    <!-- /.container-fluid -->
+	  
 {%endblock%}

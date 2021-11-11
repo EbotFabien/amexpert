@@ -20,24 +20,24 @@
 		  		<a href="{{url_for('users.ajouter_suivic', id=client.id)}}" style="color: #fff; background: #0B6E4F;" title="modifier" class="button is-small is-fullwidth">Créer un Suivi</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.ajouter_negotiateur', id=client.id)}}" style="color: #fff; background: #DDB771;" title="modifier" class="button is-small is-fullwidth">Créer un Négociateur</a>
-		  	</div>
+				<a href="{{url_for('users.negotiateur', id=client.id)}}" style="color: #fff; background: #023047;" title="modifier" class="button is-small is-fullwidth">Voir ses Négociateurs</a>
+			</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.negotiateur', id=client.id)}}" style="color: #fff; background: #023047;" title="modifier" class="button is-small is-fullwidth">Voir ses Négociateurs</a>
+		  		<a href="{{url_for('users.ajouter_negotiateur', id=client.id)}}" style="color: #fff; background: #DDB771;" title="modifier" class="button is-small is-fullwidth">Créer un Négociateur</a>
 		  	</div>
 		</div>
 		<div class="columns">
-			<div class="column">
-		  		<a href="{{url_for('users.ajouter_tarif', id=client.id)}}" style="color: #fff; background: #219EBC;" title="modifier" class="button is-small is-fullwidth">Ajouter un Tarif</a>
-		  	</div>
 		  	<div class="column">
 		  		<a href="{{url_for('users.client_mission', id=client.id)}}" style="background: #6B705C; color: #fff;" title="modifier" class="button is-outlined-black is-small is-fullwidth">Voir ses Missions</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.tarifs', id=client.id)}}" title="modifier" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Tarifs</a>
+		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
 		  	</div>
-		  	<div class="column">
-		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
+			  <div class="column">
+				<a href="{{url_for('users.tarifs', id=client.id)}}" title="" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Tarifs</a>
+			</div>
+			<div class="column">
+		  		<a href="{{url_for('users.ajouter_tarif', id=client.id)}}" style="color: #fff; background: #219EBC;" title="modifier" class="button is-small is-fullwidth">Ajouter un Tarif</a>
 		  	</div>
 		</div>
 	{% endif %}
@@ -48,7 +48,7 @@
 		  		<a href="{{url_for('users.suivi_prospect_', id=client.id)}}" title="modifier" style="color: #fff; background: #219EBC;" class="button is-outlined-black is-small is-fullwidth">Voir Suivi</a>
 		  	</div>
 		  	<div class="column">
-		  		<a href="{{url_for('users.ajouter_suivip', id=client.id)}}" title="modifier" style="color: #fff; background: #023047;" class="button is-outlined-black is-small is-fullwidth">Cree Suivi</a>
+		  		<a href="{{url_for('users.ajouter_suivip', id=client.id)}}" title="modifier" style="color: #fff; background: #023047;" class="button is-outlined-black is-small is-fullwidth">Créer Suivi</a>
 		  	</div>
 		</div>
 	{% endif %}	
