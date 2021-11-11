@@ -2,10 +2,13 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db
-from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from Database_project.project.data_base_ import db,create_app
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
-from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
+import os
+
+
 
 def regex1(data,Type):
     if  Type=='str':
@@ -135,6 +138,7 @@ def regex1(data,Type):
             
 
 def failed(av):
+    
     ba=[]
     v=0
     for oo in av:
@@ -153,9 +157,17 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
+    filename='client_failed.xls'
+    file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
+    loc=str(file_path)
+    # set the file path
+    #uploaded_file.save(file_path)
+    wb.save(loc)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
     #wb.save('C:/Users/user/Downloads/Telegram Desktop/Anomalieclient.xls')
 
 def failed1(av):
+    
     ba=[]
     v=0
     for oo in av:
@@ -174,6 +186,13 @@ def failed1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
+    filename='prospect_failed.xls'
+    file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
+    loc=str(file_path)
+    # set the file path
+    #uploaded_file.save(file_path)
+    wb.save(loc)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True) 
     #wb.save('C:/Users/user/Downloads/Telegram Desktop/AnomaliePROSPECT.xls')
 
 def good1(av):
@@ -195,6 +214,13 @@ def good1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
+    filename='prospect_good.xls'
+    file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
+    loc=str(file_path)
+    # set the file path
+    #uploaded_file.save(file_path)
+    wb.save(loc)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
     #wb.save('C:/Users/user/Downloads/Telegram Desktop/BienPROSPECT.xls')
 
 def good2(av):
@@ -216,6 +242,13 @@ def good2(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
+    filename='client_good.xls'
+    file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
+    loc=str(file_path)
+    # set the file path
+    #uploaded_file.save(file_path)
+    wb.save(loc)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
     #wb.save('C:/Users/user/Downloads/Telegram Desktop/BienClient.xls')
 
 
@@ -337,7 +370,7 @@ def lient(loc):
                                 sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                 ,sheet["AB"][i].value,sheet["AC"][i].value])
                         else:
-                            print("Anomalie doublon")
+                            ("Anomalie doublon")
                     else:
                         reason="erreur  de doublon dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -454,7 +487,7 @@ def lient(loc):
                                 sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                 ,sheet["AB"][i].value,sheet["AC"][i].value])
                             else:
-                                print("Anomalie doublon")
+                                ("Anomalie doublon")
                         else:
                             reason="Anomalie doublon sur la reference"
                             anomalie1.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -477,19 +510,19 @@ def lient(loc):
     if anomalie == []:
         print(anomalie)
     else:
-        failed(anomalie)
+        return failed(anomalie)
     if anomalie1 == []:
         print(anomalie1)
     else:
-        failed1(anomalie1)
+        return failed1(anomalie1)
     if Bien == []:
         print(Bien)
     else:
-        good2(Bien)
+        return good2(Bien)
     if Bien1 == []:
         print(Bien1)
     else:
-        good1(Bien1)
+        return good1(Bien1)
 
 
 

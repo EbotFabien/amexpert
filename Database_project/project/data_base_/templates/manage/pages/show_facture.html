@@ -3,7 +3,7 @@
 <div style="" class="main-content">
 {% include 'manage/partials/search.html'%}
 <div class="display-flex justify-content-space-between" style="margin-top: 20px; align-items: baseline;">
-  <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture N° <span style="font-size: small;">{{facture[0].facturation_client__data_.n_facture}}</span></h2>
+  <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture N° <span style="font-size: small;">{{nro}}</span></h2>
    <div class="buttons">
         <button class="show-client-infos button"><i class="fa fa-user"></i></button>
         <button class="show-succes-failed-missions button">Mission(s) échoué(s) {{fld}} </button>
@@ -67,6 +67,7 @@
                                     {%endfor%}
                                 </tbody>
                             </table>
+                            <button><a href="{{url_for('users.gestion',id=id)}}" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></button>
                             
 						</div>
                     </div>
@@ -219,16 +220,16 @@
             </div>
             <div class="table-container" style="overflow-x: scroll;position: relative;">
                 <div>
-                    <p>Reference: <strong>{{facture[0].mission__data_.Bailleur__data.reference}}</strong></p>
-                    <p>Societe: <strong>{{facture[0].mission__data_.Bailleur__data.societe}}</strong></p>
-                    <p>Montant_HT: <strong>{{facture[0].facturation_client__data_.Montant_HT}}</strong></p>
-                    <p>Nom : <strong>{{facture[0].mission__data_.Bailleur__data.nom}}</strong></p>
-                    <p>Email: <strong>{{facture[0].mission__data_.Bailleur__data.email}}</strong></p>
+                    <p>Reference: <strong>{{factura[0].mission__data_.Bailleur__data.reference}}</strong></p>
+                    <p>Societe: <strong>{{factura[0].mission__data_.Bailleur__data.societe}}</strong></p>
+                    <p>Montant_HT: <strong>{{factura[0].facturation_client__data_.Montant_HT}}</strong></p>
+                    <p>Nom : <strong>{{factura[0].mission__data_.Bailleur__data.nom}}</strong></p>
+                    <p>Email: <strong>{{factura[0].mission__data_.Bailleur__data.email}}</strong></p>
                 </div>
 
                 <div>
-                    <p>Date de creation de la Facture: <strong>{{facture[0].facturation_client__data_.Date_de_creation.strftime('%d. %m. %Y')}}</strong></p>
-                    <p>Statut: <strong>{{facture[0].facturation_client__data_.Statut}}</strong></p>
+                    <p>Date de creation de la Facture: <strong>{{factura[0].facturation_client__data_.Date_de_creation.strftime('%d. %m. %Y')}}</strong></p>
+                    <p>Statut: <strong>{{factura[0].facturation_client__data_.Statut}}</strong></p>
                 </div>
             </div>
         </section>  

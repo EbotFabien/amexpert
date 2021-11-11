@@ -23,7 +23,7 @@
                             {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <form method="POST" class="form-padding"  action="{{url_for('users.uploader_')}}" enctype="multipart/form-data">
+                            <form method="POST" class="form-padding"  action="{{url_for('users.exported')}}" enctype="multipart/form-data">
                                 <div class="field is-horizontal">
                                   <div class="field-label is-normal">
                                     <label class="label" style="text-align: left;"><small>Choisiser la Table</small></label></div>
@@ -36,7 +36,11 @@
                                                   <option value="client">Client</option>
                                                   <option value="expert">Expert</option>
                                                   <option value="mission">mission</option>
-                                                  <option value="Tarifb">Tarif base</option>
+                                                  <option value="prospect">Prospect</option>
+                                                  <option value="negociateur">Negociateur</option>
+                                                  <option value="tarif">Tarif Client</option>
+                                                  <option value="suivip">Suivi Prospect</option>
+                                                  <option value="suivic">Suivi Client</option>
                                                 </select>
                                               </div>
                                             </div>

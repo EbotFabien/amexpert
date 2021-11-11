@@ -1,4 +1,4 @@
-from project.data_base_ import mail
+from Database_project.project.data_base_ import mail
 from flask import  url_for
 from flask_mail import Message
 import random
@@ -19,7 +19,19 @@ def send_reset_email(user):
                 if you did not make this request then simply ignore this email and no changes will be made
                 '''
     mail.send(msg)
+def send_pdf(mail1,user,file):
+    msg = Message('Gestion de Facture',
+                  sender='noreply@demo.com',
+                  recipients=[mail1])
+    msg.body = f''' Voici un mail concernant la facture de MR.:
+                        {user}
+     
+                veuillez le revenir s'il vous plait
+                '''
+    with current_app.open_resource(file) as fp:
+        msg.attach(file,"application/pdf",fp.read())
 
+    mail.send(msg)        
 def generate(lis):
             ref= int(random.randrange(100000, 999999))
             try:
@@ -27,6 +39,11 @@ def generate(lis):
                     generate(lis)
             except:
                 return ref
+
+def gen_name():
+            ref= int(random.randrange(100000, 999999))
+            name=str(ref)+'.xls'
+            return name
 
 '''def save_picture(form_picture):
     random_hex = secrets.token_hex(8)

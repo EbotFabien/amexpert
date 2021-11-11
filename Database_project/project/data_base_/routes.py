@@ -1,26 +1,30 @@
-from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from project.data_base_ import create_app
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
-from datetime import date,timedelta,datetime,timezone
+from datetime import date,timedelta,datetime,timezone 
+from Database_project.project.data_base_.export import Export
+import sqlalchemy as sa
+from sqlalchemy import extract
 #from flask_wkhtmltopdf import render_template_to_pdf
-'''from flask_wkhtmltopdf import Wkhtmltopdf'''
+from flask_wkhtmltopdf import Wkhtmltopdf
 
 users =Blueprint('users',__name__)
 app= create_app()
+exo=Export()
 
-'''wkhtmltopdf = Wkhtmltopdf(app)'''
+wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -31,6 +35,11 @@ def client():
     global Ord
     Ord="a"
     db.create_all()
+    a='12345'
+    #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
+    #aex=Expert.query.filter_by(id=6).first()
+    #aex.password=hashed_password
+    #db.session.commit()"
     if current_user.TYPE == "Admin":
         client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
         history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
@@ -951,19 +960,21 @@ def create_facturec():
 def show_fac(id):
     if current_user.TYPE == "Admin":
         abnormal =list()
-        facture = list(facturation_mission.query.filter_by(fact_mission=id).all())
-        
-        for i in facture:
+        factura = list(facturation_mission.query.filter_by(fact_mission=id).all())
+        NRO=factura[0].facturation_client__data_.n_facture
+        for i in factura:
+            
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
 
         s1=set(abnormal)
-        s2=set(facture)
+        s2=set(factura)
         facture = list(s2.difference(s1))
+        
         
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         
-        return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,abnormal=abnormal)
+        return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,factura=factura,nro=NRO,abnormal=abnormal)
   
 @users.route('/client/<int:id>/mission')
 @login_required
@@ -1030,6 +1041,7 @@ def show_facm(id):
     if current_user.TYPE == "Admin":
         facture = facturation_mission.query.filter_by(fact_mission=id).all()
         failed = Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all()
+        print(facture[0].facturation_client__data_.n_facture)
         return render_template('manage/pages/show_facture.html', facture=facture,failed=failed)
 
 @users.route('/delete/<int:id>/facturation', methods=['GET'])
@@ -2021,8 +2033,9 @@ def uploader_():
                     if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                    flash(f"Vous avez importer les donnees avec success",'success')
-                    return redirect(url_for('users.client'))
+                    #flash(f"Vous avez importer les donnees avec success",'success')
+                    return lient(loc)
+                    #return redirect(url_for('users.client'))
             
             if table == 'suivi':
                     suiv(loc)
@@ -2956,7 +2969,7 @@ def create_facturee():
         _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==None)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=None)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -2964,7 +2977,7 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()'''
+           db.session.commit()
         for i in mission:
             #implement facture number
             i.Facex =True
@@ -2996,7 +3009,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
@@ -3008,7 +3021,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
         for i in _mission:
             #implement facture number
@@ -3040,7 +3053,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
@@ -3052,7 +3065,7 @@ def create_facturee():
                 date1=date[0:10]
                 spli=date1.split("-")
                 fac=''.join(spli)
-                expert.facture =fac+"-"+ex.trigramme+"-"+str(Type.id)
+                expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
@@ -3115,22 +3128,194 @@ def mes_factures(id):
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation>=start - timedelta(days=30)).all()
         
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
+        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     
     if  temps == "ancienne":
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation<start - timedelta(days=30)).all()
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
-                                
-    return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id)
+        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+    mes=None
+    temps=None
+    return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
 
 
-'''@users.route('/download')
+@users.route('/<mes>/<temps>/<id>/download')
 @login_required
-def download():
+def download(mes,temps,id):
     if current_user.TYPE == "Admin": 
-           name="john"
-           return wkhtmltopdf.render_template_to_pdf('manage/pages/test1.html', download=True, save=True,name=name, param='hello')
+            name=Expert.query.filter_by(id=int(id)).first()
+            now_utc = datetime.now(timezone.utc)
+            start=datetime.combine(now_utc,datetime.min.time())
+            if  temps == "nouvelle":
+                    new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
+                                                    compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
+                                                        compte_mensuel.date_generation>=start - timedelta(days=30)).all()
+                    img=url_for('static', filename='images/logo/logo.png')
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    files=os.listdir(app.config['PDF_DIR_PATH'])
+                    for fil in files:
+                        if fil.endswith('.pdf'):
+                            f=fil
+                            break
+                    nom=''.join(name.nom)
+                    las=nom+'.pdf'
+                    fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
+                    n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
+                    os.rename(fil,n)
+                    send_pdf("touchone0001@gmail.com",name.nom,n)
+                    return res
 
-    return redirect(url_for('users.main'))'''
+            if  temps == "ancienne":
+
+                    new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
+                                                compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
+                                                    compte_mensuel.date_generation<start - timedelta(days=30)).all()
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    files=os.listdir(app.config['PDF_DIR_PATH'])
+                    for fil in files:
+                        if fil.endswith('.pdf'):
+                            f=fil
+                            break
+                    nom=''.join(name.nom)
+                    las=nom+'.pdf'
+                    fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
+                    n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
+                    os.rename(fil,n)
+                    send_pdf("touchone0001@gmail.com",name.nom,fil)
+                    return res
+
+    return redirect(url_for('users.main'))
+
+@users.route('/fac/<id>/download', methods=['GET','POST'])
+@login_required
+def gestion(id):
+    if current_user.TYPE == "Admin":
+        abnormal =list()
+        facture = list(facturation_mission.query.filter_by(fact_mission=id).all())
+        
+        for i in facture:
+            if i.mission__data_.Anomalie == True:
+                abnormal.append(i)
+
+        s1=set(abnormal)
+        s2=set(facture)
+        facture = list(s2.difference(s1))
+        name=facture[0].facturation_client__data_.client__data_.nom
+        failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        if failed:
+            flash(f'Corigee vos factures incorrecte svp','Warning')
+            return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,abnormal=abnormal,id=id)
+        else:
+            res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True, facture=facture,Nom=name)
+            files=os.listdir(app.config['PDF_DIR_PATH'])
+            for fil in files:
+                if fil.endswith('.pdf'):
+                    f=fil
+                    break
+            nom=''.join(name.nom)
+            las=nom+'.pdf'
+            fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
+            n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
+            os.rename(fil,n)
+            send_pdf("touchone0001@gmail.com",name.nom,fil)
+            return res
+
+
+  
+
+@users.route('/export',methods=['GET','POST'])
+@login_required
+def exported():
+    if current_user.TYPE == "Admin": 
+            Type = request.form['table']
+            if Type == 'mission':
+                temp=app.config['MISS']
+                mi=[]
+                mi.append(temp)
+                miss=Mission.query.all()
+                mi=exo.mission_data(miss,mi)
+                name="missionex_"+gen_name()
+                return exo.export(mi,name)
+            if Type =='expert':
+               temp=app.config['EXPS']
+               ex=[]
+               ex.append(temp)
+               exp=Expert.query.all()
+               exp1=Expert_History.query.all()
+               last=zip(exp,exp1)
+               mi=exo.mission_data(last,ex)
+               name="expertex_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'client':
+               temp=app.config['CLI']
+               ex=[]
+               ex.append(temp)
+               exp=Client.query.all()
+               exp1=Client_History.query.all()
+               last=zip(exp,exp1)
+               mi=exo.client_data(last,ex)
+               name="clientex_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'prospect':
+               temp=app.config['CLI']
+               ex=[]
+               ex.append(temp)
+               exp=Client.query.all()
+               exp1=Client_History.query.all()
+               last=zip(exp,exp1)
+               mi=exo.prospect_data(last,ex)
+               name="Prospectx_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'negociateur':
+               temp=app.config['NEG']
+               ex=[]
+               ex.append(temp)
+               exp=Client_negotiateur.query.all()
+               exp1=Negotiateur_History.query.all()
+               last=zip(exp,exp1)
+               mi=exo.nego_data(last,ex)
+               name="Negociateurx_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'suivic':
+               temp=app.config['SUIV']
+               ex=[]
+               ex.append(temp)
+               exp=suivi_client.query.all()
+               mi=exo.suivi_data(exp,ex)
+               name="Suivicx_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'suivip':
+               temp=app.config['SUIV']
+               ex=[]
+               ex.append(temp)
+               exp=list(suivi_prospect.query.all())
+               mi=exo.suivip_data(exp,ex)
+               name="Suivipx_"+gen_name()
+               return exo.export(mi,name)
+            if Type == 'tarif':
+               temp=app.config['TARIFS']
+               ex=[]
+               ex.append(temp)
+               exp=Tarifs.query.all()
+               mi=exo.taaf(exp,ex)
+               name="Tarifcx_"+gen_name()
+               return exo.export(mi,name)
+            
+
+    return redirect(url_for('users.main'))
+
+
+
+@users.route('/<Type>/dashdata')
+def dash(Type):
+    page = request.args.get('page',1,type=int)
+    mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
+    for i in mission_date:
+        print(i.DATE_REALISE_EDL)
+    a=[]
+
+    return {
+        'res':1,
+        'List':a
+    }

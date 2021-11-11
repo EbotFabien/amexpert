@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField,DecimalField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional
-from project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
+from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
@@ -242,7 +242,7 @@ class Tarif_Form(FlaskForm):
     def validate_price_F1(self,edl_appt_prix_f1): 
             base = Tarif_base.query.filter(and_(Tarif_base.pav_appartement=='APPT',Tarif_base.Type=='F1')).first()
             
-            if edl_appt_prix_f1.data == 0:
+            if edl_appt_prix_f1.data == 0  :
                 raise ValidationError("Veuillez mettre une bonne valeur")
 
             if base.Prix_EDL>edl_appt_prix_f1.data:
