@@ -2,8 +2,8 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from Database_project.project.data_base_ import db,create_app
-from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from project.data_base_ import db,create_app
+from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 import os

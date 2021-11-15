@@ -4,7 +4,7 @@ import datetime
 import openpyxl
 import xlrd,xlwt
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
-from Database_project.project.data_base_.Models import db,Mission,Client,Expert,prospect
+from project.data_base_.Models import db,Mission,Client,Expert,prospect,Client_History
 
 
 
@@ -12,18 +12,19 @@ from Database_project.project.data_base_.Models import db,Mission,Client,Expert,
 class data():
     def cl(self,id,T):
         client=Client.query.filter_by(id=id).first()
+        history=Client_History.query.filter_by(id=id).first()
         if T == "n":
             return client.nom
         if T == "t":
             return client.titre
         if T == "a":
-            return client.adresse1
+            return history.adresse1
         if T == "a2":
-            return client.adresse2
+            return history.adresse2
         if T == "cp":
-            return client.cp
+            return history.cp
         if T == "v":
-            return client.ville
+            return history.ville
     
     def pl(self,id,T):
         client=prospect.query.filter_by(id=id).first()
