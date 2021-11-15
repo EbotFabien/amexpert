@@ -13,23 +13,10 @@ ENV DB_PORT=5432
 ENV DB_USERNAME=postgres
 ENV DB_PASSWORD=1234
 ENV DB_DBNAME=amexpert
-RUN pip install flask
-RUN pip install Flask-SQLAlchemy
-RUN pip install flask_bootstrap
-RUN pip install flask_login
-RUN pip install flask_bcrypt
-RUN pip install flask_mail
-RUN pip install flask_migrate
-RUN pip install flask_limiter
-RUN pip install flask_wtf
-RUN pip install email_validator
-RUN pip install xlrd==1.2.0
-RUN pip install openpyxl
-RUN pip install xlwt
-RUN pip install psycopg2-binary
-RUN pip install flask_caching
+COPY . ./requirements.txt /var/www/amexpert/Database_project/project/
+RUN pip install -r ./requirements.txt
 
-COPY . ./docker-entrypoint.sh
+COPY . ./docker-entrypoint.sh /var/www/amexpert/Database_project/project/
 
 EXPOSE 5000
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]

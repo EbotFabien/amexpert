@@ -1,20 +1,20 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient
-from Database_project.project.data_base_.expert_data  import xpert
-from Database_project.project.data_base_.tarif_data  import arif
-from Database_project.project.data_base_.Suivi  import suiv
-from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
+from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from project.data_base_ import bcrypt
+from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from project.data_base_.client_data  import lient
+from project.data_base_.expert_data  import xpert
+from project.data_base_.tarif_data  import arif
+from project.data_base_.Suivi  import suiv
+from project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from Database_project.project.data_base_ import create_app
+from project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
-from Database_project.project.data_base_.export import Export
+from project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
 #from flask_wkhtmltopdf import render_template_to_pdf
@@ -107,7 +107,8 @@ def ajouter_suivic(id):
         form=Suivi_Client()
         client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            suivi=suivi_client(client.id,form.expert.data,form.commentaire.data)
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            suivi=suivi_client(client.id,email.id,form.commentaire.data)
             db.session.add(suivi) 
             db.session.commit()
             flash(f'suivi Client créé avec succès','success')
@@ -134,10 +135,11 @@ def edit_suivi(id):
         suivi = suivi_client.query.filter_by(id=id).first_or_404()
         #if current_user.id == suivi.responsable:
         if form.validate_on_submit():
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
             suivi.commentaire = form.commentaire.data
-            suivi.responsable =form.expert.data
+            suivi.responsable =email.id
             db.session.commit()
-            flash(f'Le suivi a été modifiées','success')
+            flash(f'Le suivi a été modifié','success')
             return redirect(url_for('users.suivi_client_', id=suivi.client))
         return render_template('manage/pages/edit_suivi.html', suivi=suivi,form=form)
         #else:
@@ -1237,7 +1239,7 @@ def edit_mission(id):
 
                     db.session.commit()
                     
-                    flash(f"La mission a été modifier avec succès", "success")
+                    flash(f"La mission a été modifiée avec succès", "success")
                     return redirect(url_for('users.mission'))
         
         return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
@@ -1250,7 +1252,7 @@ def delete_mission(id):
         mission = Mission.query.filter_by(id=id).first_or_404()
         mission.Visibility=False
         db.session.commit()
-        flash(f'Les donnes de mission ont été  suprimmer','success')
+        flash(f'les données de la mission ont été supprimées','success')
         return redirect(url_for('users.mission'))
 
 
@@ -1481,8 +1483,8 @@ def delete_tarif(id):
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
         tarif.visibility = False
         db.session.commit()
-        flash(f'Les donnes de Tarifs ont été  suprimmer','success')
-        return redirect(url_for('users.tarifs'))
+        flash(f'Les données du Tarif ont été suprimmées','success')
+        return redirect(url_for('users.tarifs',id=id))
 
 @users.route('/edit/<int:id>/tarif', methods=['GET','POST'])
 @login_required
@@ -1857,7 +1859,7 @@ def delete_prospect(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes du client ont été  suprimmer','success')
+        flash(f'Les données du Prospect ont été supprimées','success')
         return redirect(url_for('users.prospect_'))
 
 
@@ -1937,7 +1939,8 @@ def ajouter_suivip(id):
         form=Suivi_Client() 
         client = prospect.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            suivi=suivi_prospect(client.id,form.expert.data,form.commentaire.data)
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            suivi=suivi_prospect(client.id,email.id,form.commentaire.data)
             db.session.add(suivi)
             db.session.commit()
             flash(f'suivi prospect créé avec succès','success')
@@ -1964,8 +1967,9 @@ def edit_suivip(id):
         suivi = suivi_prospect.query.filter_by(id=id).first_or_404()
         #if current_user.id == suivi.responsable:
         if form.validate_on_submit():
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
             suivi.commentaire =form.commentaire.data
-            suivi.responsable =form.expert.data
+            suivi.responsable =email.id
             db.session.commit()
             flash(f'Le suivi a été modifiées','success')
             return redirect(url_for('users.suivi_prospect_',id=suivi.prospect_id))
@@ -3263,7 +3267,7 @@ def exported():
                exp=Expert.query.all()
                exp1=Expert_History.query.all()
                last=zip(exp,exp1)
-               mi=exo.mission_data(last,ex)
+               mi=exo.expert_data(last,ex)
                name="expertex_"+gen_name()
                return exo.export(mi,name)
             if Type == 'client':

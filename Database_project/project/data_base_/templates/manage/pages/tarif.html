@@ -43,16 +43,18 @@
                         <td>{{tarif.edl_prix_std}}</td>
 						<td>{{tarif.edl_appt_prix_f1}}</td>
 						<td>{{tarif.edl_appt_prix_f2}}</td> 
-						<td>
-                            <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
-                        </td>   
-                        <td>
-                            <a href="{{url_for('users.delete_tarif', id=tarif.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
-						</td>  
-						<td style="">
-                            <a href="{{url_for('users.show_tarif', id=tarif.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidt" style="text-align: center"><i class="fa fa-eye"></i></a>
-                            
-                        </td>  	                        
+                        {% if tarif.id %}
+                            <td>
+                                <a href="{{url_for('users.edit_tarif', id=tarif.id)}}" title="modifier" class="center button is-outlined-black is-small"><i class="fa fa-pen"></i></a> &nbsp;
+                            </td>   
+                            <td>
+                                <a href="{{url_for('users.delete_tarif', id=tarif.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                            </td>  
+                            <td style="">
+                                <a href="{{url_for('users.show_tarif', id=tarif.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidt" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                
+                            </td> 
+                        {%endif%} 	                        
                     </tr>
                 {%endfor%}
                 </tbody>
