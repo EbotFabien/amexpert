@@ -228,7 +228,7 @@ class LoginForm(FlaskForm):
     password =PasswordField('Mot de passe',
                                   validators=[DataRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
 
-    remember = BooleanField('se souvenir de moi')                              
+    remember = BooleanField('Remember me')                              
     submit = SubmitField('Se connecter')
     
 class tableform(FlaskForm):
@@ -971,8 +971,7 @@ class Mission_add(FlaskForm):
     Adresse1_Bien=StringField("Adresse1 Bien",
                         validators=[DataRequired()])
     
-    Adresse2_Bien=StringField("Adresse2 bBien",
-                        validators=[DataRequired()])
+    Adresse2_Bien=StringField("Adresse2 Bien")
       
     CP_Bien=IntegerField("CP Bien",
                         validators=[DataRequired()])
@@ -1031,9 +1030,9 @@ class Mission_add(FlaskForm):
     ID_agent_chiffrage =IntegerField("ID Agent Chiffrage",
                         validators=[DataRequired(),validate_email])
 
-    TYPE_EDL=StringField("Type EDL",
-                        validators=[DataRequired()])
-    
+    TYPE_EDL=SelectField("Type EDL",
+                             choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
+         
     TITREPROPRIO=SelectField('Titre Proprio',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
 
@@ -1065,18 +1064,18 @@ class Mission_add(FlaskForm):
     TYPE_LOGEMENT =  StringField("TYPE LOGEMENT",
                         validators=[DataRequired()])	
 
-    LOGEMENT_MEUBLE = StringField("LOGEMENT MEUBLE",
-                        validators=[DataRequired()]) 	
+    LOGEMENT_MEUBLE = SelectField("LOGEMENT MEUBLE",
+                             choices=[('OUI', 'OUI'), ('NON', 'NON')]) 	
     CODE_FACTURATION =StringField("CODE FACTURATION",
                         validators=[DataRequired()])  	
-    TYPE_DE_BIEN = StringField("TYPE DE BIEN",
-                        validators=[DataRequired()]) 
-    
+    TYPE_DE_BIEN = SelectField("TYPE DE BIEN",
+                             choices=[('APPARTEMENT', 'APPARTEMENT'), ('PAVILLON', 'PAVILLON')]) 
+      
     POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev")	
 
     ID_Agent_CellTech = IntegerField("ID Agent Cell Tech",
                         validators=[DataRequired(),validate_email]) 	
-
+    
     POURCENTAGE_Agent_Cell_Tech =DecimalField("Pourcentage Agent Cell Tech")  	
 
     ID_Respon_Cell_Tech = IntegerField("ID Respon Cell Tech",
