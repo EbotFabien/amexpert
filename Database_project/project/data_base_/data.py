@@ -7,7 +7,8 @@ import flask as pd
 from sqlalchemy import or_, and_
 import datetime
 from Database_project.project.data_base_.client_data  import regex1
-from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
+import os
 
 def checktarif(a,p,c):
     taf_base=Tarifs.query.filter_by(reference_client = int(c)).first()
@@ -2142,7 +2143,7 @@ def Missions1(loc):
         else:
             return failed(missions_)
     except:
-        return False
+        return 'Fake'
     
 
 

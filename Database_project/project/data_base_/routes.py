@@ -17,6 +17,7 @@ from datetime import date,timedelta,datetime,timezone
 from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
+import json
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
 
@@ -2082,12 +2083,14 @@ def uploader_():
                 Missions2(loc,'29')
                 Missions2(loc,'31')'''
                 Missions1(loc)
+                print(Missions1(loc))
                 if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                 if Missions1(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
+                
                 return Missions1(loc)
                 
                
@@ -3326,15 +3329,142 @@ def exported():
 
 
 
-@users.route('/<Type>/dashdata')
-def dash(Type):
-    page = request.args.get('page',1,type=int)
-    mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
-    for i in mission_date:
-        print(i.DATE_REALISE_EDL)
-    a=[]
+@users.route('/dashboard/missionperyear')
+def dash():
+    ####page = request.args.get('page',1,type=int)
+    #mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
+    #for i in mission_date:
+     #   print(i.DATE_REALISE_EDL)
+    #a=[]
 
+    #return {
+    #    'res':1,
+    #    'List':a
+    #}
+    missionsperyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'year'}) #year
+    data={}
+
+    for mission in missionsperyear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #data = json.dumps(data)
+    
     return {
         'res':1,
-        'List':a
-    }
+        'data':data
+    },200
+
+@users.route('/dashboard/missionpermonth')
+def missionpermonth():
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'month'}) #do for month
+
+    data={}
+
+    for mission in missionspermonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':json_dump
+    },200
+
+@users.route('/dashboard/missionencashyear')
+def mission_encashyear():
+    mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+
+    data={}
+
+    for mission in mission_encashyear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missionencashmonth')
+def mission_encashmonth():
+    mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+
+    data={}
+
+    for mission in mission_encashmonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficityear')
+def mission_deficityear():
+    mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data={}
+
+    for mission in mission_deficityear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficitmonth')
+def mission_deficitmonth():
+    mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data={}
+
+    for mission in mission_deficitmonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedm')
+def missionnotworkedm():
+    missionnotworked=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data={}
+
+    for mission in missionnotworked:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedy')
+def missionnotworkedy():
+    missionnotworkedy=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data={}
+
+    for mission in missionnotworkedy:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
