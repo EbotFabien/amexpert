@@ -34,14 +34,14 @@
                     <th scope="col">Email</th>
                     <th scope="col">Tel</th>
                     <th>Adresse</th>
-                    <th>Code <br/>Postal</th>
-                    <th>Ville</th>
+                    <!-- <th>Code <br/>Postal</th> -->
+                    <!-- <th>Ville</th> -->
                     <th>Pays</th>
                    
-                    <th>Etats <br/>Client</th>
-                    <th>Date <br/>creation</th>
-                    <th>Login<br/>extranet</th>
-                    <th>Mdp <br/>extranet</th>
+                    <th>Etats Client</th>
+                    <th>Date creation</th>
+                    <!-- <th>Login<br/>extranet</th> -->
+                    <!-- <th>Mdp <br/>extranet</th>  -->
                     <th></th>
                     <th></th>
                     <th></th>
@@ -60,15 +60,15 @@
                         <td>{{client_.email }}</td>
                         <td>{{client_.numero}}</td>
                         <td>{{history.adresse1}}</td>
-                        <td>{{history.cp}}</td>
+                        {#<td>{{history.cp}}</td>#}
                         
-                        <td>{{history.ville}}</td>
+                        {#<td>{{history.ville}}</td>#}
                         <td>{{history.pays}}</td>
                      
                         <td>{{history.etat_client}}</td>
-                        <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d. %m. %Y')}} {% endif %}</td>
-                        <td>{{history.login_extranet}}</td>
-                        <td>{{history.mdp_extranet}}</td>
+                        <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>
+                        {# <td>{{history.login_extranet}}</td> #}
+                        {#  <td>{{history.mdp_extranet}}</td> #}
                         <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                         <td style="">
                             <a href="{{url_for('users.show_prospect', id=client_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
@@ -84,6 +84,7 @@
         </div>                  
     </section>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#table_id').DataTable({
@@ -93,10 +94,14 @@
         'paging':true,
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+        },
+        fixedColumns: {
+            left: 1,
+            right: 1
         }
       });
     
-        $('#table_id tbody').on( 'click', 'tr', function () {
+      $('#table_id tbody').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             }
@@ -111,5 +116,13 @@
         } );
     } );
 </script>
+
+<style>
+    /*th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }*/
+</style>
 
 {% endblock %}
