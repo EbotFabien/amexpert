@@ -1,25 +1,28 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from project.data_base_ import create_app
+#import pdfkit
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
-from project.data_base_.export import Export
+from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
 import json
+import base64
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
+from flask import session
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -1599,6 +1602,9 @@ def sign_up():
         return redirect(url_for('users.login'))
     return render_template('signup.html',legend="sign_up",form=form)
 
+'''@users.before_request
+def make_session_permanent():
+    session.permanent = False'''
 
 @users.route('/login',methods=['GET','POST'])
 def login():
@@ -1629,7 +1635,7 @@ def login():
     if form.validate_on_submit():
         name=Expert.query.filter_by(nom=form.username.data).first()
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
-            login_user(name)
+            login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
             return redirect (next_page) if next_page else  redirect(url_for('users.main'))
         else:
@@ -3373,7 +3379,7 @@ def missionpermonth():
     
     return {
         'res':1,
-        'data':json_dump
+        'data':data
     },200
 
 @users.route('/dashboard/missionencashyear')
@@ -3472,3 +3478,19 @@ def missionnotworkedy():
         'res':1,
         'data':data
     },200
+
+'''@users.route("/p")
+def p():
+    name = "Giovanni Smith"
+    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    
+    with open(image_path, 'rb') as image_file:
+        image= base64.b64encode(image_file.read()).decode()
+    html = render_template(
+        "manage/pages/amexpert_pdf1.html",image=image)
+    config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+    pdf = pdfkit.from_string(html, False, configuration=config)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+    return response'''
