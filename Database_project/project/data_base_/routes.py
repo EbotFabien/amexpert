@@ -1,24 +1,28 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from project.data_base_ import create_app
+#import pdfkit
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
-from project.data_base_.export import Export
+from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
+import json
+import base64
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
+from flask import session
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -1598,6 +1602,9 @@ def sign_up():
         return redirect(url_for('users.login'))
     return render_template('signup.html',legend="sign_up",form=form)
 
+'''@users.before_request
+def make_session_permanent():
+    session.permanent = False'''
 
 @users.route('/login',methods=['GET','POST'])
 def login():
@@ -1628,7 +1635,7 @@ def login():
     if form.validate_on_submit():
         name=Expert.query.filter_by(nom=form.username.data).first()
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
-            login_user(name)
+            login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
             return redirect (next_page) if next_page else  redirect(url_for('users.main'))
         else:
@@ -2086,12 +2093,14 @@ def uploader_():
                 Missions2(loc,'29')
                 Missions2(loc,'31')'''
                 Missions1(loc)
+                print(Missions1(loc))
                 if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                 if Missions1(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
+                
                 return Missions1(loc)
                 
                
@@ -3172,7 +3181,7 @@ def download(mes,temps,id):
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
                     img=url_for('static', filename='images/logo/logo.png')
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3191,7 +3200,7 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3330,15 +3339,158 @@ def exported():
 
 
 
-@users.route('/<Type>/dashdata')
-def dash(Type):
-    page = request.args.get('page',1,type=int)
-    mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
-    for i in mission_date:
-        print(i.DATE_REALISE_EDL)
-    a=[]
+@users.route('/dashboard/missionperyear')
+def dash():
+    ####page = request.args.get('page',1,type=int)
+    #mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
+    #for i in mission_date:
+     #   print(i.DATE_REALISE_EDL)
+    #a=[]
 
+    #return {
+    #    'res':1,
+    #    'List':a
+    #}
+    missionsperyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'year'}) #year
+    data={}
+
+    for mission in missionsperyear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #data = json.dumps(data)
+    
     return {
         'res':1,
-        'List':a
-    }
+        'data':data
+    },200
+
+@users.route('/dashboard/missionpermonth')
+def missionpermonth():
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'month'}) #do for month
+
+    data={}
+
+    for mission in missionspermonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionencashyear')
+def mission_encashyear():
+    mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+
+    data={}
+
+    for mission in mission_encashyear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missionencashmonth')
+def mission_encashmonth():
+    mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+
+    data={}
+
+    for mission in mission_encashmonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficityear')
+def mission_deficityear():
+    mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data={}
+
+    for mission in mission_deficityear:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficitmonth')
+def mission_deficitmonth():
+    mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data={}
+
+    for mission in mission_deficitmonth:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedm')
+def missionnotworkedm():
+    missionnotworked=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data={}
+
+    for mission in missionnotworked:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedy')
+def missionnotworkedy():
+    missionnotworkedy=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data={}
+
+    for mission in missionnotworkedy:
+        if mission[0]!=None:
+            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+'''@users.route("/p")
+def p():
+    name = "Giovanni Smith"
+    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    
+    with open(image_path, 'rb') as image_file:
+        image= base64.b64encode(image_file.read()).decode()
+    html = render_template(
+        "manage/pages/amexpert_pdf1.html",image=image)
+    config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+    pdf = pdfkit.from_string(html, False, configuration=config)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+    return response'''

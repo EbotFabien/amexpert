@@ -1,13 +1,13 @@
 import os
 class Config:
     SECRET_KEY='FABIENCLASSIC'
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@db/amexpert"
-    #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
-    MAIL_SERVER ='smtp.googlemail.com'
+    #SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@db/amexpert"
+    SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
+    MAIL_SERVER ='mail.infomaniak.ch'
     MAIL_PORT = 587
     MAIL_USE_TLS =True
-    MAIL_USERNAME = 'touchone0001@gmail.com'
-    MAIL_PASSWORD = 'onetouch000100'
+    MAIL_USERNAME = 'info@resilion.eu'
+    MAIL_PASSWORD = 'Vincent123$'
     RECAPTCHA_PUBLIC_KEY ='6LcghOIZAAAAAE3zgcS-maNClYmtLTqICZtmHvWi'
     RECAPTCHA_PRIVATE_KEY='6LcghOIZAAAAAFiTeOmn_gN6xW_sGIFTDcVdIO0x'
     SUIV=['Client','Responsable','Commentaire','Date Creation','Date Modification']
