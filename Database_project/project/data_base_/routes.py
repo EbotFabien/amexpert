@@ -3181,7 +3181,7 @@ def download(mes,temps,id):
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
                     img=url_for('static', filename='images/logo/logo.png')
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3200,7 +3200,7 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
