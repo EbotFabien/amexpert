@@ -3378,7 +3378,7 @@ def dash():
     missionsperyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'year'}) #year
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in missionsperyear:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3396,7 +3396,7 @@ def missionpermonth():
 
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in missionspermonth:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3416,7 +3416,7 @@ def mission_encashyear():
 
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in mission_encashyear:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3435,7 +3435,7 @@ def mission_encashmonth():
 
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in mission_encashmonth:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3451,7 +3451,7 @@ def mission_deficityear():
     mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in mission_deficityear:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3466,7 +3466,7 @@ def mission_deficitmonth():
     mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in mission_deficitmonth:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
@@ -3483,7 +3483,7 @@ def missionnotworkedm():
     missionnotworked=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
     data=[]
 
-    for mission in missionnotworkedy:
+    for mission in missionnotworked:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
             data.append(a)
