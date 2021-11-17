@@ -3377,11 +3377,12 @@ def dash():
     #    'List':a
     #}
     missionsperyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'year'}) #year
-    data={}
+    data=[]
 
-    for mission in missionsperyear:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     #data = json.dumps(data)
     
@@ -3394,11 +3395,12 @@ def dash():
 def missionpermonth():
     missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'month'}) #do for month
 
-    data={}
+    data=[]
 
-    for mission in missionspermonth:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     #json_dump = json.dumps(data)
     
@@ -3413,9 +3415,12 @@ def mission_encashyear():
 
     data={}
 
-    for mission in mission_encashyear:
+    data=[]
+
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     
     #json_dump = json.dumps(data)
@@ -3429,11 +3434,12 @@ def mission_encashyear():
 def mission_encashmonth():
     mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
 
-    data={}
+    data=[]
 
-    for mission in mission_encashmonth:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     #json_dump = json.dumps(data)
     
@@ -3444,12 +3450,12 @@ def mission_encashmonth():
 @users.route('/dashboard/missiondeficityear')
 def mission_deficityear():
     mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
-    data={}
+    data=[]
 
-    for mission in mission_deficityear:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
-
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
     #json_dump = json.dumps(data)
     
     return {
@@ -3459,11 +3465,12 @@ def mission_deficityear():
 @users.route('/dashboard/missiondeficitmonth')
 def mission_deficitmonth():
     mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
-    data={}
+    data=[]
 
-    for mission in mission_deficitmonth:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     #json_dump = json.dumps(data)
     
@@ -3475,11 +3482,12 @@ def mission_deficitmonth():
 @users.route('/dashboard/missionnotworkedm')
 def missionnotworkedm():
     missionnotworked=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
-    data={}
+    data=[]
 
-    for mission in missionnotworked:
+    for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
     #json_dump = json.dumps(data)
     
@@ -3491,13 +3499,14 @@ def missionnotworkedm():
 @users.route('/dashboard/missionnotworkedy')
 def missionnotworkedy():
     missionnotworkedy=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
-    data={}
+    data=[]
 
     for mission in missionnotworkedy:
         if mission[0]!=None:
-            data[mission[0].strftime('%d. %m. %Y')]=mission[1]
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
 
-    #json_dump = json.dumps(data)
+    
     
     return {
         'res':1,
