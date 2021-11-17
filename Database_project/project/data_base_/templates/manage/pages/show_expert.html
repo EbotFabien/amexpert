@@ -29,6 +29,7 @@
 						  <p class="text-muted font-size-sm">{{history.cp}}, {{history.ville}}, {{history.pays}}</p>
 						  <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>	Modifier
 						  </a><a href="{{url_for('users.mes_factures', id=expert.id)}}" title="modifier" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Factures</a>
+						  <a href="{{url_for('users.addlogin', id=expert.id)}}" title="modifier" style="background: #7c8252; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Ajouter Identifiant</a>
 						
 						</div>
 					  </div>

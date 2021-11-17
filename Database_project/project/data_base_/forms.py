@@ -32,12 +32,20 @@ def validatei(self,email):
             raise ValidationError("5 chiffres")
 
 class RegistrationForm1(FlaskForm):
+    def validate_email(self,email):
+        email = Expert.query.filter_by(email=email.data).first()
+
+        if email:
+            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
     
-    username =StringField("Nom et Prénom",
+    username =StringField("Nom et Prenom",
+                                validators=[DataRequired(),length(min=4 ,max=20)])
+    
+    login =StringField("Identifiant",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
 
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email()])#,validate_email])
+                           validators=[DataRequired(),Email(),validate_email])
 
     submit = SubmitField('Enregistrer')
 

@@ -11,7 +11,7 @@ from Database_project.project.data_base_.utils import send_reset_email,generate,
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-#import pdfkit
+import pdfkit
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
@@ -20,6 +20,7 @@ import sqlalchemy as sa
 from sqlalchemy import extract
 import json
 import base64
+#from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
@@ -1010,7 +1011,9 @@ def facturation(id):
 def facturationa():
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())#add visibility
-        return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation) 
+        reglee=facturation_mission.query.join(Mission,(Mission.id == facturation_mission.ref_mission )).filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=facturation_mission.query.join(Mission,(Mission.id == facturation_mission.ref_mission )).filter(Mission.DATE_FACT_REGLEE==None).count()
+        return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation,reglee=reglee,not_=notreglee) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -1633,13 +1636,13 @@ def login():
        return redirect(url_for('users.main'))
     form = LoginForm()
     if form.validate_on_submit():
-        name=Expert.query.filter_by(nom=form.username.data).first()
+        name=Expert.query.filter_by(nom=form.username.data).first()#put login
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
             login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
             return redirect (next_page) if next_page else  redirect(url_for('users.main'))
         else:
-            flash(f'Mauvais e-mail ou mot de passe, essayez à nouveau','danger')
+            flash(f'Mauvais Identifiant ou mot de passe, essayez à nouveau','danger')
 
     return render_template('signup.html',legend="login",form=form)
 
@@ -1652,10 +1655,10 @@ def forgot_password ():
         expert=Expert.query.filter_by(email=form.email.data).first()
         if expert:
             send_reset_email(expert)
-            flash('An email has been sent with instructions to reset your Password.','info')
+            flash('Un courriel a été envoyé avec les instructions pour réinitialiser votre mot de passe.','info')
             return redirect(url_for('users.login'))
         if expert is None:
-            flash('This email does not exist','warning')
+            flash("Cet e-mail n'existe pas",'warning')
             return redirect(url_for('users.forgot_password'))
     return render_template('forgot_password.html', form=form)
 
@@ -2133,12 +2136,26 @@ def profil():
         if form.validate_on_submit():
             client.nom =form.username.data
             client.email=form.email.data
+            client.login=form.login.data
             db.session.commit()
-            flash(f"Vous avez modifier avec success",'success')
+            #flash(f"Vous avez modifier avec success",'success')
             return redirect(url_for('users.main'))
     return render_template('manage/pages/profile.html',form=form,client=client)
 
-
+@users.route('/<int:id>/profil' , methods=['GET','POST'])
+@login_required
+def addlogin(id):
+    if current_user:
+        form = RegistrationForm1()
+        client=Expert.query.filter_by(id=id).first()
+        if form.validate_on_submit():
+            client.nom =form.username.data
+            client.email=form.email.data
+            client.login=form.login.data
+            db.session.commit()
+            #flash(f"Vous avez modifier avec success",'success')
+            return redirect(url_for('users.show_expert',id=id))
+    return render_template('manage/pages/add_login.html',form=form,client=client)
 
 #@users.app_errorhandler(404)
 #def error_404(error):
@@ -3180,8 +3197,11 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
-                    img=url_for('static', filename='images/logo/logo.png')
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    
+                    with open(image_path, 'rb') as image_file:
+                        image= base64.b64encode(image_file.read()).decode()
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html',image=image, download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3200,7 +3220,11 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf1.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    
+                    with open(image_path, 'rb') as image_file:
+                        image= base64.b64encode(image_file.read()).decode()
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html',image=image, download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3482,13 +3506,13 @@ def missionnotworkedy():
 '''@users.route("/p")
 def p():
     name = "Giovanni Smith"
-    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
     
-    with open(image_path, 'rb') as image_file:
-        image= base64.b64encode(image_file.read()).decode()
+    #with open(image_path, 'rb') as image_file:
+    #    image= base64.b64encode(image_file.read()).decode()
     html = render_template(
-        "manage/pages/amexpert_pdf1.html",image=image)
-    config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+        "manage/pages/test1.html",param=name)#,image=image)
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf)
     pdf = pdfkit.from_string(html, False, configuration=config)
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
