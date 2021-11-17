@@ -1636,7 +1636,7 @@ def login():
        return redirect(url_for('users.main'))
     form = LoginForm()
     if form.validate_on_submit():
-        name=Expert.query.filter_by(nom=form.username.data).first()#put login
+        name=Expert.query.filter_by(login=form.username.data).first()#put login
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
             login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
@@ -1668,14 +1668,14 @@ def reset_password (token):
        return redirect(url_for('users.main'))
     expert = Expert.verify_reset_token(token)
     if expert is None:
-        flash('That is an invalid or expired token','warning')
+        flash("C'est un jeton invalide ou expiré.",'warning')
         return redirect(url_for('users.forgot_password'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         expert.password = hashed_password
         db.session.commit()
-        flash(f'your password has been updated! You are now able to login','success')
+        flash(f'votre mot de passe a été mis à jour ! Vous êtes maintenant en mesure de vous connecter','success')
         return redirect(url_for('users.login'))
     return render_template('reset_password.html', form=form)
 
@@ -2134,6 +2134,10 @@ def profil():
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
+            f=form.validate2(form.email.data,current_user.id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.profil'))
             client.nom =form.username.data
             client.email=form.email.data
             client.login=form.login.data
@@ -2149,6 +2153,10 @@ def addlogin(id):
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=id).first()
         if form.validate_on_submit():
+            f=form.validate2(form.email.data,id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.addlogin',id=id))
             client.nom =form.username.data
             client.email=form.email.data
             client.login=form.login.data

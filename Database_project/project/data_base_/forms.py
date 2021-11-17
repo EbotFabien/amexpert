@@ -32,11 +32,11 @@ def validatei(self,email):
             raise ValidationError("5 chiffres")
 
 class RegistrationForm1(FlaskForm):
-    def validate_email(self,email):
-        email = Expert.query.filter_by(email=email.data).first()
+    def validate2(self,email,expert):
+        email = Expert.query.filter(and_(Expert.email==email,Expert.id!=expert)).first()
 
         if email:
-            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+            return True
     
     username =StringField("Nom et Prenom",
                                 validators=[DataRequired(),length(min=4 ,max=20)])
@@ -45,7 +45,7 @@ class RegistrationForm1(FlaskForm):
                                 validators=[DataRequired(),length(min=4 ,max=20)])
 
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email(),validate_email])
+                           validators=[DataRequired(),Email()])
 
     submit = SubmitField('Enregistrer')
 
@@ -224,11 +224,11 @@ class RequestResetForm(FlaskForm):
             raise ValidationError('There is no account with this email.You must register first.')
 
 class ResetPasswordForm(FlaskForm):
-    password =PasswordField('Password',
+    password =PasswordField('Mot de Passe',
                                   validators=[DataRequired(),length(min=8 ,max=20)])
-    confirm_password =PasswordField('ConfirmPassword',
+    confirm_password =PasswordField('Confirmez votre Mot de Passe',
                                   validators=[DataRequired(),EqualTo('password')])
-    submit = SubmitField('Reset password')
+    submit = SubmitField('Réinitialiser le mot de passe')
 class LoginForm(FlaskForm):
     username =StringField("Identifiant",
                                      validators=[DataRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
