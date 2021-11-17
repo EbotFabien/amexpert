@@ -54,6 +54,7 @@ class Expert(db.Model,UserMixin):
 
     id = db.Column(db.Integer,primary_key=True)
     new= db.Column(db.String)
+    login = db.Column(db.String,unique=True,default=None)
     genre  = db.Column(db.String,default='')	
     nom = db.Column(db.String,default='')
     trigramme=db.Column(db.String,default='')

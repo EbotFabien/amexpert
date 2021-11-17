@@ -3,7 +3,7 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Toutes les Factures</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Toutes les Factures Clients</h2>
       <!--a href="{{url_for('users.choosev', Type='month')}}" title="Ajouter une Facture Mensuel" class="button is-primary is-small"><i class="fas fa-plus"></i></a--> 
     </div>
 
@@ -11,6 +11,8 @@
         <div class="box" style="  width: -webkit-fill-available; width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
+            <span>Mission Réglée: {{reglee}}</span>
+            <span>Mission Non Réglée:{{non_}}</span>
            <!--  <div class="control has-icons-left has-icons-right">
               <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
               <span class="icon is-small is-right">

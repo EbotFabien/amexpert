@@ -1,9 +1,10 @@
 import os
+import smtplib
 class Config:
     SECRET_KEY='FABIENCLASSIC'
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@db/amexpert"
     #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
-    MAIL_SERVER ='mail.infomaniak.ch'
+    MAIL_SERVER ='smtp.infomaniak.com'#'mail.infomaniak.ch'
     MAIL_PORT = 587
     MAIL_USE_TLS =True
     MAIL_USERNAME = 'info@resilion.eu'
