@@ -83,7 +83,10 @@
                         {%endfor%}
                     </tbody>
                 </table>
-                <button><a href="{{url_for('users.gestion'id=id)}}" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></button>
+                {% if mes != None %}
+                <button><a href="" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></button>
+                {% endif %}
+    
 	            </div>
                  <!-- Pagination Links-->
               

@@ -54,7 +54,7 @@
                                                   {% endfor %}
                                               </div>
                                                   {% else %}
-                                                      {{form.Demarrer(class="input", value=start.strftime('%d/%m/%Y'))}}
+                                                      {{form.Demarrer(class="input", value=start)}}
                                                   {% endif %}
                                                 </div>
                                                   <p class="help"> </p>
@@ -79,7 +79,7 @@
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.Fin(class="input", value=end.strftime('%d/%m/%Y'))}}
+                                                    {{form.Fin(class="input", value=end)}}
                                                 {% endif %}
                                               </div>
                                                 <p class="help"> </p>
