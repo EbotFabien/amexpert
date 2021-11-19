@@ -3223,7 +3223,7 @@ def download(mes,temps,id):
                     fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
-                    send_pdf("touchone0001@gmail.com",name.nom,n)
+                    send_pdf("vincent@resilion.eu",name.nom,n)
                     os.remove(n)
                     return res
 
@@ -3243,7 +3243,7 @@ def download(mes,temps,id):
                     fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
-                    send_pdf("touchone0001@gmail.com",name.nom,n)
+                    send_pdf("vincent@resilion.eu",name.nom,n)
                     return res
 
     return redirect(url_for('users.main'))
@@ -3280,7 +3280,7 @@ def gestion(id):
             fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
             n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
             os.rename(fil,n)
-            send_pdf("touchone0001@gmail.com",name,n)
+            send_pdf("vincent@resilion.eu",name,n)
             return res
             #except:
             #   return redirect(url_for('users.main'))
@@ -3308,6 +3308,9 @@ def exportm():
                     start=datetime.combine(date,datetime.min.time())
                     end=datetime.combine(start+timedelta(days=6),datetime.min.time())
                     miss=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end)).all())
+                if Typo == "Jour":
+                    da=datetime.combine(date,datetime.min.time())
+                    miss=Mission.query.filter_by(DATE_REALISE_EDL=da).all()
                 if miss != []:
                     mi=exo.mission_data(miss,mi)
                     name="missionex_"+gen_name()
