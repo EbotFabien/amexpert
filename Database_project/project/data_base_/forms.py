@@ -32,11 +32,11 @@ def validatei(self,email):
             raise ValidationError("5 chiffres")
 
 class RegistrationForm1(FlaskForm):
-    def validate_email(self,email):
-        email = Expert.query.filter_by(email=email.data).first()
+    def validate2(self,email,expert):
+        email = Expert.query.filter(and_(Expert.email==email,Expert.id!=expert)).first()
 
         if email:
-            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+            return True
     
     username =StringField("Nom et Prenom",
                                 validators=[validators.InputRequired(),length(min=4 ,max=20)])
@@ -45,7 +45,7 @@ class RegistrationForm1(FlaskForm):
                                 validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
     email =StringField('E-mail',
-                           validators=[validators.InputRequired(),Email(),validate_email])
+                           validators=[validators.InputRequired(),Email()])
 
     submit = SubmitField('Enregistrer')
 
@@ -234,11 +234,11 @@ class RequestResetForm(FlaskForm):
             raise ValidationError('There is no account with this email.You must register first.')
 
 class ResetPasswordForm(FlaskForm):
-    password =PasswordField('Password',
+    password =PasswordField('Mot de Passe',
                                   validators=[validators.InputRequired(),length(min=8 ,max=20)])
-    confirm_password =PasswordField('ConfirmPassword',
+    confirm_password =PasswordField('Confirmez votre Mot de Passe',
                                   validators=[validators.InputRequired(),EqualTo('password')])
-    submit = SubmitField('Reset password')
+    submit = SubmitField('Réinitialiser le mot de passe')
 class LoginForm(FlaskForm):
     username =StringField("Identifiant",
                                      validators=[validators.InputRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
@@ -1157,7 +1157,7 @@ class Mission_editForm(FlaskForm):
                         validators=[validators.InputRequired(),validate_client])
 
     ID_Concessionaire=IntegerField("ID Concessionaire",
-                        validators=[validators.InputRequired()])
+                        validators=[validators.InputRequired("You got to enter some rating!"),validate_email])
 
     ABONNEMENT=StringField("Abonnement",
                         validators=[validators.InputRequired()])
@@ -1181,16 +1181,20 @@ class Mission_editForm(FlaskForm):
     Reference_LOCATAIRE=StringField("Reference Locataire",
                         validators=[validators.InputRequired()])
     
-    Adresse1_Bien=StringField("Adresse1 Bien")#not rquired
+    Adresse1_Bien=StringField("Adresse1 Bien",
+                        validators=[validators.InputRequired()])
     
-    Adresse2_Bien=StringField("Adresse2 Bien")#not rquired
+    Adresse2_Bien=StringField("Adresse2 Bien",
+                        validators=[validators.InputRequired()])
       
-    CP_Bien=IntegerField("Code Postal Bien")
+    CP_Bien=IntegerField("CP Bien",
+                        validators=[validators.InputRequired()])
     
-    Ville_Bien=StringField("Ville Bien")#not rquired
+    Ville_Bien=StringField("Ville Bien",
+                        validators=[validators.InputRequired()])
     
     TVA_EDL=DecimalField("TVA EDL",
-                        validators=[validators.InputRequired()])
+                        validators=[validators.InputRequired("You got to enter some rating!")])
     
     PRIX_TTC_EDL=DecimalField("PRIX TTC EDL",
                         validators=[validators.InputRequired()])
@@ -1271,11 +1275,15 @@ class Mission_editForm(FlaskForm):
     ID_agent_Cell_Dev=IntegerField("ID agent Cell Dev",
                         validators=[validators.InputRequired(),validate_email])
     
-    TYPE_LOGEMENT =  StringField("Type Logement")	
+    TYPE_LOGEMENT =  StringField("Type Logement",
+                        validators=[validators.InputRequired()])	
 
-    LOGEMENT_MEUBLE = StringField("Logement Meuble") 	#not required
-    CODE_FACTURATION =StringField("Code Facturation")  	#not required
-    TYPE_DE_BIEN = StringField("Type de Bien")  #not required
+    LOGEMENT_MEUBLE = StringField("Logement Meuble",
+                        validators=[validators.InputRequired()]) 	
+    CODE_FACTURATION =StringField("Code Facturation",
+                        validators=[validators.InputRequired()])  	
+    TYPE_DE_BIEN = StringField("Type de Bien",
+                        validators=[validators.InputRequired()]) 
     
     POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev",
                         validators=[validators.InputRequired()])	
@@ -1288,8 +1296,7 @@ class Mission_editForm(FlaskForm):
 
     ID_Respon_Cell_Tech = IntegerField("ID Respon Cell Tech",
                         validators=[validators.InputRequired(),validate_email]) 
-    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech",
-                        validators=[validators.InputRequired()]) 
+    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech") 
     
     ID_Suiveur_Cell_Tech =  IntegerField("ID Suiveur Cell Tech",
                         validators=[validators.InputRequired(),validate_email])	

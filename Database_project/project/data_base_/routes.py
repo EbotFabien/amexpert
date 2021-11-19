@@ -11,7 +11,7 @@ from Database_project.project.data_base_.utils import send_reset_email,generate,
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-import pdfkit
+#import pdfkit
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
@@ -1640,7 +1640,7 @@ def login():
        return redirect(url_for('users.main'))
     form = LoginForm()
     if form.validate_on_submit():
-        name=Expert.query.filter_by(nom=form.username.data).first()#put login
+        name=Expert.query.filter_by(login=form.username.data).first()#put login
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
             login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
@@ -1672,14 +1672,14 @@ def reset_password (token):
        return redirect(url_for('users.main'))
     expert = Expert.verify_reset_token(token)
     if expert is None:
-        flash('That is an invalid or expired token','warning')
+        flash("C'est un jeton invalide ou expiré.",'warning')
         return redirect(url_for('users.forgot_password'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         expert.password = hashed_password
         db.session.commit()
-        flash(f'your password has been updated! You are now able to login','success')
+        flash(f'votre mot de passe a été mis à jour ! Vous êtes maintenant en mesure de vous connecter','success')
         return redirect(url_for('users.login'))
     return render_template('reset_password.html', form=form)
 
@@ -2139,6 +2139,10 @@ def profil():
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
+            f=form.validate2(form.email.data,current_user.id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.profil'))
             client.nom =form.username.data
             client.email=form.email.data
             client.login=form.login.data
@@ -2154,6 +2158,10 @@ def addlogin(id):
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=id).first()
         if form.validate_on_submit():
+            f=form.validate2(form.email.data,id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.addlogin',id=id))
             client.nom =form.username.data
             client.email=form.email.data
             client.login=form.login.data
@@ -3203,11 +3211,8 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
-                    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
-    
-                    with open(image_path, 'rb') as image_file:
-                        image= base64.b64encode(image_file.read()).decode()
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html',image=image, download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    img=url_for('static', filename='images/logo/logo.png')
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3219,6 +3224,7 @@ def download(mes,temps,id):
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
                     send_pdf("touchone0001@gmail.com",name.nom,n)
+                    os.remove(n)
                     return res
 
             if  temps == "ancienne":
@@ -3226,11 +3232,7 @@ def download(mes,temps,id):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-                    image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
-    
-                    with open(image_path, 'rb') as image_file:
-                        image= base64.b64encode(image_file.read()).decode()
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html',image=image, download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
                     files=os.listdir(app.config['PDF_DIR_PATH'])
                     for fil in files:
                         if fil.endswith('.pdf'):
@@ -3405,7 +3407,7 @@ def dash():
 
     for mission in missionsperyear:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
 
     #data = json.dumps(data)
@@ -3443,7 +3445,7 @@ def mission_encashyear():
 
     for mission in mission_encashyear:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
 
     
@@ -3540,7 +3542,7 @@ def missionnotworkedy():
 '''@users.route("/p")
 def p():
     name = "Giovanni Smith"
-    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_Database_project.project/Database_project.project/data_base_/static/images/logo/logo.jpeg'
     
     #with open(image_path, 'rb') as image_file:
     #    image= base64.b64encode(image_file.read()).decode()
