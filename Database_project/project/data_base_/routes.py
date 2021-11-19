@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from Database_project.project.data_base_.client_data  import lient
@@ -38,7 +38,7 @@ PER_PAGE = 10
 def client():
     global PER_PAGE
     global Ord
-    Ord="a"
+    Ord="a" 
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
@@ -89,7 +89,7 @@ def ajouter_client():
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Le client a été créé avec succès','success')
-            return redirect(url_for('users.client'))
+            return redirect(url_for('users.show_client',id=user.id))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client", highlight='client')
     else:
@@ -199,9 +199,7 @@ def edit_client(id):
             
             if client.id==int(form.client_id.data):
             
-                client_history=Client_History(client_id=id)
-                db.session.add(client_history)
-                db.session.commit()
+                client_history=Client_History.query.filter_by(client_id=id).first()
                 client_history.ville = form.Ville.data
                 client_history.pays = form.Pays.data
                 client_history.cp = form.CP.data
@@ -222,7 +220,7 @@ def edit_client(id):
                 client.nom = form.NOM.data
                 db.session.commit()
                 flash(f'Informations client modifiées','success')
-                return redirect(url_for('users.client'))
+                return redirect(url_for('users.show_client',id=id))
                 
                 
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
@@ -245,6 +243,9 @@ def mission():
         date=request.args.get('date')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+
         
         
         
@@ -316,7 +317,7 @@ def mission():
         
         else:
             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission',reg=reglee,non=notreglee)
 
 
     return redirect(url_for('users.main'))
@@ -1011,8 +1012,9 @@ def facturation(id):
 def facturationa():
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())#add visibility
-        reglee=facturation_mission.query.join(Mission,(Mission.id == facturation_mission.ref_mission )).filter(Mission.DATE_FACT_REGLEE!=None).count()
-        notreglee=facturation_mission.query.join(Mission,(Mission.id == facturation_mission.ref_mission )).filter(Mission.DATE_FACT_REGLEE==None).count()
+        reglee=facturation_client.query.filter_by(valide=True).count()
+        notreglee=facturation_client.query.filter_by(valide=False).count()
+        print(notreglee)
         return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation,reglee=reglee,not_=notreglee) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
@@ -1022,14 +1024,18 @@ def facturationa():
 def datereg(id):
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())
+        fact=facturation_client.query.filter_by(id=id).first()
         facture1= list(facturation_mission.query.filter_by(fact_mission=id).all())  
         now_utc = datetime.now(timezone.utc)
         start=datetime.combine(now_utc,datetime.min.time())
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        
         if failed:
             flash(f'Veuillez corriger votre factures Numero' +str(id),'Warning')
             return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation)
 
+        fact.valide=True
+        db.session.commit()
         for i in facture1:
             miss=Mission.query.filter_by(id=i.mission__data_.id).first()
             miss.DATE_FACT_REGLEE = start
@@ -1183,6 +1189,7 @@ def edit_mission(id):
         form=Mission_editForm()
         mission = Mission.query.filter_by(id=id).first_or_404()
         form.misid.data = mission.id
+        print(mission.Bailleur__data.reference)
         
         
         if form.validate_on_submit():
@@ -1212,7 +1219,7 @@ def edit_mission(id):
                     mission.CA_TTC_AC = form.CA_TTC_AC.data
                     mission.CA_HT_TRUST = form.CA_HT_TRUST.data
                     mission.TVA_TRUST = form.TVA_TRUST.data
-                    mission.Date_chiffrage_regle = form.Date_chiffrage_regle.data
+                    #mission.Date_chiffrage_regle = form.Date_chiffrage_regle.data add diferently
                     mission.Prix_ht_chiffrage = form.Prix_ht_chiffrage.data 
                     mission.POURCENTAGE_suiveur_chiffrage = form.POURCENTAGE_suiveur_chiffrage.data
                     mission.POURCENTAGE_AS_chiffrage = form.POURCENTAGE_AS_chiffrage.data
@@ -1268,8 +1275,8 @@ def delete_mission(id):
 def expert():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        expert_=Expert.query.filter_by(visibility=True).order_by(asc(Expert.id)).all()
-        history=Expert_History.query.filter_by(visibility=True).order_by(asc(Expert_History.id)).all()
+        expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+        history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
         return render_template('manage/pages/expert.html',Expert=zip(expert_,history), legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
@@ -1299,7 +1306,7 @@ def ajouter_expert():
             db.session.add(expert_history)
             expert_history.ville = form.ville.data
             expert_history.secteur = form.secteur.data
-            expert_history.type_certification =  form.type_certification.data
+            #expert_history.type_certification =  form.type_certification.data
             
             expert_history.cp = form.cp.data
             expert_history.actif_parti  = form.actif_parti.data
@@ -1312,14 +1319,14 @@ def ajouter_expert():
             expert_history.login_extranet = form.login_extranet.data
             expert_history.pwd_extranet = form.pwd_extranet.data
             expert_history.trigramme = form.trigramme.data
-            expert_history.date_certification_initiale = form.date_certification.data
+            #expert_history.date_certification_initiale = form.date_certification.data
 
             expert_history.observations_de_suivi = form.observations_de_suivi.data
             user.password=hashed_password
             db.session.commit()
             db.session.commit()
             flash(f'L"expert a été ajouté avec succès','success')
-            return redirect(url_for('users.expert'))
+            return redirect(url_for('users.show_expert',id=user.id))
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
         return redirect(url_for('users.main'))
@@ -1340,13 +1347,10 @@ def edit_expert(id):
                 flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.edit_expert', id=expert.id))
             if expert.id==int(form.Expert_id.data):
-                expert_history=Expert_History(expert_id=id)
-                db.session.add(expert_history)
-                db.session.commit()
+                expert_history=Expert_History.query.filter_by(expert_id=id).first()
                 expert_history.ville = form.ville.data
                 expert_history.secteur = form.secteur.data
-                expert_history.type_certification =  form.type_certification.data
-                
+                #expert_history.type_certification =  form.type_certification.data
                 expert_history.cp = form.cp.data
                 expert_history.actif_parti  = form.actif_parti.data
                 
@@ -1358,8 +1362,8 @@ def edit_expert(id):
                 expert_history.login_extranet = form.login_extranet.data
                 expert_history.pwd_extranet = form.pwd_extranet.data
         
-                
-                expert_history.date_renouv_certification = form.date_certification.data
+                #make table certificiation
+                #expert_history.date_renouv_certification = form.date_certification.data
 
                 expert_history.observations_de_suivi = form.observations_de_suivi.data
                 
@@ -1376,7 +1380,7 @@ def edit_expert(id):
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
                 flash(f'L"expert a été modifié avec succès', 'success')
-                return redirect(url_for('users.expert'))
+                return redirect(url_for('users.show_expert',id=id))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
         return render_template('manage/pages/edit_expert.html', highlight='expert', form=form,history=expert_history,expert=expert)
@@ -1611,26 +1615,26 @@ def make_session_permanent():
 
 @users.route('/login',methods=['GET','POST'])
 def login():
-    
-    #expert=Expert('Mr.','Admin','Admin','test0001@gmail.com','1234567')
-    #db.session.add(expert)
-    #db.session.commit()
-    #expert=Expert.query.filter_by(nom="Admin").first()
-    #expert.TYPE="Admin"
-    #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
-    #expert.password = hashed_password
-    #db.session.commit()
+    db.create_all()
+    '''expert=Expert(genre='Mr.',nom="Administrateur",numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert)
+    db.session.commit()
+    expert=Expert.query.filter_by(nom="Administrateur").first()
+    expert.TYPE="Admin"
+    hashed_password = bcrypt.generate_password_hash('1234564789').decode('utf-8')
+    expert.password = hashed_password
+    db.session.commit()
     #db.drop_all()
     #db.create_all()
-    #expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
     #expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
-    #db.session.add(expert1)
+    db.session.add(expert1)
     #db.session.add(expert)
-    #db.session.commit()
-    #expert1.id =0
+    db.session.commit()
+    expert1.id =0
    # hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
    # expert.password=hashed_password
-   # db.session.commit()
+    db.session.commit()'''
 
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
@@ -1745,7 +1749,7 @@ def ajouter_negotiateur(id):
             db.session.add(user_his)
             db.session.commit()
             flash(f'négociateur créé avec succès','success')
-            return redirect(url_for('users.negotiateur', id=id)) #id check
+            return redirect(url_for('show_negotiateur', id=user.id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
     else:
@@ -1783,9 +1787,7 @@ def edit_negotiateur(id):
             
             if client.id==int(form.client_id.data):
             
-                client_check=Negotiateur_History(negotiateur_id=id)
-                db.session.add(client_check)
-                db.session.commit()
+                client_check=Negotiateur_History.query.filter_by(negotiateur_id=id).first()
                 client_check.ville = form.Ville.data
                 client_check.pays = form.Pays.data 
                 client_check.cp = form.CP.data
@@ -1799,7 +1801,7 @@ def edit_negotiateur(id):
 
                 db.session.commit()
                 flash(f'Les donnes du négociateur ont été modifiées','success')
-                return redirect(url_for('users.negotiateur', id=client.client_id))
+                return redirect(url_for('show_negotiateur', id=id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
 
@@ -1847,7 +1849,7 @@ def ajouter_prospect():
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Prospect créé avec succès','success')
-            return redirect(url_for('users.prospect_'))
+            return redirect(url_for('show_prospect',id=user.id))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect", highlight='prospect')
     else:
@@ -1899,9 +1901,8 @@ def edit_prospect(id):
             
             if client.id==int(form.client_id.data):
             
-                client_history=prospect_History(prospect=id)
-                db.session.add(client_history)
-                db.session.commit()
+                client_history=prospect_History.query.filter_by(prospect=id).first()
+                
                 
                 client_history.ville = form.Ville.data
                 client_history.pays = form.Pays.data
@@ -1923,7 +1924,7 @@ def edit_prospect(id):
                 client.nom = form.NOM.data
                 db.session.commit()
                 flash(f'Informations Prospect modifiées','success')
-                return redirect(url_for('users.prospect_'))
+                return redirect(url_for('show_prospect',id=id))
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
         return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
 
@@ -2081,22 +2082,26 @@ def uploader_():
                         return redirect(url_for('users.up'))
                     return xpert(loc)
                
-            if table == 'Tarifb':
+            if table == 'TarifC':
                 
                 arif(loc)
                 if arif(loc) == False:
                     flash(f"Verifier la structure de votre fichier svp",'warning')
                     return redirect(url_for('users.up'))
+                if arif(loc) == True:
+                        flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
                 return arif(loc)
                 
             if table == 'mission':
-                '''Missions2(loc,'26')
-                Missions2(loc,'27')
-                Missions2(loc,'28')
-                Missions2(loc,'29')
-                Missions2(loc,'31')'''
+                #Base(loc)
+                #Missions2(loc,'26')
+                #Missions2(loc,'27')
+                #Missions2(loc,'28')
+                #Missions2(loc,'29')
+                #Missions2(loc,'31')'''
+                
                 Missions1(loc)
-                print(Missions1(loc))
                 if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -2359,6 +2364,7 @@ def choosev(Type):
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    print(mission.id)
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f4)/2
                                         if mission.PRIX_HT_EDL==None:
@@ -3277,22 +3283,41 @@ def gestion(id):
             #except:
             #   return redirect(url_for('users.main'))
 
+#mission_datem=list(Mission.query.filter(extract('month', Mission.DATE_REALISE_EDL )==2020).all())
+#mission_datey=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).all())
 
-  
+@users.route('/exportm',methods=['GET','POST'])
+@login_required
+def exportm():
+    if current_user.TYPE == "Admin":
+            form=mission_export()
+            if form.validate_on_submit():
+                temp=app.config['MISS']
+                mi=[]
+                mi.append(temp)
+                Typo = form.Temps.data
+                date= form.Date.data
+                if Typo =="Mois":
+                    m=str(date)
+                    month=int(m[5:7])
+                    year=int(m[0:4])
+                    miss=list(Mission.query.filter(and_(extract('month', Mission.DATE_REALISE_EDL )==month,extract('year', Mission.DATE_REALISE_EDL )==year)).all())
+                if Typo == "Semaine":
+                    start=datetime.combine(date,datetime.min.time())
+                    end=datetime.combine(start+timedelta(days=6),datetime.min.time())
+                    miss=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end)).all())
+                if miss != []:
+                    mi=exo.mission_data(miss,mi)
+                    name="missionex_"+gen_name()
+                    return exo.export(mi,name)
+            return render_template('manage/pages/exportmission.html',form=form)
+    return redirect(url_for('users.main'))
 
 @users.route('/export',methods=['GET','POST'])
 @login_required
 def exported():
-    if current_user.TYPE == "Admin": 
+    if current_user.TYPE == "Admin":
             Type = request.form['table']
-            if Type == 'mission':
-                temp=app.config['MISS']
-                mi=[]
-                mi.append(temp)
-                miss=Mission.query.all()
-                mi=exo.mission_data(miss,mi)
-                name="missionex_"+gen_name()
-                return exo.export(mi,name)
             if Type =='expert':
                temp=app.config['EXPS']
                ex=[]

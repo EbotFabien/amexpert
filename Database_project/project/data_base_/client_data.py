@@ -55,7 +55,7 @@ def regex1(data,Type):
             else:
                 return 'Failed'
         if data == None:
-            return None 
+            return 0 
         else:
             return 'Failed'
         
@@ -87,9 +87,9 @@ def regex1(data,Type):
         if isinstance(data,float) == True:
             return data
         if data == '':
-            return ''
+            return 0.00
         if data == None:
-            return None
+            return 0.00
         else:
             return 'Failed'
     
@@ -101,9 +101,9 @@ def regex1(data,Type):
         if data == '':
             return None
         if type(data)==str:
-            return None
+            return 0.00
         if data == None:
-            return None
+            return 0.00
         else:
             return None
 

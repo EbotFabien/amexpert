@@ -39,25 +39,35 @@ class RegistrationForm1(FlaskForm):
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
     
     username =StringField("Nom et Prenom",
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
     login =StringField("Identifiant",
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email(),validate_email])
+                           validators=[validators.InputRequired(),Email(),validate_email])
 
     submit = SubmitField('Enregistrer')
 
 class rectify_Form(FlaskForm):
     
     TYPE_LOGEMENT =  StringField("TYPE_LOGEMENT",
-                        validators=[DataRequired()])	
+                        validators=[validators.InputRequired()])	
 
     CODE_FACTURATION =StringField("CODE_FACTURATION",
-                        validators=[DataRequired()])  	
+                        validators=[validators.InputRequired()])  	
 
     submit = SubmitField('Modifier')
+
+class mission_export(FlaskForm):
+    
+    Temps =  SelectField('Saison Export',
+                             choices=[('Semaine', 'Semaine'), ('Mois', 'Mois')])
+
+    Date =DateField('Date Export',
+                           validators=[validators.InputRequired()])  	
+
+    submit = SubmitField('Enregistre')
 
 class RegistrationForm(FlaskForm):
     def validate_email(self,email):
@@ -73,13 +83,13 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
     username =StringField("Identifiant",
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=10 ,max=10)])
+                                validators=[validators.InputRequired(),validatep,length(min=10 ,max=10)])
 
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email(),validate_email])
+                           validators=[validators.InputRequired(),Email(),validate_email])
 
     password =PasswordField('Mot de pass',
                                   validators=[length(min=8 ,max=20)])
@@ -98,24 +108,24 @@ class RegistrationForm(FlaskForm):
     secteur =StringField('Secteur')
 
 
-    siret =IntegerField('siret')
+    siret =IntegerField('siret', validators=[validators.InputRequired()])
 
     trigramme =StringField('trigramme')
 
     code_tva =StringField('Code tva')
                         
-    taux_tva =DecimalField('Taux tva')
+    taux_tva =DecimalField('Taux tva', validators=[validators.InputRequired()])
 
     actif_parti =SelectField('actif_parti',
                              choices=[('ACTIF', 'ACTIF'), ('PARTI', 'PARTI')])
 
     ville =StringField('Ville')
     
-    type_certification=StringField('Type certification',
-                           validators=[DataRequired()])
-    date_certification=DateField('Date de certification',
-                           validators=[DataRequired()])
-    date_certification_renouv=DateField('Date de recertification')
+    #type_certification=StringField('Type certification',
+    #                       validators=[validators.InputRequired()])
+   # date_certification=DateField('Date de certification',
+    #                       validators=[validators.InputRequired()])
+    #date_certification_renouv=DateField('Date de recertification')
     adresse=StringField('Adresse 1')
 
     adresse2=StringField('Adresse 2')
@@ -148,10 +158,10 @@ class Expert_editForm(FlaskForm):
             return True
 
     username =StringField("Identifiant",
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Tel',
-                                validators=[DataRequired(),validatep,length(min=10 ,max=10)])
+                                validators=[validators.InputRequired(),validatep,length(min=10 ,max=10)])
 
     email =StringField('E-mail')
 
@@ -169,24 +179,24 @@ class Expert_editForm(FlaskForm):
     secteur =StringField('Secteur')
 
 
-    siret =IntegerField('siret', validators=[DataRequired(),validatep,validates])
+    siret =IntegerField('siret', validators=[validators.InputRequired(),validatep,validates])
 
     trigramme =StringField('Trigramme')
 
-    code_tva =StringField('Code tva', validators=[DataRequired(),validatep,length(min=4 ,max=4)])
+    code_tva =StringField('Code tva', validators=[validators.InputRequired(),validatep,length(min=4 ,max=4)])
                         
-    taux_tva =DecimalField('Taux tva')
+    taux_tva =DecimalField('Taux tva', validators=[validators.InputRequired()])
 
     actif_parti =SelectField('Actif parti',
                              choices=[('ACTIF', 'ACTIF'), ('PARTI', 'PARTI')])
 
     ville =StringField('Ville')
     
-    type_certification=StringField('Type certification',
-                           validators=[DataRequired()])
-    date_certification=DateField('Date de certification',
-                           validators=[DataRequired()])
-    date_certification_renouv=DateField('Date de recertification')
+   # type_certification=StringField('Type certification',
+    #                       validators=[validators.InputRequired()])
+    #date_certification=DateField('Date de certification',
+    #                       validators=[validators.InputRequired()])
+    #date_certification_renouv=DateField('Date de recertification')
     
     date_entree=StringField('Date de entree',render_kw={'readonly':True})
 
@@ -212,7 +222,7 @@ class Expert_editForm(FlaskForm):
 
 class RequestResetForm(FlaskForm):
     email =StringField('Email',
-                           validators=[DataRequired(),Email()])
+                           validators=[validators.InputRequired(),Email()])
     submit = SubmitField('Request Password Reset')
 
     #recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
@@ -225,22 +235,22 @@ class RequestResetForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     password =PasswordField('Password',
-                                  validators=[DataRequired(),length(min=8 ,max=20)])
+                                  validators=[validators.InputRequired(),length(min=8 ,max=20)])
     confirm_password =PasswordField('ConfirmPassword',
-                                  validators=[DataRequired(),EqualTo('password')])
+                                  validators=[validators.InputRequired(),EqualTo('password')])
     submit = SubmitField('Reset password')
 class LoginForm(FlaskForm):
     username =StringField("Identifiant",
-                                     validators=[DataRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
+                                     validators=[validators.InputRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
 
     password =PasswordField('Mot de passe',
-                                  validators=[DataRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
+                                  validators=[validators.InputRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
 
     remember = BooleanField('Se rappeler de moi')                              
     submit = SubmitField('Se connecter')
     
 class tableform(FlaskForm):
-        table =StringField('table',validators=[DataRequired()])
+        table =StringField('table',validators=[validators.InputRequired()])
 
         submit = SubmitField('Recherchez')
 
@@ -531,77 +541,77 @@ class Tarif_Form(FlaskForm):
             if base.Prix_EDL>chif_pav_villa_prix_t8.data:
                 raise ValidationError("le tarif de base T8 es moin que le tarif normal "+str(base.Prix_EDL)+"€")
 
-    edl_prix_std=DecimalField('edl prix std', validators=[validate_price_STD])     
-    edl_appt_prix_f1=DecimalField('edl appt prix f1', validators=[validate_price_F1])
-    edl_appt_prix_f2=DecimalField('edl appt prix f2', validators=[validate_price_F2]) 
-    edl_appt_prix_f3=DecimalField('edl appt prix f3', validators=[validate_price_F3])
-    edl_appt_prix_f4=DecimalField('edl appt prix f4', validators=[validate_price_F4]) 
-    edl_appt_prix_f5=DecimalField('edl appt prix f5', validators=[validate_price_F5])
-    edl_appt_prix_f6=DecimalField('edl appt prix f6', validators=[validate_price_F6])
-    edl_pav_villa_prix_t1=DecimalField('edl pav villa prix t1', validators=[validate_price_T1])
-    edl_pav_villa_prix_t2=DecimalField('edl pav villa prix t2', validators=[validate_price_T2])
-    edl_pav_villa_prix_t3=DecimalField('edl pav villa prix t3', validators=[validate_price_T3])
-    edl_pav_villa_prix_t4=DecimalField('edl pav villa prix t4', validators=[validate_price_T4]) 
-    edl_pav_villa_prix_t5=DecimalField('edl pav villa prix t5', validators=[validate_price_T5])
-    edl_pav_villa_prix_t6=DecimalField('edl pav villa prix t6', validators=[validate_price_T6])
-    edl_pav_villa_prix_t7=DecimalField('edl pav villa prix t7', validators=[validate_price_T7]) 
-    edl_pav_villa_prix_t8=DecimalField('edl pav villa prix t8', validators=[validate_price_T8])
-    chif_appt_prix_stu=DecimalField('chif appt prix stu', validators=[validate_chif_STD])
-    chif_appt_prix_f1 =DecimalField('chif appt prix f1', validators=[validate_chif_F1]) 
-    chif_appt_prix_f2 =DecimalField('chif appt prix f2', validators=[validate_chif_F2]) 
-    chif_appt_prix_f3 =DecimalField('chif appt prix f3', validators=[validate_chif_F3]) 
-    chif_appt_prix_f4 =DecimalField('chif appt prix f4', validators=[validate_chif_F4]) 
-    chif_appt_prix_f5 =DecimalField('chif appt prix f5', validators=[validate_chif_F5]) 
-    chif_appt_prix_f6 =DecimalField('chif appt prix f6', validators=[validate_chif_F6]) 
-    chif_pav_villa_prix_t1=DecimalField('chif pav villa prix t1', validators=[validate_chif_T1])
-    chif_pav_villa_prix_t2=DecimalField('chif pav villa prix t2', validators=[validate_chif_T2]) 
-    chif_pav_villa_prix_t3=DecimalField('chif pav villa prix t3', validators=[validate_chif_T3])
-    chif_pav_villa_prix_t4=DecimalField('chif pav villa prix t4', validators=[validate_chif_T4])
-    chif_pav_villa_prix_t5=DecimalField('chif pav villa prix t5', validators=[validate_chif_T5])
-    chif_pav_villa_prix_t6=DecimalField('chif pav villa prix t6', validators=[validate_chif_T6])
-    chif_pav_villa_prix_t7=DecimalField('chif pav villa prix t7', validators=[validate_chif_T7]) 
-    chif_pav_villa_prix_t8=DecimalField('chif pav villa prix t8', validators=[validate_chif_T8])
+    edl_prix_std=DecimalField('edl prix std', validators=[validators.InputRequired(),validate_price_STD])     
+    edl_appt_prix_f1=DecimalField('edl appt prix f1', validators=[validators.InputRequired(),validate_price_F1])
+    edl_appt_prix_f2=DecimalField('edl appt prix f2', validators=[validators.InputRequired(),validate_price_F2]) 
+    edl_appt_prix_f3=DecimalField('edl appt prix f3', validators=[validators.InputRequired(),validate_price_F3])
+    edl_appt_prix_f4=DecimalField('edl appt prix f4', validators=[validators.InputRequired(),validate_price_F4]) 
+    edl_appt_prix_f5=DecimalField('edl appt prix f5', validators=[validators.InputRequired(),validate_price_F5])
+    edl_appt_prix_f6=DecimalField('edl appt prix f6', validators=[validators.InputRequired(),validate_price_F6])
+    edl_pav_villa_prix_t1=DecimalField('edl pav villa prix t1', validators=[validators.InputRequired(),validate_price_T1])
+    edl_pav_villa_prix_t2=DecimalField('edl pav villa prix t2', validators=[validators.InputRequired(),validate_price_T2])
+    edl_pav_villa_prix_t3=DecimalField('edl pav villa prix t3', validators=[validators.InputRequired(),validate_price_T3])
+    edl_pav_villa_prix_t4=DecimalField('edl pav villa prix t4', validators=[validators.InputRequired(),validate_price_T4]) 
+    edl_pav_villa_prix_t5=DecimalField('edl pav villa prix t5', validators=[validators.InputRequired(),validate_price_T5])
+    edl_pav_villa_prix_t6=DecimalField('edl pav villa prix t6', validators=[validators.InputRequired(),validate_price_T6])
+    edl_pav_villa_prix_t7=DecimalField('edl pav villa prix t7', validators=[validators.InputRequired(),validate_price_T7]) 
+    edl_pav_villa_prix_t8=DecimalField('edl pav villa prix t8', validators=[validators.InputRequired(),validate_price_T8])
+    chif_appt_prix_stu=DecimalField('chif appt prix stu', validators=[validators.InputRequired(),validate_chif_STD])
+    chif_appt_prix_f1 =DecimalField('chif appt prix f1', validators=[validators.InputRequired(),validate_chif_F1]) 
+    chif_appt_prix_f2 =DecimalField('chif appt prix f2', validators=[validators.InputRequired(),validate_chif_F2]) 
+    chif_appt_prix_f3 =DecimalField('chif appt prix f3', validators=[validators.InputRequired(),validate_chif_F3]) 
+    chif_appt_prix_f4 =DecimalField('chif appt prix f4', validators=[validators.InputRequired(),validate_chif_F4]) 
+    chif_appt_prix_f5 =DecimalField('chif appt prix f5', validators=[validators.InputRequired(),validate_chif_F5]) 
+    chif_appt_prix_f6 =DecimalField('chif appt prix f6', validators=[validators.InputRequired(),validate_chif_F6]) 
+    chif_pav_villa_prix_t1=DecimalField('chif pav villa prix t1', validators=[validators.InputRequired(),validate_chif_T1])
+    chif_pav_villa_prix_t2=DecimalField('chif pav villa prix t2', validators=[validators.InputRequired(),validate_chif_T2]) 
+    chif_pav_villa_prix_t3=DecimalField('chif pav villa prix t3', validators=[validators.InputRequired(),validate_chif_T3])
+    chif_pav_villa_prix_t4=DecimalField('chif pav villa prix t4', validators=[validators.InputRequired(),validate_chif_T4])
+    chif_pav_villa_prix_t5=DecimalField('chif pav villa prix t5', validators=[validators.InputRequired(),validate_chif_T5])
+    chif_pav_villa_prix_t6=DecimalField('chif pav villa prix t6', validators=[validators.InputRequired(),validate_chif_T6])
+    chif_pav_villa_prix_t7=DecimalField('chif pav villa prix t7', validators=[validators.InputRequired(),validate_chif_T7]) 
+    chif_pav_villa_prix_t8=DecimalField('chif pav villa prix t8', validators=[validators.InputRequired(),validate_chif_T8])
     prix_autre=StringField('Prix autre', validators=[Optional()])
 
     code_tva= StringField('code tva', validators=[Optional()])
 
     taux_meuble= IntegerField('Taux meuble', validators=[Optional()])
 
-    referent_as_client= IntegerField('Referent as client', validators=[DataRequired(),validate_email])
+    referent_as_client= IntegerField('Referent as client', validators=[validators.InputRequired(),validate_email])
 
-    com_as_sur_ca_client=DecimalField('Com as sur ca client', validators=[DataRequired()])
+    com_as_sur_ca_client=DecimalField('Com as sur ca client', validators=[validators.InputRequired()])
 
-    cell_dev_ref_responsable = IntegerField('Cell dev ref responsable', validators=[DataRequired(),validate_email])
+    cell_dev_ref_responsable = IntegerField('Cell dev ref responsable', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_dev_ref_responsable = DecimalField('Com cell dev ref responsable', validators=[DataRequired()])
+    com_cell_dev_ref_responsable = DecimalField('Com cell dev ref responsable', validators=[validators.InputRequired()])
 
-    cell_dev_ref_agent = IntegerField('Cell dev ref agent', validators=[DataRequired(),validate_email])
+    cell_dev_ref_agent = IntegerField('Cell dev ref agent', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_dev_ref_agent = DecimalField('Com cell dev ref agent', validators=[DataRequired()])
+    com_cell_dev_ref_agent = DecimalField('Com cell dev ref agent', validators=[validators.InputRequired()])
 
-    cell_tech_ref_agent = IntegerField('Cell tech ref agent', validators=[DataRequired(),validate_email])
+    cell_tech_ref_agent = IntegerField('Cell tech ref agent', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_tech_Ref_agent = DecimalField('Com cell tech Ref agent', validators=[DataRequired()])
+    com_cell_tech_Ref_agent = DecimalField('Com cell tech Ref agent', validators=[validators.InputRequired()])
 
-    cell_tech_ref_responsable  = IntegerField('Cell tech ref responsable', validators=[DataRequired(),validate_email])
+    cell_tech_ref_responsable  = IntegerField('Cell tech ref responsable', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_tech_ref_responsable = DecimalField('Com cell tech ref_responsable')
+    com_cell_tech_ref_responsable = DecimalField('Com cell tech ref_responsable', validators=[validators.InputRequired()])
 
-    cell_tech_ref_suiveur = IntegerField('Cell tech ref suiveur', validators=[DataRequired(),validate_email])
+    cell_tech_ref_suiveur = IntegerField('Cell tech ref suiveur', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_tech_ref_suiveur  = DecimalField('Com cell tech ref suiveur')
+    com_cell_tech_ref_suiveur  = DecimalField('Com cell tech ref suiveur', validators=[validators.InputRequired()])
 
-    cell_planif_ref_responsable = IntegerField('Cell planif ref responsable', validators=[DataRequired(),validate_email])
+    cell_planif_ref_responsable = IntegerField('Cell planif ref responsable', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_planif_ref_responsable = DecimalField('Com cell planif ref responsable')
+    com_cell_planif_ref_responsable = DecimalField('Com cell planif ref responsable', validators=[validators.InputRequired()])
 
-    cell_planif_ref_suiveur = IntegerField('Cell planif ref suiveur', validators=[DataRequired(),validate_email])
+    cell_planif_ref_suiveur = IntegerField('Cell planif ref suiveur', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_planif_ref_suiveur  =  DecimalField('Com cell planif ref suiveur')
+    com_cell_planif_ref_suiveur  =  DecimalField('Com cell planif ref suiveur', validators=[validators.InputRequired()])
 
-    cell_planif_ref_agent_saisie  =  IntegerField('Cell planif ref agent saisie', validators=[DataRequired(),validate_email])
+    cell_planif_ref_agent_saisie  =  IntegerField('Cell planif ref agent saisie', validators=[validators.InputRequired(),validate_email])
 
-    com_cell_planif_ref_agent_saisie  =  DecimalField('Com cell planif ref gent saisie')
+    com_cell_planif_ref_agent_saisie  =  DecimalField('Com cell planif ref gent saisie', validators=[validators.InputRequired()])
 
     commentaire_libre = TextAreaField('Commentaire libre', validators=[Optional()])
 
@@ -685,16 +695,16 @@ class Client_Form(FlaskForm):
                              choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
 
     Societe =StringField('Société',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email()])
+                           validators=[validators.InputRequired(),Email()])
 
     Numero =StringField('Tel',
                            validators=[validatep,length(min=10 ,max=10)])
@@ -704,16 +714,16 @@ class Client_Form(FlaskForm):
     Adresse2=StringField('Adresse2')
 
     CP=IntegerField('Code Postal',
-                           validators=[DataRequired(),validatei])
+                           validators=[validators.InputRequired(),validatei])
     
     Ville=StringField('Ville',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     Siret=IntegerField("Siret N°",
-                           validators=[DataRequired(),validates])
+                           validators=[validators.InputRequired(),validates])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Reference=IntegerField("Reference")
     
@@ -721,7 +731,7 @@ class Client_Form(FlaskForm):
                            render_kw={'readonly':True})
 
     EtatClient=SelectField("EtatClient", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     LoginExtranet = StringField("Login Extranet")
 
@@ -768,13 +778,13 @@ class Client_edit(FlaskForm):
                              choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
 
     Societe =StringField('Société',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     email =StringField('E-mail')
 
@@ -786,19 +796,19 @@ class Client_edit(FlaskForm):
     Adresse2=StringField('Adresse2')
 
     CP=IntegerField('Code Postal',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     Ville=StringField('Ville',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     Siret=IntegerField("Siret N°",
-                           validators=[DataRequired(),validates])
+                           validators=[validators.InputRequired(),validates])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Reference=IntegerField('Reference',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     Date_Creation=StringField("Date Creation",
                            render_kw={'readonly':True})
@@ -838,7 +848,7 @@ class Negotiateur_Form(FlaskForm):
                              choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     email =StringField('E-mail')
 
@@ -848,7 +858,7 @@ class Negotiateur_Form(FlaskForm):
     Adresse=StringField('Adresse')
 
     CP=IntegerField('Code Postal',
-                           validators=[DataRequired(),validatei])
+                           validators=[validators.InputRequired(),validatei])
     
     Ville=StringField('Ville')
     
@@ -880,10 +890,10 @@ class Negotiateur_Form1(FlaskForm):
                              choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
-                           validators=[DataRequired()])
+                           validators=[validators.InputRequired()])
     
     email =StringField('E-mail',
-                           validators=[DataRequired(),Email()])
+                           validators=[validators.InputRequired(),Email()])
 
     Numero =StringField('Tel',
                            validators=[validatep,length(min=10 ,max=10)])
@@ -891,7 +901,7 @@ class Negotiateur_Form1(FlaskForm):
     Adresse=StringField('Adresse')
 
     CP=IntegerField('Code Postal',
-                           validators=[DataRequired(),validatei])
+                           validators=[validators.InputRequired(),validatei])
     
     Ville=StringField('Ville')
     
@@ -924,10 +934,10 @@ class Suivi_Client(FlaskForm):
             raise ValidationError("cette expert n'existe pas,veuillez re saisie le trigramme")
 
     expert=StringField("Trigramme Expert",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     commentaire=StringField("Commentaire",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     submit = SubmitField('Enregistrer')
 
@@ -948,19 +958,19 @@ class Mission_add(FlaskForm):
 
 
     Reference_client=IntegerField("Reference Client",
-                        validators=[DataRequired(),validate_client])
+                        validators=[validators.InputRequired(),validate_client])
 
     ID_Concessionaire=IntegerField("ID Concessionaire",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     ABONNEMENT=StringField("ABONNEMENT",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     PRIX_HT_EDL=DecimalField("PRIX HT EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     DATE_REALISE_EDL=DateField("DATE REALISE EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     DATE_FACTURE=DateField("DATE FACTURE",render_kw={'readonly':True})
 
@@ -971,145 +981,153 @@ class Mission_add(FlaskForm):
     DATE_FACT_REGLEE =DateField("DATE FACT REGLEE",render_kw={'readonly':True})
 
     ID_INTERV=IntegerField("ID INTERV",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
     
     Reference_LOCATAIRE=StringField("Reference Locataire",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Adresse1_Bien=StringField("Adresse1 Bien",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Adresse2_Bien=StringField("Adresse2 Bien")
       
     CP_Bien=IntegerField("CP Bien",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Ville_Bien=StringField("Ville Bien",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     TVA_EDL=DecimalField("TVA EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     PRIX_TTC_EDL=DecimalField("PRIX TTC EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_AS=DecimalField("CA HT AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     TVA_AS=DecimalField("TVA AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_TTC_AS=DecimalField("CA TTC AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_AC=DecimalField("CA HT AC",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_TTC_AC=DecimalField("CA TC AC",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_TRUST=DecimalField("CA HT TRUST",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     TVA_TRUST=DecimalField("TVA TRUST",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Date_chiffrage_regle=DateField("Date chiffrage regle",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Prix_ht_chiffrage=DecimalField("Prix HT chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     POURCENTAGE_suiveur_chiffrage=DecimalField("Pourcentage suiveur chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     POURCENTAGE_AS_chiffrage=DecimalField("Pourcentage AS chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     POURCENTAGE_manager_chiffrage=DecimalField("Pourcentage manager chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_manager_chiffrage=IntegerField("ID manager chiffrage",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     POURCENTAGE_agent_chiffrage =DecimalField("Pourcentage agent chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_agent_chiffrage =IntegerField("ID Agent Chiffrage",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     TYPE_EDL=SelectField("Type EDL",
                              choices=[('Entrant', 'Entrant'), ('Sortant', 'Sortant')])
          
     TITREPROPRIO=SelectField('Titre Proprio',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
+                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
 
     NOMPROPRIO=StringField("Nom Proprio",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
 
     CODE_AMEXPERT=StringField("CODE AMEXPERT",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     
 
     surface_logement1=DecimalField("Surface Logement 1",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Ref_commande=StringField("Ref Commande")
     
     POURCENTAGE_COM_AS_DU_CLIENT=DecimalField("Pourcentage COM AS DU CLIENT",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_Respon_Cell_Dev=IntegerField("ID Respon Cell Dev",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
-    POURCENTAGE_Respon_Cell_Dev=DecimalField("Pourcentage Respon Cell Dev")
+    POURCENTAGE_Respon_Cell_Dev=DecimalField("Pourcentage Respon Cell Dev",
+                        validators=[validators.InputRequired()])
 
     ID_agent_Cell_Dev=IntegerField("ID agent Cell Dev",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
     
     TYPE_LOGEMENT =  StringField("TYPE LOGEMENT",
-                        validators=[DataRequired()])	
+                        validators=[validators.InputRequired()])	
 
     LOGEMENT_MEUBLE = SelectField("LOGEMENT MEUBLE",
                              choices=[('OUI', 'OUI'), ('NON', 'NON')]) 	
     CODE_FACTURATION =StringField("CODE FACTURATION",
-                        validators=[DataRequired()])  	
+                        validators=[validators.InputRequired()])  	
     TYPE_DE_BIEN = SelectField("TYPE DE BIEN",
                              choices=[('APPARTEMENT', 'APPARTEMENT'), ('PAVILLON', 'PAVILLON')]) 
       
-    POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev")	
+    POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev",
+                        validators=[validators.InputRequired()])	
 
     ID_Agent_CellTech = IntegerField("ID Agent Cell Tech",
-                        validators=[DataRequired(),validate_email]) 	
+                        validators=[validators.InputRequired(),validate_email]) 	
     
-    POURCENTAGE_Agent_Cell_Tech =DecimalField("Pourcentage Agent Cell Tech")  	
+    POURCENTAGE_Agent_Cell_Tech =DecimalField("Pourcentage Agent Cell Tech",
+                        validators=[validators.InputRequired()])  	
 
     ID_Respon_Cell_Tech = IntegerField("ID Respon Cell Tech",
-                        validators=[DataRequired(),validate_email]) 
+                        validators=[validators.InputRequired(),validate_email]) 
     
-    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech")
+    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech",
+                        validators=[validators.InputRequired()])
     
     ID_Suiveur_Cell_Tech =  IntegerField("ID Suiveur Cell Tech",
-                        validators=[DataRequired(),validate_email])	
+                        validators=[validators.InputRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("Pourcentage Suiveur Cell Tech") 	
+    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("Pourcentage Suiveur Cell Tech",
+                        validators=[validators.InputRequired()]) 	
 
     ID_Respon_Cell_Planif =IntegerField("ID Respon Cell Planif",
-                        validators=[DataRequired(),validate_email])  
+                        validators=[validators.InputRequired(),validate_email])  
 
-    POURCENTAGE_Respon_Cell_Planif = DecimalField("Pourcentage Respon Cell Planif") 
+    POURCENTAGE_Respon_Cell_Planif = DecimalField("Pourcentage Respon Cell Planif",
+                        validators=[validators.InputRequired()]) 
     
     ID_Suiveur_Cell_Planif =  IntegerField("ID Suiveur Cell Planif",
-                        validators=[DataRequired(),validate_email])	
+                        validators=[validators.InputRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("Pourcentage Suiveur Cell Planif") 	
+    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("Pourcentage Suiveur Cell Planif",
+                        validators=[validators.InputRequired()]) 	
 
     ID_Agent_saisie_Cell_Planif =IntegerField("ID Agent Saisie Cell Planif",
-                        validators=[DataRequired(),validate_email])  	
+                        validators=[validators.InputRequired(),validate_email])  	
 
-    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("Pourcentage Agent Saisie Cell Planif") 
+    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("Pourcentage Agent Saisie Cell Planif",
+                        validators=[validators.InputRequired()]) 
 
     misid =HiddenField()
     
@@ -1136,16 +1154,16 @@ class Mission_editForm(FlaskForm):
 
 
     Reference_client=IntegerField("Reference Client",
-                        validators=[DataRequired(),validate_client])
+                        validators=[validators.InputRequired(),validate_client])
 
     ID_Concessionaire=IntegerField("ID Concessionaire",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     ABONNEMENT=StringField("Abonnement",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     PRIX_HT_EDL=DecimalField("Prix HT EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     DATE_REALISE_EDL=StringField("Date realiser EDL",render_kw={'readonly':True})
     
@@ -1158,144 +1176,144 @@ class Mission_editForm(FlaskForm):
     DATE_FACT_REGLEE =StringField("Date Facture Réglée",render_kw={'readonly':True})
 
     ID_INTERV=IntegerField("ID INTERV",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
     
     Reference_LOCATAIRE=StringField("Reference Locataire",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
-    Adresse1_Bien=StringField("Adresse1 Bien",
-                        validators=[DataRequired()])
+    Adresse1_Bien=StringField("Adresse1 Bien")#not rquired
     
-    Adresse2_Bien=StringField("Adresse2 Bien",
-                        validators=[DataRequired()])
+    Adresse2_Bien=StringField("Adresse2 Bien")#not rquired
       
-    CP_Bien=IntegerField("CP Bien",
-                        validators=[DataRequired()])
+    CP_Bien=IntegerField("Code Postal Bien")
     
-    Ville_Bien=StringField("Ville Bien",
-                        validators=[DataRequired()])
+    Ville_Bien=StringField("Ville Bien")#not rquired
     
     TVA_EDL=DecimalField("TVA EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     PRIX_TTC_EDL=DecimalField("PRIX TTC EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_AS=DecimalField("CA HT AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     TVA_AS=DecimalField("TVA AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_TTC_AS=DecimalField("CA TTC AS",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_AC=DecimalField("CA HT AC",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_TTC_AC=DecimalField("CA TTC AC",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     CA_HT_TRUST=DecimalField("CA HT TRUST",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     TVA_TRUST=DecimalField("TVA TRUST",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
-    Date_chiffrage_regle=DateField("Date Chiffrage_regle")
+    #Date_chiffrage_regle=DateField("Date Chiffrage_regle")
     
     Prix_ht_chiffrage=DecimalField("Prix HT Chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     POURCENTAGE_suiveur_chiffrage=DecimalField("Pourcentage suiveur chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     POURCENTAGE_AS_chiffrage=DecimalField("Pourcentage AS chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     POURCENTAGE_manager_chiffrage=DecimalField("Pourcentage manager chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_manager_chiffrage=IntegerField("ID manager chiffrage",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     POURCENTAGE_agent_chiffrage =DecimalField("Pourcentage agent chiffrage",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_agent_chiffrage =IntegerField("ID agent chiffrage",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
     TYPE_EDL=StringField("Type EDL",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     TITREPROPRIO=SelectField('Titre Proprio',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
 
     NOMPROPRIO=StringField("Nom du  Proprio",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
 
     CODE_AMEXPERT=StringField("Code AMEXPERT",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     
 
     surface_logement1=DecimalField("surface Logement1",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Ref_commande=StringField("Ref Commande")
     
     POURCENTAGE_COM_AS_DU_CLIENT=DecimalField("Pourcentage COM AS du Client",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     ID_Respon_Cell_Dev=IntegerField("ID Respon Cell Dev",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
 
-    POURCENTAGE_Respon_Cell_Dev=DecimalField("Pourcentage Respon Cell Dev")
+    POURCENTAGE_Respon_Cell_Dev=DecimalField("Pourcentage Respon Cell Dev",
+                        validators=[validators.InputRequired()])
 
     ID_agent_Cell_Dev=IntegerField("ID agent Cell Dev",
-                        validators=[DataRequired(),validate_email])
+                        validators=[validators.InputRequired(),validate_email])
     
-    TYPE_LOGEMENT =  StringField("Type Logement",
-                        validators=[DataRequired()])	
+    TYPE_LOGEMENT =  StringField("Type Logement")	
 
-    LOGEMENT_MEUBLE = StringField("Logement Meuble",
-                        validators=[DataRequired()]) 	
-    CODE_FACTURATION =StringField("Code Facturation",
-                        validators=[DataRequired()])  	
-    TYPE_DE_BIEN = StringField("Type de Bien",
-                        validators=[DataRequired()]) 
+    LOGEMENT_MEUBLE = StringField("Logement Meuble") 	#not required
+    CODE_FACTURATION =StringField("Code Facturation")  	#not required
+    TYPE_DE_BIEN = StringField("Type de Bien")  #not required
     
-    POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev")	
+    POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev",
+                        validators=[validators.InputRequired()])	
 
     ID_Agent_CellTech = IntegerField("ID_Agent_CellTech",
-                        validators=[DataRequired(),validate_email]) 	
+                        validators=[validators.InputRequired(),validate_email]) 	
 
-    POURCENTAGE_Agent_Cell_Tech =DecimalField("Pourcentage Agent Cell Tech")  	
+    POURCENTAGE_Agent_Cell_Tech =DecimalField("Pourcentage Agent Cell Tech",
+                        validators=[validators.InputRequired()])  	
 
     ID_Respon_Cell_Tech = IntegerField("ID Respon Cell Tech",
-                        validators=[DataRequired(),validate_email]) 
-    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech") 
+                        validators=[validators.InputRequired(),validate_email]) 
+    POURCENTAGE_Respon_Cell_Tech = DecimalField("Pourcentage Respon Cell Tech",
+                        validators=[validators.InputRequired()]) 
     
     ID_Suiveur_Cell_Tech =  IntegerField("ID Suiveur Cell Tech",
-                        validators=[DataRequired(),validate_email])	
+                        validators=[validators.InputRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("Pourcentage Suiveur Cell Tech") 	
+    POURCENTAGE_Suiveur_Cell_Tech = DecimalField("Pourcentage Suiveur Cell Tech",
+                        validators=[validators.InputRequired()]) 	
 
     ID_Respon_Cell_Planif =IntegerField("ID Respon Cell Planif",
-                        validators=[DataRequired(),validate_email])  
+                        validators=[validators.InputRequired(),validate_email])  
 
-    POURCENTAGE_Respon_Cell_Planif = DecimalField("Pourcentage Respon Cell Planif") 
+    POURCENTAGE_Respon_Cell_Planif = DecimalField("Pourcentage Respon Cell Planif",
+                        validators=[validators.InputRequired()]) 
     
     ID_Suiveur_Cell_Planif =  IntegerField("ID Suiveur Cell Planif",
-                        validators=[DataRequired(),validate_email])	
+                        validators=[validators.InputRequired(),validate_email])	
 
-    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("Pourcentage Suiveur Cell Planif") 	
+    POURCENTAGE_Suiveur_Cell_Planif	 = DecimalField("Pourcentage Suiveur Cell Planif",
+                        validators=[validators.InputRequired()]) 	
 
     ID_Agent_saisie_Cell_Planif =IntegerField("ID Agent saisie Cell Planif",
-                        validators=[DataRequired(),validate_email])  	
+                        validators=[validators.InputRequired(),validate_email])  	
 
-    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("Pourcentage Agent saisie CEll Planif") 
+    POURCENTAGE_Agent_saisie_CEll_planif = DecimalField("Pourcentage Agent saisie CEll Planif",
+                        validators=[validators.InputRequired()]) 
 
     misid =HiddenField()
     
@@ -1306,43 +1324,43 @@ class Mission_editForm(FlaskForm):
 class Agenda_form(FlaskForm):
 
     Titre_du_Rdv=StringField("Titre du Rdv",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Adresse1_Rdv=StringField("Address1 du Rdv",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Adresse2_Rdv=StringField("Address2 du Rdv",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     Code_postal_Rdv=StringField("Code postal Rdv",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     
     Ville_du_Rdv=StringField("Ville du Rdv",
-                    validators=[DataRequired()])
+                    validators=[validators.InputRequired()])
     
     Date_Rdv=StringField("Date Rdv",
-                    validators=[DataRequired()])
+                    validators=[validators.InputRequired()])
 
     Heure_début_Rdv=StringField("Heure début Rdv",
-                    validators=[DataRequired()])
+                    validators=[validators.InputRequired()])
     
     Heure_fin_Rdv=StringField("Heure fin Rdv",
-                    validators=[DataRequired()])
+                    validators=[validators.InputRequired()])
 
     Date_Rdv_annulé=StringField("Date Rdv annulé",
-                    validators=[DataRequired()])
+                    validators=[validators.InputRequired()])
 
     Informations_réservées_service_planification=StringField("Informations réservées service planification",
-                                                 validators=[DataRequired()])
+                                                 validators=[validators.InputRequired()])
 
     Informations_générales=StringField("Informations générales",
-                             validators=[DataRequired()])
+                             validators=[validators.InputRequired()])
 
     Informations_de_suivi_de_Rdv=StringField("Informations de suivi de Rdv",
-                                    validators=[DataRequired()])
+                                    validators=[validators.InputRequired()])
 
     Chemin_de_fichier_joint = StringField("Chemin de fichier joint",
-                                    validators=[DataRequired()])
+                                    validators=[validators.InputRequired()])
     
     submit = SubmitField('Enregistrer')
 
@@ -1350,7 +1368,7 @@ class Agenda_form(FlaskForm):
 class Invitation_Agenda(FlaskForm):
 
     Expert_invite=StringField("Expert invite",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
 
     submit = SubmitField('Enregistrer')
 
@@ -1377,21 +1395,21 @@ class time(FlaskForm):
 class Tarif_Base(FlaskForm):
 
     maison_appartement=StringField("maison appartement",
-                        validators=[DataRequired()])
+                        validators=[validators.InputRequired()])
     Nombre_de_piece=StringField("Nombre de piece",
-                    validators=[DataRequired()])   
+                    validators=[validators.InputRequired()])   
     Prix_EDL=DecimalField("Prix EDL",
-                validators=[DataRequired()])
+                validators=[validators.InputRequired()])
     Prix_Chiffrage=DecimalField("Prix_Chiffrage",
-                validators=[DataRequired()])      
+                validators=[validators.InputRequired()])      
     submit = SubmitField('Enregistrer')
 
 
 class UpdateAccountForm(FlaskForm):
     username =StringField('UserName',
-                                validators=[DataRequired(),length(min=4 ,max=20)])
+                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
     email =StringField('Email',
-                           validators=[DataRequired(),Email()])
+                           validators=[validators.InputRequired(),Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg','png'])])
     submit = SubmitField('Update')
     

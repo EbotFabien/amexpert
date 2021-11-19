@@ -1793,7 +1793,7 @@ def date_(floa,date):
             return floa
 
 def Missions1(loc):
-    try:
+    #try:
         wb = xlrd.open_workbook(loc)
 
         sheet = wb.sheet_by_index(0)
@@ -1931,7 +1931,7 @@ def Missions1(loc):
                 NRO_FACTURE = regex1(name[8],'M')  ,
                 PRIX_HT_EDL = regex1(name[13],'S') ,
                 TVA_EDL = regex1(name[14],'S') ,
-                PRIX_TTC_EDL = regex1(name[15],'S') ,
+                PRIX_TTC_EDL = regex1(name[15],'S'),
                 Reference_LOCATAIRE	 =  name[20] ,
                 Adresse1_Bien	 = name[21] ,  
                 Adresse2_Bien	 = name[22] , 
@@ -1996,7 +1996,7 @@ def Missions1(loc):
                     db.session.commit()
                 except:
                     mission.DATE_FACTURE=None
-                    db.session.commit()
+                    db.session.commit() 
                 try:
                     mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
                     db.session.commit()
@@ -2142,8 +2142,8 @@ def Missions1(loc):
             return True
         else:
             return failed(missions_)
-    except:
-        return 'Fake'
+    #except:
+    #    return 'Fake'
     
 
 

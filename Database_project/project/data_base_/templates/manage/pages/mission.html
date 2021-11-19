@@ -6,6 +6,8 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Missions</h2>
       <a href="/ajouter/mission" class="button is-primary is-small" title="Ajouter une mission"><i class="fa fa-plus"></i></a>
     </div>
+    <span>Mission(s) Réglée(s): {{reg}}</span>
+    <span style="float:right" >Mission(s) Non Réglée(s): {{non}}</span>
     <div class="tile box" style="width: fit-content; margin: 0 auto;">
       <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
@@ -14,6 +16,7 @@
                 <div class="control is-small">
                   <input class="input is-small"  name="keyword" value="{{search}}" placeholder="Nom expert,reference client" type="text">
                 </div>
+                
               </div>
           </div>
           <div class="column">

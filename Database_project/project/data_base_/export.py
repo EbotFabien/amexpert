@@ -4,7 +4,7 @@ import datetime
 import openpyxl
 import xlrd,xlwt
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
-from Database_project.project.data_base_.Models import db,Mission,Client,Expert,prospect,Client_History
+from Database_project.project.data_base_.Models import db,Mission,Client,Expert,prospect,Client_History,prospect_History
 
 
 
@@ -17,6 +17,8 @@ class data():
             return client.nom
         if T == "t":
             return client.titre
+        if T == "r":
+            return client.reference
         if T == "a":
             return history.adresse1
         if T == "a2":
@@ -28,18 +30,19 @@ class data():
     
     def pl(self,id,T):
         client=prospect.query.filter_by(id=id).first()
+        history=prospect_History.query.filter_by(id=id).first()
         if T == "n":
             return client.nom
         if T == "t":
             return client.titre
         if T == "a":
-            return client.adresse1
+            return history.adresse1
         if T == "a2":
-            return client.adresse2
+            return history.adresse2
         if T == "cp":
-            return client.cp
+            return history.cp
         if T == "v":
-            return client.ville
+            return history.ville
         
     def exn(self,id,T):
         client=Expert.query.filter_by(id=id).first()
@@ -78,17 +81,17 @@ class Export(data):
         #uploaded_file.save(file_path)
         wb.save(loc)
         return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
-    
+     
     def mission_data(self,miss,mi,dat=dat):
         for i in miss:
-            mi.append([dat.cl(i.Reference_BAILLEUR,"n"),dat.cl(i.Reference_BAILLEUR,"t"),dat.cl(i.Reference_BAILLEUR,"a"),dat.cl(i.Reference_BAILLEUR,"a"),
-    dat.cl(i.Reference_BAILLEUR,"a2"),dat.cl(i.Reference_BAILLEUR,"cp"),dat.cl(i.Reference_BAILLEUR,"v"),i.NRO_FACTURE,i.NRO_FACTURE,	 
+            mi.append([dat.cl(i.Reference_BAILLEUR,"r"),dat.cl(i.Reference_BAILLEUR,"t"),dat.cl(i.Reference_BAILLEUR,"n"),dat.cl(i.Reference_BAILLEUR,"a"),
+    dat.cl(i.Reference_BAILLEUR,"a2"),dat.cl(i.Reference_BAILLEUR,"cp"),dat.cl(i.Reference_BAILLEUR,"v"),i.NRO_FACTURE,	 
     i.ABONNEMENT,dat.exn(i.ID_AS,'t'),dat.exn(i.ID_AS,'n'),i.DATE_REALISE_EDL,i.PRIX_HT_EDL,i.TVA_EDL,i.PRIX_TTC_EDL,dat.exn(i.ID_INTERV,'t'),
     dat.exn(i.ID_INTERV,'n'),i.Reference_LOCATAIRE,'','',i.Adresse1_Bien,i.Adresse2_Bien,i.CP_Bien,i.Ville_Bien,i.CA_HT_AS,i.TVA_AS,
     i.CA_TTC_AS,i.CA_HT_AC,i.CA_TTC_AC,i.CA_HT_TRUST,i.TVA_TRUST,i.Date_chiffrage_regle,i.Prix_ht_chiffrage,i.POURCENTAGE_suiveur_chiffrage,
     i.POURCENTAGE_AS_chiffrage,i.POURCENTAGE_manager_chiffrage,dat.exn(i.ID_manager_chiffrage,'n'),i.POURCENTAGE_agent_chiffrage,
     dat.exn(i.ID_agent_chiffrage,'n'), i.TYPE_EDL,i.DATE_FACTURE,i.TITREPROPRIO,
-    i.NOMPROPRIO,i.DATE_FACT_REGLEE,"","","","",i.TYPE_LOGEMENT,"","","",i.CODE_AMEXPERT,i.COMMENTAIRE_FACTURE,"","",i.LOGEMENT_MEUBLE,i.CODE_FACTURATION,
+    i.NOMPROPRIO,i.DATE_FACT_REGLEE,"","","","",i.TYPE_LOGEMENT,"","","",i.CODE_AMEXPERT,i.COMMENTAIRE_FACTURE,"","","",i.LOGEMENT_MEUBLE,i.CODE_FACTURATION,
     i.TYPE_DE_BIEN,i.surface_logement1,"","","",i.POURCENTAGE_COM_AS_DU_CLIENT,dat.exn(i.ID_Respon_Cell_Dev,'n'),i.POURCENTAGE_Respon_Cell_Dev,
     dat.exn(i.ID_agent_Cell_Dev,'n'),i.POURCENTAGE_Agent_Cell_Dev,dat.exn(i.ID_Agent_CellTech,'n'),i.POURCENTAGE_Agent_Cell_Tech,
     dat.exn(i.ID_Respon_Cell_Tech,'n'),i.POURCENTAGE_Respon_Cell_Tech,dat.exn(i.ID_Suiveur_Cell_Tech,'n'),i.POURCENTAGE_Suiveur_Cell_Tech,
