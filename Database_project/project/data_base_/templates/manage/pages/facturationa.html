@@ -38,6 +38,7 @@
                             <th scope="col">N° Facture</th>
                             <th scope="col">Montant € HT</th>
                             <th scope="col">Date de creation</th> 
+                            <th scope="col">Etat</th>
                             
                             <th></th> 
                             <th></th>
@@ -53,7 +54,12 @@
                                     <td>{{facturation.n_facture}}</td>
                                     <td>{{facturation.Montant_HT}}</td>
                                     <td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 
-                                      
+                                    <td>{% if facturation.valide == True %}
+                                            Réglée
+                                        {% else %}
+                                                Non Réglée
+                                        {% endif %}
+                                    </td>
                                     <td style="">
                                         <a href="{{url_for('users.show_fac', id=facturation.id)}}" title="Voir tous les détails" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
                                         

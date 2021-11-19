@@ -93,6 +93,7 @@
                             <th scope="col">DATE EDL REALISE</th>  	
                             <th scope="col">PRIX HT EDL</th>	  	     	
                             <th scope="col">DATE FACTURE</th>  	
+                            <th scope="col">Etat</th>
                             {% if current_user.TYPE == "Admin" %}  		
                             <th></th>	
                             <th></th>
@@ -131,7 +132,14 @@
                                   {% else %}
                                     {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
                                   {% endif %}                              
-                                </td>  
+                                </td>
+                                <td>
+                                  {% if mission_.DATE_FACT_REGLEE == None %}
+                                      Réglée
+                                  {% else %}
+                                    Non Réglée
+                                  {% endif %}                              
+                                </td>    
                                 {% if current_user.TYPE == "Admin" %} 	 	  	  
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
                                 <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
