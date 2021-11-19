@@ -8,7 +8,7 @@ import flask as pd
 from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
 import os
-
+ 
 def failed1(av):
     ba=[]
     v=0
