@@ -2,7 +2,7 @@ import os
 import smtplib
 class Config:
     SECRET_KEY='FABIENCLASSIC'
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@db/amexpert"
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@localhost/amexpert"
     #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
     MAIL_SERVER ='smtp.infomaniak.com'#'mail.infomaniak.ch'
     MAIL_PORT = 587
@@ -14,7 +14,7 @@ class Config:
     SUIV=['Client','Responsable','Commentaire','Date Creation','Date Modification']
     UPLOAD_FOLDER=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'files')#os, 'files'.getcwd()+'/data_base_/static/files'
     UPLOAD_Export=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export')
-    WKHTMLTOPDF_BIN_PATH =os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+    WKHTMLTOPDF_BIN_PATH =r"/usr/local/bin"
     #WKHTMLTOPDF_USE_CELERY = True
     PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
     DEBUG = True

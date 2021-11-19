@@ -1,21 +1,21 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
 #import pdfkit
-from project.data_base_ import create_app
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
-from project.data_base_.export import Export
+from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
 import json
@@ -3218,6 +3218,7 @@ def download(mes,temps,id):
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
                     send_pdf("touchone0001@gmail.com",name.nom,n)
+                    os.remove(n)
                     return res
 
             if  temps == "ancienne":
@@ -3381,7 +3382,7 @@ def dash():
 
     for mission in missionsperyear:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
 
     #data = json.dumps(data)
@@ -3419,7 +3420,7 @@ def mission_encashyear():
 
     for mission in mission_encashyear:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
 
     
@@ -3516,7 +3517,7 @@ def missionnotworkedy():
 '''@users.route("/p")
 def p():
     name = "Giovanni Smith"
-    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_project/project/data_base_/static/images/logo/logo.jpeg'
+    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_Database_project.project/Database_project.project/data_base_/static/images/logo/logo.jpeg'
     
     #with open(image_path, 'rb') as image_file:
     #    image= base64.b64encode(image_file.read()).decode()
