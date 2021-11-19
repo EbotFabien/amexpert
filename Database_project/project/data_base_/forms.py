@@ -12,7 +12,7 @@ import wtforms.validators as validators
 
 
 
-
+ #bitvicessh
 def validatep(self,email):
         try :
             int(email.data)
@@ -62,7 +62,7 @@ class rectify_Form(FlaskForm):
 class mission_export(FlaskForm):
     
     Temps =  SelectField('Saison Export',
-                             choices=[('Semaine', 'Semaine'), ('Mois', 'Mois')])
+                             choices=[('Semaine', 'Semaine'), ('Mois', 'Mois'),('Jour','Jour')])
 
     Date =DateField('Date Export',
                            validators=[validators.InputRequired()])  	
@@ -207,7 +207,7 @@ class Expert_editForm(FlaskForm):
 
     adresse2=StringField('Adresse 2')
 
-    cp=IntegerField('CP')
+    cp=IntegerField('Code Postal')
     login_google=StringField('Login google')
     pwd_google=StringField('Pwd Google')
     login_backof=StringField('Login Backof')
@@ -963,8 +963,7 @@ class Mission_add(FlaskForm):
     ID_Concessionaire=IntegerField("ID Concessionaire",
                         validators=[validators.InputRequired(),validate_email])
 
-    ABONNEMENT=StringField("ABONNEMENT",
-                        validators=[validators.InputRequired()])
+    ABONNEMENT=StringField("ABONNEMENT")
     
     PRIX_HT_EDL=DecimalField("PRIX HT EDL",
                         validators=[validators.InputRequired()])
@@ -983,19 +982,16 @@ class Mission_add(FlaskForm):
     ID_INTERV=IntegerField("ID INTERV",
                         validators=[validators.InputRequired(),validate_email])
     
-    Reference_LOCATAIRE=StringField("Reference Locataire",
-                        validators=[validators.InputRequired()])
+    Reference_LOCATAIRE=StringField("Reference Locataire")
     
-    Adresse1_Bien=StringField("Adresse1 Bien",
-                        validators=[validators.InputRequired()])
+    Adresse1_Bien=StringField("Adresse1 Bien")
     
     Adresse2_Bien=StringField("Adresse2 Bien")
       
-    CP_Bien=IntegerField("CP Bien",
-                        validators=[validators.InputRequired()])
+    CP_Bien=IntegerField("Code Postal Bien",
+                        validators=[validators.InputRequired(),validatei])
     
-    Ville_Bien=StringField("Ville Bien",
-                        validators=[validators.InputRequired()])
+    Ville_Bien=StringField("Ville Bien")
     
     TVA_EDL=DecimalField("TVA EDL",
                         validators=[validators.InputRequired()])
@@ -1080,8 +1076,7 @@ class Mission_add(FlaskForm):
     ID_agent_Cell_Dev=IntegerField("ID agent Cell Dev",
                         validators=[validators.InputRequired(),validate_email])
     
-    TYPE_LOGEMENT =  StringField("TYPE LOGEMENT",
-                        validators=[validators.InputRequired()])	
+    TYPE_LOGEMENT =  StringField("TYPE LOGEMENT")	
 
     LOGEMENT_MEUBLE = SelectField("LOGEMENT MEUBLE",
                              choices=[('OUI', 'OUI'), ('NON', 'NON')]) 	
@@ -1159,8 +1154,7 @@ class Mission_editForm(FlaskForm):
     ID_Concessionaire=IntegerField("ID Concessionaire",
                         validators=[validators.InputRequired("You got to enter some rating!"),validate_email])
 
-    ABONNEMENT=StringField("Abonnement",
-                        validators=[validators.InputRequired()])
+    ABONNEMENT=StringField("Abonnement")
     
     PRIX_HT_EDL=DecimalField("Prix HT EDL",
                         validators=[validators.InputRequired()])
@@ -1178,20 +1172,15 @@ class Mission_editForm(FlaskForm):
     ID_INTERV=IntegerField("ID INTERV",
                         validators=[validators.InputRequired(),validate_email])
     
-    Reference_LOCATAIRE=StringField("Reference Locataire",
-                        validators=[validators.InputRequired()])
+    Reference_LOCATAIRE=StringField("Reference Locataire")
     
-    Adresse1_Bien=StringField("Adresse1 Bien",
-                        validators=[validators.InputRequired()])
+    Adresse1_Bien=StringField("Adresse1 Bien")
     
-    Adresse2_Bien=StringField("Adresse2 Bien",
-                        validators=[validators.InputRequired()])
+    Adresse2_Bien=StringField("Adresse2 Bien")
       
-    CP_Bien=IntegerField("CP Bien",
-                        validators=[validators.InputRequired()])
+    CP_Bien=IntegerField("CP Bien")
     
-    Ville_Bien=StringField("Ville Bien",
-                        validators=[validators.InputRequired()])
+    Ville_Bien=StringField("Ville Bien")
     
     TVA_EDL=DecimalField("TVA EDL",
                         validators=[validators.InputRequired("You got to enter some rating!")])
@@ -1243,18 +1232,15 @@ class Mission_editForm(FlaskForm):
     ID_agent_chiffrage =IntegerField("ID agent chiffrage",
                         validators=[validators.InputRequired(),validate_email])
 
-    TYPE_EDL=StringField("Type EDL",
-                        validators=[validators.InputRequired()])
+    TYPE_EDL=StringField("Type EDL")
     
     TITREPROPRIO=SelectField('Titre Proprio',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
 
-    NOMPROPRIO=StringField("Nom du  Proprio",
-                        validators=[validators.InputRequired()])
+    NOMPROPRIO=StringField("Nom du  Proprio")
 
 
-    CODE_AMEXPERT=StringField("Code AMEXPERT",
-                        validators=[validators.InputRequired()])
+    CODE_AMEXPERT=StringField("Code AMEXPERT")
 
     
 
@@ -1275,15 +1261,11 @@ class Mission_editForm(FlaskForm):
     ID_agent_Cell_Dev=IntegerField("ID agent Cell Dev",
                         validators=[validators.InputRequired(),validate_email])
     
-    TYPE_LOGEMENT =  StringField("Type Logement",
-                        validators=[validators.InputRequired()])	
+    TYPE_LOGEMENT =  StringField("Type Logement")	
 
-    LOGEMENT_MEUBLE = StringField("Logement Meuble",
-                        validators=[validators.InputRequired()]) 	
-    CODE_FACTURATION =StringField("Code Facturation",
-                        validators=[validators.InputRequired()])  	
-    TYPE_DE_BIEN = StringField("Type de Bien",
-                        validators=[validators.InputRequired()]) 
+    LOGEMENT_MEUBLE = StringField("Logement Meuble") 	
+    CODE_FACTURATION =StringField("Code Facturation")  	
+    TYPE_DE_BIEN = StringField("Type de Bien") 
     
     POURCENTAGE_Agent_Cell_Dev =  DecimalField("Pourcentage Agent Cell Dev",
                         validators=[validators.InputRequired()])	
