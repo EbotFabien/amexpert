@@ -85,7 +85,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.ABONNEMENT == None %}
+                                                {{form.ABONNEMENT(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                                {% else %}
                                                 {{form.ABONNEMENT(class="input", placeholder="Données Alpha-numérique", value=mission.ABONNEMENT)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -177,7 +181,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.Reference_LOCATAIRE == None %}
+                                                {{form.Reference_LOCATAIRE(class="input", placeholder="Données numérique", value=a)}}
+                                                {% else %}
                                                 {{form.Reference_LOCATAIRE(class="input", placeholder="Données numérique", value=mission.Reference_LOCATAIRE)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -223,7 +231,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.Adresse2_Bien == None %}
+                                                {{form.Adresse2_Bien(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                                {% else %}
                                                 {{form.Adresse2_Bien(class="input", placeholder="Données Alpha-numérique", value=mission.Adresse2_Bien)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -246,7 +258,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.CP_Bien == None %}
+                                                {{form.CP_Bien(class="input", placeholder="00000", value=0000)}}
+                                                {% else %}
                                                 {{form.CP_Bien(class="input", placeholder="00000", value=mission.CP_Bien)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -292,7 +308,7 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
-                                            {% if mission.TVA_EDL != None %}
+                                            {% if mission.TVA_EDL == None %}
                                                 {{form.TVA_EDL(class="input", placeholder="Données numérique", value=0.00)}}
                                             {% else %}
                                                 {{form.TVA_EDL(class="input", placeholder="Données numérique", value=mission.TVA_EDL)}}
@@ -742,7 +758,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.TYPE_EDL == None %}
+                                                {{form.TYPE_EDL(class="input", placeholder="Données Alpha numérique", value=a)}}
+                                                {% else %}
                                                 {{form.TYPE_EDL(class="input", placeholder="Données Alpha numérique", value=mission.TYPE_EDL)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -765,7 +785,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.TITREPROPRIO == None %}
+                                                {{form.TITREPROPRIO(class="input", placeholder="Données numérique", value=a)}}
+                                                {% else %}
                                                 {{form.TITREPROPRIO(class="input", placeholder="Données numérique", value=mission.TITREPROPRIO)}}
+                                                {% endif %}    
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -788,7 +812,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.NOMPROPRIO == None %}
+                                                {{form.NOMPROPRIO(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                                {% else %}
                                                 {{form.NOMPROPRIO(class="input", placeholder="Données Alpha-numérique", value=mission.NOMPROPRIO)}}
+                                                {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -811,7 +839,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.CODE_AMEXPERT == None %}
+                                                {{form.CODE_AMEXPERT(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                                {% else %}
                                                 {{form.CODE_AMEXPERT(class="input", placeholder="Données Alpha-numérique", value=mission.CODE_AMEXPERT)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -834,7 +866,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.surface_logement1 == None %}
+                                                {{form.surface_logement1(class="input", placeholder="Données Alpha-numérique",value=0.00)}}
+                                                {% else %}
                                                 {{form.surface_logement1(class="input", placeholder="Données Alpha-numérique",value=mission.surface_logement1)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -857,7 +893,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.Ref_commande == None %}
+                                                {{form.Ref_commande(class="input", placeholder="Données numérique", value=a)}}
+                                                {% else %}
                                                 {{form.Ref_commande(class="input", placeholder="Données numérique", value=mission.Ref_commande)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -980,7 +1020,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.TYPE_LOGEMENT == None %}
+                                                {{form.TYPE_LOGEMENT(class="input", placeholder="Données Alphabetique", value=a)}}
+                                                {% else %}
                                                 {{form.TYPE_LOGEMENT(class="input", placeholder="Données Alphabetique", value=mission.TYPE_LOGEMENT)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -1003,7 +1047,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.LOGEMENT_MEUBLE == None %}
+                                                {{form.LOGEMENT_MEUBLE(class="input", placeholder="Données Alphabetique", value=a)}}
+                                                {% else %}
                                                 {{form.LOGEMENT_MEUBLE(class="input", placeholder="Données Alphabetique", value=mission.LOGEMENT_MEUBLE)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -1026,7 +1074,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.CODE_FACTURATION == None %}
+                                                {{form.CODE_FACTURATION(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                            {% else %}
                                                 {{form.CODE_FACTURATION(class="input", placeholder="Données Alpha-numérique", value=mission.CODE_FACTURATION)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -1049,7 +1101,12 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.CODE_FACTURATION == None %}
+                                                {{form.TYPE_DE_BIEN(class="input", placeholder="Données Alpha-numérique",value=a)}}
+                                                {% else %}
                                                 {{form.TYPE_DE_BIEN(class="input", placeholder="Données Alpha-numérique",value=mission.TYPE_DE_BIEN)}}
+
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -1430,7 +1487,11 @@
                                             {% endfor %}
                                         </div>
                                             {% else %}
+                                            {% if mission.ABONNEMENT == None %}
+                                                {{form.COMMENTAIRE_FACTURE(class="input", placeholder="Données Alpha-numérique", value=a)}}
+                                                {% else %}
                                                 {{form.COMMENTAIRE_FACTURE(class="input", placeholder="Données Alpha-numérique", value=mission.COMMENTAIRE_FACTURE)}}
+                                            {% endif %}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -1458,7 +1519,7 @@
                                         </div>
                                             {% else %}
                                             {% if mission.DATE_FACT_REGLEE == None %}
-                                                {{form.DATE_FACT_REGLEE(class="input is-invalid", value=mission.DATE_FACT_REGLEE) }}
+                                                {{form.DATE_FACT_REGLEE(class="input is-invalid") }}
                                             {% else %}
                                                 {{form.DATE_FACT_REGLEE(class="input is-invalid", placeholder="", value=mission.DATE_FACT_REGLEE.strftime('%d/%m/%Y')) }}
                                             {%endif%}

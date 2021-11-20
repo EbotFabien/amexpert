@@ -1189,6 +1189,7 @@ def edit_mission(id):
         form=Mission_editForm()
         mission = Mission.query.filter_by(id=id).first_or_404()
         form.misid.data = mission.id
+        a=''
         print(mission.Bailleur__data.reference)
         
         
@@ -1256,7 +1257,7 @@ def edit_mission(id):
                     flash(f"La mission a été modifiée avec succès", "success")
                     return redirect(url_for('users.mission'))
         
-        return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
+        return render_template('manage/pages/edit_mission.html',a=a, form=form,mission=mission,highlight='mission')
     return redirect(url_for('users.main'))   
 
 @users.route('/delete/<int:id>/mission', methods=['GET'])
@@ -3315,6 +3316,7 @@ def exportm():
                     mi=exo.mission_data(miss,mi)
                     name="missionex_"+gen_name()
                     return exo.export(mi,name)
+                
             return render_template('manage/pages/exportmission.html',form=form)
     return redirect(url_for('users.main'))
 

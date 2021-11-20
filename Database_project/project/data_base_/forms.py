@@ -1050,12 +1050,10 @@ class Mission_add(FlaskForm):
     TITREPROPRIO=SelectField('Titre Proprio',
                              choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])# select field
 
-    NOMPROPRIO=StringField("Nom Proprio",
-                        validators=[validators.InputRequired()])
+    NOMPROPRIO=StringField("Nom Proprio")
 
 
-    CODE_AMEXPERT=StringField("CODE AMEXPERT",
-                        validators=[validators.InputRequired()])
+    CODE_AMEXPERT=StringField("CODE AMEXPERT")
 
     
 
