@@ -3315,6 +3315,7 @@ def exportm():
                     mi=exo.mission_data(miss,mi)
                     name="missionex_"+gen_name()
                     return exo.export(mi,name)
+                flash(f'Pas de Mission','Warning')
             return render_template('manage/pages/exportmission.html',form=form)
     return redirect(url_for('users.main'))
 
