@@ -38,18 +38,18 @@
                         <th scope="col">Email</th>
                         <th scope="col">Tel</th>
                         <th>Etat du client</th>
-                        <th>Abonnement</th>
+                        <!--th>Abonnement</th-->
                         <!-- <th scope="col">ADRESSE2</th> -->
                         <!-- <th scope="col">CP</th> -->
                         <!--th scope="col">Ville</th-->
-                        <!-- <th scope="col">Zone_de_région_du_client</th> -->
+                        <!-- <th scope="col">Zone_de_région_du_client</th>>
                         <th>CP</th>
                         <th>Ville</th>
                         <th>Pays</th>
                         <th>Address1</th>
-                        <th>Address2</th>
-                        <th>Login <br/>extranet</th>
-                        <th>Mdp <br/>extranet</th>
+                        <th>Address2</th--->
+                        <!--th>Login <br/>extranet</th>
+                        <th>Mdp <br/>extranet</th-->
                         <th>Date <br/>creation</th>
                         <th></th>
                         <th></th>
@@ -69,17 +69,17 @@
                                 <td>{{client_.email }}</td>
                                 <td>{{client_.numero}}</td>
                                 <td>{{history.etat_client}}</td>
-                                <td>{{history.abonnement}}</td>
-                                <td>{{history.cp}}</td>
+                                <!-- td>{{history.abonnement}}</td--->
+                                <!--td>{{history.cp}}</td>
                                 <td>{{history.ville}}</td>
                                 <td>{{history.pays}}</td>
                                 <td>{{history.adresse1}}</td>
-                                <td>{{history.adresse2}}</td>
+                                <td>{{history.adresse2}}</td-->
                                 <!-- <td>{{client_.ADRESSE2}}</td> -->
                                 <!-- <td>{{client_.CP}}</td> -->
                                 <!--td>{{client_.VILLE|truncate(5, True)}}|truncate(10, True)</td-->
-                                <td>{{history.login_extranet}}</td>
-                                <td>{{history.mdp_extranet}}</td>
+                                <!--td>{{history.login_extranet}}</td>
+                                <td>{{history.mdp_extranet}}</td-->
                                 
                                 <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>
                                 <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>

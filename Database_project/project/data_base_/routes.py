@@ -3039,12 +3039,14 @@ def create_facturee():
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
            db.session.commit()
+        
         for i in mission:
             #implement facture number
             i.Facex =True
             db.session.commit()
             Type=Type_expert.query.filter_by(id=3).first()
             ex=Expert.query.filter_by(id=i.ID_INTERV).first()
+            tot=list()
             if i.DATE_FACT_REGLEE != None:
                 mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],prix_mission=i.PRIX_HT_EDL,etat=True,commission_ac=Type.pourcentage*i.PRIX_HT_EDL)
                 db.session.add(mensuel)
@@ -3059,7 +3061,7 @@ def create_facturee():
                 9:i.ID_Suiveur_Cell_Planif,10:i.ID_Agent_saisie_Cell_Planif,11:i.ID_Respon_Cell_Planif}
 
             chiffa={12:i.ID_agent_chiffrage,13:i.ID_AS,14:i.ID_manager_chiffrage}
-
+            
             for R in hta:
                 ex=Expert.query.filter_by(id=hta[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
@@ -3072,6 +3074,7 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
+                tot.append(expert.commision)
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
@@ -3084,6 +3087,9 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
+                tot.append(expert.commision)
+            mensuel.total=sum(tot)
+            db.session.commit()
         for i in _mission:
             #implement facture number
             i.Facex =True
@@ -3394,8 +3400,24 @@ def exported():
     return redirect(url_for('users.main'))
 
 
+@users.route('/dashboard/expertmission')
+def expertmission():
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
 
-@users.route('/dashboard/missionperyear')
+    data=[]
+
+    for mission in missionspermonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"number":str(mission[1]),"Total":str(mission[2])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+'''@users.route('/dashboard/missionperyear')
 def dash():
     ####page = request.args.get('page',1,type=int)
     #mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
@@ -3420,11 +3442,11 @@ def dash():
     return {
         'res':1,
         'data':data
-    },200
+    },200'''
 
 @users.route('/dashboard/missionpermonth')
 def missionpermonth():
-    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'month'}) #do for month
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" WHERE date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
 
     data=[]
 
@@ -3440,6 +3462,24 @@ def missionpermonth():
         'data':data
     },200
 
+@users.route('/dashboard/currentmonth')
+def currentmonth():
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" WHERE date_trunc(:param,"DATE_REALISE_EDL") = date_trunc(:param,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
+
+    data=[]
+
+    for mission in missionspermonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+'''
 @users.route('/dashboard/missionencashyear')
 def mission_encashyear():
     mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
@@ -3460,16 +3500,16 @@ def mission_encashyear():
     return {
         'res':1,
         'data':data
-    },200
+    },200'''
 @users.route('/dashboard/missionencashmonth')
 def mission_encashmonth():
-    mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
 
     data=[]
 
     for mission in mission_encashmonth:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"year":mission[0].strftime('%d. %m. %Y'),"number":str(mission[1]),"Total":str(mission[2])}
             data.append(a)
 
     #json_dump = json.dumps(data)
@@ -3478,7 +3518,7 @@ def mission_encashmonth():
         'res':1,
         'data':data
     },200
-@users.route('/dashboard/missiondeficityear')
+'''@users.route('/dashboard/missiondeficityear')
 def mission_deficityear():
     mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
     data=[]
@@ -3492,7 +3532,8 @@ def mission_deficityear():
     return {
         'res':1,
         'data':data
-    },200
+    },200'''
+'''
 @users.route('/dashboard/missiondeficitmonth')
 def mission_deficitmonth():
     mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
@@ -3542,7 +3583,7 @@ def missionnotworkedy():
     return {
         'res':1,
         'data':data
-    },200
+    },200'''
 
 '''@users.route("/p")
 def p():
