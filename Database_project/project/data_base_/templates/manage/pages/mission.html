@@ -6,9 +6,11 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Missions</h2>
       <a href="/ajouter/mission" class="button is-primary is-small" title="Ajouter une mission"><i class="fa fa-plus"></i></a>
     </div>
-    <span>Mission(s) Réglée(s): {{reg}}</span>
-    <span style="float:right" >Mission(s) Non Réglée(s): {{non}}</span>
-    <div class="tile box" style="width: fit-content; margin: 0 auto;">
+    <span>Mission(s) Réglée(s): {{reg}}</span> <br>
+    <span>Mission(s) Non Réglée(s): {{non}}</span>
+    <div class="tile box" style="width: fit-content; margin: 0 auto;
+    justify-content: space-evenly;
+    min-width: 900px;">
       <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
             <div class="column">
@@ -19,13 +21,32 @@
                 
               </div>
           </div>
+          <div class="column is-one-quarter">
+            <div class="are-small">
+                <button class="button is-small is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form method="GET" action="#">
+        <div class="columns"> 
+            <div class="column">
+              <div class="field">
+                <div class="select is-small">
+                  <select>
+                    <option value="">Missions réglés</option>
+                    <option value="">Missions non réglés</option>
+                  </select>
+                </div>
+              </div>
+          </div>
           <div class="column">
             <div class="buttons are-small">
                 <button class="button is-success">Filtrer</button>
             </div>
           </div>
         </div>
-      </form>
+      </form> &nbsp;
       <!-- / date -->
       <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
@@ -47,33 +68,9 @@
   </div>
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; width:100%;">
-          <div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+          <!--div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
-          </div>
-          <!-- <div>
-            <div class="display-flex" style="margin-top: 20px; margin-bottom: 10px;justify-content: space-evenly;">
-                   
-              <form method="GET" action="{{url_for('users.mission')}}">
-                <div class="colums" style="display: flex;">
-                <span class="select is-small is-fullwidth">
-                  <select name="table" class="not">
-                    <option value="mission">Ordre par id mission</option>
-                    <option value="edl">Ordre par date EDL</option>
-                    <option value="ht">Ordre par prix ht</option>
-                    <option value="fac">Ordre par date FACTURE </option>
-                  </select>
-                </span>
-                <span class="select is-small is-fullwidth">
-                  <select name="table2" class="not">
-                    <option value="asc">ASC</option>
-                    <option value="desc">DESC</option>
-                  </select>
-                </span>
-                  <input type="submit" class="button is-primary is-small" value="Ordre">
-                </div>
-              </form>      
-            </div>
-          </div> -->
+          </div-->
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
@@ -144,9 +141,8 @@
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
                                 <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
                                 {% endif%}
-                                <td style="">
+                                <td>
                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                    
                                 </td>
 		                    </tr> 
 		                {%endfor%}                     

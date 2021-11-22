@@ -24,6 +24,8 @@ import base64
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
+import locale
+locale.setlocale(locale.LC_TIME,'fr_FR.UTF-8')
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -1702,7 +1704,10 @@ def main():
         missions = Mission.query.filter_by(Visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
         facturations =facturation_client.query.filter_by(visibility=True).count()
-        return render_template('manage/dashboard.html',title='Portail', client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
+        expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
+
+        return render_template('manage/dashboard.html',expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
     elif current_user:
         return redirect (url_for('users.mes_factures',id=current_user.id))
         
@@ -3417,7 +3422,7 @@ def expertmission():
         'res':1,
         'data':data
     },200
-'''@users.route('/dashboard/missionperyear')
+@users.route('/dashboard/missionperyear')
 def dash():
     ####page = request.args.get('page',1,type=int)
     #mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
@@ -3442,7 +3447,7 @@ def dash():
     return {
         'res':1,
         'data':data
-    },200'''
+    },200
 
 @users.route('/dashboard/missionpermonth')
 def missionpermonth():
@@ -3452,7 +3457,7 @@ def missionpermonth():
 
     for mission in missionspermonth:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            a={"month":mission[0].strftime('%B'),"total":str(mission[1])}
             data.append(a)
 
     #json_dump = json.dumps(data)
@@ -3479,7 +3484,7 @@ def currentmonth():
         'res':1,
         'data':data
     },200
-'''
+
 @users.route('/dashboard/missionencashyear')
 def mission_encashyear():
     mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
@@ -3500,7 +3505,7 @@ def mission_encashyear():
     return {
         'res':1,
         'data':data
-    },200'''
+    },200
 @users.route('/dashboard/missionencashmonth')
 def mission_encashmonth():
     mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
