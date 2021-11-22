@@ -3193,13 +3193,13 @@ def choosedg(id):
 @login_required
 def mes_factures(id):
     mes=request.args.get('releve')
-    temps=request.args.get('time')
-    releve=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.envoye==False)).all()
+    temps=request.args.get('time')      
+    releve=Type_expert.query.join(expert_facturation,(expert_facturation.type_expert == Type_expert.id)).filter(and_(expert_facturation.expert_id==id,expert_facturation.envoye==False)).all()
     rel=[]
     test=[]
     new_rel=[]
     for i in releve:
-        test.append(i.type_expert)
+        test.append(i)
     for i in test:
         if i not in rel:
             rel.append(i)

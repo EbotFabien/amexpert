@@ -21,9 +21,9 @@
                 <div class="column">
                     <div class="select is-small">
                         <select name="releve">
-                            <option  selected disabled>---Code de relever---</option>
+                            <option  selected disabled>---Type de Relevé---</option>
                             {%for releve  in rel %}
-                                <option value={{releve}}>{{releve}}</option>
+                                <option value={{releve.id}}>{{releve.type_ex}}</option>
                             {%endfor%}
                         </select>
                     </div>
