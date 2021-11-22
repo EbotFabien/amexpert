@@ -24,7 +24,7 @@
 					  <div class="is-flex is-flex-direction-column align-items-center has-text-centered">
 						<i class="fa fa-user x5-px"></i>						
 						<div class="mt-3">
-						  <p class="text-secondary mb-1">{{expert.nom}}</p>
+						  <p class="text-secondary mb-1">{{expert.nom.upper()}}</p>
 						  <small class=''>{{expert.etat_client}}</small>
 						  {#<p class="text-muted font-size-sm">{{history.cp}}, {{history.ville}}, {{history.pays}}</p>#}
 						  <a class='button is-primary is-small' href="{{url_for('users.edit_expert', id=expert.id)}}" id='edit-preferences' style='margin: 5px 0'>	Modifier
@@ -94,7 +94,7 @@
 						  <h6 class="mb-0">Secteur</h6>
 						  </div>
 						  <div class="column is-three-quarter text-secondary">
-							  {{history.secteur}}
+							  {{history.secteur.upper()}}
 						  </div>
 						</div>
 						<hr>
@@ -240,7 +240,7 @@
 							  <h6 class="mb-0">Address 1</h6>
 							  </div>
 							  <div class="column is-three-quarter text-secondary">
-								  {{history.adresse1}} {{history.cp}}, {{history.ville}}, {{history.pays | title }}
+								  {{history.adresse1}} {{kj}}{{history.cp}} {{history.ville.upper()}}  {{history.pays | title }}
 							  </div>
 						  </div>
 						{% endif %}
