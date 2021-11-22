@@ -24,15 +24,15 @@
             <table class="table is-hoverable is-striped is-bordered" id="table_id" style="min-width: 800px;"> 
              <thead class="">
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Reference</th>
+                    <th>ID</th>
+                    <th>Reference</th>
                     <th>Siret</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">L'enseigne</th>
+                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>L'enseigne</th>
                     <th>Societé</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Tel</th>
+                    <th>Email</th>
+                    <th>Tel</th>
                     <th>Adresse</th>
                     <!-- <th>Code <br/>Postal</th> -->
                     <!-- <th>Ville</th> -->
@@ -88,9 +88,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#table_id').DataTable({
-        'scrollY': '500px',
-        'scrollX': true,
-        'scrollCollapse': true,
+        //'scrollY': '500px',
+        //'scrollX': true, 
+        //'scrollCollapse': true,
         'paging':true,
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
