@@ -1243,7 +1243,7 @@ class Mission_editForm(FlaskForm):
 
     
 
-    surface_logement1=DecimalField("surface Logement1",
+    surface_logement1=DecimalField("surface Logement m²",
                         validators=[validators.InputRequired()])
 
     Ref_commande=StringField("Ref Commande")

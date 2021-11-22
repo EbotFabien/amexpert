@@ -245,6 +245,7 @@ def mission():
         date=request.args.get('date')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
+        Type = request.args.get('ron')
         reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
         notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
 
@@ -258,64 +259,72 @@ def mission():
                     Cli=Client.query.filter_by(reference=key).first()
                     if Cli:
                         mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                 except:
                     expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
                     if expert:
                         mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                        return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                     else:
                         try:
                             mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                            return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                         except:
                             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                            return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
             except:
             
                 mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                return render_template('manage/pages/mission.html',key=key,Mission=mission_,legend="mission", highlight='mission')
+                return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
             
         if date:
             mission_=Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL==date,Mission.DATE_FACTURE==date),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',Mission=mission_,date=date,legend="mission", highlight='mission')
-                
+            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+        
+        if Type == "r":
+            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+        
+        if Type == "nr":
+            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+
         if table and table2:
             if table == "mission":
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,legend="mission", highlight='mission')
             if table == "edl" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "ht" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "ht" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "fac" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
         
         else:
             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
@@ -3148,8 +3157,9 @@ def create_facturee():
 def allex():
     if current_user.TYPE == "Admin":
            facture=compte_mensuel.query.all() 
-
-           return render_template('manage/pages/factures_generer.html',facture=facture)
+           gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+           ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+           return render_template('manage/pages/factures_generer.html',facture=facture,gene=gene,ngene=ngene)
 
     return redirect(url_for('users.main'))
 

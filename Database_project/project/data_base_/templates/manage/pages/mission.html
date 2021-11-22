@@ -28,14 +28,14 @@
           </div>
         </div>
       </form>
-      <form method="GET" action="#">
+      <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
             <div class="column">
               <div class="field">
                 <div class="select is-small">
-                  <select>
-                    <option value="">Missions réglés</option>
-                    <option value="">Missions non réglés</option>
+                  <select name="ron" >
+                    <option value="r">Missions réglés</option>
+                    <option value="nr">Missions non réglés</option>
                   </select>
                 </div>
               </div>
@@ -132,9 +132,9 @@
                                 </td>
                                 <td>
                                   {% if mission_.DATE_FACT_REGLEE == None %}
-                                      Réglée
-                                  {% else %}
                                     Non Réglée
+                                  {% else %}
+                                    Réglée
                                   {% endif %}                              
                                 </td>    
                                 {% if current_user.TYPE == "Admin" %} 	 	  	  
