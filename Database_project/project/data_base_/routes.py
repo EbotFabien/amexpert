@@ -1749,7 +1749,7 @@ def delete_negotiateur(id):
         return redirect(url_for('users.negotiateur', id=client.client_id))
 
 
-@users.route('/ajouter/<int:id>/negotiateur',methods=['GET','POST'])
+@users.route('/ajouter/<int:id>/negociateur',methods=['GET','POST'])
 @login_required
 def ajouter_negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1772,7 +1772,7 @@ def ajouter_negotiateur(id):
 
 
 
-@users.route('/show/<int:id>/negotiateur', methods=['GET','POST'])
+@users.route('/show/<int:id>/negociateur', methods=['GET','POST'])
 @login_required
 def show_negotiateur(id):
     
@@ -1785,7 +1785,7 @@ def show_negotiateur(id):
         return render_template('manage/pages/show_nego.html', client=client,history=client_history,legend="negotiateur")
 
 
-@users.route('/edit/<int:id>/negotiateur', methods=['GET','POST'])
+@users.route('/edit/<int:id>/negociateur', methods=['GET','POST'])
 @login_required
 def edit_negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1816,7 +1816,7 @@ def edit_negotiateur(id):
 
                 db.session.commit()
                 flash(f'Les donnes du négociateur ont été modifiées','success')
-                return redirect(url_for('show_negotiateur', id=id))
+                return redirect(url_for('users.show_negotiateur', id=id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
 
