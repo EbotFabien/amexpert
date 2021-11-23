@@ -30,31 +30,31 @@
                         <th scope="col">Nom <br/>et prenom</th>
                         <th scope="col">Type</th>
                         <th scope="col">Email</th>
-                        <th>Email <br/>Perso</th>
+                        <!-- <th>Email <br/>Perso</th> -->
                         <th scope="col">Numero</th>
-                        <th scope="col">Trigramme</th>
-                        <th scope="col">Siret</th>
-                        <th scope="col">Genre</th>
+                        <!-- <th scope="col">Trigramme</th> -->
+                        <!-- <th scope="col">Siret</th> -->
+                        <!-- <th scope="col">Genre</th> 
                         <th scope="col">Actif/Parti</th>
                         <th>Code TVA</th>
                         <th>Taux <br/>de TVA</th>
-                        <th>Secteur</th>
-                        <th>Type de <br/> certification</th>
+                        <th>Secteur</th>-->
+                        <!-- <th>Type de <br/> certification</th>
                         <th>Date de <br/> certification initial</th>
-                        <th>Date de <br/>u recertification</th>
+                        <th>Date de <br/>u recertification</th> -->
                         <th scope="col">Adresse1</th>
-                        <th scope="col">Adresse2</th>
+                        <!-- <th scope="col">Adresse2</th> -->
                         <th scope="col">CP</th>
                         <th scope="col">Ville</th>
                         <th scope="col">Pays</th>
-                        <th scope="col">Login <br/>Backof</th>
+                       <!--  <th scope="col">Login <br/>Backof</th>
                         <th scope="col">Pwd <br/>Backof</th>
                         <th>Login <br/>Extranet</th>
                         <th scope="col">Pwd <br/>extranet</th>
                         <th>Pwd <br/>Gsuite</th>
                         <th>Login <br/>Tablette</th>
                         <th>Pwd <br/>Backof</th>
-                        <th scope="col">Observations <br/>de suivi</th>
+                        <th scope="col">Observations <br/>de suivi</th> -->
                         <th>Date <br/> d'entrée</th>
                         <!-- <th>Date de sortie</th> -->
                         <th></th>
@@ -69,31 +69,31 @@
                                 <td>{{expert.TITRE}} {{expert.nom}}</td>
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.email}}</td>
-                                <td>{{expert.email_perso}}</td>
-                                <td>{{expert.numero}}</td>
-                                <td>{{expert.trigramme}}</td>
+                                {#<td>{{expert.email_perso}}</td>#}
+                                <td>{% if expert.numero == None%} {% else %}{{expert.numero}} {% endif %}</td>
+                                {#<td>{{expert.trigramme}}</td>
                                 <td>{{expert.siret}}</td>
                                 <td>{{expert.genre}}</td>
                                 <td>{{history.actif_parti}}</td>
                                 <td>{{expert.code_tva}}</td>
                                 <td>{{expert.taux_tva}}</td>
-                                <td>{{history.secteur}}</td>
-                                <td>{{history.type_certification}}</td>
+                                <td>{{history.secteur}}</td>#}
+                                {#<td>{{history.type_certification}}</td>
                                 <td>{{history.date_certiation_initial}}</td>
-                                <td>{{history.date_renouv_certification}}</td>
+                                <td>{{history.date_renouv_certification}}</td>#}
                                 <td>{{history.adresse1}}</td>
-                                <td>{{history.adresse2}}</td>
+                               {# <td>{{history.adresse2}}</td>#}
                                 <td>{{history.cp}}</td>
                                 <td>{{history.ville}}</td>
                                 <td>{{history.pays}}</td>
-                                <td>{{history.login_backof}}</td>
+                                {#<td>{{history.login_backof}}</td>
                                 <td>{{history.pwd_backof}}</td>
                                 <td>{{history.login_extranet}}</td>
                                 <td>{{history.pwd_gsuite}}</td>
                                 <td>{{history.login_google}}</td>
                                 <td>{{history.pwd_google}}</td>
                                 <td>{{history.pwd_extranet}}</td>
-                                <td>{{history.observations_de_suivi}}</td>
+                                <td>{{history.observations_de_suivi}}</td>#}
                                 <td>{% if (expert.date_entree == None) %} {% else %} {{expert.date_entree.strftime('%d/%m/%Y')}} {% endif %}</td>
                                
                                 <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="button is-outlined-black is-small is-fullwidth center"><i class="fa fa-pen"></i></a></td>

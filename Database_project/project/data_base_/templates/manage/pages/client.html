@@ -29,15 +29,15 @@
                 <thead class="">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Reference</th>
-                        <th>Siret</th>
+                        <!-- <th scope="col">Reference</th> -->
+                        <!-- <th>Siret</th> -->
                         <th scope="col">Type</th>
                         <th scope="col">SOCIETE</th> 
                         <th scope="col">Nom et prenom</th>
-                        <th scope="col">L'enseigne</th> 
+                        <!-- <th scope="col">L'enseigne</th>  -->
                         <th scope="col">Email</th>
                         <th scope="col">Tel</th>
-                        <th>Etat du client</th>
+                        <!-- <th>Etat du client</th> -->
                         <!--th>Abonnement</th-->
                         <!-- <th scope="col">ADRESSE2</th> -->
                         <!-- <th scope="col">CP</th> -->
@@ -60,15 +60,15 @@
                         {%for client_,history in cli_ent %}
                             <tr>
                                 <td scope="row">{{client_.id}}</td>
-                                <td>{{client_.reference}}</td>
-                                <td>{{client_.siret}}</td>
+                                {#<td>{{client_.reference}}</td>#}
+                                {#<td>{{client_.siret}}</td>#}
                                 <td>{{client_.TYPE}}</td>
                                 <td>{{client_.societe}}</td>
                                 <td>{{client_.titre}} {{client_.nom }}</td>
-                                <td>{{client_.enseigne}}</td>
+                                {#<td>{{client_.enseigne}}</td>#}
                                 <td>{{client_.email }}</td>
                                 <td>{{client_.numero}}</td>
-                                <td>{{history.etat_client}}</td>
+                                {#<td>{{history.etat_client}}</td>#}
                                 <!-- td>{{history.abonnement}}</td--->
                                 <!--td>{{history.cp}}</td>
                                 <td>{{history.ville}}</td>

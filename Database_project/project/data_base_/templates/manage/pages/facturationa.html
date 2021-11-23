@@ -82,7 +82,11 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#table_id').DataTable();
+        var table = $('#table_id').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+            }
+        });
     
         $('#table_id tbody').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {

@@ -1764,7 +1764,7 @@ def ajouter_negotiateur(id):
             db.session.add(user_his)
             db.session.commit()
             flash(f'négociateur créé avec succès','success')
-            return redirect(url_for('show_negotiateur', id=user.id)) #id check
+            return redirect(url_for('users.show_negotiateur', id=user.id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
     else:
