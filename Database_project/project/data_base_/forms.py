@@ -245,7 +245,8 @@ class LoginForm(FlaskForm):
 
     password =PasswordField('Mot de passe',
                                   validators=[validators.InputRequired(),length(min=4 ,max=20, message="Le champ doit comporter entre 4 et 20 caractères.")])
-
+    
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="Le reCAPTCHA n'a pas été saisi correctement. Revenez en arrière et essayez à nouveau.")])
     remember = BooleanField('Se rappeler de moi')                              
     submit = SubmitField('Se connecter')
     
