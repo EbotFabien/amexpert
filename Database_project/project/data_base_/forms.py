@@ -67,7 +67,7 @@ class mission_export(FlaskForm):
     Date =DateField('Date Export',
                            validators=[validators.InputRequired()])  	
 
-    submit = SubmitField('Enregistre')
+    submit = SubmitField('Exporter')
 
 class RegistrationForm(FlaskForm):
     def validate_email(self,email):
@@ -91,10 +91,10 @@ class RegistrationForm(FlaskForm):
     email =StringField('E-mail',
                            validators=[validators.InputRequired(),Email(),validate_email])
 
-    password =PasswordField('Mot de pass',
+    password =PasswordField('Mot de passe',
                                   validators=[length(min=8 ,max=20)])
 
-    confirm_password =PasswordField('Confirmer le mot de pass',
+    confirm_password =PasswordField('Confirmer le mot de passe',
                                   validators=[EqualTo('password')])
     
     email_perso =StringField('E-mail perso')
@@ -931,7 +931,7 @@ class Suivi_Client(FlaskForm):
         email = Expert.query.filter(and_(Expert.trigramme==email.data.lower(),Expert.trigramme!='')).first()
 
         if email is None:
-            raise ValidationError("cette expert n'existe pas,veuillez re saisie le trigramme")
+            raise ValidationError("Cet expert n'existe pas veuillez ressaisir le trigramme")
 
     expert=StringField("Trigramme Expert",
                         validators=[validators.InputRequired(),validate_email])

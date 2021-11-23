@@ -130,7 +130,7 @@ def delete_suivi(id):
         suivi = suivi_client.query.filter_by(id=id).first_or_404()
         suivi.visibility=False
         db.session.commit()
-        flash(f'Le suivi client a été  suprimmer','success')
+        flash(f'Le suivi client a été supprimé','success')
         return redirect(url_for('users.suivi_client_', id=suivi.client))
     return redirect(url_for('users.client'))
 
@@ -148,7 +148,7 @@ def edit_suivi(id):
             db.session.commit()
             flash(f'Le suivi a été modifié','success')
             return redirect(url_for('users.suivi_client_', id=suivi.client))
-        return render_template('manage/pages/edit_suivi.html', suivi=suivi,form=form)
+        return render_template('manage/pages/edit_suivi.html', suivi=suivi,form=form, highlight="client")
         #else:
            # flash(f'Vous ne pouvez pas modifier ce suivi','warning')
            # return redirect(url_for('users.suivi_client_', id=suivi.client))
@@ -608,11 +608,11 @@ def choose(Type,id=None):
                    
                 add_sum=sum(price)
                 if Type == "client":
-                    return render_template('manage/pages/ajouter_facturationc.html', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
+                    return render_template('manage/pages/ajouter_facturationc.html', highlight='mission', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
             else:
                 flash(f'choisisez une date existante','danger')
                 return redirect(url_for('users.choose',id=id))
-        return render_template('manage/pages/choose.html',form=form,legend="time")
+        return render_template('manage/pages/choose.html',form=form,legend="time", highlight='mission')
 
     return redirect(url_for('users.main'))
 
@@ -922,7 +922,7 @@ def rectify(id):
                 else:
                     flash(f'Erreur de Codification ,veuillez corriger','warning')
                     return redirect(url_for('users.rectify',id=id))
-        return render_template('manage/pages/rectify.html',form=form,mission=mission) 
+        return render_template('manage/pages/rectify.html',form=form,mission=mission, highlight='mission') 
         #after work is done
         #pass mission in facturation then register  it under the 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
@@ -993,7 +993,7 @@ def show_fac(id):
         
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         
-        return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,factura=factura,nro=NRO,abnormal=abnormal,id=id)
+        return render_template('manage/pages/show_facture.html',highlight='mission', gd=len(facture),abd=len(abnormal),fld=len(failed),facture=facture,failed=failed,factura=factura,nro=NRO,abnormal=abnormal,id=id)
   
 @users.route('/client/<int:id>/mission')
 @login_required
@@ -1043,7 +1043,7 @@ def datereg(id):
         
         if failed:
             flash(f'Veuillez corriger votre factures Numero' +str(id),'Warning')
-            return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation)
+            return render_template('manage/pages/facturationa.html',legend="facturation",highlight='client',facturations=facturation)
 
         fact.valide=True
         db.session.commit()
@@ -1052,7 +1052,7 @@ def datereg(id):
             miss.DATE_FACT_REGLEE = start
             db.session.commit()
             flash(f'La facture a été réglé avec succès','success')
-            return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation) 
+            return render_template('manage/pages/facturationa.html',legend="facturation",highlight='client',facturations=facturation) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -1734,7 +1734,7 @@ def negotiateur(id):
 
 
 
-@users.route('/delete/<int:id>/negotiateur', methods=['GET'])
+@users.route('/delete/<int:id>/négociateur', methods=['GET'])
 @login_required
 def delete_negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1745,11 +1745,11 @@ def delete_negotiateur(id):
         for i in client_history:
             i.visibility=False
             db.session.commit()
-        flash(f'Les donnes du négociateur ont été  suprimmer','success')
+        flash(f'Les données du Négociateur ont été supprimées','success')
         return redirect(url_for('users.negotiateur', id=client.client_id))
 
 
-@users.route('/ajouter/<int:id>/negociateur',methods=['GET','POST'])
+@users.route('/ajouter/<int:id>/négociateur',methods=['GET','POST'])
 @login_required
 def ajouter_negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1763,7 +1763,7 @@ def ajouter_negotiateur(id):
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
-            flash(f'négociateur créé avec succès','success')
+            flash(f'Négociateur créé avec succès','success')
             return redirect(url_for('users.show_negotiateur', id=user.id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
@@ -1772,7 +1772,7 @@ def ajouter_negotiateur(id):
 
 
 
-@users.route('/show/<int:id>/negociateur', methods=['GET','POST'])
+@users.route('/show/<int:id>/négociateur', methods=['GET','POST'])
 @login_required
 def show_negotiateur(id):
     
@@ -1782,10 +1782,10 @@ def show_negotiateur(id):
         print(client)
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         
-        return render_template('manage/pages/show_nego.html', client=client,history=client_history,legend="negotiateur")
+        return render_template('manage/pages/show_nego.html', client=client,highlight='client',history=client_history,legend="negotiateur")
 
 
-@users.route('/edit/<int:id>/negociateur', methods=['GET','POST'])
+@users.route('/edit/<int:id>/négociateur', methods=['GET','POST'])
 @login_required
 def edit_negotiateur(id):
     if current_user.TYPE == "Admin":
@@ -1818,7 +1818,7 @@ def edit_negotiateur(id):
                 flash(f'Les donnes du négociateur ont été modifiées','success')
                 return redirect(url_for('users.show_negotiateur', id=id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
-        return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
+        return render_template('manage/pages/edit_negotiateur.html', client=client,highlight='client',history=client_history,form=form,legend="edit_negotiateur")
 
 
 
@@ -1939,7 +1939,7 @@ def edit_prospect(id):
                 client.nom = form.NOM.data
                 db.session.commit()
                 flash(f'Informations Prospect modifiées','success')
-                return redirect(url_for('show_prospect',id=id))
+                return redirect(url_for('users.show_prospect',id=id))
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
         return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
 
@@ -1954,7 +1954,7 @@ def suivi_prospect_(id):
     if current_user.TYPE == "Admin":
         suivi_=list(suivi_prospect.query.filter(and_(suivi_prospect.prospect_id==id,suivi_prospect.visibility==True)).all()) 
         pros=prospect.query.filter_by(id=id).first_or_404()
-        return render_template('manage/pages/suivi_c.html',Suivi=suivi_,ID=id,legend="prospect",cli=pros)
+        return render_template('manage/pages/suivi_c.html',Suivi=suivi_,ID=id,legend="prospect",highlight='client',cli=pros)
 
     return redirect(url_for('users.main'))
 
@@ -2000,7 +2000,7 @@ def edit_suivip(id):
             flash(f'Le suivi a été modifiées','success')
             return redirect(url_for('users.suivi_prospect_',id=suivi.prospect_id))
 
-        return render_template('manage/pages/edit_suivi_p.html', suivi=suivi,form=form)
+        return render_template('manage/pages/edit_suivi_p.html', suivi=suivi,highlight='prospect',form=form)
         #else:
            # flash(f'Vous ne pouvez pas modifier ce suivi','warning')
            # return redirect(url_for('users.suivi_prospect_', id=id))
@@ -2215,21 +2215,21 @@ def search ():
                 title = "Clients"
             else:
                 title = "Client"
-            return render_template('manage/pages/search_results.html', clients=clients, title=title, table=table, search=request.args.get('keyword'))
+            return render_template('manage/pages/search_results.html', clients=clients, title=title, highlight='client',table=table, search=request.args.get('keyword'))
         if table == 'prospect':
             prospects = prospect.query.filter(and_(or_(prospect.nom.contains(str(search.lower())),prospect.email.contains(str(search.lower())),prospect.numero.contains(str(search.lower())),prospect.societe.contains(str(search.lower()))),prospect.visibility==True)).all()
             if len(prospects) > 1:
                 title = "Prospects"
             else:
                 title = "Prospect"
-            return render_template('manage/pages/search_results.html', prospects=prospects, title=title, table=table, search=request.args.get('keyword'))
+            return render_template('manage/pages/search_results.html', prospects=prospects, highlight='prospect',title=title, table=table, search=request.args.get('keyword'))
         elif table == 'tarif':
             tarifs = Tarifs.query.filter(and_(or_(Tarifs.reference_client.like(search),Tarifs.type_maison.like(search),Tarifs.Prix.like(search),Tarifs.remise.like(search)),Tarifs.visibility==False)).all()#fix reference du client eeh
             if len(tarifs) > 1:
                 title = "Tarifs"
             else:
                 title = "Tarif"
-            return render_template('manage/pages/search_results.html', tarifs=tarifs, title=title, table=table, search=request.args.get('keyword'))
+            return render_template('manage/pages/search_results.html', tarifs=tarifs, highlight='tarif_base', title=title, table=table, search=request.args.get('keyword'))
         elif table == 'expert':
             try :
                 if isinstance(int(key),int) == True:
@@ -2240,7 +2240,7 @@ def search ():
                 title = "Experts"
             else:
                 title = "Expert"
-            return render_template('manage/pages/search_results.html', experts=experts, title=title, table=table, search=request.args.get('keyword'))
+            return render_template('manage/pages/search_results.html', experts=experts, highlight='expert', title=title, table=table, search=request.args.get('keyword'))
         elif table == 'mission':
             experts = Expert.query.filter(Expert.nom.contains(str(search.lower()))).first()   
             clients = Client.query.filter(Client.nom.contains(str(search.lower()))).first()
@@ -2257,7 +2257,7 @@ def search ():
                 title = "Missions"
             else:
                 title = "Mission"
-            return render_template('manage/pages/search_results.html', missions=missions, title=title, table=table, search=request.args.get('keyword')) 
+            return render_template('manage/pages/search_results.html', missions=missions, highlight='mission', title=title, table=table, search=request.args.get('keyword')) 
         elif table == 'facturation':
             try :
                 if isinstance(int(key),int) == True:
@@ -2268,7 +2268,7 @@ def search ():
                 title = "Facturations"  #this search needs to be checked when fixing the db
             else:
                 title = "Facturation"
-            return render_template('manage/pages/search_results.html', Facturation__=facturation_, title=title, table=table, search=request.args.get('keyword')) 
+            return render_template('manage/pages/search_results.html', highlight='', Facturation__=facturation_, title=title, table=table, search=request.args.get('keyword')) 
 
 
 
@@ -2567,10 +2567,10 @@ def choosev(Type):
                 
                 
                 
-            return render_template('manage/pages/ajouter_facturationm.html',form=form2,sum=price,start=start,end=end)
+            return render_template('manage/pages/ajouter_facturationm.html',form=form2,highlight='mission',sum=price,start=start,end=end)
 
         if Type == "month":
-                    return render_template('manage/pages/choose.html',form=form,legend="time")
+                    return render_template('manage/pages/choose.html',form=form,highlight='mission',legend="time")
                     #return render_template('manage/pages/ajouter_facturationm.html', mission=mission_,form=form2,start=start,end=end)
 
     return redirect(url_for('users.main'))
@@ -2903,7 +2903,7 @@ def choosep():
 
         p=sum(price)
         form.Missions.data=m
-        return render_template('manage/pages/ajouter_facturtionp.html', mission=m,form=form,sum=p,name=v)
+        return render_template('manage/pages/ajouter_facturtionp.html', highlight='mission', mission=m,form=form,sum=p,name=v)
 
 
     return redirect(url_for('users.main'))
@@ -3024,13 +3024,13 @@ def chooseef():
                     price.append(i.PRIX_HT_EDL)
                 total=sum(price)
             #fix lower page
-                return render_template('manage/pages/detail_facturatione.html', mission=mission_,form=form2,sum=total,start=start,end=end)
+                return render_template('manage/pages/detail_facturatione.html', mission=mission_,highlight='mission',form=form2,sum=total,start=start,end=end)
             else:
-                flash(f'Cette facture a deja ete generee','Warning')
+                flash(f'Cette facture a déjà été générée','Warning')
                 return redirect(url_for('users.chooseef'))
             
             
-        return render_template('manage/pages/ajouter_facturation_expert.html',form=form,legend="time")
+        return render_template('manage/pages/ajouter_facturation_expert.html',highlight='expert',form=form,legend="time")
 
 
 @users.route('/create_facturee/',methods=['GET','POST'])
@@ -3159,7 +3159,7 @@ def allex():
            facture=compte_mensuel.query.all() 
            gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
            ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
-           return render_template('manage/pages/factures_generer.html',facture=facture,gene=gene,ngene=ngene)
+           return render_template('manage/pages/factures_generer.html',facture=facture,highlight='mission',gene=gene,ngene=ngene)
 
     return redirect(url_for('users.main'))
 
@@ -3169,7 +3169,7 @@ def factme(id):
     if current_user.TYPE == "Admin":
            facture=expert_facturation.query.filter_by(mission=id).all() 
            miss=facture[0].mission__data.mission
-           return render_template('manage/pages/facture_missions.html',facture=facture,id=id,miss=miss)
+           return render_template('manage/pages/facture_missions.html',highlight='mission',facture=facture,id=id,miss=miss)
 
     return redirect(url_for('users.main'))
 
@@ -3187,7 +3187,7 @@ def choosedg(id):
             flash(f'Date générée avec succès pour facture numero '+str(id),'success')
             return redirect(url_for('users.allex'))
 
-        return render_template('manage/pages/choose.html',form=form,legend="genere")
+        return render_template('manage/pages/choose.html',highlight='mission',form=form,legend="genere")
 
 @users.route('/<int:id>/expert', methods=['GET', 'POST'])
 @login_required
@@ -3357,7 +3357,7 @@ def exportm():
                     name="missionex_"+gen_name()
                     return exo.export(mi,name)
                 flash(f'Pas de Mission','Warning')
-            return render_template('manage/pages/exportmission.html',form=form)
+            return render_template('manage/pages/exportmission.html',form=form, highlight='mission')
     return redirect(url_for('users.main'))
 
 @users.route('/export',methods=['GET','POST'])

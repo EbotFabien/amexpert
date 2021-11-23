@@ -51,17 +51,6 @@
 	        </div>
 	    </section>
 	    </div>
-	    <script type="text/javascript">
-	    	var table = $('#table_id').DataTable();
-			    $("#form").on("submit", function(e){
-			        //Stop the form submitting
-			        //e.preventDefault();
-			        //Show all the rows
-			        table.page.len( -1 ).draw();
-			        //Submit the form now it can see everything
-			        $('#form').submit();
-			    });
-	    </script>
 		 <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('#table_id').DataTable({
