@@ -24,22 +24,22 @@
             <table class="table is-hoverable is-striped is-bordered" id="table_id" style="min-width: 800px;"> 
              <thead class="">
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Reference</th>
-                    <th>Siret</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">L'enseigne</th>
+                    <th>ID</th>
+                    <!-- <th>Reference</th> -->
+                    <!-- <th>Siret</th> -->
+                    <!-- <th>Type</th> -->
+                    <th>Nom</th>
+                    <!-- <th>L'enseigne</th> -->
                     <th>Societé</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Tel</th>
+                    <th>Email</th>
+                    <th>Tel</th>
                     <th>Adresse</th>
                     <!-- <th>Code <br/>Postal</th> -->
                     <!-- <th>Ville</th> -->
-                    <th>Pays</th>
+                    <!-- <th>Pays</th> -->
                    
-                    <th>Etats Client</th>
-                    <th>Date creation</th>
+                    <!-- <th>Etats Client</th> -->
+                    <!-- <th>Date creation</th> -->
                     <!-- <th>Login<br/>extranet</th> -->
                     <!-- <th>Mdp <br/>extranet</th>  -->
                     <th></th>
@@ -51,11 +51,11 @@
                 {%for client_,history in Client %}
                     <tr>
                         <td scope="row">{{client_.id}}</td>
-                        <td>{{client_.reference}}</td>
-                        <td>{{client_.siret}}</td>
-                        <td>{{client_.TYPE}}</td>
+                        {#<td>{{client_.reference}}</td>#}
+                         {#<td>{{client_.siret}}</td>#}
+                        {#<td>{{client_.TYPE}}</td>#}
                         <td>{{client_.titre}} {{client_.nom }}</td>
-                        <td>{{client_.enseigne}}</td>
+                        {#<td>{{client_.enseigne}}</td>#}
                         <td>{{client_.societe}}</td>
                         <td>{{client_.email }}</td>
                         <td>{{client_.numero}}</td>
@@ -63,10 +63,10 @@
                         {#<td>{{history.cp}}</td>#}
                         
                         {#<td>{{history.ville}}</td>#}
-                        <td>{{history.pays}}</td>
+                        {#<td>{{history.pays}}</td>#}
                      
-                        <td>{{history.etat_client}}</td>
-                        <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>
+                        {#<td>{{history.etat_client}}</td>#}
+                        {#<td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>#}
                         {# <td>{{history.login_extranet}}</td> #}
                         {#  <td>{{history.mdp_extranet}}</td> #}
                         <td> <a href="{{url_for('users.edit_prospect', id=client_.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
@@ -88,9 +88,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#table_id').DataTable({
-        'scrollY': '500px',
-        'scrollX': true,
-        'scrollCollapse': true,
+        //'scrollY': '500px',
+        //'scrollX': true, 
+        //'scrollCollapse': true,
         'paging':true,
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'

@@ -51,20 +51,13 @@
 	        </div>
 	    </section>
 	    </div>
-	    <script type="text/javascript">
-	    	var table = $('#table_id').DataTable();
-			    $("#form").on("submit", function(e){
-			        //Stop the form submitting
-			        //e.preventDefault();
-			        //Show all the rows
-			        table.page.len( -1 ).draw();
-			        //Submit the form now it can see everything
-			        $('#form').submit();
-			    });
-	    </script>
 		 <script type="text/javascript">
             $(document).ready(function() {
-                var table = $('#table_id').DataTable();
+                var table = $('#table_id').DataTable({
+					language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                    }
+				});
             
                 $('#table_id tbody').on( 'click', 'tr', function () {
                     if ( $(this).hasClass('selected') ) {

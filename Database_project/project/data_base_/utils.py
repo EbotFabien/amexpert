@@ -26,7 +26,7 @@ def send_pdf(mail1,user,file):
     msg.body = f''' Voici un mail concernant la facture de MR.:
                         {user}
      
-                veuillez le revenir s'il vous plait
+                veuillez le Consulter s'il vous plait
                 '''
     with current_app.open_resource(file) as fp:
         msg.attach(file,"application/pdf",fp.read())

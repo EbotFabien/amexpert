@@ -62,7 +62,16 @@
                     <div class="form-group mt-3">
                          {{form.submit(class="button is-success is-fullwidth is-small")}} 
                     </div>
-                    
+                    <div class="form-group">
+                        {{form.recaptcha}}
+                    </div>
+                     {% if form.recaptcha.errors %}
+                        <div class="form-group">
+                            {% for error in form.recaptcha.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     
                     </fieldset>
                     

@@ -4,8 +4,13 @@
     
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Factures Générées</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Factures Générées Expert</h2>
     </div>
+    <span>Facture(s) générée(s): {{gene}}</span> <br>
+    <span>Facture(s) Non générée(s): {{ngene}}</span>
+    <div class="tile box" style="width: fit-content; margin: 0 auto;
+    justify-content: space-evenly;
+    min-width: 900px;">
 
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">
@@ -70,7 +75,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('#table_id').DataTable({
-                    'scrollX':true,
+                    //'scrollX':true,
                     language: {
                         url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
                     }

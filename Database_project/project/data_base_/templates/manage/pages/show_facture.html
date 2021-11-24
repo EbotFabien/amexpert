@@ -67,7 +67,8 @@
                                     {%endfor%}
                                 </tbody>
                             </table>
-                            <button><a href="#" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-location-arrow"></i></a></button>
+                            <button><a href="{{url_for('users.gestion', id=id,save='false')}}" title="Visualiser" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-file"></i></a></button>
+                            <button><a href="{{url_for('users.gestion', id=id,save='true')}}" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-location-arrow"></i></a></button>
                             
 						</div>
                     </div>
@@ -149,7 +150,7 @@
             </div>
         <div class="box modal-inner-box">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-          Mission échouée 
+            Missions échouées
            
           </div>
           <div class="table-container" style="overflow-x: scroll;position: relative;">

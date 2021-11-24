@@ -47,12 +47,58 @@
 
     <div style="margin-top: 1.25rem;" class="">
       <h2 style="color: #112A46;font-weight: 700;">Statistiques</h2><br />
-      <div style="display: flex; flex-wrap: wrap; margin-top: .25rem; justify-content: space-between;align-items: center;">      
-        <div>
+      <div class="stat-charts" style="margin-top: .25rem;margin-bottom: 4rem;">      
+        <div class="box">
+          <canvas id="missionsPerYear" width="400" height="400"></canvas> 
+        </div>
+        <div class="box">
+          <canvas id="totalAmountPerYear" width="400" height="400"></canvas>
+        </div> 
+      </div>
+      <div class="stat-charts" style="margin-top: .25rem;">      
+        <div class="box">
           <canvas id="missionsPerMonth" width="400" height="400"></canvas> 
         </div>
-        <div>
-          <canvas id="totalAmountPerYear" width="400" height="400"></canvas>
+        <div style="height:fit-content;">
+          <h3>Montant généré Facturation Client et nombre de missions par mois de cette année</h3>
+          <table class="table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Mois</th>
+                <th class="has-text-centered">Somme total/€HT</th>
+                <th class="has-text-centered">Mission/mois</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for i in mission_encashmonth %}
+                <tr>
+                  <td>{{i[0].strftime('%B')}}</td>
+                  <td class="has-text-centered">{{i[2]}}</td>
+                  <td class="has-text-centered">{{i[1]}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <h3>Montant généré Facturation Expert et nombre de missions par mois de cette année</h3>
+          <table class="table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Mois</th>
+                <th class="has-text-centered">Somme total/€HT</th>
+                <th class="has-text-centered">Mission/mois</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for i in expertpermonth %}
+                <tr>
+                  <td>{%if(i[0] != None)%} {{i[0].strftime('%B')}} {% endif %}</td>
+                  <td class="has-text-centered">{%if(i[2] != None)%} {{i[2]}} {% endif %}</td>
+                  <td class="has-text-centered">{{i[1]}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div> 
       </div>
     </div> 

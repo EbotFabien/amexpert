@@ -13,11 +13,10 @@ getMissionDataPerYearData().then(missions => {
         function (index) {
             return index.total
         })
-        missionsPerMonth.config.data.labels = years
-        missionsPerMonth.config.data.datasets[0].data = totalMissionsPerYear
-        missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par An'
-        missionsPerMonth.update()
-        console.log(years)
+        missionsPerYear.config.data.labels = years
+        missionsPerYear.config.data.datasets[0].data = totalMissionsPerYear
+        missionsPerYear.config.data.datasets[0].label = 'Mission(s) par An'
+        missionsPerYear.update()
 })
 
 async function getAmountWorkedPerYear () {
@@ -40,15 +39,35 @@ getAmountWorkedPerYear().then(amountPerYear => {
         totalAmountPerYear.config.data.datasets[0].data = AmountPerYear 
         totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
         totalAmountPerYear.update()
+})
 
-        console.log(years)
+async function getMissionsPerMonth () {
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionpermonth'
+    const response = await fetch(URL)
+    const datapoints = await response.json()
+    return datapoints
+}
+
+getMissionsPerMonth().then(amountPerMonth => {
+    const months = amountPerMonth.data.map(
+        function (index) {
+            return index.month
+        })
+    const total = amountPerMonth.data.map(
+        function (index) {
+            return index.total
+        })
+    missionsPerMonth.config.data.labels = months
+    missionsPerMonth.config.data.datasets[0].data  = total
+    missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par Mois'
+    missionsPerMonth.update()
 })
 
 // setup 
 const data = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
-    label: 'Mission par An',
+    label: '',
     data: [18, 12, 6, 9, 12, 3, 9],
     backgroundColor: [
         'rgba(255, 26, 104, 0.2)',
@@ -92,6 +111,11 @@ const config = {
 };
 
     // render init block
+const missionsPerYear = new Chart(
+    document.getElementById('missionsPerYear'),
+    config
+);
+
 const missionsPerMonth = new Chart(
     document.getElementById('missionsPerMonth'),
     config

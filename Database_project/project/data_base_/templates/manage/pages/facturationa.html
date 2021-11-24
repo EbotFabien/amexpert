@@ -13,6 +13,7 @@
             <span><i class="fa fa-users"></i></span>
             <span style="float:left">Facture(s) Réglée(s): {{reglee}}</span>
             <span >Facture(s) Non Réglée(s):{{not_}}</span>
+            
            <!--  <div class="control has-icons-left has-icons-right">
               <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
               <span class="icon is-small is-right">
@@ -20,6 +21,7 @@
               </span>
             </div> -->
           </div>
+          
           <div class="table-container" style="overflow-x: scroll;position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
@@ -80,7 +82,11 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#table_id').DataTable();
+        var table = $('#table_id').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+            }
+        });
     
         $('#table_id tbody').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {

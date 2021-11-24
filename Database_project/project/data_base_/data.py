@@ -1793,7 +1793,7 @@ def date_(floa,date):
             return floa
 
 def Missions1(loc):
-    #try:
+    try:
         wb = xlrd.open_workbook(loc)
 
         sheet = wb.sheet_by_index(0)
@@ -2142,8 +2142,8 @@ def Missions1(loc):
             return True
         else:
             return failed(missions_)
-    #except:
-    #    return 'Fake'
+    except:
+        return 'Fake'
     
 
 

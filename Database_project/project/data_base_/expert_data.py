@@ -8,7 +8,7 @@ import flask as pd
 from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
 import os
-
+ 
 def failed1(av):
     ba=[]
     v=0
@@ -136,9 +136,9 @@ def xpert(loc):
                     his.pwd_google=regex1(sheet["AB"][i].value,'str1') 
                     his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1') 
                     his.actif_parti=regex1(sheet["E"][i].value,'str1') 
-                    #his.type_certification=regex1(sheet["H"][i].value,'str1') 
-                    #date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
-                    '''if date_certification_initiale == False:
+                    his.type_certification=regex1(sheet["H"][i].value,'str1') 
+                    date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
+                    if date_certification_initiale == False:
                         reason="erreur  de numero dans la colonne  date_certification_initiale  ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
@@ -149,8 +149,8 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_certification_initiale=date_certification_initiale'''
-                    '''date_renouv_certification=regex1(sheet["G"][i].value,'date') #CHECK FOR IF STATE
+                        his.date_certification_initiale=date_certification_initiale
+                    date_renouv_certification=regex1(sheet["G"][i].value,'date') #CHECK FOR IF STATE
                     if date_renouv_certification == False:
                         reason="erreur  de numero dans la colonne  date_renouv_certification  ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -162,7 +162,7 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_renouv_certification=date_renouv_certification'''
+                        his.date_renouv_certification=date_renouv_certification
                     his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') 
                     db.session.add(exp)
                     db.session.add(his)
@@ -177,4 +177,4 @@ def xpert(loc):
         else:
             return failed1(anomalie)
     except:
-        return False
+        return 'Fake'

@@ -46,5 +46,10 @@ def suiv(loc):
                                     db.session.add(create)
                                     db.session.commit()
     except:
+<<<<<<< HEAD
         False
                 
+=======
+        return 'Fake'
+                
+>>>>>>> 5d74143d64ec232c2ef7e593344d5a0d42e8cd50

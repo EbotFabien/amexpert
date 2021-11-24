@@ -12,7 +12,7 @@
                 <div class="column">
                     <div class="select is-small">
                         <select name="time">
-                            <option  selected disabled>---type de facture---</option>
+                            <option  selected disabled>---Type de facture---</option>
                             <option value="nouvelle">Nouvelle</option>
                             <option value="ancienne">Ancienne</option>
                         </select>
@@ -21,9 +21,9 @@
                 <div class="column">
                     <div class="select is-small">
                         <select name="releve">
-                            <option  selected disabled>---type de relever---</option>
+                            <option  selected disabled>---Type de Relevé---</option>
                             {%for releve  in rel %}
-                                <option value={{releve}}>{{releve}}</option>
+                                <option value={{releve.id}}>{{releve.type_ex}}</option>
                             {%endfor%}
                         </select>
                     </div>
@@ -84,7 +84,8 @@
                     </tbody>
                 </table>
                 {% if mes != None %}
-                <button><a href="{{url_for('users.download',mes=mes,temps=temps, id=id)}}" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></button>
+                <button><a href="{{url_for('users.download',mes=mes,temps=temps, id=id,save='false')}}" title="Visualiser" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-file"></i></a></button>
+                <button><a href="{{url_for('users.download',mes=mes,temps=temps, id=id,save='true')}}" title="Envoyer au centre de Gestion" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-location-arrow"></i></a></button>
                 {% endif %}
 
 	            </div>
@@ -101,7 +102,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var table = $('#table_id').DataTable({
-                'scrollX':true,
+                //'scrollX':true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
                 }

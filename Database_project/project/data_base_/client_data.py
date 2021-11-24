@@ -525,7 +525,7 @@ def lient(loc):
         else:
             return good1(Bien1)'''
     except:
-        return False
+        return 'Fake'
 
 
 
