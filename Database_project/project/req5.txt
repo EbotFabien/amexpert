@@ -72,7 +72,6 @@ packaging==20.9
 pandas==1.1.5
 Pillow==8.4.0
 prompt-toolkit==3.0.22
-psycopg2==2.8.6
 pycparser==2.19
 PyJWT==1.4.2
 pylint==2.4.3

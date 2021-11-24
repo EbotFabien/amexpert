@@ -15,7 +15,7 @@ import os
 from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
-from project.data_base_.export import Export
+from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
 import json
@@ -3256,22 +3256,6 @@ def download(mes,temps,id,save):
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
                     img=url_for('static', filename='images/logo/logo.png')
-<<<<<<< HEAD
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
-                    files=os.listdir(app.config['PDF_DIR_PATH'])
-                    for fil in files:
-                        if fil.endswith('.pdf'):
-                            f=fil
-                            break
-                    nom=''.join(name.nom)
-                    las=nom+'.pdf'
-                    fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
-                    n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
-                    os.rename(fil,n)
-                    send_pdf("vincent@resilion.eu",name.nom,n)
-                    os.remove(n)
-                    return res
-=======
                     if save =="false":
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
                         return res
@@ -3292,29 +3276,12 @@ def download(mes,temps,id,save):
                         os.remove(n)
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
->>>>>>> 5d74143d64ec232c2ef7e593344d5a0d42e8cd50
-
             if  temps == "ancienne":
 
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-<<<<<<< HEAD
-                    res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
-                    files=os.listdir(app.config['PDF_DIR_PATH'])
-                    for fil in files:
-                        if fil.endswith('.pdf'):
-                            f=fil
-                            break
-                    nom=''.join(name.nom)
-                    las=nom+'.pdf'
-                    fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
-                    n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
-                    os.rename(fil,n)
-                    send_pdf("vincent@resilion.eu",name.nom,n)
-                    return res
 
-=======
                     img=url_for('static', filename='images/logo/logo.png')
                     if save =="false":
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
@@ -3336,7 +3303,7 @@ def download(mes,temps,id,save):
                         os.remove(n)
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
->>>>>>> 5d74143d64ec232c2ef7e593344d5a0d42e8cd50
+
     return redirect(url_for('users.main'))
 
 @users.route('/fac/<int:id>/<save>/download',methods=['GET','POST'])
@@ -3359,22 +3326,6 @@ def gestion(id,save):
             flash(f'Corigee vos factures incorrecte svp','Warning')
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
-<<<<<<< HEAD
-            res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name)
-            files=os.listdir(app.config['PDF_DIR_PATH'])
-            for fil in files:
-                if fil.endswith('.pdf'):
-                    f=fil
-                    break
-            nom=''.join(name)
-            las=nom+'.pdf'
-            #try:
-            fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
-            n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
-            os.rename(fil,n)
-            send_pdf("vincent@resilion.eu",name,n)
-            return res
-=======
             if save =="false":
                 res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=False,nro=NRO, facture=facture,Nom=name)
                 return res
@@ -3395,7 +3346,7 @@ def gestion(id,save):
                 os.remove(n)
                 flash(f'Facture envoyée au centre de gestion','Success')
                 return redirect(url_for('users.show_fac',id=id))
->>>>>>> 5d74143d64ec232c2ef7e593344d5a0d42e8cd50
+
             #except:
             #   return redirect(url_for('users.main'))
 
