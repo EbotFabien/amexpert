@@ -2,9 +2,9 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db
-from project.data_base_.Models import Tarifs,Client,Expert
-from project.data_base_.client_data  import regex1
+from Database_project.project.data_base_ import db
+from Database_project.project.data_base_.Models import Tarifs,Client,Expert
+from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
 import os
 
@@ -68,7 +68,7 @@ def failed(av):
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
 
 def arif(loc):
-    try:
+    #try:
         anomalie=[]
         Bien=[]
         a=[]
@@ -76,9 +76,11 @@ def arif(loc):
         p=0
         wb_obj = openpyxl.load_workbook(loc,data_only=True)
         sheet=wb_obj.active
+        
         if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
                     return False
         for i in range(0,sheet.max_row):
+            print(loc)
             if sheet["J"][i].value!='PROSPECT':
                     v=sheet["M"][i].value
                     if type(v)==int: 
@@ -1067,5 +1069,5 @@ def arif(loc):
             print(Bien)
         else:
             good2(Bien)'''
-    except:
-        False
+    #except:
+     #   return  False

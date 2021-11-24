@@ -2,8 +2,8 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db,create_app
-from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from Database_project.project.data_base_ import db,create_app
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 import os
@@ -55,7 +55,7 @@ def regex1(data,Type):
             else:
                 return 'Failed'
         if data == None:
-            return None 
+            return 0 
         else:
             return 'Failed'
         
@@ -87,9 +87,9 @@ def regex1(data,Type):
         if isinstance(data,float) == True:
             return data
         if data == '':
-            return ''
+            return 0.00
         if data == None:
-            return None
+            return 0.00
         else:
             return 'Failed'
     
@@ -101,9 +101,9 @@ def regex1(data,Type):
         if data == '':
             return None
         if type(data)==str:
-            return None
+            return 0.00
         if data == None:
-            return None
+            return 0.00
         else:
             return None
 

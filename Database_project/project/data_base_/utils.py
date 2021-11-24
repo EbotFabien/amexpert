@@ -1,4 +1,4 @@
-from project.data_base_ import mail
+from Database_project.project.data_base_ import mail
 from flask import  url_for
 from flask_mail import Message
 import random
@@ -11,12 +11,12 @@ import os
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
-                  sender='noreply@demo.com',
+                  sender='ne_pas_repondre@amexpert.biz',
                   recipients=[user.email])
-    msg.body = f''' To reset your password,visit the following link:
+    msg.body = f''' Pour réinitialiser votre mot de passe, visitez le lien suivant:
                {url_for('users.reset_password',token=token,_external=True)}
      
-                if you did not make this request then simply ignore this email and no changes will be made
+                si vous n'avez pas fait cette demande, ignorez simplement cet e-mail et aucun changement ne sera effectué.
                 '''
     mail.send(msg)
 def send_pdf(mail1,user,file):

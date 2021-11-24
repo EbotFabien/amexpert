@@ -1,12 +1,12 @@
-from project.data_base_ import db
-from project.data_base_ import bcrypt
-from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
+from Database_project.project.data_base_ import db
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base,suivi_client,suivi_prospect
 import xlrd,xlwt
 import openpyxl#panNNdas
 import flask as pd     
 from sqlalchemy import or_, and_
 import datetime
-from project.data_base_.client_data  import regex1
+from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
 import os
 
@@ -1793,7 +1793,7 @@ def date_(floa,date):
             return floa
 
 def Missions1(loc):
-    try:
+    #try:
         wb = xlrd.open_workbook(loc)
 
         sheet = wb.sheet_by_index(0)
@@ -1931,7 +1931,7 @@ def Missions1(loc):
                 NRO_FACTURE = regex1(name[8],'M')  ,
                 PRIX_HT_EDL = regex1(name[13],'S') ,
                 TVA_EDL = regex1(name[14],'S') ,
-                PRIX_TTC_EDL = regex1(name[15],'S') ,
+                PRIX_TTC_EDL = regex1(name[15],'S'),
                 Reference_LOCATAIRE	 =  name[20] ,
                 Adresse1_Bien	 = name[21] ,  
                 Adresse2_Bien	 = name[22] , 
@@ -1996,7 +1996,7 @@ def Missions1(loc):
                     db.session.commit()
                 except:
                     mission.DATE_FACTURE=None
-                    db.session.commit()
+                    db.session.commit() 
                 try:
                     mission.DATE_FACT_REGLEE =datetime.datetime(*xlrd.xldate_as_tuple(name[44], wb.datemode))  
                     db.session.commit()
@@ -2142,8 +2142,8 @@ def Missions1(loc):
             return True
         else:
             return failed(missions_)
-    except:
-        return False
+    #except:
+    #    return 'Fake'
     
 
 

@@ -2,10 +2,10 @@ import sys
 import datetime
 import openpyxl
 import xlrd,xlwt
-from project.data_base_ import db
-from project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
+from Database_project.project.data_base_ import db
+from Database_project.project.data_base_.Models import Tarifs,Mission,Client,Expert,Client_History,prospect,prospect_History,Expert_History,Tarif_base
 import flask as pd
-from project.data_base_.client_data  import regex1
+from Database_project.project.data_base_.client_data  import regex1
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,send_from_directory
 import os
 
@@ -109,7 +109,7 @@ def xpert(loc):
                         continue 
                     else:
                         exp.date_entree=date_entree
-                    exp.trigramme=regex1(sheet["M"][i].value,'str1')    
+                    exp.trigramme=regex1(sheet["C"][i].value,'str1')    
                     
                     his.secteur=regex1(sheet["J"][i].value,'str1') 
                     his.adresse1=regex1(sheet["M"][i].value,'str1') 
@@ -126,7 +126,7 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.cp=cp
+                        his.cp=cp 
                     his.ville=regex1(sheet["P"][i].value,'str1') 
                     his.login_backof=regex1(sheet["V"][i].value,'str1') 
                     his.pwd_backof=regex1(sheet["W"][i].value,'str1') 
@@ -136,9 +136,9 @@ def xpert(loc):
                     his.pwd_google=regex1(sheet["AB"][i].value,'str1') 
                     his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1') 
                     his.actif_parti=regex1(sheet["E"][i].value,'str1') 
-                    his.type_certification=regex1(sheet["H"][i].value,'str1') 
-                    date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
-                    if date_certification_initiale == False:
+                    #his.type_certification=regex1(sheet["H"][i].value,'str1') 
+                    #date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
+                    '''if date_certification_initiale == False:
                         reason="erreur  de numero dans la colonne  date_certification_initiale  ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
@@ -149,8 +149,8 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_certification_initiale=date_certification_initiale
-                    date_renouv_certification=regex1(sheet["G"][i].value,'date') #CHECK FOR IF STATE
+                        his.date_certification_initiale=date_certification_initiale'''
+                    '''date_renouv_certification=regex1(sheet["G"][i].value,'date') #CHECK FOR IF STATE
                     if date_renouv_certification == False:
                         reason="erreur  de numero dans la colonne  date_renouv_certification  ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -162,7 +162,7 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_renouv_certification=date_renouv_certification
+                        his.date_renouv_certification=date_renouv_certification'''
                     his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') 
                     db.session.add(exp)
                     db.session.add(his)

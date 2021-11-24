@@ -31,8 +31,12 @@
              </a>
             </li>
             {% endif %}
-            <li class="{% if highlight == 'mission' %} active {% endif %}">
-                <a href="/mission"><span class="menu_icon"><i class="fas fa-bullseye"></i></span> <span class="menu_text">Mission</span></a>
+            <li class="{% if highlight == 'mission' %} active {% endif %} has-submenu" style="position: relative;">
+                <a href="/mission"><span class="menu_icon"><i class="fas fa-bullseye"></i></span> <span class="menu_text">Mission</span>
+                <ul class="sub-menu">
+                  <li> <a href="{{url_for('users.exportm')}}" style="color: #000">Exports Mission</a></li>
+                </ul>
+              </a>
             </li>
             {% if current_user.TYPE == "Admin" %}
             <li class="{% if highlight == 'tarif_base' %} active {% endif %}">

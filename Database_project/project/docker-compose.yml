@@ -29,4 +29,4 @@ services:
       - 5433:5433
     restart: always
     volumes:
-      - ./postgres-data:/etc/postgresql/12/main/
+      - ./postgres-data:/etc/postgresql/12/main/  

@@ -32,14 +32,14 @@
                                       <div class="field"><!---->
                                           <div class="control">
                                            {% if form.Reference_client.errors %}
-                                            {{form.Reference_client(class="input is-invalid", placeholder="Donées numérique",value=mission.Reference_BAILLEUR) }}
+                                            {{form.Reference_client(class="input is-invalid", placeholder="Donées numérique",value=mission.Bailleur__data.reference) }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Reference_client.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                             {% else %}
-                                                {{form.Reference_client(class="input", placeholder="Donées numérique", value=mission.Reference_BAILLEUR)}}
+                                                {{form.Reference_client(class="input", placeholder="Donées numérique", value=mission.Bailleur__data.reference)}}
                                             {% endif %}
                                           </div>
                                             <p class="help">Veuillez remplir champ</p>
@@ -507,7 +507,7 @@
                                       </div>
                                     </div>
                                 <hr/>
-                                <div class="field is-horizontal">
+                                {#<div class="field is-horizontal">
                                     <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Date_chiffrage_regle.label(class="form-control-label")}}</small></label>
                                     </div>
@@ -529,7 +529,7 @@
                                         </div>
                                       </div>
                                     </div>
-                                <hr/>
+                                <hr/>#}
                                 <div class="field is-horizontal">
                                     <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.POURCENTAGE_suiveur_chiffrage.label(class="form-control-label")}}</small></label>

@@ -1,24 +1,29 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form)
-from project.data_base_ import bcrypt
-from project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from project.data_base_.client_data  import lient
-from project.data_base_.expert_data  import xpert
-from project.data_base_.tarif_data  import arif
-from project.data_base_.Suivi  import suiv
-from project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export)
+from Database_project.project.data_base_ import bcrypt
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.client_data  import lient
+from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.tarif_data  import arif
+from Database_project.project.data_base_.Suivi  import suiv
+from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
 from sqlalchemy import or_, and_, desc,asc
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 import os
-from project.data_base_ import create_app
+#import pdfkit
+from Database_project.project.data_base_ import create_app
 from os.path import join, dirname, realpath
 from datetime import date,timedelta,datetime,timezone 
 from project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
+import json
+import base64
+#from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
+from flask import session
 
 users =Blueprint('users',__name__)
 app= create_app()
@@ -33,7 +38,7 @@ PER_PAGE = 10
 def client():
     global PER_PAGE
     global Ord
-    Ord="a"
+    Ord="a" 
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
@@ -84,7 +89,7 @@ def ajouter_client():
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Le client a été créé avec succès','success')
-            return redirect(url_for('users.client'))
+            return redirect(url_for('users.show_client',id=user.id))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="client", highlight='client')
     else:
@@ -194,9 +199,7 @@ def edit_client(id):
             
             if client.id==int(form.client_id.data):
             
-                client_history=Client_History(client_id=id)
-                db.session.add(client_history)
-                db.session.commit()
+                client_history=Client_History.query.filter_by(client_id=id).first()
                 client_history.ville = form.Ville.data
                 client_history.pays = form.Pays.data
                 client_history.cp = form.CP.data
@@ -217,7 +220,7 @@ def edit_client(id):
                 client.nom = form.NOM.data
                 db.session.commit()
                 flash(f'Informations client modifiées','success')
-                return redirect(url_for('users.client'))
+                return redirect(url_for('users.show_client',id=id))
                 
                 
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
@@ -240,6 +243,9 @@ def mission():
         date=request.args.get('date')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+
         
         
         
@@ -311,7 +317,7 @@ def mission():
         
         else:
             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission')
+            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission',reg=reglee,non=notreglee)
 
 
     return redirect(url_for('users.main'))
@@ -1006,7 +1012,10 @@ def facturation(id):
 def facturationa():
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())#add visibility
-        return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation) 
+        reglee=facturation_client.query.filter_by(valide=True).count()
+        notreglee=facturation_client.query.filter_by(valide=False).count()
+        print(notreglee)
+        return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation,reglee=reglee,not_=notreglee) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -1015,14 +1024,18 @@ def facturationa():
 def datereg(id):
     if current_user.TYPE == "Admin":
         facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())
+        fact=facturation_client.query.filter_by(id=id).first()
         facture1= list(facturation_mission.query.filter_by(fact_mission=id).all())  
         now_utc = datetime.now(timezone.utc)
         start=datetime.combine(now_utc,datetime.min.time())
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        
         if failed:
             flash(f'Veuillez corriger votre factures Numero' +str(id),'Warning')
             return render_template('manage/pages/facturationa.html',legend="facturation",facturations=facturation)
 
+        fact.valide=True
+        db.session.commit()
         for i in facture1:
             miss=Mission.query.filter_by(id=i.mission__data_.id).first()
             miss.DATE_FACT_REGLEE = start
@@ -1176,6 +1189,7 @@ def edit_mission(id):
         form=Mission_editForm()
         mission = Mission.query.filter_by(id=id).first_or_404()
         form.misid.data = mission.id
+        print(mission.Bailleur__data.reference)
         
         
         if form.validate_on_submit():
@@ -1205,7 +1219,7 @@ def edit_mission(id):
                     mission.CA_TTC_AC = form.CA_TTC_AC.data
                     mission.CA_HT_TRUST = form.CA_HT_TRUST.data
                     mission.TVA_TRUST = form.TVA_TRUST.data
-                    mission.Date_chiffrage_regle = form.Date_chiffrage_regle.data
+                    #mission.Date_chiffrage_regle = form.Date_chiffrage_regle.data add diferently
                     mission.Prix_ht_chiffrage = form.Prix_ht_chiffrage.data 
                     mission.POURCENTAGE_suiveur_chiffrage = form.POURCENTAGE_suiveur_chiffrage.data
                     mission.POURCENTAGE_AS_chiffrage = form.POURCENTAGE_AS_chiffrage.data
@@ -1239,7 +1253,7 @@ def edit_mission(id):
 
                     db.session.commit()
                     
-                    flash(f"La mission a été modifier avec succès", "success")
+                    flash(f"La mission a été modifiée avec succès", "success")
                     return redirect(url_for('users.mission'))
         
         return render_template('manage/pages/edit_mission.html', form=form,mission=mission,highlight='mission')
@@ -1252,7 +1266,7 @@ def delete_mission(id):
         mission = Mission.query.filter_by(id=id).first_or_404()
         mission.Visibility=False
         db.session.commit()
-        flash(f'Les donnes de mission ont été  suprimmer','success')
+        flash(f'les données de la mission ont été supprimées','success')
         return redirect(url_for('users.mission'))
 
 
@@ -1261,8 +1275,8 @@ def delete_mission(id):
 def expert():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        expert_=Expert.query.filter_by(visibility=True).order_by(asc(Expert.id)).all()
-        history=Expert_History.query.filter_by(visibility=True).order_by(asc(Expert_History.id)).all()
+        expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+        history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
         return render_template('manage/pages/expert.html',Expert=zip(expert_,history), legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
@@ -1292,7 +1306,7 @@ def ajouter_expert():
             db.session.add(expert_history)
             expert_history.ville = form.ville.data
             expert_history.secteur = form.secteur.data
-            expert_history.type_certification =  form.type_certification.data
+            #expert_history.type_certification =  form.type_certification.data
             
             expert_history.cp = form.cp.data
             expert_history.actif_parti  = form.actif_parti.data
@@ -1305,14 +1319,14 @@ def ajouter_expert():
             expert_history.login_extranet = form.login_extranet.data
             expert_history.pwd_extranet = form.pwd_extranet.data
             expert_history.trigramme = form.trigramme.data
-            expert_history.date_certification_initiale = form.date_certification.data
+            #expert_history.date_certification_initiale = form.date_certification.data
 
             expert_history.observations_de_suivi = form.observations_de_suivi.data
             user.password=hashed_password
             db.session.commit()
             db.session.commit()
             flash(f'L"expert a été ajouté avec succès','success')
-            return redirect(url_for('users.expert'))
+            return redirect(url_for('users.show_expert',id=user.id))
         return render_template('manage/pages/ajouter_expert.html',form=form, legend="expert", highlight='expert')
     else:
         return redirect(url_for('users.main'))
@@ -1333,13 +1347,10 @@ def edit_expert(id):
                 flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.edit_expert', id=expert.id))
             if expert.id==int(form.Expert_id.data):
-                expert_history=Expert_History(expert_id=id)
-                db.session.add(expert_history)
-                db.session.commit()
+                expert_history=Expert_History.query.filter_by(expert_id=id).first()
                 expert_history.ville = form.ville.data
                 expert_history.secteur = form.secteur.data
-                expert_history.type_certification =  form.type_certification.data
-                
+                #expert_history.type_certification =  form.type_certification.data
                 expert_history.cp = form.cp.data
                 expert_history.actif_parti  = form.actif_parti.data
                 
@@ -1351,8 +1362,8 @@ def edit_expert(id):
                 expert_history.login_extranet = form.login_extranet.data
                 expert_history.pwd_extranet = form.pwd_extranet.data
         
-                
-                expert_history.date_renouv_certification = form.date_certification.data
+                #make table certificiation
+                #expert_history.date_renouv_certification = form.date_certification.data
 
                 expert_history.observations_de_suivi = form.observations_de_suivi.data
                 
@@ -1369,7 +1380,7 @@ def edit_expert(id):
                 expert.taux_tva=form.taux_tva.data
                 db.session.commit()
                 flash(f'L"expert a été modifié avec succès', 'success')
-                return redirect(url_for('users.expert'))
+                return redirect(url_for('users.show_expert',id=id))
 
         expert_history=Expert_History.query.filter_by(expert_id=id).order_by(asc(Expert_History.date)).first_or_404()
         return render_template('manage/pages/edit_expert.html', highlight='expert', form=form,history=expert_history,expert=expert)
@@ -1598,41 +1609,44 @@ def sign_up():
         return redirect(url_for('users.login'))
     return render_template('signup.html',legend="sign_up",form=form)
 
+'''@users.before_request
+def make_session_permanent():
+    session.permanent = False'''
 
 @users.route('/login',methods=['GET','POST'])
 def login():
-    
-    #expert=Expert('Mr.','Admin','Admin','test0001@gmail.com','1234567')
-    #db.session.add(expert)
-    #db.session.commit()
-    #expert=Expert.query.filter_by(nom="Admin").first()
-    #expert.TYPE="Admin"
-    #hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
-    #expert.password = hashed_password
-    #db.session.commit()
+    db.create_all()
+    '''expert=Expert(genre='Mr.',nom="Administrateur",numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert)
+    db.session.commit()
+    expert=Expert.query.filter_by(nom="Administrateur").first()
+    expert.TYPE="Admin"
+    hashed_password = bcrypt.generate_password_hash('1234564789').decode('utf-8')
+    expert.password = hashed_password
+    db.session.commit()
     #db.drop_all()
     #db.create_all()
-    #expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
     #expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
-    #db.session.add(expert1)
+    db.session.add(expert1)
     #db.session.add(expert)
-    #db.session.commit()
-    #expert1.id =0
+    db.session.commit()
+    expert1.id =0
    # hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
    # expert.password=hashed_password
-   # db.session.commit()
+    db.session.commit()'''
 
     if current_user.is_authenticated:
        return redirect(url_for('users.main'))
     form = LoginForm()
     if form.validate_on_submit():
-        name=Expert.query.filter_by(nom=form.username.data).first()
+        name=Expert.query.filter_by(login=form.username.data).first()#put login
         if  name and bcrypt.check_password_hash(name.password,form.password.data):
-            login_user(name)
+            login_user(name,remember=form.remember.data,duration=timedelta(seconds=30)) 
             next_page=request.args.get('next')
             return redirect (next_page) if next_page else  redirect(url_for('users.main'))
         else:
-            flash(f'Mauvais e-mail ou mot de passe, essayez à nouveau','danger')
+            flash(f'Mauvais Identifiant ou mot de passe, essayez à nouveau','danger')
 
     return render_template('signup.html',legend="login",form=form)
 
@@ -1645,10 +1659,10 @@ def forgot_password ():
         expert=Expert.query.filter_by(email=form.email.data).first()
         if expert:
             send_reset_email(expert)
-            flash('An email has been sent with instructions to reset your Password.','info')
+            flash('Un courriel a été envoyé avec les instructions pour réinitialiser votre mot de passe.','info')
             return redirect(url_for('users.login'))
         if expert is None:
-            flash('This email does not exist','warning')
+            flash("Cet e-mail n'existe pas",'warning')
             return redirect(url_for('users.forgot_password'))
     return render_template('forgot_password.html', form=form)
 
@@ -1658,14 +1672,14 @@ def reset_password (token):
        return redirect(url_for('users.main'))
     expert = Expert.verify_reset_token(token)
     if expert is None:
-        flash('That is an invalid or expired token','warning')
+        flash("C'est un jeton invalide ou expiré.",'warning')
         return redirect(url_for('users.forgot_password'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         expert.password = hashed_password
         db.session.commit()
-        flash(f'your password has been updated! You are now able to login','success')
+        flash(f'votre mot de passe a été mis à jour ! Vous êtes maintenant en mesure de vous connecter','success')
         return redirect(url_for('users.login'))
     return render_template('reset_password.html', form=form)
 
@@ -1735,7 +1749,7 @@ def ajouter_negotiateur(id):
             db.session.add(user_his)
             db.session.commit()
             flash(f'négociateur créé avec succès','success')
-            return redirect(url_for('users.negotiateur', id=id)) #id check
+            return redirect(url_for('show_negotiateur', id=user.id)) #id check
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_negociateur.html',ID=id,form=form,legend="negociateur", highlight='client')
     else:
@@ -1773,9 +1787,7 @@ def edit_negotiateur(id):
             
             if client.id==int(form.client_id.data):
             
-                client_check=Negotiateur_History(negotiateur_id=id)
-                db.session.add(client_check)
-                db.session.commit()
+                client_check=Negotiateur_History.query.filter_by(negotiateur_id=id).first()
                 client_check.ville = form.Ville.data
                 client_check.pays = form.Pays.data 
                 client_check.cp = form.CP.data
@@ -1789,7 +1801,7 @@ def edit_negotiateur(id):
 
                 db.session.commit()
                 flash(f'Les donnes du négociateur ont été modifiées','success')
-                return redirect(url_for('users.negotiateur', id=client.client_id))
+                return redirect(url_for('show_negotiateur', id=id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,history=client_history,form=form,legend="edit_negotiateur")
 
@@ -1837,7 +1849,7 @@ def ajouter_prospect():
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Prospect créé avec succès','success')
-            return redirect(url_for('users.prospect_'))
+            return redirect(url_for('show_prospect',id=user.id))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect", highlight='prospect')
     else:
@@ -1889,9 +1901,8 @@ def edit_prospect(id):
             
             if client.id==int(form.client_id.data):
             
-                client_history=prospect_History(prospect=id)
-                db.session.add(client_history)
-                db.session.commit()
+                client_history=prospect_History.query.filter_by(prospect=id).first()
+                
                 
                 client_history.ville = form.Ville.data
                 client_history.pays = form.Pays.data
@@ -1913,7 +1924,7 @@ def edit_prospect(id):
                 client.nom = form.NOM.data
                 db.session.commit()
                 flash(f'Informations Prospect modifiées','success')
-                return redirect(url_for('users.prospect_'))
+                return redirect(url_for('show_prospect',id=id))
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
         return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
 
@@ -2071,20 +2082,25 @@ def uploader_():
                         return redirect(url_for('users.up'))
                     return xpert(loc)
                
-            if table == 'Tarifb':
+            if table == 'TarifC':
                 
                 arif(loc)
                 if arif(loc) == False:
                     flash(f"Verifier la structure de votre fichier svp",'warning')
                     return redirect(url_for('users.up'))
+                if arif(loc) == True:
+                        flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
                 return arif(loc)
                 
             if table == 'mission':
-                '''Missions2(loc,'26')
-                Missions2(loc,'27')
-                Missions2(loc,'28')
-                Missions2(loc,'29')
-                Missions2(loc,'31')'''
+                #Base(loc)
+                #Missions2(loc,'26')
+                #Missions2(loc,'27')
+                #Missions2(loc,'28')
+                #Missions2(loc,'29')
+                #Missions2(loc,'31')'''
+                
                 Missions1(loc)
                 if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
@@ -2092,6 +2108,7 @@ def uploader_():
                 if Missions1(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
+                
                 return Missions1(loc)
                 
                
@@ -2122,14 +2139,36 @@ def profil():
         form = RegistrationForm1()
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
+            f=form.validate2(form.email.data,current_user.id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.profil'))
             client.nom =form.username.data
             client.email=form.email.data
+            client.login=form.login.data
             db.session.commit()
-            flash(f"Vous avez modifier avec success",'success')
+            #flash(f"Vous avez modifier avec success",'success')
             return redirect(url_for('users.main'))
     return render_template('manage/pages/profile.html',form=form,client=client)
 
-
+@users.route('/<int:id>/profil' , methods=['GET','POST'])
+@login_required
+def addlogin(id):
+    if current_user:
+        form = RegistrationForm1()
+        client=Expert.query.filter_by(id=id).first()
+        if form.validate_on_submit():
+            f=form.validate2(form.email.data,id)
+            if f==True:
+                flash(f"l'email est déja prise",'warning')
+                return redirect(url_for('users.addlogin',id=id))
+            client.nom =form.username.data
+            client.email=form.email.data
+            client.login=form.login.data
+            db.session.commit()
+            #flash(f"Vous avez modifier avec success",'success')
+            return redirect(url_for('users.show_expert',id=id))
+    return render_template('manage/pages/add_login.html',form=form,client=client)
 
 #@users.app_errorhandler(404)
 #def error_404(error):
@@ -2333,6 +2372,7 @@ def choosev(Type):
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    print(mission.id)
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f4)/2
                                         if mission.PRIX_HT_EDL==None:
@@ -3183,7 +3223,8 @@ def download(mes,temps,id):
                     fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
-                    send_pdf("touchone0001@gmail.com",name.nom,n)
+                    send_pdf("vincent@resilion.eu",name.nom,n)
+                    os.remove(n)
                     return res
 
             if  temps == "ancienne":
@@ -3202,7 +3243,7 @@ def download(mes,temps,id):
                     fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
                     n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
                     os.rename(fil,n)
-                    send_pdf("touchone0001@gmail.com",name.nom,n)
+                    send_pdf("vincent@resilion.eu",name.nom,n)
                     return res
 
     return redirect(url_for('users.main'))
@@ -3239,27 +3280,46 @@ def gestion(id):
             fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
             n=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',las)
             os.rename(fil,n)
-            send_pdf("touchone0001@gmail.com",name,n)
+            send_pdf("vincent@resilion.eu",name,n)
             return res
             #except:
             #   return redirect(url_for('users.main'))
 
+#mission_datem=list(Mission.query.filter(extract('month', Mission.DATE_REALISE_EDL )==2020).all())
+#mission_datey=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).all())
 
-  
+@users.route('/exportm',methods=['GET','POST'])
+@login_required
+def exportm():
+    if current_user.TYPE == "Admin":
+            form=mission_export()
+            if form.validate_on_submit():
+                temp=app.config['MISS']
+                mi=[]
+                mi.append(temp)
+                Typo = form.Temps.data
+                date= form.Date.data
+                if Typo =="Mois":
+                    m=str(date)
+                    month=int(m[5:7])
+                    year=int(m[0:4])
+                    miss=list(Mission.query.filter(and_(extract('month', Mission.DATE_REALISE_EDL )==month,extract('year', Mission.DATE_REALISE_EDL )==year)).all())
+                if Typo == "Semaine":
+                    start=datetime.combine(date,datetime.min.time())
+                    end=datetime.combine(start+timedelta(days=6),datetime.min.time())
+                    miss=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end)).all())
+                if miss != []:
+                    mi=exo.mission_data(miss,mi)
+                    name="missionex_"+gen_name()
+                    return exo.export(mi,name)
+            return render_template('manage/pages/exportmission.html',form=form)
+    return redirect(url_for('users.main'))
 
 @users.route('/export',methods=['GET','POST'])
 @login_required
 def exported():
-    if current_user.TYPE == "Admin": 
+    if current_user.TYPE == "Admin":
             Type = request.form['table']
-            if Type == 'mission':
-                temp=app.config['MISS']
-                mi=[]
-                mi.append(temp)
-                miss=Mission.query.all()
-                mi=exo.mission_data(miss,mi)
-                name="missionex_"+gen_name()
-                return exo.export(mi,name)
             if Type =='expert':
                temp=app.config['EXPS']
                ex=[]
@@ -3330,15 +3390,167 @@ def exported():
 
 
 
-@users.route('/<Type>/dashdata')
-def dash(Type):
-    page = request.args.get('page',1,type=int)
-    mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
-    for i in mission_date:
-        print(i.DATE_REALISE_EDL)
-    a=[]
+@users.route('/dashboard/missionperyear')
+def dash():
+    ####page = request.args.get('page',1,type=int)
+    #mission_date=list(Mission.query.filter(extract('year', Mission.DATE_REALISE_EDL )==2020).group_by(Mission.id,extract('year', Mission.DATE_REALISE_EDL )==2020).paginate(page=page ,per_page=50).items)
+    #for i in mission_date:
+     #   print(i.DATE_REALISE_EDL)
+    #a=[]
 
+    #return {
+    #    'res':1,
+    #    'List':a
+    #}
+    missionsperyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'year'}) #year
+    data=[]
+
+    for mission in missionsperyear:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #data = json.dumps(data)
+    
     return {
         'res':1,
-        'List':a
-    }
+        'data':data
+    },200
+
+@users.route('/dashboard/missionpermonth')
+def missionpermonth():
+    missionspermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, COUNT(*) as TotalCount FROM public."Mission" GROUP BY 1 ORDER BY 1 ',{"param":'month'}) #do for month
+
+    data=[]
+
+    for mission in missionspermonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionencashyear')
+def mission_encashyear():
+    mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+
+    data={}
+
+    data=[]
+
+    for mission in mission_encashyear:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            data.append(a)
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missionencashmonth')
+def mission_encashmonth():
+    mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+
+    data=[]
+
+    for mission in mission_encashmonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficityear')
+def mission_deficityear():
+    mission_deficityear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data=[]
+
+    for mission in mission_deficityear:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/missiondeficitmonth')
+def mission_deficitmonth():
+    mission_deficitmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data=[]
+
+    for mission in mission_deficitmonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedm')
+def missionnotworkedm():
+    missionnotworked=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NULL  GROUP BY 1 ORDER BY 1 ',{"param":'month'})
+    data=[]
+
+    for mission in missionnotworked:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    #json_dump = json.dumps(data)
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+@users.route('/dashboard/missionnotworkedy')
+def missionnotworkedy():
+    missionnotworkedy=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "NRO_FACTURE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
+    data=[]
+
+    for mission in missionnotworkedy:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%d. %m. %Y'),"total":str(mission[1])}
+            data.append(a)
+
+    
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+
+'''@users.route("/p")
+def p():
+    name = "Giovanni Smith"
+    #image_path='C:/Users/user/Desktop/api/update_amexpert/fabrice/Database_Database_project.project/Database_project.project/data_base_/static/images/logo/logo.jpeg'
+    
+    #with open(image_path, 'rb') as image_file:
+    #    image= base64.b64encode(image_file.read()).decode()
+    html = render_template(
+        "manage/pages/test1.html",param=name)#,image=image)
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf)
+    pdf = pdfkit.from_string(html, False, configuration=config)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+    return response'''

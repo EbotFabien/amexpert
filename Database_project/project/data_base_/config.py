@@ -1,25 +1,26 @@
 import os
+import smtplib
 class Config:
     SECRET_KEY='FABIENCLASSIC'
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@db/amexpert"
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@localhost/amexpert"
     #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
-    MAIL_SERVER ='smtp.googlemail.com'
+    MAIL_SERVER ='smtp.infomaniak.com'#'mail.infomaniak.ch'
     MAIL_PORT = 587
     MAIL_USE_TLS =True
-    MAIL_USERNAME = 'touchone0001@gmail.com'
-    MAIL_PASSWORD = 'onetouch000100'
+    MAIL_USERNAME = 'info@resilion.eu'
+    MAIL_PASSWORD = 'Vincent123$'
     RECAPTCHA_PUBLIC_KEY ='6LcghOIZAAAAAE3zgcS-maNClYmtLTqICZtmHvWi'
     RECAPTCHA_PRIVATE_KEY='6LcghOIZAAAAAFiTeOmn_gN6xW_sGIFTDcVdIO0x'
     SUIV=['Client','Responsable','Commentaire','Date Creation','Date Modification']
     UPLOAD_FOLDER=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'files')#os, 'files'.getcwd()+'/data_base_/static/files'
     UPLOAD_Export=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export')
-    WKHTMLTOPDF_BIN_PATH = r'C:\Program Files\wkhtmltopdf\bin'
-    #WKHTMLTOPDF_USE_CELERY = True
+    WKHTMLTOPDF_BIN_PATH =r"/usr/local/bin"
+    WKHTMLTOPDF_USE_CELERY = True
     PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
     DEBUG = True
     CACHE_TYPE= "simple" # Flask-Caching related configs
     CACHE_DEFAULT_TIMEOUT= 300
-    MISS=["REF BAILLEUR	SOCIETE BAILLEUR",	"TITRE BAILLEUR	NOM BAILLEUR","ADRESSE1 BAILLEUR",
+    MISS=["REF BAILLEUR	SOCIETE BAILLEUR",	"TITRE BAILLEUR","NOM BAILLEUR","ADRESSE1 BAILLEUR",
     	"ADRESSE2 BAILLEUR","CP BAILLEUR","VILLE BAILLEUR","NRO FACTURE","ABONNEMENT",
         "TITRE CONCESS","NOM CONCESS","DATE REALISE EDL","PRIX HT EDL","TVA EDL","PRIX TTC EDL",
         "TITRE INTERV","NOM INTERV","REF LOCATAIRE","TITRE LOCATAIRE","NOM LOCATAIRE",

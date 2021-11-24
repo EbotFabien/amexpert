@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
-from project.data_base_.config import Config
+from Database_project.project.data_base_.config import Config
 from flask_migrate import Migrate
 from flask_caching import Cache
 
@@ -32,7 +32,7 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     migrate.init_app(app, db) 
 
-    from project.data_base_.routes import users
+    from Database_project.project.data_base_.routes import users
     app.register_blueprint(users)
 
     return app
