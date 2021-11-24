@@ -353,262 +353,264 @@ def choose(Type,id=None):
             if mission_ == price:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choose',id=id))
-            if mission_:
-                for mission in mission_:
-                    print(mission.PRIX_HT_EDL)
-                    if mission.TYPE_LOGEMENT == None:
-                            mission.TYPE_LOGEMENT = ''
+            try:
+                if mission_:
+                    for mission in mission_:
+                        print(mission.PRIX_HT_EDL)
+                        if mission.TYPE_LOGEMENT == None:
+                                mission.TYPE_LOGEMENT = ''
+                                db.session.commit()
+                        if mission.CODE_FACTURATION == None:
+                            mission.CODE_FACTURATION = ''
                             db.session.commit()
-                    if mission.CODE_FACTURATION == None:
-                        mission.CODE_FACTURATION = ''
-                        db.session.commit()
-                   
-                    if mission.CODE_FACTURATION is None:
+                    
+                        if mission.CODE_FACTURATION is None:
 
-                        flash(f'SVP Generez une code  Facturation pour cette mission','success')
-                        return redirect(url_for('users.show_mission',id=mission.id))
+                            flash(f'SVP Generez une code  Facturation pour cette mission','success')
+                            return redirect(url_for('users.show_mission',id=mission.id))
 
-                    else:
-                        
-                        if mission.CODE_FACTURATION[0:2] == 'TS':
-                            price.append(mission.CODE_FACTURATION[3:-1])
-                        if mission.CODE_FACTURATION[0:2] == 'TN':
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                        else:
+                            
+                            if mission.CODE_FACTURATION[0:2] == 'TS':
+                                price.append(mission.CODE_FACTURATION[3:-1])
+                            if mission.CODE_FACTURATION[0:2] == 'TN':
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                            meuble=float(tarif.edl_prix_std)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                                db.session.commit()
+                                            price.append(float(mission.PRIX_HT_EDL))
+                                            
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                                db.session.commit()
+                                            price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                        meuble=float(tarif.edl_prix_std)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                        meuble=float(tarif.edl_appt_prix_f1)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                         
                                     else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
-                                
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                    meuble=float(tarif.edl_appt_prix_f1)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                    
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
-                                #print('APPT 2')
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.edl_appt_prix_f2)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.edl_appt_prix_f3)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
-                                        db.session.commit()
-                                    price.append(float(tarif.mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
-                                
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.edl_appt_prix_f4)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.edl_appt_prix_f5)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.edl_appt_prix_f6)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
-                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                    meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
-                                
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                        
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
-                                
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    if mission.PRIX_HT_EDL == None :
-                                        meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
-                                        db.session.commit()
-                                    price.append(float(tarif.mission.PRIX_HT_EDL))#goes up to 8  '''
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
-                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                if mission.CODE_FACTURATION[2:5] == '150':
-                                    meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))
-                                else:
-                                    if mission.PRIX_HT_EDL == None :
-                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
-                                        db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                            else:
-                                    
-                                    if mission.PRIX_HT_EDL == None:
-                                        mission.PRIX_HT_EDL = 0
-                                        db.session.commit()
-                                    else:
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
+                                    #print('APPT 2')
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.edl_appt_prix_f2)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
+                                            db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
-                        else:
-                            if mission.PRIX_HT_EDL == None:
-                                mission.PRIX_HT_EDL = 0
-                                db.session.commit()
-                            else:
-                                price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.edl_appt_prix_f3)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
+                                            db.session.commit()
+                                        price.append(float(tarif.mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
+                                    
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.edl_appt_prix_f4)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.edl_appt_prix_f5)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.edl_appt_prix_f6)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
+                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                        meuble=float(tarif.EDL_APPT_prix_F7)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
 
-                   
-                add_sum=sum(price)
-                if Type == "client":
-                    return render_template('manage/pages/ajouter_facturationc.html', highlight='mission', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t1)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
+                                    
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t2)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t3)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                            
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
+                                    
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t4)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t5)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        if mission.PRIX_HT_EDL == None :
+                                            meuble=float(tarif.edl_pav_villa_prix_t6)/2
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                                            db.session.commit()
+                                        price.append(float(tarif.mission.PRIX_HT_EDL))#goes up to 8  '''
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t7)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
+                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                    if mission.CODE_FACTURATION[2:5] == '150':
+                                        meuble=float(tarif.edl_pav_villa_prix_t8)/2
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))
+                                    else:
+                                        if mission.PRIX_HT_EDL == None :
+                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
+                                            db.session.commit()
+                                        price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                                else:
+                                        
+                                        if mission.PRIX_HT_EDL == None:
+                                            mission.PRIX_HT_EDL = 0
+                                            db.session.commit()
+                                        else:
+                                            price.append(float(mission.PRIX_HT_EDL))
+                            else:
+                                if mission.PRIX_HT_EDL == None:
+                                    mission.PRIX_HT_EDL = 0
+                                    db.session.commit()
+                                else:
+                                    price.append(float(mission.PRIX_HT_EDL))
+            except:
+                flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
+                return redirect(url_for('users.choose',id=id))   
+            add_sum=sum(price)
+            if Type == "client":
+                return render_template('manage/pages/ajouter_facturationc.html', highlight='mission', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
             else:
                 flash(f'choisisez une date existante','danger')
                 return redirect(url_for('users.choose',id=id))
@@ -2073,6 +2075,9 @@ def uploader_():
                     if lient(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
+                    if lient(loc) == 'Fake':
+                        flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
+                        return redirect(url_for('users.up'))
                     return lient(loc)
                     #return redirect(url_for('users.client'))
 
@@ -2082,7 +2087,9 @@ def uploader_():
                     if suiv(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
-                    #if lient(loc) == True:
+                    if suiv(loc) == 'Fake':
+                        flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
+                        return redirect(url_for('users.up'))
                     flash(f"Vos données ont été importées avec succès",'success')
                     return redirect(url_for('users.up'))
                     #return suiv(loc)
@@ -2094,6 +2101,9 @@ def uploader_():
                         return redirect(url_for('users.up'))
                     if xpert(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
+                        return redirect(url_for('users.up'))
+                    if xpert(loc) == 'Fake':
+                        flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
                     return xpert(loc)
                
@@ -2123,7 +2133,9 @@ def uploader_():
                 if Missions1(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
-                
+                if Missions1(loc) == 'Fake':
+                        flash(f"Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide.",'warning')
+                        return redirect(url_for('users.up'))
                 return Missions1(loc)
                 
                
@@ -2185,9 +2197,9 @@ def addlogin(id):
             return redirect(url_for('users.show_expert',id=id))
     return render_template('manage/pages/add_login.html',form=form,client=client)
 
-#@users.app_errorhandler(404)
-#def error_404(error):
- #   return render_template('errors/404.html'),404
+@users.app_errorhandler(404)
+def error_404(error):
+    return render_template('errors/404.html'),404
 
 @users.app_errorhandler(403)
 def error_403(error):
@@ -2295,275 +2307,277 @@ def choosev(Type):
             if mission_ == client:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choosev',Type='month'))
-            if mission_:
-                for i in mission_:
-                    if i.Reference_BAILLEUR not in client:
-                        client.append(i.Reference_BAILLEUR)
+            try:
+                if mission_:
+                    for i in mission_:
+                        if i.Reference_BAILLEUR not in client:
+                            client.append(i.Reference_BAILLEUR)
+                        
+                    for i in client:
+                        relation[i] =[]
                     
-                for i in client:
-                     relation[i] =[]
-                
-                for i in mission_:
-                    if i.Reference_BAILLEUR in relation:
-                        relation[i.Reference_BAILLEUR].append(i)
-                for i in  relation:
-                    price[i] =[]
-                    for mission in relation[i]:
-                        if mission.TYPE_LOGEMENT == None:
-                            mission.TYPE_LOGEMENT = ''
-                            db.session.commit()
-                        if mission.CODE_FACTURATION == None:
-                            mission.CODE_FACTURATION = ''
-                            db.session.commit()
-                        if mission.CODE_FACTURATION is None:
+                    for i in mission_:
+                        if i.Reference_BAILLEUR in relation:
+                            relation[i.Reference_BAILLEUR].append(i)
+                    for i in  relation:
+                        price[i] =[]
+                        for mission in relation[i]:
+                            if mission.TYPE_LOGEMENT == None:
+                                mission.TYPE_LOGEMENT = ''
+                                db.session.commit()
+                            if mission.CODE_FACTURATION == None:
+                                mission.CODE_FACTURATION = ''
+                                db.session.commit()
+                            if mission.CODE_FACTURATION is None:
 
-                            flash(f'SVP Generez une code  Facturation pour cette mission','success')
-                            return redirect(url_for('users.show_mission',id=mission.id))
+                                flash(f'SVP Generez une code  Facturation pour cette mission','success')
+                                return redirect(url_for('users.show_mission',id=mission.id))
 
-                        else:
-                            
-                            if mission.CODE_FACTURATION[0:2] == 'TS':
-                                price[i].append(mission.CODE_FACTURATION[3:-1])
-                            if mission.CODE_FACTURATION[0:2] == 'TN':
-
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
-                                    
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                        meuble=float(tarif.edl_prix_std)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                        
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_prix_std
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
+                            else:
                                 
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1' :
-                                    
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                        meuble=float(tarif.edl_appt_prix_f1)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                        
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
-                                    #print('APPT 2')
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.edl_appt_prix_f2)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.edl_appt_prix_f3)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
-                                    
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    print(mission.id)
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.edl_appt_prix_f4)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.edl_appt_prix_f5)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.edl_appt_prix_f6)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
-                                    tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                        meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
+                                if mission.CODE_FACTURATION[0:2] == 'TS':
+                                    price[i].append(mission.CODE_FACTURATION[3:-1])
+                                if mission.CODE_FACTURATION[0:2] == 'TN':
 
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                            meuble=float(tarif.edl_prix_std)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                            
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
                                     
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1' :
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                            meuble=float(tarif.edl_appt_prix_f1)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                            
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
+                                        #print('APPT 2')
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.edl_appt_prix_f2)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.edl_appt_prix_f3)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        print(mission.id)
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.edl_appt_prix_f4)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.edl_appt_prix_f5)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.edl_appt_prix_f6)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
+                                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                            meuble=float(tarif.EDL_APPT_prix_F7)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t1)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t2)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t3)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
+                                        
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t4)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t5)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t6)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t7)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
+                                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                        if mission.CODE_FACTURATION[2:5] == '150':
+                                            meuble=float(tarif.edl_pav_villa_prix_t8)/2
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))
+                                        else:
+                                            if mission.PRIX_HT_EDL==None:
+                                                mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
+                                                db.session.commit()
+                                            price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
                                     else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
+                                        if mission.PRIX_HT_EDL == None:
+                                            mission.PRIX_HT_EDL = 0
                                             db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                            
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
-                                    
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                                if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
-                                    tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                                    if mission.CODE_FACTURATION[2:5] == '150':
-                                        meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))
-                                    else:
-                                        if mission.PRIX_HT_EDL==None:
-                                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
-                                            db.session.commit()
-                                        price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                                        else:
+                                            price[i].append(float(mission.PRIX_HT_EDL))
                                 else:
                                     if mission.PRIX_HT_EDL == None:
                                         mission.PRIX_HT_EDL = 0
                                         db.session.commit()
                                     else:
                                         price[i].append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL == None:
-                                    mission.PRIX_HT_EDL = 0
-                                    db.session.commit()
-                                else:
-                                    price[i].append(float(mission.PRIX_HT_EDL))
-                                
-                for i in price:
-                    a=sum(price[i])
-                    price[i]=a
-                
+            except:      
+                flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
+                return redirect(url_for('users.choosev',Type='month'))
 
+            for i in price:
+                a=sum(price[i])
+                price[i]=a
                 
                 
                 
@@ -2656,250 +2670,258 @@ def choosep():
         price=list()
         m=list()
         v=2
-        for i in a:
-            mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
-            if mission:
-                v=mission.Reference_BAILLEUR
-                m.append(mission.id)
-                if mission.CODE_FACTURATION is None:
+        mission=Mission.query.filter_by(id=a[0]).first()
+        pid=mission.Reference_BAILLEUR
+        try:
+            for i in a:
+                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
+                if mission:
+                    v=mission.Reference_BAILLEUR
+                    m.append(mission.id)
+                    if mission.CODE_FACTURATION is None:
 
-                    flash(f'SVP Generez une code  Facturation pour cette mission','success')
-                    return redirect(url_for('users.show_mission',id=mission.id))
+                        flash(f'SVP Generez une code  Facturation pour cette mission','success')
+                        return redirect(url_for('users.show_mission',id=mission.id))
 
-                else:
-                    
-                    if mission.CODE_FACTURATION[0:2] == 'TS':
-                        price.append(mission.CODE_FACTURATION[3:-1])
-                    if mission.CODE_FACTURATION[0:2] == 'TN':
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                meuble=float(tarif.edl_prix_std)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
-                                    db.session.commit()
-                                price[i].append(float(mission.PRIX_HT_EDL))
-                                
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_prix_std
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
-                            
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                if mission.PRIX_HT_EDL==None:
-                                    meuble=float(tarif.edl_appt_prix_f1)/2
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                                
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
-                            #print('APPT 2')
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.edl_appt_prix_f2)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.edl_appt_prix_f3)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
-                            
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.edl_appt_prix_f4)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.edl_appt_prix_f5)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.edl_appt_prix_f6)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
-                            tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':#check print
-                                meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
-                            
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
-                                    db.session.commit()
-                                price.append(float(tarif.edl_pav_villa_prix_t2))
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                    
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
-                            
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
-                                    db.session.commit() 
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                        if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
-                            tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                            if mission.CODE_FACTURATION[2:5] == '150':
-                                meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))
-                            else:
-                                if mission.PRIX_HT_EDL==None:
-                                    mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
-                                    db.session.commit()
-                                price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
-                        else:
-                                if mission.PRIX_HT_EDL == None:
-                                    mission.PRIX_HT_EDL = 0
-                                    db.session.commit()
-                                else:
-                                    price[i].append(float(mission.PRIX_HT_EDL))
                     else:
-                        if mission.PRIX_HT_EDL == None:
-                            mission.PRIX_HT_EDL = 0
-                            db.session.commit()
+                        
+                        if mission.CODE_FACTURATION[0:2] == 'TS':
+                            price.append(mission.CODE_FACTURATION[3:-1])
+                        if mission.CODE_FACTURATION[0:2] == 'TN':
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                    meuble=float(tarif.edl_prix_std)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
+                                        db.session.commit()
+                                    price[i].append(float(mission.PRIX_HT_EDL))
+                                    
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_prix_std
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
+                                
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
+                                    if mission.PRIX_HT_EDL==None:
+                                        meuble=float(tarif.edl_appt_prix_f1)/2
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                    
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
+                                #print('APPT 2')
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.edl_appt_prix_f2)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.edl_appt_prix_f3)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
+                                
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.edl_appt_prix_f4)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.edl_appt_prix_f5)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.edl_appt_prix_f6)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
+                                tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':#check print
+                                    meuble=float(tarif.EDL_APPT_prix_F7)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t1)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
+                                
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t2)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
+                                        db.session.commit()
+                                    price.append(float(tarif.edl_pav_villa_prix_t2))
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t3)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                        
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
+                                
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t4)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t5)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t6)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
+                                        db.session.commit() 
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t7)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                            if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
+                                tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
+                                if mission.CODE_FACTURATION[2:5] == '150':
+                                    meuble=float(tarif.edl_pav_villa_prix_t8)/2
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))
+                                else:
+                                    if mission.PRIX_HT_EDL==None:
+                                        mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
+                                        db.session.commit()
+                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+                            else:
+                                    if mission.PRIX_HT_EDL == None:
+                                        mission.PRIX_HT_EDL = 0
+                                        db.session.commit()
+                                    else:
+                                        price[i].append(float(mission.PRIX_HT_EDL))
                         else:
-                            price[i].append(float(mission.PRIX_HT_EDL))
+                            if mission.PRIX_HT_EDL == None:
+                                mission.PRIX_HT_EDL = 0
+                                db.session.commit()
+                            else:
+                                price[i].append(float(mission.PRIX_HT_EDL))
+        except:
+            flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
+            mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==pid,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
+            client = Client.query.filter_by(id=pid).first()
+            return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')
 
         p=sum(price)
         form.Missions.data=m

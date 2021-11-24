@@ -100,7 +100,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -131,7 +131,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -162,7 +162,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -193,7 +193,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -224,7 +224,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -255,7 +255,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -286,7 +286,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -317,7 +317,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -348,7 +348,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -379,7 +379,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -410,7 +410,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -441,7 +441,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -472,7 +472,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -503,7 +503,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -534,7 +534,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -565,7 +565,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -596,7 +596,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -627,7 +627,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -658,7 +658,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -689,7 +689,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -720,7 +720,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -752,7 +752,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -783,7 +783,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -814,7 +814,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -845,7 +845,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -876,7 +876,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -907,7 +907,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -938,7 +938,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -969,7 +969,7 @@ def arif(loc):
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                     ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                    sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                     sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                     sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                     sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -1044,7 +1044,7 @@ def arif(loc):
                                 sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                 sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
                                 ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
-                                sheet["AF"][i].value,sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                                sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
                                 sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
                                 sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
                                 sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
@@ -1061,6 +1061,33 @@ def arif(loc):
                                 sheet["CI"][i].value,sheet["CJ"][i].value,sheet["CK"][i].value,sheet["CL"][i].value,
                                 sheet["CM"][i].value,sheet["CN"][i].value,sheet["CO"][i].value,sheet["CP"][i].value,
                                 sheet["CQ"][i].value])
+                    else:     
+                        reason='erreur  de numero dans la Reference'
+                        anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                        sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                        sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                        sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
+                        ,sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                        sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,
+                        sheet["AI"][i].value,sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,
+                        sheet["AM"][i].value,sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,
+                        sheet["AQ"][i].value,sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,
+                        sheet["AU"][i].value,sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,
+                        sheet["AY"][i].value,sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,
+                        sheet["BC"][i].value,sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,
+                        sheet["BG"][i].value,sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,
+                        sheet["BK"][i].value,sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,
+                        sheet["BO"][i].value,sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,
+                        sheet["BS"][i].value,sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,
+                        sheet["BW"][i].value,sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value,
+                        sheet["CA"][i].value,sheet["CB"][i].value,sheet["CC"][i].value,sheet["CD"][i].value,
+                        sheet["CE"][i].value,sheet["CF"][i].value,sheet["CG"][i].value,sheet["CH"][i].value,
+                        sheet["CI"][i].value,sheet["CJ"][i].value,sheet["CK"][i].value,sheet["CL"][i].value,
+                        sheet["CM"][i].value,sheet["CN"][i].value,sheet["CO"][i].value,sheet["CP"][i].value,
+                        sheet["CQ"][i].value,reason])      
         if anomalie == []:
             return True
         else:
