@@ -3333,15 +3333,18 @@ def gestion(id,save):
         facture = list(s2.difference(s1))
         name=factura[0].facturation_client__data_.client__data_.nom
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+        with open(img, 'rb') as image_file:
+                image= base64.b64encode(image_file.read()).decode()
         if failed:
             flash(f'Corigee vos factures incorrecte svp','Warning')
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=False,nro=NRO, facture=facture,Nom=name)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=False,nro=NRO, facture=facture,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name,image=image)
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):
