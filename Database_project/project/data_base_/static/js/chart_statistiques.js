@@ -1,5 +1,5 @@
 async function getMissionDataPerYearData () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionperyear'
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionperyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
@@ -20,7 +20,7 @@ getMissionDataPerYearData().then(missions => {
 })
 
 async function getAmountWorkedPerYear () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionencashyear'
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionencashyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
