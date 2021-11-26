@@ -3255,12 +3255,18 @@ def download(mes,temps,id,save):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
-                    img=url_for('static', filename='images/logo/logo.png')
+                    img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+                    with open(img, 'rb') as image_file:
+                         image= base64.b64encode(image_file.read()).decode()
+                    su=list()
+                    for i in new_rel:
+                        su.append(i.commision)
+                    fin=sum(su)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3282,12 +3288,18 @@ def download(mes,temps,id,save):
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
-                    img=url_for('static', filename='images/logo/logo.png')
+                    img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+                    with open(img, 'rb') as image_file:
+                         image= base64.b64encode(image_file.read()).decode()
+                    su=list()
+                    for i in new_rel:
+                        su.append(i.commision)
+                    fin=sum(su)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         

@@ -136,7 +136,7 @@ def xpert(loc):
                     his.pwd_google=regex1(sheet["AB"][i].value,'str1') 
                     his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1') 
                     his.actif_parti=regex1(sheet["E"][i].value,'str1') 
-                    his.type_certification=regex1(sheet["H"][i].value,'str1') 
+                    '''his.type_certification=regex1(sheet["H"][i].value,'str1') 
                     date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
                     if date_certification_initiale == False:
                         reason="erreur  de numero dans la colonne  date_certification_initiale  ,veuillez verifier toute colonne avant d'envoyer"
@@ -162,7 +162,7 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_renouv_certification=date_renouv_certification
+                        his.date_renouv_certification=date_renouv_certification'''
                     his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') 
                     db.session.add(exp)
                     db.session.add(his)

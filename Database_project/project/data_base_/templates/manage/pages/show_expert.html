@@ -179,15 +179,16 @@
 						  </div>
 						</div>
 						<hr>
+
 						<div class="columns">
 						  <div class="column is-one-quarter">
 							<h6 class="mb-0">Date de certification initial</h6>
 						  </div>
 						  <div class="column is-three-quarter">
-							{% if history.date_certification_initiale != 'None' %}
+							{#{% if history.date_certification_initiale != 'None' %}
 							{% else %}
 								{{history.date_certification_initiale.strftime('%d/%m/%Y')}}
-							{%endif%}
+							{%endif%}#}
 						  </div>
 						</div>
 						<hr>
@@ -196,10 +197,10 @@
 							<h6 class="mb-0">Date de recertification</h6>
 						  </div>
 						  <div class="column is-three-quarter">
-							{% if history.date_renouv_certification != 'None' %}
+							{#{% if history.date_renouv_certification != 'None' %}
 							{% else %}
 								{{history.date_renouv_certification.strftime('%d/%m/%Y')}}
-							{%endif%}
+							{%endif%}#}
 						  </div>
 						</div>
 						<hr>
@@ -208,7 +209,7 @@
 							<h6 class="mb-0">Type de certification</h6>
 						  </div>
 						  <div class="column is-three-quarter">
-							{{history.type_certification}}
+							{#{{history.type_certification}}#}
 						  </div>
 						</div>
 						{% if legend == "client" %}
