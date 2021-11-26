@@ -42,7 +42,7 @@ getAmountWorkedPerYear().then(amountPerYear => {
 })
 
 async function getMissionsPerMonth () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionpermonth'
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionpermonth'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
