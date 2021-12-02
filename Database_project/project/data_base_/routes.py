@@ -1710,7 +1710,7 @@ def logout():
 @login_required
 def main():
     db.create_all()
-    if current_user.TYPE == "Admin":
+    if current_user:
         clients = Client.query.filter_by(visibility=True).count()
         missions = Mission.query.filter_by(Visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
@@ -1719,8 +1719,6 @@ def main():
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
 
         return render_template('manage/dashboard.html',expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
-    elif current_user:
-        return redirect (url_for('users.mes_factures',id=current_user.id))
         
     return redirect(url_for('users.login'))
 

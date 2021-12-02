@@ -7,10 +7,11 @@
   <div class="nav-link-section">
     <nav class="side-menu-nav">
         <ul class="side-menu">
-            {% if current_user.TYPE == "Admin" %}
             <li class="{% if highlight == 'dashboard' %} active {% endif %}">
                 <a href="/"><span class="menu_icon"><i class="fas fa-tachometer-alt"></i></span> <span class="menu_text">Tableau de bord</span></a>
             </li>
+
+            {% if current_user.TYPE == "Admin" %}
             <li class="{% if highlight == 'prospect' %} active {% endif %}">
                 <a href="/prospect"><span class="menu_icon"><i class="fas fa-calendar"></i></span> <span class="menu_text">Prospect</span></a>
             </li>

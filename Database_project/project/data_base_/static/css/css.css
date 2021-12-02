@@ -465,6 +465,17 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
 .w-100 {
   width: 100%;
 }
+.fa-left{
+  position: absolute;top: 10px;left: 90%;
+}
+.dropdown-menu.dropdown-menu-end.show {
+  display: block;
+  width: 89%;
+  position: absolute;
+  top: 0px;
+  background: #fff;
+  border: 1px solid;
+}
 .section-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(calc(100%/5),1fr));
