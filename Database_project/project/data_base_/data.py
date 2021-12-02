@@ -1353,11 +1353,7 @@ def Missions2(loc,n):
     reference=[]
     
     for i in range(1,sheet.max_row):
-        a=str(sheet["B"][i].value.lower()).split()
-        v=''.join(a)
-        vii=v.split("-")
-        vii=''.join(vii)
-        cli=Client.query.filter_by(enseigne=str(vii)).first()
+        cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
            # old=sheet["A"][i].value,
@@ -1753,7 +1749,7 @@ def Missions2(loc,n):
                 
             
         else:
-            reference.append(vii)# make a table for historique des donnees 
+           # reference.append(vii)# make a table for historique des donnees 
             print(reference)
 
 
@@ -1802,8 +1798,8 @@ def Missions1(loc):
         rows=int(sheet.nrows)
         sheet.cell_value(0, 0)
         Name=sheet.row_values(0)
-        if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
-            return False
+        '''if Name[1]!='SOCIETE BAILLEUR'and Name[5]!='NOM BAILLEUR'and Name[6]!='ADRESSE1 BAILLEUR'and Name[0]!='REF BAILLEUR':
+            return False'''
         for i in range(0,rows):
             name=sheet.row_values(i)
 

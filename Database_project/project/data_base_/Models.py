@@ -26,6 +26,7 @@ class Client(db.Model):
     enseigne = db.Column(db.String,default='')
     titre = db.Column(db.String,default='') 	
     nom = db.Column(db.String,default='')
+    prenom = db.Column(db.String,default='')
     email = db.Column(db.String,default='')
     numero = db.Column(db.String,default='')
     siret=db.Column(db.BigInteger)
@@ -53,10 +54,12 @@ class Expert(db.Model,UserMixin):
     __tablename__ = 'Expert'
 
     id = db.Column(db.Integer,primary_key=True)
-    new= db.Column(db.String)
-    login = db.Column(db.String,unique=True,default=None)
+    new= db.Column(db.String,default='')
+    full=db.Column(db.String,default='')
+    login = db.Column(db.String,default='')#refo unique
     genre  = db.Column(db.String,default='')	
     nom = db.Column(db.String,default='')
+    prenom = db.Column(db.String,default='')
     trigramme=db.Column(db.String,default='')
     TYPE=db.Column(db.String,default='')
     date_entree=db.Column(db.DateTime,default=datetime.utcnow)
@@ -127,6 +130,7 @@ class Client_negotiateur(db.Model):
             backref=db.backref('client__nego',  uselist=False),  uselist=False) 	
     sexe = db.Column(db.String,default='') 	
     nom = db.Column(db.String,default='')
+    prenom = db.Column(db.String,default='')
     email = db.Column(db.String,default='')
     numero = db.Column(db.String,default='')
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
@@ -205,6 +209,7 @@ class prospect(db.Model):
     enseigne = db.Column(db.String,default='')
     titre = db.Column(db.String,default='') 	
     nom = db.Column(db.String,default='')
+    prenom = db.Column(db.String,default='')
     email = db.Column(db.String,default='')
     numero = db.Column(db.String,default='')
     siret=db.Column(db.BigInteger)
@@ -283,23 +288,23 @@ class Facturation(db.Model):
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     Facture_no  = db.Column(db.Integer)
     Date_    = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    Pays  = db.Column(db.String)
+    Pays  = db.Column(db.String,default='')
     Destinataire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
     expediteur  = db.Column(db.Integer, db.ForeignKey('Expert.id'))
     client_data_=db.relationship("Client", 
         primaryjoin=(Destinataire == Client.id),
         backref=db.backref('client_data_',  uselist=False),  uselist=False)
 
-    Montant  = db.Column(db.String)
-    TVA  = db.Column(db.String)
-    Total  = db.Column(db.String)
-    Type  = db.Column(db.String)
+    Montant  = db.Column(db.String,default='')
+    TVA  = db.Column(db.String,default='')
+    Total  = db.Column(db.String,default='')
+    Type  = db.Column(db.String,default='')
     Proprietaire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
     Locataire   =db.Column(db.Integer, db.ForeignKey('Client.id'))
-    Ville  = db.Column(db.String)
-    Surface  = db.Column(db.String)
-    Tarif  = db.Column(db.String)
-    Appt_Pav  = db.Column(db.String)
+    Ville  = db.Column(db.String,default='')
+    Surface  = db.Column(db.String,default='')
+    Tarif  = db.Column(db.String,default='')
+    Appt_Pav  = db.Column(db.String,default='')
     Visibility =db.Column(db.Boolean,default=True)
     
 
@@ -333,7 +338,7 @@ class Expert_History(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     expert_id= db.Column(db.Integer, ForeignKey('Expert.id'))
-    actif_parti=db.Column(db.String)
+    actif_parti=db.Column(db.String,default='')
     secteur=db.Column(db.String,default='')
    # type_certification=db.Column(db.String,default='')
    # date_certification_initiale=db.Column(db.DateTime())#check this
@@ -375,19 +380,19 @@ class Agenda(db.Model):
         primaryjoin=(Organisateur == Expert.id),
         backref=db.backref('Organisateur_data_',  uselist=False),  uselist=False)
 
-    Titre_du_Rdv =db.Column(db.String)
-    Adresse1_Rdv =db.Column(db.String)
-    Adresse2_Rdv =db.Column(db.String)
-    Code_postal_Rdv =db.Column(db.String)
-    Ville_du_Rdv =db.Column(db.String)
-    Date_Rdv =db.Column(db.String)
-    Heure_début_Rdv =db.Column(db.String)
-    Heure_fin_Rdv =db.Column(db.String)
-    Date_Rdv_annulé =db.Column(db.String)
-    Informations_reservees_service_planification =db.Column(db.String)
-    Informations_generales =db.Column(db.String)
-    Informations_de_suivi_de_Rdv =db.Column(db.String)
-    Chemin_de_fichier_joint =db.Column(db.String)
+    Titre_du_Rdv =db.Column(db.String,default='')
+    Adresse1_Rdv =db.Column(db.String,default='')
+    Adresse2_Rdv =db.Column(db.String,default='')
+    Code_postal_Rdv =db.Column(db.String,default='')
+    Ville_du_Rdv =db.Column(db.String,default='')
+    Date_Rdv =db.Column(db.String,default='')
+    Heure_début_Rdv =db.Column(db.String,default='')
+    Heure_fin_Rdv =db.Column(db.String,default='')
+    Date_Rdv_annulé =db.Column(db.String,default='')
+    Informations_reservees_service_planification =db.Column(db.String,default='')
+    Informations_generales =db.Column(db.String,default='')
+    Informations_de_suivi_de_Rdv =db.Column(db.String,default='')
+    Chemin_de_fichier_joint =db.Column(db.String,default='')
     visibility =db.Column(db.Boolean,default=True)
 
 
@@ -422,8 +427,8 @@ class Tarif_base(db.Model):
     __tablename__ = 'Tarif_base'
 
     id = db.Column(db.Integer,primary_key=True)
-    pav_appartement=db.Column(db.String) 
-    Type  = db.Column(db.String) 
+    pav_appartement=db.Column(db.String,default='') 
+    Type  = db.Column(db.String,default='') 
     surface = db.Column(db.Integer) 
     Prix_EDL = db.Column(db.DECIMAL(65,2),default=0.00) 
     visibility =db.Column(db.Boolean,default=True)
@@ -472,7 +477,7 @@ class Tarifs(db.Model):
     chif_pav_villa_prix_t6=db.Column(db.DECIMAL(65,2),default=0.00) 
     chif_pav_villa_prix_t7=db.Column(db.DECIMAL(65,2),default=0.00) 
     chif_pav_villa_prix_t8=db.Column(db.DECIMAL(65,2),default=0.00) 
-    code_tva=db.Column(db.String)
+    code_tva=db.Column(db.String,default='')
     taux_meuble=db.Column(db.Integer)#Is thisFloat??
     referent_as_client=db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     referent__data=db.relationship("Expert", 
@@ -536,8 +541,8 @@ class Tarifs(db.Model):
 
     com_cell_planif_ref_agent_saisie = db.Column(db.DECIMAL(65,2),default=0.00)
 
-    prix_autre= db.Column(db.String)
-    commentaire_libre= db.Column(db.String)
+    prix_autre= db.Column(db.String,default='')
+    commentaire_libre= db.Column(db.String,default='')
     date=db.Column(db.DateTime(),default=datetime.utcnow)
     visibility =db.Column(db.Boolean,default=True)
     
@@ -561,12 +566,12 @@ class Mission(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     Reference_BAILLEUR	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
-    old= db.Column(db.String)
+    old= db.Column(db.String,default='')
     Bailleur__data=db.relationship("Client", 
         primaryjoin=(Reference_BAILLEUR == Client.id),
         backref=db.backref('Bailleur__data',  uselist=False),  uselist=False)
-    NRO_FACTURE	 = db.Column(db.String)#try putting facture as foreign key,think
-    ABONNEMENT	 = db.Column(db.String)
+    NRO_FACTURE	 = db.Column(db.String,default='')#try putting facture as foreign key,think
+    ABONNEMENT	 = db.Column(db.String,default='')
     ID_AS	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE")) 
     AS__data=db.relationship("Expert", 
         primaryjoin=(ID_AS == Expert.id),
@@ -577,11 +582,11 @@ class Mission(db.Model):
     INTERV__data=db.relationship("Expert", 
         primaryjoin=(ID_INTERV == Expert.id),
         backref=db.backref('INTERV__data',  uselist=False),  uselist=False)	
-    Reference_LOCATAIRE	 =  db.Column(db.String) 
-    Adresse1_Bien	 = db.Column(db.String)  
-    Adresse2_Bien	 = db.Column(db.String) 
+    Reference_LOCATAIRE	 =  db.Column(db.String,default='') 
+    Adresse1_Bien	 = db.Column(db.String,default='')  
+    Adresse2_Bien	 = db.Column(db.String,default='') 
     CP_Bien	 = db.Column(db.Integer)  
-    Ville_Bien	 = db.Column(db.String)  
+    Ville_Bien	 = db.Column(db.String,default='')  
     TVA_EDL = db.Column(db.DECIMAL(65,2),default=0.00)
     PRIX_TTC_EDL = db.Column(db.DECIMAL(65,2),default=0.00)#float
     CA_HT_AS = db.Column(db.DECIMAL(65,2),default=0.00) #float	
@@ -605,19 +610,19 @@ class Mission(db.Model):
     agent_chiffrage__data=db.relationship("Expert", 
         primaryjoin=(ID_agent_chiffrage == Expert.id),
         backref=db.backref('agent_chiffrage__data',  uselist=False),  uselist=False)
-    TYPE_EDL = db.Column(db.String) 	
+    TYPE_EDL = db.Column(db.String,default='') 	
     DATE_FACTURE = db.Column(db.DateTime(),default=None) # db.Column(db.DateTime())
-    TITREPROPRIO = db.Column(db.String) 		
-    NOMPROPRIO = db.Column(db.String) 	
+    TITREPROPRIO = db.Column(db.String,default='') 		
+    NOMPROPRIO = db.Column(db.String,default='') 	
     DATE_FACT_REGLEE = db.Column(db.DateTime(),default=None) 	
-    TYPE_LOGEMENT = db.Column(db.String) 	
-    CODE_AMEXPERT = db.Column(db.String) 	
-    COMMENTAIRE_FACTURE = db.Column(db.String) 	 	
-    LOGEMENT_MEUBLE = db.Column(db.String) 	
-    CODE_FACTURATION = db.Column(db.String) 	
-    TYPE_DE_BIEN = db.Column(db.String) 	
+    TYPE_LOGEMENT = db.Column(db.String,default='') 	
+    CODE_AMEXPERT = db.Column(db.String,default='') 	
+    COMMENTAIRE_FACTURE = db.Column(db.String,default='') 	 	
+    LOGEMENT_MEUBLE = db.Column(db.String,default='') 	
+    CODE_FACTURATION = db.Column(db.String,default='') 	
+    TYPE_DE_BIEN = db.Column(db.String,default='') 	
     surface_logement1 = db.Column(db.DECIMAL(65,2),default=0.00) 	#float	
-    Ref_commande = db.Column(db.String) 	
+    Ref_commande = db.Column(db.String,default='') 	
     POURCENTAGE_COM_AS_DU_CLIENT = db.Column(db.DECIMAL(65,2),default=0.00) 	#float
     ID_Respon_Cell_Dev	 = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=True) 
     Respon_Cell_Dev__data=db.relationship("Expert", 
@@ -663,7 +668,7 @@ class Mission(db.Model):
     Anomalie  = db.Column(db.Boolean,default=False)
     Facex  = db.Column(db.Boolean,default=False)
     coherent  = db.Column(db.Boolean,default=True)
-    reason = db.Column(db.String)
+    reason = db.Column(db.String,default='')
     Visibility =db.Column(db.Boolean,default=True)
     
 
@@ -684,7 +689,7 @@ class facturation_client(db.Model):
     __tablename__ = 'facturation_client'
 
     id = db.Column(db.Integer,primary_key=True)
-    n_facture = db.Column(db.String)   
+    n_facture = db.Column(db.String,default='')   
     Montant_HT = db.Column(db.DECIMAL(65,2),default=0.00)
     client	= db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE"))   
     client__data_=db.relationship("Client", 
@@ -692,14 +697,14 @@ class facturation_client(db.Model):
         backref=db.backref('client__data_',  uselist=False),  uselist=False)
     Date_de_creation=db.Column(db.DateTime(),default=datetime.utcnow)
     Date_mission=db.Column(db.DateTime())
-    Date_reglement_client=db.Column(db.String)
-    missions_s=db.Column(db.String)
-    missions_f=db.Column(db.String)
-    Statut=db.Column(db.String) #(payé ou en attente) differentes types de satus
-    Observations_suivi_paiement=db.Column(db.String)
-    Date_première_relance=db.Column(db.String) # date cree plus 15 jr
-    Date_seconde_relance=db.Column(db.String) # date cree plus seconde relance plus 15 jr
-    Date_mise_en_demeure=db.Column(db.String) # date seconde plus 15jr
+    Date_reglement_client=db.Column(db.String,default='')
+    missions_s=db.Column(db.String,default='')
+    missions_f=db.Column(db.String,default='')
+    Statut=db.Column(db.String,default='') #(payé ou en attente) differentes types de satus
+    Observations_suivi_paiement=db.Column(db.String,default='')
+    Date_première_relance=db.Column(db.String,default='') # date cree plus 15 jr
+    Date_seconde_relance=db.Column(db.String,default='') # date cree plus seconde relance plus 15 jr
+    Date_mise_en_demeure=db.Column(db.String,default='') # date seconde plus 15jr
     valide=db.Column(db.Boolean,default=False)
     visibility =db.Column(db.Boolean,default=True)
 #valider=db.Column(db.Boolean,default=False)
@@ -765,8 +770,8 @@ class compte_mensuel(db.Model):
     __tablename__ = 'compte_mensuel'
     id = db.Column(db.Integer,primary_key=True)
     mission = db.Column(db.Integer, ForeignKey('Mission.id', onupdate="CASCADE", ondelete="CASCADE"))
-    facture = db.Column(db.String)
-    intervenant=db.Column(db.String)
+    facture = db.Column(db.String,default='')
+    intervenant=db.Column(db.String,default='')
     date_cmpte_mensuel=db.Column(db.DateTime())
     date_generation= db.Column(db.DateTime())
     date_envoie_Facture=db.Column(db.DateTime())
@@ -787,7 +792,7 @@ class Type_expert(db.Model):
 
     __tablename__ = 'Type_expert'
     id = db.Column(db.Integer,primary_key=True)
-    type_ex = db.Column(db.String)
+    type_ex = db.Column(db.String,default='')
     type_releve=db.Column(db.Integer)
     pourcentage =db.Column(db.DECIMAL(65,2),default=0.00)
     
@@ -799,7 +804,7 @@ class expert_facturation(db.Model):
 
     __tablename__ = 'expert_facturation'
     id = db.Column(db.Integer,primary_key=True)
-    facture = db.Column(db.String)
+    facture = db.Column(db.String,default='')
     mission = db.Column(db.Integer, ForeignKey('compte_mensuel.id', onupdate="CASCADE", ondelete="CASCADE"))
     expert_id= db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))
     type_expert = db.Column(db.Integer, ForeignKey('Type_expert.id', onupdate="CASCADE", ondelete="CASCADE"))

@@ -346,10 +346,10 @@ def choose(Type,id=None):
             print('ok1')
             price=list()
             if Type == "client":
-                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
+                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())#check query
             
            # if Type == "single":
-              #  mission_=list(Mission.query.filter(and_(Mission.id==id,Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())
+              #  mission_=list(Mission.query.filter(and_(Mission.id==id,Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())
             if mission_ == price:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choose',id=id))
@@ -938,8 +938,8 @@ def create_facturec():
         form=Facturation_Form()
         
         
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
 
         
             
@@ -1001,7 +1001,7 @@ def show_fac(id):
 @login_required
 def client_mission(id):
     if current_user.TYPE == "Admin":
-        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='')).order_by(desc(Mission.id)).all())
         client = Client.query.filter_by(id=id).first()
         return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
     
@@ -2022,7 +2022,7 @@ def export():
 def up():
     #db.create_all()
     db.create_all()
-    '''expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    '''expert1=Expert(genre='0',nom='',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert1)
     db.session.add(expert)
@@ -2032,7 +2032,7 @@ def up():
     expert.visibility =False
     hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     expert.password=hashed_password
-    db.session.commit()
+    db.session.commit()'''
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()'''
@@ -2068,7 +2068,7 @@ def uploader_():
             uploaded_file.save(file_path)
             if table == 'client':
                     lient(loc)
-                    if lient(loc) == False:
+                    '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     #flash(f"Vous avez importer les donnees avec success",'success')
@@ -2078,25 +2078,25 @@ def uploader_():
                     if lient(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                    return lient(loc)
+                    return lient(loc)'''
                     #return redirect(url_for('users.client'))
 
             
             if table == 'suivi':
                     suiv(loc)
-                    if suiv(loc) == False:
+                    '''if suiv(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     if suiv(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
                     flash(f"Vos données ont été importées avec succès",'success')
-                    return redirect(url_for('users.up'))
+                    return redirect(url_for('users.up'))'''
                     #return suiv(loc)
                 
             if table == 'expert':
                     xpert(loc)
-                    if xpert(loc) == False:
+                    '''if xpert(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     if xpert(loc) == True:
@@ -2105,29 +2105,29 @@ def uploader_():
                     if xpert(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                    return xpert(loc)
+                    return xpert(loc)'''
                
             if table == 'TarifC':
                 
                 arif(loc)
-                if arif(loc) == False:
+                '''if arif(loc) == False:
                     flash(f"Verifier la structure de votre fichier svp",'warning')
                     return redirect(url_for('users.up'))
                 if arif(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
-                return arif(loc)
+                return arif(loc)'''
                 
             if table == 'mission':
                 #Base(loc)
-                #Missions2(loc,'26')
-                #Missions2(loc,'27')
-                #Missions2(loc,'28')
-                #Missions2(loc,'29')
-                #Missions2(loc,'31')'''
+                '''Missions2(loc,'26')
+                Missions2(loc,'27')
+                Missions2(loc,'28')
+                Missions2(loc,'29')
+                Missions2(loc,'31')'''
                 
                 Missions1(loc)
-                if Missions1(loc) == False:
+                '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                 if Missions1(loc) == True:
@@ -2136,7 +2136,7 @@ def uploader_():
                 if Missions1(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                return Missions1(loc)
+                return Missions1(loc)'''
                 
                
             # save the file1362
@@ -2303,7 +2303,7 @@ def choosev(Type):
             relation={}
             price={}
             if Type == "month":
-                         mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
+                         mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())#check query
             if mission_ == client:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choosev',Type='month'))
@@ -2603,8 +2603,8 @@ def create_facturem():
         relation={}
         relation2={}
         price=list()
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==False)).order_by(desc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==True)).order_by(desc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False)).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True)).order_by(desc(Mission.id)).all())#check query
         
         if mission_:
             for i in mission_:
@@ -2674,7 +2674,7 @@ def choosep():
         pid=mission.Reference_BAILLEUR
         try:
             for i in a:
-                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
+                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE=='',Mission.Visibility==True)).first()
                 if mission:
                     v=mission.Reference_BAILLEUR
                     m.append(mission.id)
@@ -2919,7 +2919,7 @@ def choosep():
                                 price[i].append(float(mission.PRIX_HT_EDL))
         except:
             flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
-            mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==pid,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
+            mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==pid,Mission.NRO_FACTURE=='')).order_by(desc(Mission.id)).all())
             client = Client.query.filter_by(id=pid).first()
             return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')
 
@@ -2971,7 +2971,7 @@ def create_facturep():
         missions=list()
         if mi is not None:
             for i in mi:
-                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
+                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE=='',Mission.Visibility==True)).first()
                 missions.append(mission)
 
             facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut='attente',client=request.form['Reference_client'])

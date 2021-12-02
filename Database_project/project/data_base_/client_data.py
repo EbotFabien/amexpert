@@ -18,15 +18,17 @@ def regex1(data,Type):
                 vii=''.join(a)
                 vii=vii.split("-")
                 vii=''.join(vii)
-                return vii.lower()
+                return data
             if data == 'None':
                 return ''
             if data == 'xxx':
                 return ''
             if data == 'XXX':
                 return ''
+            if data == None:
+                return ''
             else:
-                return data.lower()
+                return data
         else:
             return ''
     
@@ -38,8 +40,10 @@ def regex1(data,Type):
                 return ''
             if data == 'None':
                 return ''
+            if data == None:
+                return ''
             else:
-                return data.lower()
+                return data
         else:
             return ''
 
@@ -260,7 +264,7 @@ def date_(floa,date):
             return floa
 
 def lient(loc):
-    try:
+    #try:
         anomalie=[]
         anomalie1=[]
         Bien1=[]
@@ -270,223 +274,197 @@ def lient(loc):
         p=0
         wb_obj = openpyxl.load_workbook(loc,data_only=True)
         sheet=wb_obj.active
-        if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
-                    return False
+        '''if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
+                    return False'''
         for i in range(0,sheet.max_row):
-                if sheet["J"][i].value!='PROSPECT':
-                    v=sheet["M"][i].value
+                if sheet["M"][i].value!='PROSPECT':
+                    v=sheet["A"][i].value
                     
                     if type(v)==int: 
                         if v  not in a:
-                            cli=Client.query.filter_by(reference=int(sheet["M"][i].value)).first()
-                            a.append(v)
+                            cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
+                            #a.append(v)
                             if cli is None:
                                 create=Client()
                                 
                                 Histo=Client_History()
                                 
-                                create.reference=int(sheet["M"][i].value)
-                                create.TYPE=regex1(sheet["P"][i].value,'str')
-                                create.societe=regex1(sheet["Q"][i].value,'str')
-                                create.enseigne=regex1(sheet["R"][i].value,'str')
-                                create.titre=regex1(sheet["N"][i].value,'str')
-                                create.nom=regex1(sheet["O"][i].value,'str1')
-                                numero=regex1(sheet["AB"][i].value,'int')
+                                create.reference=int(sheet["A"][i].value)
+                                create.TYPE=regex1(sheet["M"][i].value,'str')
+                                create.societe=regex1(sheet["B"][i].value,'str')
+                                create.enseigne=regex1(sheet["C"][i].value,'str')
+                                create.titre=regex1(sheet["D"][i].value,'str')
+                                create.nom=regex1(sheet["E"][i].value,'str1')
+                                create.prenom=regex1(sheet["F"][i].value,'str1')
+                                numero=regex1(sheet["H"][i].value,'int')
                                 if numero == 'Failed':
                                     reason='erreur  de numero dans la colonne  Tel principal client ,veuillez verifier toute colonne avant d"envoyer'
                                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                    sheet["P"][i].value,sheet["Q"][i].value,reason])
                                     continue
                                 else:
                                     create.numero=numero
                                 
-                                siret=regex1(sheet["S"][i].value,'int')
+                                siret=regex1(sheet["I"][i].value,'int')
                                 if siret == 'Failed':
                                     reason='erreur  de numero dans la colonne  Siret ,veuillez verifier toute colonne avant d"envoyer'
                                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                    sheet["P"][i].value,sheet["Q"][i].value,reason])
                                     continue
                                 else:
                                     create.siret=siret
-                                create.email=regex1(sheet["AC"][i].value,'str1')
-                                date_creation=regex1(sheet["I"][i].value,'date')
+                                create.email=regex1(sheet["G"][i].value,'str1')
+                                date_creation=regex1(sheet["J"][i].value,'date')
                                 if date_creation == False:
                                     reason='erreur  de numero dans la colonne  date creation ,veuillez verifier toute colonne avant d"envoyer'
                                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                    sheet["P"][i].value,sheet["Q"][i].value,reason])
                                     continue
                                 else:
                                     create.date_creation=date_creation
                                 
-                                Histo.adresse1=regex1(sheet["U"][i].value,'str1')
-                                Histo.adresse2=regex1(sheet["V"][i].value,'str1')
-                                Histo.etat_client=regex1(sheet["J"][i].value,'str')
-                                cp=regex1(sheet["W"][i].value,'int')
+                                Histo.adresse1=regex1(sheet["K"][i].value,'str1')
+                                '''Histo.adresse2=regex1(sheet["V"][i].value,'str1')'''
+                                Histo.etat_client=regex1(sheet["L"][i].value,'str')
+                                cp=regex1(sheet["N"][i].value,'int')
                                 if cp == 'Failed':
                                     reason='erreur  de numero dans la colonne  code postal ,veuillez verifier toute colonne avant d"envoyer'
                                     anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                    sheet["P"][i].value,sheet["Q"][i].value,reason])
                                     continue   
                                 else:
                                     Histo.cp=cp
-                                Histo.ville=regex1(sheet["X"][i].value,'str1')
+                                Histo.ville=regex1(sheet["O"][i].value,'str1')
                                 Histo.pays='France'
-                                Histo.login_extranet=regex1(sheet["C"][i].value,'str1')
-                                Histo.mpd_extranet=regex1(sheet["D"][i].value,'str1')
+                                Histo.login_extranet=regex1(sheet["P"][i].value,'str1')
+                                Histo.mpd_extranet=regex1(sheet["Q"][i].value,'str1')
                                 db.session.add(create)
                                 db.session.add(Histo)
                                 db.session.commit()
                                 Histo.client_id=create.id
                                 db.session.commit()
-                                Bien.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                '''Bien.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
                                     sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
                                     sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
                                     sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value])
+                                    ,sheet["AB"][i].value,sheet["AC"][i].value])'''
                             else:
-                                ("Anomalie doublon")
+                                reason="erreur  de doublon dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"
+                                anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                sheet["P"][i].value,sheet["Q"][i].value,reason])
                         else:
                             reason="erreur  de doublon dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"
                             anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                             sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                             sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                             sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                            sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                            sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                            sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                            ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                            sheet["P"][i].value,sheet["Q"][i].value,reason])
                     else:
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                         sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                         sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                        ,sheet["AB"][i].value,sheet["AC"][i].value,"erreur dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"])
-                if  sheet["J"][i].value =='PROSPECT':
-                        v=sheet["L"][i].value 
+                        sheet["P"][i].value,sheet["Q"][i].value,"ERREUR REFERENCE"])
+                if  sheet["M"][i].value =='PROSPECT':
+                        v=sheet["A"][i].value 
                         if type(v)==int: 
                             if v  not in b:
-                                cli=prospect.query.filter_by(reference=int(sheet["L"][i].value)).first()
+                                cli=prospect.query.filter_by(reference=int(sheet["A"][i].value)).first()
                                 b.append(v)
                                 if cli is None:
                                     create=prospect()
                                     
                                     Histo=prospect_History()
                                     
-                                    create.reference=int(sheet["L"][i].value)
-                                    create.TYPE=regex1(sheet["P"][i].value,'str')
-                                    create.societe=regex1(sheet["Q"][i].value,'str')
-                                    create.enseigne=regex1(sheet["R"][i].value,'str')
-                                    create.titre=regex1(sheet["N"][i].value,'str')
-                                    create.nom=regex1(sheet["O"][i].value,'str1')
-                                    numero=regex1(sheet["AB"][i].value,'int')
-                                    if numero == False:
-                                        reason='erreur  de numero dans la colonne  Tel principal client,veuillez verifier toute colonne avant d"envoyer'
+                                    create.reference=int(sheet["A"][i].value)
+                                    create.TYPE=regex1(sheet["M"][i].value,'str')
+                                    create.societe=regex1(sheet["B"][i].value,'str')
+                                    create.enseigne=regex1(sheet["C"][i].value,'str')
+                                    create.titre=regex1(sheet["D"][i].value,'str')
+                                    create.nom=regex1(sheet["E"][i].value,'str1')
+                                    create.prenom=regex1(sheet["F"][i].value,'str1')
+                                    numero=regex1(sheet["H"][i].value,'int')
+                                    if numero == 'Failed':
+                                        reason='erreur  de numero dans la colonne  Tel principal client ,veuillez verifier toute colonne avant d"envoyer'
                                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                         sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                         sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                        ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                        sheet["P"][i].value,sheet["Q"][i].value,reason])
                                         continue
                                     else:
                                         create.numero=numero
                                     
-                                    siret=regex1(sheet["S"][i].value,'int')
-                                    if siret == False:
-                                        reason='erreur  de numero dans la colonne  Siret,veuillez verifier toute colonne avant d"envoyer'
+                                    siret=regex1(sheet["I"][i].value,'int')
+                                    if siret == 'Failed':
+                                        reason='erreur  de numero dans la colonne  Siret ,veuillez verifier toute colonne avant d"envoyer'
                                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                         sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                         sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                        ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                        sheet["P"][i].value,sheet["Q"][i].value,reason])
                                         continue
                                     else:
                                         create.siret=siret
-                                    create.email=regex1(sheet["AC"][i].value,'str1')
-                                    date_creation=regex1(sheet["I"][i].value,'date')
+                                    create.email=regex1(sheet["G"][i].value,'str1')
+                                    date_creation=regex1(sheet["J"][i].value,'date')
                                     if date_creation == False:
-                                        reason='erreur  de numero dans la colonne  date entree ,veuillez verifier toute colonne avant d"envoyer'
+                                        reason='erreur  de numero dans la colonne  date creation ,veuillez verifier toute colonne avant d"envoyer'
                                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                         sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                         sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                        ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                        sheet["P"][i].value,sheet["Q"][i].value,reason])
                                         continue
                                     else:
                                         create.date_creation=date_creation
                                     
-                                    Histo.adresse1=regex1(sheet["U"][i].value,'str1')
-                                    Histo.adresse2=regex1(sheet["V"][i].value,'str1')
-                                    Histo.etat_client=regex1(sheet["J"][i].value,'str')
-                                    cp=regex1(sheet["W"][i].value,'int')
-                                    if cp == False:
+                                    Histo.adresse1=regex1(sheet["K"][i].value,'str1')
+                                    '''Histo.adresse2=regex1(sheet["V"][i].value,'str1')'''
+                                    Histo.etat_client=regex1(sheet["L"][i].value,'str')
+                                    cp=regex1(sheet["N"][i].value,'int')
+                                    if cp == 'Failed':
                                         reason='erreur  de numero dans la colonne  code postal ,veuillez verifier toute colonne avant d"envoyer'
                                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                         sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                         sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                         sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                        sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                        sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                        sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                        ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                        sheet["P"][i].value,sheet["Q"][i].value,reason])
                                         continue   
                                     else:
                                         Histo.cp=cp
-                                    Histo.ville=regex1(sheet["X"][i].value,'str1')
+                                    Histo.ville=regex1(sheet["O"][i].value,'str1')
                                     Histo.pays='France'
-                                    Histo.login_extranet=regex1(sheet["C"][i].value,'str1')
-                                    Histo.mpd_extranet=regex1(sheet["D"][i].value,'str1')
+                                    Histo.login_extranet=regex1(sheet["P"][i].value,'str1')
+                                    Histo.mpd_extranet=regex1(sheet["Q"][i].value,'str1')
                                     db.session.add(create)
                                     db.session.add(Histo)
                                     db.session.commit()
                                     Histo.prospect=create.id
                                     db.session.commit()
-                                    Bien1.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    '''Bien1.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                     sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                     sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                    ,sheet["AB"][i].value,sheet["AC"][i].value])
+                                    sheet["P"][i].value,sheet["Q"][i].value])'''
                                 else:
                                     ("Anomalie doublon")
                             else:
@@ -495,19 +473,13 @@ def lient(loc):
                                 sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                 sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                                 sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                                sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                                sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                                sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                                ,sheet["AB"][i].value,sheet["AC"][i].value,reason])
+                                sheet["P"][i].value,sheet["Q"][i].value,reason])
                         else:
                             anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                             sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                             sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
                             sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
-                            sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
-                            sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
-                            sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value
-                            ,sheet["AB"][i].value,sheet["AC"][i].value,"erreur dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"])
+                            sheet["P"][i].value,sheet["Q"][i].value,"erreur dans la colonne  reference,veuillez verifier toute colonne avant d'envoyer"])
         if anomalie == []:
             return True
         else:
@@ -524,8 +496,8 @@ def lient(loc):
             print(Bien1)
         else:
             return good1(Bien1)'''
-    except:
-        return 'Fake'
+    #except:
+   #     return 'Fake'
 
 
 

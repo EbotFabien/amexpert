@@ -30,10 +30,12 @@
                     <tr>
                         <th scope="col">ID</th>
                         <!-- <th scope="col">Reference</th> -->
-                        <!-- <th>Siret</th> -->
-                        <th scope="col">Type</th>
+                        <!-- <th>Siret</th> 
+                        <th scope="col">Type</th>-->
                         <th scope="col">SOCIETE</th> 
-                        <th scope="col">Nom et prenom</th>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prenom</th>
                         <!-- <th scope="col">L'enseigne</th>  -->
                         <th scope="col">Email</th>
                         <th scope="col">Tel</th>
@@ -62,9 +64,11 @@
                                 <td scope="row">{{client_.id}}</td>
                                 {#<td>{{client_.reference}}</td>#}
                                 {#<td>{{client_.siret}}</td>#}
-                                <td>{{client_.TYPE}}</td>
+                                {#<td>{{client_.TYPE}}</td>#}
                                 <td>{{client_.societe}}</td>
-                                <td>{{client_.titre}} {{client_.nom }}</td>
+                                <td>{{client_.titre}}</td>
+                                <td> {{client_.nom }}</td>
+                                <td>{{client_.prenom }}</td>
                                 {#<td>{{client_.enseigne}}</td>#}
                                 <td>{{client_.email }}</td>
                                 <td>{{client_.numero}}</td>

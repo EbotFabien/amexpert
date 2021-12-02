@@ -77,17 +77,20 @@ def arif(loc):
         wb_obj = openpyxl.load_workbook(loc,data_only=True)
         sheet=wb_obj.active
         
-        if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
-                    return False
+        '''if sheet["W"][0].value!='CODE POSTAL'and sheet["AB"][0].value!='Tel principal client'and sheet["J"][0].value!='Ref code client- service comptabilité'and sheet["P"][0].value!='Fonction responsable':
+                    return False'''
         for i in range(0,sheet.max_row):
-            print(loc)
+            #print(loc)
             if sheet["J"][i].value!='PROSPECT':
                     v=sheet["M"][i].value
                     if type(v)==int: 
                         if v  not in a:
                             cli=Client.query.filter_by(reference=int(sheet["M"][i].value)).first()
                             a.append(v)
-                            if cli :
+                            if cli:
+                                cli2=Tarifs.query.filter_by(reference_client=cli.id).first()
+                            if cli and  cli2 == None :
+
                                 tarif=Tarifs()
                                 edl_prix_std=regex1(sheet["BN"][i].value,'dec')   
                                 if edl_prix_std=="Failed":
@@ -1032,10 +1035,10 @@ def arif(loc):
                                 tarif.com_cell_planif_ref_agent_saisie=regex1(sheet["BL"][i].value,'perc')
 
                                 tarif.commentaire_libre =regex1(sheet["CQ"][i].value,'str1')
+                                tarif.reference_client=cli.id
                                 db.session.add(tarif)
                                 db.session.commit()
-                                tarif.reference_client=cli.id
-                                db.session.commit()
+                                
                                 Bien.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                 sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
                                 sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,

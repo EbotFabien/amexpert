@@ -161,7 +161,7 @@ class Expert_editForm(FlaskForm):
                                 validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
     Numero =StringField('Téléphone portable',
-                                validators=[validators.InputRequired(),validatep,length(min=10 ,max=10)])
+                                validators=[validators.InputRequired(),validatep,length(min=9 ,max=9)])
 
     email =StringField('E-mail')
 
@@ -708,7 +708,7 @@ class Client_Form(FlaskForm):
                            validators=[validators.InputRequired(),Email()])
 
     Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+                           validators=[validatep,length(min=9 ,max=9)])
 
     Adresse1=StringField('Adresse1')
     
@@ -790,7 +790,7 @@ class Client_edit(FlaskForm):
     email =StringField('E-mail')
 
     Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+                           validators=[validatep,length(min=9 ,max=9)])
 
     Adresse1=StringField('Adresse1')
     
@@ -854,7 +854,7 @@ class Negotiateur_Form(FlaskForm):
     email =StringField('E-mail')
 
     Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+                           validators=[validatep,length(min=9 ,max=9)])
 
     Adresse=StringField('Adresse')
 
@@ -897,7 +897,7 @@ class Negotiateur_Form1(FlaskForm):
                            validators=[validators.InputRequired(),Email()])
 
     Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+                           validators=[validatep,length(min=9 ,max=9)])
 
     Adresse=StringField('Adresse')
 

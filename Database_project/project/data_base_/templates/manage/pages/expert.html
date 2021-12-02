@@ -27,7 +27,9 @@
                     <thead>
                     <tr>
                         <th scope="col">id</th> 
-                        <th scope="col">Nom <br/>et prenom</th>
+                        <th scope="col">TITRE</th>
+                        <th scope="col">Nom </th>
+                        <th scope="col">Prenom</th>
                         <th scope="col">Type</th>
                         <th scope="col">Email</th>
                         <!-- <th>Email <br/>Perso</th> -->
@@ -66,7 +68,9 @@
                         {%for expert,history in Expert %}
                             <tr>
                                 <td scope="row">{{expert.id}}</td>
-                                <td>{{expert.TITRE}} {{expert.nom}}</td>
+                                <td>{{expert.genre}}</td>
+                                <td>{{expert.nom}}</td>
+                                <td>{{expert.prenom}}</td>
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.email}}</td>
                                 {#<td>{{expert.email_perso}}</td>#}
