@@ -1712,13 +1712,36 @@ def main():
     db.create_all()
     if current_user:
         clients = Client.query.filter_by(visibility=True).count()
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
         missions = Mission.query.filter_by(Visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
-        facturations =facturation_client.query.filter_by(visibility=True).count()
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        facturations =int(facturation_client.query.filter_by(visibility=True).count())+int(compte_mensuel.query.count())
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+        ano=Mission.query.filter(Mission.Anomalie==True).count()
+        gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+        ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+        facr=facturation_client.query.filter_by(valide=True).count()
+        facnotr=facturation_client.query.filter_by(valide=False).count()
+        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id)).count()
+        nexf=compte_mensuel.query.join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfng=compte_mensuel.query.filter(compte_mensuel.date_generation==None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
-
-        return render_template('manage/dashboard.html',expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        if current_user == 'Admin':
+            return render_template('manage/dashboard.html',actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        else:
+            return render_template('manage/dashboard.html',missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, highlight='dashboard')
         
     return redirect(url_for('users.login'))
 
@@ -2118,13 +2141,13 @@ def uploader_():
                 
             if table == 'mission':
                 #Base(loc)
-                '''Missions2(loc,'26')
+                Missions2(loc,'26')
                 Missions2(loc,'27')
                 Missions2(loc,'28')
                 Missions2(loc,'29')
-                Missions2(loc,'31')'''
+                Missions2(loc,'31')
                 
-                Missions1(loc)
+                #Missions1(loc)
                 '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))

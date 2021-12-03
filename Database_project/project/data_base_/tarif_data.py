@@ -13,7 +13,7 @@ def ex(name):
         return 0
     if name == '':
         return 0
-    cli=Expert.query.filter_by(nom=str(name.lower())).first()
+    cli=Expert.query.filter_by(full=str(name.lower())).first()
     if cli is not None:
         return cli.id
     else:

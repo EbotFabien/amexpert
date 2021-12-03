@@ -46,6 +46,21 @@ def regex1(data,Type):
                 return data
         else:
             return ''
+    if  Type=='str3':
+        if type(data)==str:
+            if data == 'xxx':
+                return ''
+            if data == 'XXX':
+                return ''
+            if data == 'None':
+                return ''
+            if data == None:
+                return ''
+            else:
+                return data.lower()
+                
+        else:
+            return ''
 
     if  Type=='int':
         if type(data) == int:

@@ -3,10 +3,19 @@ import datetime
 import openpyxl
 import xlrd,xlwt
 from Database_project.project.data_base_ import db
-from Database_project.project.data_base_.Models import suivi_prospect,suivi_client,Client,prospect
+from Database_project.project.data_base_.Models import suivi_prospect,suivi_client,Client,prospect,Expert
 from Database_project.project.data_base_.client_data  import regex1
 
-
+def ex(name):
+    if name == None:
+        return 0
+    if name == '':
+        return 0
+    cli=Expert.query.filter_by(full=str(name.lower())).first()
+    if cli is not None:
+        return cli.id
+    else:
+        return 0
 
 def suiv(loc):
     try:

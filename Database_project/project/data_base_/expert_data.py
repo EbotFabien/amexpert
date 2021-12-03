@@ -53,7 +53,8 @@ def xpert(loc):
                     his=Expert_History()
                     
                     exp.nom=regex1(sheet["A"][i].value,'str1')
-                    exp.full=regex1(sheet["O"][i].value,'str1')
+                    exp.full=regex1(sheet["O"][i].value,'str3')
+                    exp.genre=regex1(sheet["P"][i].value,'str1')
                     exp.prenom=regex1(sheet["B"][i].value,'str1')
                     '''numero=regex1(sheet["S"][i].value,'int')
                     if numero == 'Failed':

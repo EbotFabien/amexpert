@@ -1043,7 +1043,7 @@ def Missions(loc):
         if sheet["L"][i].value is None:
             SA=0
         else:
-            AS=Expert.query.filter_by(nom=str(sheet["L"][i].value.lower())).first()
+            AS=Expert.query.filter_by(full=str(sheet["L"][i].value.lower())).first()
             if AS is not None:
                 SA= AS.id
             if AS is None :
@@ -1051,7 +1051,7 @@ def Missions(loc):
         if sheet["R"][i].value is None:
             IV=0
         else:
-            INTERV=Expert.query.filter_by(nom=str(sheet["R"][i].value.lower())).first()
+            INTERV=Expert.query.filter_by(full=str(sheet["R"][i].value.lower())).first()
             if INTERV is not None:
                 IV= INTERV.id
             if INTERV is None  :
@@ -1059,7 +1059,7 @@ def Missions(loc):
         if sheet["AL"][i].value is None:
             MC=0
         else:
-            M_C=Expert.query.filter_by(nom=str(sheet["AL"][i].value.lower())).first()
+            M_C=Expert.query.filter_by(full=str(sheet["AL"][i].value.lower())).first()
             if M_C is not None:
                 MC= M_C.id
             if M_C is None  :
@@ -1067,7 +1067,7 @@ def Missions(loc):
         if sheet["AN"][i].value is None:
             AC=0
         else:
-            A_C=Expert.query.filter_by(nom=str(sheet["AN"][i].value.lower())).first()
+            A_C=Expert.query.filter_by(full=str(sheet["AN"][i].value.lower())).first()
             if A_C is not None:
                 AC= A_C.id
             if A_C is None  :
@@ -1076,7 +1076,7 @@ def Missions(loc):
         if sheet["BR"][i].value is None:
             RCD=0
         else:
-            R_CD=Expert.query.filter_by(nom=str(sheet["BR"][i].value.lower())).first()
+            R_CD=Expert.query.filter_by(full=str(sheet["BR"][i].value.lower())).first()
             if R_CD is not None:
                 RCD= R_CD.id
             if R_CD is None  :
@@ -1085,7 +1085,7 @@ def Missions(loc):
         if sheet["BT"][i].value is None:
             ACD=0
         else:
-            A_CD=Expert.query.filter_by(nom=str(sheet["BT"][i].value.lower())).first()
+            A_CD=Expert.query.filter_by(full=str(sheet["BT"][i].value.lower())).first()
             if A_CD is not None:
                 ACD= A_CD.id
             if A_CD is None  :
@@ -1094,7 +1094,7 @@ def Missions(loc):
         if sheet["BV"][i].value is None:
             ACT=0
         else:
-            A_CT=Expert.query.filter_by(nom=str(sheet["BV"][i].value.lower())).first()
+            A_CT=Expert.query.filter_by(full=str(sheet["BV"][i].value.lower())).first()
             if A_CT is not None:
                 ACT= A_CT.id
             if A_CT is None  :
@@ -1103,7 +1103,7 @@ def Missions(loc):
         if sheet["BX"][i].value is None:
             RCT=0
         else:
-            R_CT=Expert.query.filter_by(nom=str(sheet["BX"][i].value.lower())).first()
+            R_CT=Expert.query.filter_by(full=str(sheet["BX"][i].value.lower())).first()
             if R_CT is not None:
                 RCT= R_CT.id
             if R_CT is None  :
@@ -1112,7 +1112,7 @@ def Missions(loc):
         if sheet["BZ"][i].value is None:
             SCT=0
         else:
-            S_CT=Expert.query.filter_by(nom=str(sheet["BZ"][i].value.lower())).first()
+            S_CT=Expert.query.filter_by(full=str(sheet["BZ"][i].value.lower())).first()
             if S_CT is not None:
                 SCT= S_CT.id
             if S_CT is None  :
@@ -1121,7 +1121,7 @@ def Missions(loc):
         if sheet["CB"][i].value is None:
             RCP=0
         else:
-            R_CP=Expert.query.filter_by(nom=str(sheet["CB"][i].value.lower())).first()
+            R_CP=Expert.query.filter_by(full=str(sheet["CB"][i].value.lower())).first()
             if R_CP is not None:
                 RCP= R_CP.id
             if R_CP is None  :
@@ -1130,7 +1130,7 @@ def Missions(loc):
         if sheet["CD"][i].value is None:
             SCP=0
         else:
-            S_CP=Expert.query.filter_by(nom=str(sheet["CD"][i].value.lower())).first()
+            S_CP=Expert.query.filter_by(full=str(sheet["CD"][i].value.lower())).first()
             if S_CP is not None:
                 SCP= S_CP.id
             if S_CP is None  :
@@ -1139,7 +1139,7 @@ def Missions(loc):
         if sheet["CF"][i].value is None:
             ASCP=0
         else:
-            AS_CP=Expert.query.filter_by(nom=str(sheet["CF"][i].value.lower())).first()
+            AS_CP=Expert.query.filter_by(full=str(sheet["CF"][i].value.lower())).first()
             if AS_CP is not None:
                 ASCP= AS_CP.id
             if AS_CP is None  :
@@ -1789,7 +1789,7 @@ def date_(floa,date):
             return floa
 
 def Missions1(loc):
-    try:
+    #try:
         wb = xlrd.open_workbook(loc)
 
         sheet = wb.sheet_by_index(0)
@@ -1812,7 +1812,7 @@ def Missions1(loc):
             if name[11] is None:
                 SA=0
             else:
-                AS=Expert.query.filter_by(nom=str(name[11].lower())).first()
+                AS=Expert.query.filter_by(full=str(name[11].lower())).first()
                 if AS is not None:
                     SA= AS.id
                 if AS is None :
@@ -1820,7 +1820,7 @@ def Missions1(loc):
             if name[17] is None:
                 IV=0
             else:
-                INTERV=Expert.query.filter_by(nom=str(name[17].lower())).first()
+                INTERV=Expert.query.filter_by(full=str(name[17].lower())).first()
                 if INTERV is not None:
                     IV= INTERV.id
                 if INTERV is None  :
@@ -1828,7 +1828,7 @@ def Missions1(loc):
             if name[37] is None:
                 MC=0
             else:
-                M_C=Expert.query.filter_by(nom=str(name[37].lower())).first()
+                M_C=Expert.query.filter_by(full=str(name[37].lower())).first()
                 if M_C is not None:
                     MC= M_C.id
                 if M_C is None  :
@@ -1836,7 +1836,7 @@ def Missions1(loc):
             if name[39] is None:
                 AC=0
             else:
-                A_C=Expert.query.filter_by(nom=str(name[39].lower())).first()
+                A_C=Expert.query.filter_by(full=str(name[39].lower())).first()
                 if A_C is not None:
                     AC= A_C.id
                 if A_C is None  :
@@ -1845,7 +1845,7 @@ def Missions1(loc):
             if name[69] is None:
                 RCD=0
             else:
-                R_CD=Expert.query.filter_by(nom=str(name[69].lower())).first()
+                R_CD=Expert.query.filter_by(full=str(name[69].lower())).first()
                 if R_CD is not None:
                     RCD= R_CD.id
                 if R_CD is None  :
@@ -1854,7 +1854,7 @@ def Missions1(loc):
             if name[71] is None:
                 ACD=0
             else:
-                A_CD=Expert.query.filter_by(nom=str(name[71].lower())).first()
+                A_CD=Expert.query.filter_by(full=str(name[71].lower())).first()
                 if A_CD is not None:
                     ACD= A_CD.id
                 if A_CD is None  :
@@ -1863,7 +1863,7 @@ def Missions1(loc):
             if name[73] is None:
                 ACT=0
             else:
-                A_CT=Expert.query.filter_by(nom=str(name[73].lower())).first()
+                A_CT=Expert.query.filter_by(full=str(name[73].lower())).first()
                 if A_CT is not None:
                     ACT= A_CT.id
                 if A_CT is None  :
@@ -1872,7 +1872,7 @@ def Missions1(loc):
             if name[75] is None:
                 RCT=0
             else:
-                R_CT=Expert.query.filter_by(nom=str(name[75].lower())).first()
+                R_CT=Expert.query.filter_by(full=str(name[75].lower())).first()
                 if R_CT is not None:
                     RCT= R_CT.id
                 if R_CT is None  :
@@ -1881,7 +1881,7 @@ def Missions1(loc):
             if name[77] is None:
                 SCT=0
             else:
-                S_CT=Expert.query.filter_by(nom=str(name[77].lower())).first()
+                S_CT=Expert.query.filter_by(full=str(name[77].lower())).first()
                 if S_CT is not None:
                     SCT= S_CT.id
                 if S_CT is None  :
@@ -1890,7 +1890,7 @@ def Missions1(loc):
             if name[79] is None:
                 RCP=0
             else:
-                R_CP=Expert.query.filter_by(nom=str(name[79].lower())).first()
+                R_CP=Expert.query.filter_by(full=str(name[79].lower())).first()
                 if R_CP is not None:
                     RCP= R_CP.id
                 if R_CP is None  :
@@ -1899,7 +1899,7 @@ def Missions1(loc):
             if name[81] is None:
                 SCP=0
             else:
-                S_CP=Expert.query.filter_by(nom=str(name[81].lower())).first()
+                S_CP=Expert.query.filter_by(full=str(name[81].lower())).first()
                 if S_CP is not None:
                     SCP= S_CP.id
                 if S_CP is None  :
@@ -1908,7 +1908,7 @@ def Missions1(loc):
             if name[83] is None:
                 ASCP=0
             else:
-                AS_CP=Expert.query.filter_by(nom=str(name[83].lower())).first()
+                AS_CP=Expert.query.filter_by(full=str(name[83].lower())).first()
                 if AS_CP is not None:
                     ASCP= AS_CP.id
                 if AS_CP is None  :
@@ -2138,8 +2138,8 @@ def Missions1(loc):
             return True
         else:
             return failed(missions_)
-    except:
-        return 'Fake'
+    #except:
+     #   return 'Fake'
     
 
 

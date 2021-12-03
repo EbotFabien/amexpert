@@ -7,21 +7,31 @@
   <h2 class="title" style="color: #112A46;font-weight: 700;">Tableau de bord</h2>
     <div class="section-stats">
         <div class="card">
+            <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre clients</p>
             <h4 class="icon">{{client}}</h4>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="#">Client actif(s): {{actc}}</a>
+              <a class="dropdown-item" href="#">Client parti(s): {{patc}}</a>
+            </div>
         </div>
         <div class="card">
+          <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre d'agents</p>
             <h4 class="icon">{{expert}}</h4>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="#">Agent actif(s): {{acte}}</a>
+              <a class="dropdown-item" href="#">Agent parti(s): {{pate}}</a>
+            </div>
         </div>
         <div class="card">
             <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre de mission</p>
             <h4 class="icon">{{mission}}</h4>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Réglée</a>
-              <a class="dropdown-item" href="#">Non réglée</a>
-              <a class="dropdown-item" href="#">Anomalie</a>
+              <a class="dropdown-item" href="#">Réglée (s): {{reg}}</a>
+              <a class="dropdown-item" href="#">Non réglée (s): {{not_reg}}</a>
+              <a class="dropdown-item" href="#">Anomalie (s): {{ano}}</a>
             </div>
         </div>
         <div class="card">
@@ -29,10 +39,10 @@
           <p>nombre de factures</p>
           <h4 class="icon">{{facturation}}</h4>
           <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="#">Facture expert réglé</a>
-            <a class="dropdown-item" href="#">Facture expert non réglé</a>
-            <a class="dropdown-item" href="#">Facture client réglé</a>
-            <a class="dropdown-item" href="#">Facture client non réglé</a>
+            <a class="dropdown-item" href="#">Facture expert générée(s): {{gener}}</a>
+            <a class="dropdown-item" href="#">Facture expert Non générée(s): {{ngener}}</a>
+            <a class="dropdown-item" href="#">Facture client réglé (s): {{facr}}</a>
+            <a class="dropdown-item" href="#">Facture client non réglé (s): {{facnotr}}</a>
           </div>
         </div>
     </div>
