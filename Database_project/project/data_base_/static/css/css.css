@@ -339,7 +339,7 @@ a{
   background: #db7b1d;
   color: #373737!important;
   display: none;
-  width: 70%;
+  width: 100%;
   z-index: 222222;
   left: 100%;
   top: 0;
@@ -478,7 +478,7 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
 }
 .section-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(100%/5),1fr));
+  grid-template-columns: repeat(auto-fit, minmax(calc(150px/5),1fr));
   /* padding: 10px 50px; */
   margin-top: 25px;
   grid-gap: 10px;

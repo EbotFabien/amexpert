@@ -19,14 +19,14 @@ getMissionDataPerYearData().then(missions => {
         missionsPerYear.update()
 })
 
-async function getAmountWorkedPerYear () {
+async function getAmountWorkedPerYear (type="bar") {
     const URL = 'https://amexpert10.ddns.net/dashboard/missionencashyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
 }
 
-getAmountWorkedPerYear().then(amountPerYear => {
+getAmountWorkedPerYear(type="bar").then(amountPerYear => {
     const years = amountPerYear.data.map(
         function (index) {
             return index.year
@@ -36,6 +36,7 @@ getAmountWorkedPerYear().then(amountPerYear => {
             return index.total
         })
         totalAmountPerYear.config.data.labels = years
+        totalAmountPerYear.config.type = "line"
         totalAmountPerYear.config.data.datasets[0].data = AmountPerYear 
         totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
         totalAmountPerYear.update()
@@ -65,6 +66,7 @@ getMissionsPerMonth().then(amountPerMonth => {
 
 // setup 
 const data = {
+    type:'',
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
     label: '',
@@ -87,7 +89,7 @@ const data = {
         'rgba(255, 159, 64, 1)',
         'rgba(0, 0, 0, 1)'
     ],
-    borderWidth: 1
+    borderWidth: .5
     }]
 };
 

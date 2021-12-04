@@ -29,30 +29,15 @@
                 <thead class="">
                     <tr>
                         <th scope="col">ID</th>
-                        <!-- <th scope="col">Reference</th> -->
-                        <!-- <th>Siret</th> 
-                        <th scope="col">Type</th>-->
-                        <th scope="col">SOCIETE</th> 
                         <th scope="col">Titre</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prenom</th>
-                        <!-- <th scope="col">L'enseigne</th>  -->
                         <th scope="col">Email</th>
-                        <th scope="col">Tel</th>
-                        <!-- <th>Etat du client</th> -->
-                        <!--th>Abonnement</th-->
-                        <!-- <th scope="col">ADRESSE2</th> -->
-                        <!-- <th scope="col">CP</th> -->
-                        <!--th scope="col">Ville</th-->
-                        <!-- <th scope="col">Zone_de_région_du_client</th>>
-                        <th>CP</th>
-                        <th>Ville</th>
-                        <th>Pays</th>
-                        <th>Address1</th>
-                        <th>Address2</th--->
-                        <!--th>Login <br/>extranet</th>
-                        <th>Mdp <br/>extranet</th-->
-                        <th>Date <br/>creation</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col">Adresse</th>
+                        <th scope="col">Code POstal</th>
+                        <th scope="col">Ville</th>
+                        {#<th>Date <br/>creation</th>#}
                         <th></th>
                         <th></th>
                         <th></th>
@@ -62,16 +47,14 @@
                         {%for client_,history in cli_ent %}
                             <tr>
                                 <td scope="row">{{client_.id}}</td>
-                                {#<td>{{client_.reference}}</td>#}
-                                {#<td>{{client_.siret}}</td>#}
-                                {#<td>{{client_.TYPE}}</td>#}
-                                <td>{{client_.societe}}</td>
                                 <td>{{client_.titre}}</td>
                                 <td> {{client_.nom }}</td>
                                 <td>{{client_.prenom }}</td>
-                                {#<td>{{client_.enseigne}}</td>#}
                                 <td>{{client_.email }}</td>
                                 <td>{{client_.numero}}</td>
+                                <td>{{history.adresse1}}</td>
+                                <td>{{client_.CP}}</td>
+                                <td>{{client_.VILLE}}</td>
                                 {#<td>{{history.etat_client}}</td>#}
                                 <!-- td>{{history.abonnement}}</td--->
                                 <!--td>{{history.cp}}</td>
@@ -85,7 +68,7 @@
                                 <!--td>{{history.login_extranet}}</td>
                                 <td>{{history.mdp_extranet}}</td-->
                                 
-                                <td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>
+                                {#<td>{% if (client_.date_creation == None) %} {% else %} {{client_.date_creation.strftime('%d/%m/%Y')}} {% endif %}</td>#}
                                 <td> <a href="{{url_for('users.edit_client', id=client_.id)}}" title="modifier" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
                                 <td style="">
                                     <a href="{{url_for('users.show_client', id=client_.id)}}" title="voir tout les details" class="cb button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>

@@ -44,9 +44,7 @@ def client():
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
-    #aex=Expert.query.filter_by(id=6).first()
-    #aex.password=hashed_password
-    #db.session.commit()"
+    
     if current_user.TYPE == "Admin":
         client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
         history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
@@ -1715,6 +1713,7 @@ def main():
         actc = Client_History.query.filter_by(etat_client='Actif').count()
         patc = Client_History.query.filter_by(etat_client='Parti').count()
         missions = Mission.query.filter_by(Visibility=True).count()
+        prospects = prospect.query.filter_by(visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
         acte = Expert_History.query.filter_by(actif_parti='actif').count()
         pate = Expert_History.query.filter_by(actif_parti='Parti').count()
@@ -1738,8 +1737,8 @@ def main():
                                             expert_facturation.expert_id==current_user.id).count()
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
-        if current_user == 'Admin':
-            return render_template('manage/dashboard.html',actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        if current_user.TYPE== 'Admin':
+            return render_template('manage/dashboard.html', prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
         else:
             return render_template('manage/dashboard.html',missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, highlight='dashboard')
         
@@ -1934,7 +1933,7 @@ def edit_prospect(id):
         if form.validate_on_submit():
             f=form.validate3(form.email.data,form.client_id.data)
             if f==True:
-                flash(f"l'email es Deja pris",'Warning')
+                flash(f"l'email est Deja pris",'Warning')
                 return redirect(url_for('users.edit_prospect', id=client.id))
             
             if client.id==int(form.client_id.data):
