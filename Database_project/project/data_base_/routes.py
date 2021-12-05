@@ -237,7 +237,7 @@ def edit_client(id):
 @login_required
 def mission():
 
-    if current_user == 'Admin':
+    if current_user.TYPE == 'Admin':
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
         date=request.args.get('date')
@@ -1869,10 +1869,18 @@ def main():
         ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
         facr=facturation_client.query.filter_by(valide=True).count()
         facnotr=facturation_client.query.filter_by(valide=False).count()
-        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id)).count()
-        regexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
-        nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
-        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id),Mission.Anomalie==True)).count()
+        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id)).count()
+        regexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
+        nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
+        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
         nexf=compte_mensuel.query.join(
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
@@ -1882,8 +1890,7 @@ def main():
         nexfng=compte_mensuel.query.filter(compte_mensuel.date_generation==None).join(
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
-        expertencashperyear=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public.expert_facturation WHERE "expert_id" =:param3 GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})  
-        expertmissionpermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount FROM public."Mission" WHERE "ID_AS" =:param3 OR "ID_INTERV" =:param3 AND date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})
+       
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
         if current_user.TYPE== 'Admin':
@@ -2366,9 +2373,9 @@ def addlogin(id):
             return redirect(url_for('users.show_expert',id=id))
     return render_template('manage/pages/add_login.html',form=form,client=client)
 
-@users.app_errorhandler(404)
+'''@users.app_errorhandler(404)
 def error_404(error):
-    return render_template('errors/404.html'),404
+    return render_template('errors/404.html'),404''' 
 
 @users.app_errorhandler(403)
 def error_403(error):
@@ -3420,6 +3427,7 @@ def mes_factures(id):
 def download(mes,temps,id,save):
     if current_user: 
             name=Expert.query.filter_by(id=int(id)).first()
+            histo=Expert_History.query.filter_by(id=int(id)).first()
             now_utc = datetime.now(timezone.utc)
             start=datetime.combine(now_utc,datetime.min.time())
             if  temps == "nouvelle":
@@ -3434,10 +3442,10 @@ def download(mes,temps,id,save):
                         su.append(i.commision)
                     fin=sum(su)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3470,10 +3478,10 @@ def download(mes,temps,id,save):
                         su.append(i.commision)
                     fin=sum(su)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3504,11 +3512,13 @@ def gestion(id,save):
         for i in factura:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
-
+        total=facturation_client.query.filter_by(fact_mission=id).first()
         s1=set(abnormal)
         s2=set(factura)
         facture = list(s2.difference(s1))
-        name=factura[0].facturation_client__data_.client__data_.nom
+        name1=factura[0].facturation_client__data_.client__data_.id
+        name=Client.query.filter_by(id=name1).first()
+        his=Client_History.query.filter_by(id=name1).first()
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
         img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
         with open(img, 'rb') as image_file:
@@ -3518,10 +3528,10 @@ def gestion(id,save):
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=False,nro=NRO, facture=facture,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):
@@ -3727,15 +3737,16 @@ def currentmonth():
         'res':1,
         'data':data
     },200
-@users.route('/dashboard/expertencashpremonth')
-def expertencashpremonth():
-    expertencashpremonth=db.session.execute('SELECT date_trunc(:param,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public."Mission" WHERE "expert_id" =:param3 and date_trunc(:param2,"date_retrait_facture") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":id})  
-
+@users.route('/dashboard/expertmissionpermonth')
+def expertmissionpermonth():
+    
+    expertmissionpermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount FROM public."Mission" WHERE ("ID_AS"=:param3 OR "ID_INTERV"=:param3) AND "DATE_REALISE_EDL"=date_trunc(:param2,"DATE_REALISE_EDL") GROUP BY 1   ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})
+   
     data={}
 
     data=[]
 
-    for mission in expertencashpremonth:
+    for mission in expertmissionpermonth:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
@@ -3750,13 +3761,34 @@ def expertencashpremonth():
     },200
 @users.route('/dashboard/expertencashperyear')
 def expertencashperyear():
-    expertencashperyear=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public."Mission" WHERE "expert_id" =:param3 GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":id})  
+    expertencashperyear=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public.expert_facturation WHERE "expert_id" =:param3 AND "date_retrait_facture" IS NOT NULL GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})  
 
     data={}
 
     data=[]
 
     for mission in expertencashperyear:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            data.append(a)
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/expertencashpermonth')
+def expertencashpermonth():
+    expertencashpermonth=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public.expert_facturation WHERE "expert_id" =:param3 AND "date_retrait_facture" IS NOT NULL GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})  
+
+    data={}
+
+    data=[]
+
+    for mission in expertencashpermonth:
         if mission[0]!=None:
             a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
             data.append(a)
