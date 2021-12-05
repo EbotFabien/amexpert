@@ -666,6 +666,7 @@ class Mission(db.Model):
     POURCENTAGE_Agent_saisie_CEll_planif  = db.Column(db.DECIMAL(65,2),default=0.00) #float
 
     Anomalie  = db.Column(db.Boolean,default=False)
+    appli =db.Column(db.Boolean,default=False)
     Facex  = db.Column(db.Boolean,default=False)
     coherent  = db.Column(db.Boolean,default=True)
     reason = db.Column(db.String,default='')
@@ -809,7 +810,7 @@ class expert_facturation(db.Model):
     expert_id= db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))
     type_expert = db.Column(db.Integer, ForeignKey('Type_expert.id', onupdate="CASCADE", ondelete="CASCADE"))
     commision=db.Column(db.DECIMAL(65,2),default=0.00)
-    date_retrait_facture=db.Column(db.DateTime())
+    date_retrait_facture=db.Column(db.DateTime(),default=None)
     anomalie=db.Column(db.Boolean)
     envoye=db.Column(db.Boolean,default=False)  #(True/False)
     mission__data=db.relationship("compte_mensuel", 

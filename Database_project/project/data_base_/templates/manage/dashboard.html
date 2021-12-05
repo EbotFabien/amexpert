@@ -43,13 +43,14 @@
           <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
           <p>nombre de factures</p>
           <h4 class="icon">{{facturation}}</h4>
-          <small style="text-align: center;
-display: block;"><span class="has-text-centered">Nombre de factures extérieur</span> <br> </small> 
+          <!--small style="text-align: center;
+display: block;"><span class="has-text-centered">Nombre de factures extérieur</span> <br> </small--> 
           <div class="dropdown-menu dropdown-menu-end">
             <a class="dropdown-item" href="#">Facture expert générée(s): {{gener}}</a>
             <a class="dropdown-item" href="#">Facture expert Non générée(s): {{ngener}}</a>
-            <a class="dropdown-item" href="#">Facture client réglé (s): {{facr}}</a>
-            <a class="dropdown-item" href="#">Facture client non réglé (s): {{facnotr}}</a>
+            <a class="dropdown-item" href="#">Facture client importé: {{fact_importe}}</a>
+            <a class="dropdown-item" href="#">Facture  client réglé (s) depuis l'aplication: {{facr}}</a>
+            <a class="dropdown-item" href="#">Facture client non réglé (s) depuis l'aplication: {{facnotr}}</a>
           </div>
         </div>
     </div>
@@ -58,20 +59,20 @@ display: block;"><span class="has-text-centered">Nombre de factures extérieur</
         <div class="card">
             <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre de mission</p>
-            <h4 class="icon">{{expm}}</h4>
+            <h4 class="icon">{{missionexpert}}</h4>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Réglée (s): {{reg}}</a>
-              <a class="dropdown-item" href="#">Non réglée (s): {{not_reg}}</a>
-              <a class="dropdown-item" href="#">Anomalie (s): {{ano}}</a>
+              <a class="dropdown-item" href="#">Réglée (s): {{regexp}}</a>
+              <a class="dropdown-item" href="#">Non réglée (s): {{nregexp}}</a>
+              <a class="dropdown-item" href="#">Anomalie (s): {{anoexp}}</a>
             </div>
         </div>
         <div class="card">
           <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
           <p>nombre de factures</p>
-          <h4 class="icon">{{nexf}}</h4>
+          <h4 class="icon">{{factureexpert}}</h4>
           <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="#">Facture expert générée(s): {{nexfg}}</a>
-            <a class="dropdown-item" href="#">Facture expert <br/> Non générée(s): {{nexfng}}</a>
+            <a class="dropdown-item" href="#">Facture expert générée(s): {{factureexpertgenere}}</a>
+            <a class="dropdown-item" href="#">Facture expert <br/> Non générée(s): {{factureexpertnongenere}}</a>
           </div>
         </div>
     </div>
