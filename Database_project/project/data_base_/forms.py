@@ -21,6 +21,8 @@ def validatep(self,email):
 
 def validates(self,email):
         a=str(email.data)
+        print(len(a))
+        print(';')
         if len(a) < 14 or len(a)>14:
         
             raise ValidationError("14 chiffres")
@@ -720,8 +722,8 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[validators.InputRequired()])
     
-    Siret=IntegerField("Siret N°",
-                           validators=[validators.InputRequired(),validates])
+    Siret=StringField('Siret',
+                           validators=[validatep,length(min=14 ,max=14)])  
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])
@@ -796,14 +798,14 @@ class Client_edit(FlaskForm):
     
     Adresse2=StringField('Adresse2')
 
-    CP=IntegerField('Code Postal',
-                           validators=[validators.InputRequired()])
+    CP=StringField('Code Postal',
+                           validators=[validatep,length(min=5 ,max=5)])
     
     Ville=StringField('Ville',
                            validators=[validators.InputRequired()])
     
-    Siret=IntegerField("Siret N°",
-                           validators=[validators.InputRequired(),validates])
+    Siret=StringField('Siret',
+                           validators=[validatep,length(min=14 ,max=14)])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])
