@@ -1882,6 +1882,9 @@ def main():
         nexf=compte_mensuel.query.join(
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
+        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
         nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
@@ -1898,12 +1901,10 @@ def main():
         
     return redirect(url_for('users.login'))
 
-@users.route('/dashexpert',methods=['GET','POST'])
+'''@users.route('/dashexpert',methods=['GET','POST'])
 @login_required
-def dashexpert():
-    anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
-                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
-                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+def dashexpert():'''
+    
 
 @users.route('/client/<int:id>/négociateurs')
 @login_required
