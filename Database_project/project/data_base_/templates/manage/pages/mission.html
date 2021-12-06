@@ -11,7 +11,7 @@
     <span>Mission(s) Anomalie(s): {{ano}}</span>
     <div class="tile box" style="width: fit-content; margin: 0 auto;
     justify-content: space-evenly;
-    min-width: 900px;">
+    min-width: 950px;">
       <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
             <div class="column">
@@ -19,19 +19,21 @@
                 <div class="control is-small">
                   <input class="input is-small"  name="keyword" value="{{search}}" placeholder="Nom expert,reference client" type="text">
                 </div>
-                
               </div>
           </div>
-          <div class="column is-one-quarter">
+          <div class="column is-one-quarter" style="padding-left: 0px;">
             <div class="are-small">
                 <button class="button is-small is-success">Filtrer</button>
             </div>
           </div>
         </div>
       </form>
+     &nbsp;
+      <!-- / date -->
       <form method="GET" action="{{url_for('users.mission')}}">
+
         <div class="columns"> 
-            <div class="column">
+          <div class="column">
               <div class="field">
                 <div class="select is-small">
                   <select name="ron" >
@@ -41,16 +43,7 @@
                 </div>
               </div>
           </div>
-          <div class="column">
-            <div class="buttons are-small">
-                <button class="button is-success">Filtrer</button>
-            </div>
-          </div>
-        </div>
-      </form> &nbsp;
-      <!-- / date -->
-      <form method="GET" action="{{url_for('users.mission')}}">
-        <div class="columns"> 
+
             <div class="column">
               <div class="field">
                 <div class="control is-small">
