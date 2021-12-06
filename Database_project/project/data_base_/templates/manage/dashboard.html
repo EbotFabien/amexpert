@@ -202,3 +202,7 @@ display: block;"><span class="has-text-centered">Nombre de factures extérieur</
   </script>
     <!-- /.container-fluid -->
 {% endblock manage_content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/chart_statistiques.js')}}"></script>
+{% endblock scripts %}
