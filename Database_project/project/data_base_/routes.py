@@ -3449,7 +3449,8 @@ def choosedg(id):
 @login_required
 def mes_factures(id):
     mes=request.args.get('releve')
-    temps=request.args.get('time')      
+    temps=request.args.get('time')    
+    nom=Expert.query.filter_by(id=id).first()
     releve=Type_expert.query.join(expert_facturation,(expert_facturation.type_expert == Type_expert.id)).filter(and_(expert_facturation.expert_id==id,expert_facturation.envoye==False)).all()
     rel=[]
     test=[]
@@ -3466,16 +3467,16 @@ def mes_factures(id):
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation>=start - timedelta(days=30)).all()
         
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+        return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     
     if  temps == "ancienne":
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation<start - timedelta(days=30)).all()
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+        return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     mes=None
     temps=None
-    return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+    return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
 
 
 @users.route('/<mes>/<temps>/<id>/<save>/download')
