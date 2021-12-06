@@ -3241,8 +3241,8 @@ def create_facturee():
         #def ex(id):
         #rint(request)
         
-        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==None)).order_by(desc(Mission.id)).all())
-        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=None)).order_by(desc(Mission.id)).all())
+        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==0.00)).order_by(desc(Mission.id)).all())
+        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=0.00)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
         '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
@@ -3445,7 +3445,7 @@ def download(mes,temps,id,save):
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3481,7 +3481,7 @@ def download(mes,temps,id,save):
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
