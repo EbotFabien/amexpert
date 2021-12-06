@@ -1878,13 +1878,12 @@ def main():
         nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
                 Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
-        
-        nexf=compte_mensuel.query.join(
-                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
-                                            expert_facturation.expert_id==current_user.id).count()
         anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
                 Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+        nexf=compte_mensuel.query.join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
         nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
@@ -1897,14 +1896,9 @@ def main():
         if current_user.TYPE== 'Admin':
             return render_template('manage/dashboard.html',fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
         else:
-            return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,expertencashperyear=expertencashperyear,title='Portail', highlight='dashboard')
+            return render_template('manage/dashboard.html',expertmissionpermonth=expertmissionpermonth,anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,expertencashperyear=expertencashperyear,title='Portail', highlight='dashboard')
         
     return redirect(url_for('users.login'))
-
-'''@users.route('/dashexpert',methods=['GET','POST'])
-@login_required
-def dashexpert():'''
-    
 
 @users.route('/client/<int:id>/négociateurs')
 @login_required
