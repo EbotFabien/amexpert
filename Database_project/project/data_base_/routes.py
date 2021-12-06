@@ -1792,7 +1792,10 @@ def login():
     db.session.commit()'''
 
     if current_user.is_authenticated:
-       return redirect(url_for('users.main'))
+        if current_user.TYPE=='Admin':
+            return redirect(url_for('users.main'))
+        else:
+            return redirect(url_for('users.exdash'))
     form = LoginForm()
     if form.validate_on_submit():
         name=Expert.query.filter_by(login=form.username.data).first()#put login
@@ -1896,10 +1899,63 @@ def main():
         if current_user.TYPE== 'Admin':
             return render_template('manage/dashboard.html',fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
         else:
-            return render_template('manage/dashboard.html',expertmissionpermonth=expertmissionpermonth,anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,expertencashperyear=expertencashperyear,title='Portail', highlight='dashboard')
+            return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
         
     return redirect(url_for('users.login'))
 
+
+@users.route('/exdash',methods=['GET','POST'])
+@login_required
+def exdash():
+    if current_user:
+        clients = Client.query.filter_by(visibility=True).count()
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
+        missions = Mission.query.filter_by(Visibility=True).count()
+        prospects = prospect.query.filter_by(visibility=True).count()
+        Experts = Expert.query.filter_by(visibility=True).count()
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        facturations =int(Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count())+int(facturation_client.query.filter_by(visibility=True).count())+int(compte_mensuel.query.count())
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+        ano=Mission.query.filter(Mission.Anomalie==True).count()
+        fact_importe=Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count()
+        gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+        ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+        facr=facturation_client.query.filter_by(valide=True).count()
+        facnotr=facturation_client.query.filter_by(valide=False).count()
+        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id)).count()
+        regexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
+        nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
+        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+        nexf=compte_mensuel.query.join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfng=compte_mensuel.query.filter(compte_mensuel.date_generation==None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+       
+        mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
+        expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
+        if current_user.TYPE== 'Admin':
+            return render_template('manage/dashboard.html',fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        else:
+            return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
+        
+    return redirect(url_for('users.login'))
+    
 @users.route('/client/<int:id>/négociateurs')
 @login_required
 def negotiateur(id):
