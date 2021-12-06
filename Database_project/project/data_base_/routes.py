@@ -3445,7 +3445,7 @@ def download(mes,temps,id,save):
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3481,7 +3481,7 @@ def download(mes,temps,id,save):
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
