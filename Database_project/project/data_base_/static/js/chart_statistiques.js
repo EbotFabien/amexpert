@@ -16,7 +16,7 @@ getMissionDataPerYearData().then(missions => {
         })
         missionsPerYear.config.data.labels = years
         missionsPerYear.config.data.datasets[0].data = totalMissionsPerYear
-        missionsPerYear.config.data.datasets[0].label = 'Mission(s) par An'
+        //missionsPerYear.config.data.datasets[0].label = 'Mission(s) par An'
         missionsPerYear.update()
 })
 
@@ -37,10 +37,10 @@ getAmountWorkedPerYear(type="bar").then(amountPerYear => {
             return index.total
         })
         totalAmountPerYear.config.data.labels = years
-        totalAmountPerYear.config.type = "line"
+        //totalAmountPerYear.config.type = "line"
         //totalAmountPerYear.config.options.legend.display = false
         totalAmountPerYear.config.data.datasets[0].data = AmountPerYear 
-        totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
+        //totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
         totalAmountPerYear.update()
 })
 
@@ -62,54 +62,10 @@ getMissionsPerMonth().then(amountPerMonth => {
         })
     missionsPerMonth.config.data.labels = months
     missionsPerMonth.config.data.datasets[0].data  = total
-    missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par Mois'
+    //missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par Mois'
     missionsPerMonth.update()
 })
 
-// async function getExpertTotalPerMonth () {
-//     const URL = 'https://amexpert10.ddns.net/dashboard/expertencashpermonth'
-//     const response = await fetch(URL)
-//     const datapoints = await response.json()
-//     return datapoints
-// }
-
-// getExpertTotalPerMonth().then(amountPerMonth => {
-//     const months = amountPerMonth.data.map(
-//         function (index) {
-//             return index.month
-//         })
-//     const total = amountPerMonth.data.map(
-//         function (index) {
-//             return index.total
-//         })
-//     expertTotalPerMonth.config.data.labels = months
-//     expertTotalPerMonth.config.data.datasets[0].data  = total
-//     expertTotalPerMonth.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par mois sur l\'année en cours'
-//     expertTotalPerMonth.update()
-// })
-
-
-// async function getExpertTotalPerYear () {
-//     const URL = 'https://amexpert10.ddns.net/dashboard/expertencashperyear'
-//     const response = await fetch(URL)
-//     const datapoints = await response.json()
-//     return datapoints
-// }
-
-// getExpertTotalPerYear().then(amountPerMonth => {
-//     const year = amountPerMonth.data.map(
-//         function (index) {
-//             return index.year
-//         })
-//     const total = amountPerMonth.data.map(
-//         function (index) {
-//             return index.total
-//         })
-//     expertTotalPerMonth.config.data.labels = year
-//     expertTotalPerMonth.config.data.datasets[0].data  = total
-//     expertTotalPerMonth.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
-//     expertTotalPerMonth.update()
-// })
 // setup 
 const data = {
     type:'',
