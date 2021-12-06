@@ -1854,7 +1854,7 @@ def logout():
 @login_required
 def main():
     db.create_all()
-    if current_user:
+    if current_user.TYPE== 'Admin':
         clients = Client.query.filter_by(visibility=True).count()
         actc = Client_History.query.filter_by(etat_client='Actif').count()
         patc = Client_History.query.filter_by(etat_client='Parti').count()
@@ -1955,7 +1955,7 @@ def exdash():
             return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
         
     return redirect(url_for('users.login'))
-    
+
 @users.route('/client/<int:id>/négociateurs')
 @login_required
 def negotiateur(id):

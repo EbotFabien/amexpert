@@ -303,62 +303,61 @@
                                     <tr>
                                         <tr>
 											<th>No Mission</th>
-											<th>DATE REALISE EDL</th>
-											<th>Type</th>
-											<th>Proprietaire</th>
-											<th>Locataire</th>
-											<th>ville</th>
-											<th>Appt-Pav</th>
-											<th>Type</th>
-											<th>LOGEMENT MEUBLE</th>
-											<th>Surface/m<sup>2</sup></th>
-											<th>Tarif ht/€</th>
+											<th class="text-left" >DATE REALISE EDL</th>
+											<th class="text-right">Type</th>
+											<th class="text-right">Proprietaire</th>
+											<th class="text-right">Locataire</th>
+											<th class="text-right">ville</th>
+											<th class="text-right">Appt-Pav</th>
+											<th class="text-right">Type</th>
+											<th class="text-right">LOGEMENT MEUBLE</th>
+											<th class="text-right">Surface/m<sup>2</sup></th>
+											<th class="text-right">Tarif ht/€</th>
 										</tr>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {%for fac in facture %}
 										<tr>
-											<td>{{fac.mission__data_.id}}</td>
-											<td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
-											<td>{{fac.mission__data_.TYPE_EDL}}</td>
-											<td>{{fac.mission__data_.NOMPROPRIO}}</td>
-											<td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
-											<td>{{fac.mission__data_.Ville_Bien}}</td>
-											<td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
-											<td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
-											<td>{{fac.mission__data_.LOGEMENT_MEUBLE}}</td>
-											<td>{{fac.mission__data_.surface_logement1}}</td>
-											<td>{{fac.mission__data_.PRIX_HT_EDL}}</td>   
-										
+											<td class="no">{{fac.mission__data_.id}}</td>
+											<td class="text-left">{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
+											<td class="unit">{{fac.mission__data_.TYPE_EDL}}</td>
+											<td class="unit">{{fac.mission__data_.NOMPROPRIO}}</td>
+											<td class="unit">{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+											<td class="unit">{{fac.mission__data_.Ville_Bien}}</td>
+											<td class="unit">{{fac.mission__data_.TYPE_DE_BIEN}}</td>
+											<td class="unit">{{fac.mission__data_.TYPE_LOGEMENT}}</td>
+											<td class="unit">{{fac.mission__data_.LOGEMENT_MEUBLE}}</td>
+											<td class="unit">{{fac.mission__data_.surface_logement1}}</td>
+											<td class="qty">{{fac.mission__data_.PRIX_HT_EDL}}</td>   
 										</tr>    
 									{%endfor%}
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2"></td>
-                                        <td colspan="2">SUBTOTAL</td>
+                                        <td colspan="5"></td>
+                                        <td colspan="5">SUBTOTAL</td>
                                         <td>{{total}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"></td>
-                                        <td colspan="2">TAX 0</td>
+                                        <td colspan="5"></td>
+                                        <td colspan="5">TAX 0</td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"></td>
-                                        <td colspan="2">GRAND TOTAL</td>
+                                        <td colspan="5"></td>
+                                        <td colspan="5">GRAND TOTAL</td>
                                         <td>{{total.Montant_HT}}</td>
                                     </tr>
                                 </tfoot>
                             </table>
                             <div class="thanks">Merci!</div>
                             <div class="notices">
-                                <div>NOTICE:</div>
-                                <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                                <div></div>
+                                <div class="notice"></div>
                             </div>
                         </main>
-                        <footer>Invoice was created on a computer and is valid without the signature and seal.</footer>
+                        <footer></footer>
                     </div>
                     <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
                     <div></div>
