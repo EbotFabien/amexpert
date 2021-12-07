@@ -3,7 +3,14 @@
 <div style="" class="main-content">
     {% include 'manage/partials/search.html'%}
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem; margin-bottom: 10px;">Mes Factures</h2>
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem; margin-bottom: 10px;">
+        
+        {% if current_user.TYPE == 'Admin' %}
+            Facture(s) de {{nom}}
+        {% else %}
+            Mes Factures
+        {% endif %}
+    </h2>
       
     </div>
     <div class="tile box" style="width: fit-content; margin: 0 auto;">
