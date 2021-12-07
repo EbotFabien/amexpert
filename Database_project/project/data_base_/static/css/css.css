@@ -470,9 +470,10 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
 }
 .dropdown-menu.dropdown-menu-end.show {
   display: block;
-  width: 89%;
+  /*width: 89%;*/
   position: absolute;
-  top: 0px;
+  top: 30px;
+  left: 0px;
   background: #fff;
   border: 1px solid;
 }

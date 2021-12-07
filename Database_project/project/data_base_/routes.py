@@ -1949,11 +1949,9 @@ def exdash():
        
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
-        if current_user.TYPE== 'Admin':
-            return render_template('manage/dashboard.html',fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
-        else:
-            return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
-        
+        if current_user.TYPE != 'Admin':
+            return render_template('manage/pages/expert_dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
+         
     return redirect(url_for('users.login'))
 
 @users.route('/client/<int:id>/négociateurs')
@@ -3767,7 +3765,7 @@ def missionpermonth():
 
     for mission in missionspermonth:
         if mission[0]!=None:
-            a={"month":mission[0].strftime('%B'),"total":str(mission[1])}
+            a={"month":mission[0].strftime('%B').capitalize(),"total":str(mission[1])}
             data.append(a)
 
     #json_dump = json.dumps(data)
@@ -3847,7 +3845,7 @@ def expertencashpermonth():
 
     for mission in expertencashpermonth:
         if mission[0]!=None:
-            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            a={"month":mission[0].strftime('%B').capitalize(),"total":str(mission[1])}
             data.append(a)
 
     
