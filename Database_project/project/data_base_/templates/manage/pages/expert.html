@@ -6,7 +6,12 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Experts</h2>
       <a href="/ajouter/expert" title="Ajouter un expert" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
-
+    <span>Agent actif(s): {{acte}}</span> <br>
+    <span>Agent parti(s): {{pate}}</span> <br>
+    
+    <div class="tile box" style="width: fit-content; margin: 0 auto;
+    justify-content: space-evenly;
+    min-width: 950px;">
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
@@ -74,7 +79,7 @@
                                 <td>{{expert.TYPE}}</td>
                                 <td>{{expert.email}}</td>
                                 {#<td>{{expert.email_perso}}</td>#}
-                                <td>{% if expert.numero == None%} {% else %}{{expert.numero}} {% endif %}</td>
+                                <td>{% if expert.numero == None%} {% elif expert.numero == 0 %} {% else %}{{expert.numero}} {% endif %}</td>
                                 {#<td>{{expert.trigramme}}</td>
                                 <td>{{expert.siret}}</td>
                                 <td>{{expert.genre}}</td>

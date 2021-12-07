@@ -35,6 +35,41 @@ wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
+@users.route('/clean', methods=['GET', 'POST'])
+def clean():
+    cli=prospect.query.filter_by(visibility=True).all()
+    for i in cli:
+        if len(str(i.siret)) > 5 and i.societe == '':
+            i.TYPE ='Professionel'
+            db.session.commit()
+        if len(str(i.siret)) < 5 and i.societe != '':
+            i.TYPE ='Particulier'
+            db.session.commit()
+        if len(str(i.numero)) >= 10 :
+            i.anom=True
+            i.reason='Anomalie sur le numero de telephone'
+            db.session.commit()
+    cli=Client.query.filter_by(visibility=True).all()
+    for i in cli:
+         if len(str(i.numero)) == 9:
+            v=str(i.numero)
+            a='1'+v
+            i.numero=int('0'+v)
+            db.session.commit()
+            print(int(a))
+        #if len(str(i.siret)) > 5 and i.societe == '':
+        #    i.TYPE ='Professionel'
+        #    db.session.commit()
+        #if len(str(i.siret)) < 5 and i.societe != '':
+        #    i.TYPE ='Particulier'
+        #    db.session.commit()
+       
+        #if len(str(i.numero)) >= 10 :
+        #    i.anom=True
+        #    i.reason='Anomalie sur le numero de telephone'
+        #    db.session.commit()'''
+    return redirect(url_for('users.main'))
+
 @users.route('/client', methods=['GET', 'POST'])
 @login_required
 def client():
@@ -62,7 +97,12 @@ def client():
         #     client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         # else:
         #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        return render_template('manage/pages/client.html',cli_ent=zip(client_,history),legend="client", highlight='client')
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        ano = Client.query.filter_by(anom=True).count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
+        prospro = Client.query.filter_by(TYPE ='Professionel').count()
+        prospart = Client.query.filter_by(TYPE ='Particulier').count()
+        return render_template('manage/pages/client.html',prospro=prospro,prospart=prospart,ano=ano,actc=actc,patc=patc,cli_ent=zip(client_,history),legend="client", highlight='client')
     return redirect(url_for('users.main'))
  
 @users.route('/ajouter/client',methods=['GET','POST'])
@@ -242,9 +282,14 @@ def mission():
         key=request.args.get('keyword')
         date=request.args.get('date')
         date2=request.args.get('date2')
+        if date and date2:
+            date=datetime.strptime(request.args.get('date'),'%Y-%M-%d')
+            date=datetime.combine(date,datetime.min.time())
+            date2=datetime.strptime(request.args.get('date2'),'%Y-%M-%d')
+            date2=datetime.combine(date2,datetime.min.time())
+        Type = request.args.get('ron')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
-        Type = request.args.get('ron')
         reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
         notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
         ano=Mission.query.filter(Mission.Anomalie==True).count()
@@ -276,7 +321,13 @@ def mission():
             
                 mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                 return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
-            
+        if date and date2 and Type != None:
+                    if Type == "r":
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                    if Type == "nr":
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
         if date and date2:
             mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
             return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
@@ -334,6 +385,11 @@ def mission():
         key=request.args.get('keyword')
         date=request.args.get('date')
         date2=request.args.get('date2')
+        if date and date2:
+            date=datetime.strptime(request.args.get('date'),'%Y-%M-%d')
+            date=datetime.combine(date,datetime.min.time())
+            date2=datetime.strptime(request.args.get('date2'),'%Y-%M-%d')
+            date2=datetime.combine(date2,datetime.min.time())
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
         Type = request.args.get('ron')
@@ -384,7 +440,17 @@ def mission():
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
                 Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                 return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
-            
+        if date and date2 and Type != None:
+            if Type == "r":
+                mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            if Type == "nr":
+                mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
         if date and date2:
             mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
@@ -1428,7 +1494,9 @@ def expert():
         page = request.args.get('page', 1, type=int)
         expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
         history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
-        return render_template('manage/pages/expert.html',Expert=zip(expert_,history), legend="expert", highlight='expert')
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        return render_template('manage/pages/expert.html',acte=acte,pate=pate,Expert=zip(expert_,history), legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
 
@@ -1491,6 +1559,12 @@ def edit_expert(id):
         form = Expert_editForm()
         expert = Expert.query.filter_by(id=id).first_or_404()
         form.Expert_id.data=id
+        
+        if expert.numero == None:
+            expert.numero =0
+            db.session.commit()
+
+
         if form.validate_on_submit():
             
             f=form.validate2(form.email.data,form.Expert_id.data)
@@ -1858,6 +1932,8 @@ def main():
         clients = Client.query.filter_by(visibility=True).count()
         actc = Client_History.query.filter_by(etat_client='Actif').count()
         patc = Client_History.query.filter_by(etat_client='Parti').count()
+        prospro = prospect.query.filter_by(TYPE ='Professionel').count()
+        prospart = prospect.query.filter_by(TYPE ='Particulier').count()
         missions = Mission.query.filter_by(Visibility=True).count()
         prospects = prospect.query.filter_by(visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
@@ -1897,7 +1973,7 @@ def main():
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
         if current_user.TYPE== 'Admin':
-            return render_template('manage/dashboard.html',fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+            return render_template('manage/dashboard.html',prospro=prospro,prospart=prospart,fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
         else:
             return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
         
@@ -2065,7 +2141,10 @@ def prospect_():
         page = request.args.get('page', 1, type=int)
         client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
         history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
-        return render_template('manage/pages/prospect.html',Client=zip(client_,history),legend="client", highlight='prospect')
+        prospro = prospect.query.filter_by(TYPE ='Professionel').count()
+        prospart = prospect.query.filter_by(TYPE ='Particulier').count()
+        ano = prospect.query.filter_by(anom=True).count()
+        return render_template('manage/pages/prospect.html',ano=ano,prospro=prospro,prospart=prospart,Client=zip(client_,history),legend="client", highlight='prospect')
 
     
     return redirect(url_for('users.main'))
@@ -3460,7 +3539,11 @@ def mes_factures(id):
             rel.append(i)
     now_utc = datetime.now(timezone.utc)
     start=datetime.combine(now_utc,datetime.min.time())
+    
+
     if  temps == "nouvelle":
+        if mes == None:
+            return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation>=start - timedelta(days=30)).all()
@@ -3468,6 +3551,8 @@ def mes_factures(id):
         return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     
     if  temps == "ancienne":
+        if mes == None:
+            return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation<start - timedelta(days=30)).all()

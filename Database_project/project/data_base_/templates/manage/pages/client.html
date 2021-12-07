@@ -7,7 +7,14 @@
       <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Clients</h2>
       <a href="/ajouter/client" title="Ajouter un client" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
-
+    <span>Client actif(s): {{actc}}</span> <br>
+    <span>Client parti(s): {{patc}}</span> <br>
+    <span>Client Anomalie(s): {{ano}}</span> <br>
+    <span>Professionel(s): {{prospro}}</span> <br>
+    <span>Particulier(s): {{prospart}}</span> <br>
+    <div class="tile box" style="width: fit-content; margin: 0 auto;
+    justify-content: space-evenly;
+    min-width: 950px;">
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
@@ -37,6 +44,7 @@
                         <th scope="col">Adresse</th>
                         <th scope="col">Code POstal</th>
                         <th scope="col">Ville</th>
+                        <th scope="col">Anomalie</th>
                         {#<th>Date <br/>creation</th>#}
                         <th></th>
                         <th></th>
@@ -55,7 +63,7 @@
                                 <td>{{history.adresse1}}</td>
                                 <td>{{client_.CP}}</td>
                                 <td>{{client_.VILLE}}</td>
-                                {#<td>{{history.etat_client}}</td>#}
+                                <td>{{client_.reason}}</td>
                                 <!-- td>{{history.abonnement}}</td--->
                                 <!--td>{{history.cp}}</td>
                                 <td>{{history.ville}}</td>

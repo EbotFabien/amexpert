@@ -8,8 +8,13 @@
   {% if current_user.TYPE == "Admin" %}
     <div class="section-stats">
        <div class="card">
+            <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre de prospects</p>
             <h4 class="icon">{{prospects}}</h4>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="#">Professionel(s): {{prospro}}</a>
+              <a class="dropdown-item" href="#">Particulier(s): {{prospart}}</a>
+            </div>
         </div>
         <div class="card">
             <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
@@ -28,7 +33,7 @@
               <a class="dropdown-item" href="#">Agent actif(s): {{acte}}</a>
               <a class="dropdown-item" href="#">Agent parti(s): {{pate}}</a>
             </div>
-        </div>
+        </div> 
         <div class="card">
             <i class="fas fa-ellipsis-v fa-left" onclick="openSubCard(event)"></i>
             <p>nombre de mission</p>

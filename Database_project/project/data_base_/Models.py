@@ -31,6 +31,8 @@ class Client(db.Model):
     numero = db.Column(db.String,default='')
     siret=db.Column(db.BigInteger)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
+    anom= db.Column(db.Boolean,default=False) #you comment
+    reason= db.Column(db.String,default='')
     visibility =db.Column(db.Boolean,default=True)
   
 
@@ -69,6 +71,8 @@ class Expert(db.Model,UserMixin):
     numero = db.Column(db.BigInteger)
     code_tva=db.Column(db.String,default='')
     taux_tva=db.Column(db.DECIMAL(65,2),default=0.00)
+    anom= db.Column(db.Boolean,default=False)
+    reason= db.Column(db.String,default='')
     password = db.Column(db.String(60))
     visibility =db.Column(db.Boolean,default=True)
     
@@ -214,6 +218,8 @@ class prospect(db.Model):
     numero = db.Column(db.String,default='')
     siret=db.Column(db.BigInteger)
     date_creation =db.Column(db.DateTime,default=datetime.utcnow)
+    anom= db.Column(db.Boolean,default=False)
+    reason= db.Column(db.String,default='')
     visibility =db.Column(db.Boolean,default=True)
   
 
