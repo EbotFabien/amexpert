@@ -701,7 +701,7 @@ class Client_Form(FlaskForm):
                            validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[validators.InputRequired()])
@@ -784,7 +784,7 @@ class Client_edit(FlaskForm):
                            validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[validators.InputRequired()])
@@ -848,7 +848,7 @@ class Negotiateur_Form(FlaskForm):
        
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[validators.InputRequired()])
@@ -890,7 +890,7 @@ class Negotiateur_Form(FlaskForm):
 class Negotiateur_Form1(FlaskForm):  
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[validators.InputRequired()])
