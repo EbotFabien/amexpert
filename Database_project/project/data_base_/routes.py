@@ -307,8 +307,8 @@ def mission():
         date=request.args.get('date')
         date2=request.args.get('date2')
         if date and date2:
-            date=datetime.fromisoformat(date)
-            date2=datetime.fromisoformat(date2)
+            dat=datetime.fromisoformat(date)
+            dat2=datetime.fromisoformat(date2)
         Type = request.args.get('ron')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
@@ -328,7 +328,7 @@ def mission():
                         mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                 except:
-                    expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
+                    expert=Expert.query.filter(Expert.nom.contains(str(key.upper()))).first()
                     if expert:
                         mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
@@ -345,22 +345,22 @@ def mission():
                 return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
         if date and date2 and Type != None:
                     if Type == "r":
-                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
                     if Type == "nr":
-                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
         if date and date2:
-            mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=None,legend="mission", highlight='mission')
         
         if Type == "r":
             mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,Type=Type,legend="mission", highlight='mission')
         
         if Type == "nr":
             mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Type=Type,Mission=mission_,legend="mission", highlight='mission')
 
         if table and table2:
             if table == "mission":
@@ -408,8 +408,8 @@ def mission():
         date=request.args.get('date')
         date2=request.args.get('date2')
         if date and date2:
-            date=datetime.fromisoformat(date)
-            date2=datetime.fromisoformat(date2)
+            dat=datetime.fromisoformat(date)
+            dat2=datetime.fromisoformat(date2)
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
         Type = request.args.get('ron')
@@ -464,18 +464,18 @@ def mission():
             if Type == "r":
                 mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
-                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
             if Type == "nr":
                 mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
-                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=dat,Mission.DATE_REALISE_EDL<=date,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
         if date and date2:
             mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
-                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=dat,Mission.DATE_REALISE_EDL<=dat2,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,legend="mission", highlight='mission')
         
         if Type == "r":
             mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,

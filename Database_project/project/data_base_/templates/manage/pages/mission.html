@@ -168,14 +168,36 @@
                           </li>
                         {% endif %}
                       {% endif %}
-                      {% if date %}
-                        {% if request.referrer[30:34] == 'date' %}
+                      {% if Type and not date  %}
+                        {% if Type and not date %}
                             <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                              <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
                             </li>
                           {% else %} 
                             <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,page=page_num) }}">{{page_num}}</a>
+                              <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                        {% endif %}
+                      {% endif %}
+                      {% if date and Type == None %}
+                        {% if request.referrer[30:34] == date and date2 %}
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                          {% else %} 
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                        {% endif %}
+                      {% endif %}
+                      {% if date and Type != None %}
+                        {% if request.referrer[30:34] == 'date' and date2 %}
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
+                            </li>
+                          {% else %} 
+                            <li>
+                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
                             </li>
                         {% endif %}
                       {% endif %}
@@ -190,7 +212,7 @@
                             </li>
                         {% endif %}
                       {% endif %}
-                      {% if not date and not key and not table  %}
+                      {% if not date and not key and not table and not Type  %}
                         {% if Mission.page == page_num %}
                             <li>
                               <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
