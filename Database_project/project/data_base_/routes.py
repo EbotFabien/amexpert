@@ -25,6 +25,7 @@ import base64
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
+
 locale.setlocale(locale.LC_TIME,'fr_FR.UTF-8')
 
 users =Blueprint('users',__name__)
@@ -306,10 +307,8 @@ def mission():
         date=request.args.get('date')
         date2=request.args.get('date2')
         if date and date2:
-            date=datetime.strptime(request.args.get('date'),'%Y-%M-%d')
-            date=datetime.combine(date,datetime.min.time())
-            date2=datetime.strptime(request.args.get('date2'),'%Y-%M-%d')
-            date2=datetime.combine(date2,datetime.min.time())
+            date=datetime.fromisoformat(date)
+            date2=datetime.fromisoformat(date2)
         Type = request.args.get('ron')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
@@ -409,10 +408,8 @@ def mission():
         date=request.args.get('date')
         date2=request.args.get('date2')
         if date and date2:
-            date=datetime.strptime(request.args.get('date'),'%Y-%M-%d')
-            date=datetime.combine(date,datetime.min.time())
-            date2=datetime.strptime(request.args.get('date2'),'%Y-%M-%d')
-            date2=datetime.combine(date2,datetime.min.time())
+            date=datetime.fromisoformat(date)
+            date2=datetime.fromisoformat(date2)
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
         Type = request.args.get('ron')
