@@ -37,8 +37,13 @@ PER_PAGE = 10
 
 @users.route('/clean', methods=['GET', 'POST'])
 def clean():
-    cli=prospect.query.filter_by(visibility=True).all()
+    cli=Mission.query.filter(Mission.id>23000).all()
     for i in cli:
+        i.appli=False
+        db.session.commit()
+        '''i.anom=False
+        i.reason=''
+        db.session.commit()
         if len(str(i.siret)) > 5 and i.societe == '':
             i.TYPE ='Professionel'
             db.session.commit()
@@ -46,17 +51,38 @@ def clean():
             i.TYPE ='Particulier'
             db.session.commit()
         if len(str(i.numero)) >= 10 :
-            i.anom=True
-            i.reason='Anomalie sur le numero de telephone'
-            db.session.commit()
-    cli=Client.query.filter_by(visibility=True).all()
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()
+        if len(str(i.numero)) <= 8:
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()'''
+        #'''if len(str(i.numero)) == 9:
+        #    v=str(i.numero)
+        #    i.numero='0'+v
+        #    db.session.commit()'''
+    '''cli=Client.query.filter_by(visibility=True).all()
     for i in cli:
-         if len(str(i.numero)) == 9:
+        i.anom=False
+        i.reason=''
+        db.session.commit()
+        if len(str(i.numero)) < 9 :
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()
+        if len(str(i.numero)) == 9:
             v=str(i.numero)
-            a='1'+v
-            i.numero=int('0'+v)
+            i.numero='0'+v
             db.session.commit()
-            print(int(a))
+        if len(str(i.numero)) >= 10 :
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()'''
         #if len(str(i.siret)) > 5 and i.societe == '':
         #    i.TYPE ='Professionel'
         #    db.session.commit()
@@ -64,10 +90,7 @@ def clean():
         #    i.TYPE ='Particulier'
         #    db.session.commit()
        
-        #if len(str(i.numero)) >= 10 :
-        #    i.anom=True
-        #    i.reason='Anomalie sur le numero de telephone'
-        #    db.session.commit()'''
+         
     return redirect(url_for('users.main'))
 
 @users.route('/client', methods=['GET', 'POST'])
@@ -2429,13 +2452,13 @@ def uploader_():
                 
             if table == 'mission':
                 #Base(loc)
-                Missions2(loc,'26')
-                Missions2(loc,'27')
-                Missions2(loc,'28')
-                Missions2(loc,'29')
-                Missions2(loc,'31')
+                #Missions2(loc,'26')
+                #Missions2(loc,'27')
+                #Missions2(loc,'28')
+                #Missions2(loc,'29')
+                #Missions2(loc,'31')
                 
-                #Missions1(loc)
+                Missions1(loc)
                 '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
