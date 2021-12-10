@@ -39,8 +39,10 @@
                         <th scope="col">Titre</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prenom</th>
-                        <th scope="col">Email</th>
+                        <!--th scope="col">Email</th-->
                         <th scope="col">Téléphone</th>
+                        <th scope="col">Societé</th>
+                        <th scope="col">Siret</th>
                         <th scope="col">Adresse</th>
                         <th scope="col">Code POstal</th>
                         <th scope="col">Ville</th>
@@ -58,8 +60,10 @@
                                 <td>{{client_.titre}}</td>
                                 <td> {{client_.nom }}</td>
                                 <td>{{client_.prenom }}</td>
-                                <td>{{client_.email }}</td>
-                                <td>{{client_.numero}}</td>
+                                <!--td>{{client_.email }}</td-->
+                                <td>{% if (client_.numero == '0') %} {% else %} {{client_.numero}} {% endif %}</td>
+                                <td>{{client_.societe}}</td>
+                                <td>{% if (client_.siret == 0) %} {% else %} {{client_.siret}} {% endif %}</td>
                                 <td>{{history.adresse1}}</td>
                                 <td>{{history.cp}}</td>
                                 <td>{{history.ville}}</td>

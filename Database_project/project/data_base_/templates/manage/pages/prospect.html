@@ -35,7 +35,8 @@
                     <th>Prenom</th>
                     <!-- <th>L'enseigne</th> -->
                     <th>Societé</th>
-                    <th>Email</th>
+                    <th>Siret</th>
+                    <!--th>Email</th-->
                     <th>Téléphone</th>
                     <th>Adresse</th>
                     <th>Code <br/>Postal</th> 
@@ -63,8 +64,9 @@
                         <td>{{client_.prenom}}</td>
                         {#<td>{{client_.enseigne}}</td>#}
                         <td>{{client_.societe}}</td>
-                        <td>{{client_.email }}</td>
-                        <td>{{client_.numero}}</td>
+                        <td>{% if (client_.siret == 0) %} {% else %} {{client_.siret}} {% endif %}</td>
+                        <!--td>{{client_.email }}</td-->
+                        <td>{% if (client_.numero == '0') %} {% else %} {{client_.numero}} {% endif %}</td>
                         <td>{{history.adresse1}}</td>
                         <td>{{history.cp}}</td>
                         

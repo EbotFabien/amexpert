@@ -38,20 +38,20 @@ PER_PAGE = 10
 
 @users.route('/clean', methods=['GET', 'POST'])
 def clean():
-    cli=Mission.query.filter(Mission.id>23000).all()
+    cli=prospect.query.filter_by(visibility=True).all()
     for i in cli:
-        i.appli=False
-        db.session.commit()
+        '''i.appli=False
+        db.session.commit()'''
         '''i.anom=False
         i.reason=''
-        db.session.commit()
-        if len(str(i.siret)) > 5 and i.societe == '':
+        db.session.commit()'''
+        if len(str(i.siret)) > 5 or  i.societe != '':
             i.TYPE ='Professionel'
             db.session.commit()
         if len(str(i.siret)) < 5 and i.societe != '':
             i.TYPE ='Particulier'
             db.session.commit()
-        if len(str(i.numero)) >= 10 :
+        '''if len(str(i.numero)) >= 10 :
             if i.numero[0]!='0':
                 i.anom=True
                 i.reason='Anomalie sur le numero de telephone'
@@ -65,9 +65,15 @@ def clean():
         #    v=str(i.numero)
         #    i.numero='0'+v
         #    db.session.commit()'''
-    '''cli=Client.query.filter_by(visibility=True).all()
+    cli=Client.query.filter_by(visibility=True).all()
     for i in cli:
-        i.anom=False
+        if len(str(i.siret)) > 5 or  i.societe != '':
+            i.TYPE ='Professionel'
+            db.session.commit()
+        if len(str(i.siret)) < 5 and i.societe != '':
+            i.TYPE ='Particulier'
+            db.session.commit()
+        '''i.anom=False
         i.reason=''
         db.session.commit()
         if len(str(i.numero)) < 9 :
@@ -3371,7 +3377,7 @@ def chooseef():
             
             price=list()
             
-            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.DATE_REALISE_EDL<=end,Mission.Facex==False)).order_by(asc(Mission.id)).all())#check query
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=end,Mission.Facex==False)).order_by(asc(Mission.id)).all())#check query
             if mission_ != price:
                 for i in mission_:
                     price.append(i.PRIX_HT_EDL)
@@ -3394,8 +3400,8 @@ def create_facturee():
         #def ex(id):
         #rint(request)
         
-        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==0.00)).order_by(desc(Mission.id)).all())
-        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=0.00)).order_by(desc(Mission.id)).all())
+        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
+        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
         '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
