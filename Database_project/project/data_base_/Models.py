@@ -787,6 +787,7 @@ class compte_mensuel(db.Model):
     etat= db.Column(db.Boolean)#(En contrôle/Non acquitté)
     anomalie=db.Column(db.Boolean)
     total=db.Column(db.DECIMAL(65,2),default=0.00)
+    releve=db.Column(db.DECIMAL(65,2),default=0.00)
     mission__data=db.relationship("Mission", 
         primaryjoin=(mission == Mission.id),
         backref=db.backref('mission__cmpte',  uselist=False),  uselist=False)

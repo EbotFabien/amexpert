@@ -3400,7 +3400,7 @@ def create_facturee():
         #def ex(id):
         #rint(request)
         
-        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
+        #_mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
         '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
@@ -3420,6 +3420,7 @@ def create_facturee():
             Type=Type_expert.query.filter_by(id=3).first()
             ex=Expert.query.filter_by(id=i.ID_INTERV).first()
             tot=list()
+            Rel=list()
             if i.DATE_FACT_REGLEE != None:
                 mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],prix_mission=i.PRIX_HT_EDL,etat=True,commission_ac=Type.pourcentage*i.PRIX_HT_EDL)
                 db.session.add(mensuel)
@@ -3447,7 +3448,10 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
-                tot.append(expert.commision)
+                if mensuel.etat == True:
+                    tot.append(expert.commision)
+                else:
+                    Rel.append(expert.commision)
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
@@ -3460,10 +3464,14 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
-                tot.append(expert.commision)
+                if mensuel.etat == True:
+                    tot.append(expert.commision)
+                else:
+                    Rel.append(expert.commision)
             mensuel.total=sum(tot)
+            mensuel.releve=sum(Rel)
             db.session.commit()
-        for i in _mission:
+        '''for i in _mission:
             #implement facture number
             i.Facex =True
             db.session.commit()
@@ -3506,7 +3514,7 @@ def create_facturee():
                 spli=date1.split("-")
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
-                db.session.commit()
+                db.session.commit()'''
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
     return redirect(url_for('users.main'))
@@ -3604,14 +3612,19 @@ def download(mes,temps,id,save):
                     with open(img, 'rb') as image_file:
                          image= base64.b64encode(image_file.read()).decode()
                     su=list()
+                    re=list()
                     for i in new_rel:
-                        su.append(i.commision)
+                        if i.mission__data.etat == True:
+                            su.append(i.commision)
+                        else:
+                            re.append(i.commision)
                     fin=sum(su)
+                    releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3626,8 +3639,10 @@ def download(mes,temps,id,save):
                         send_pdf("vincent@resilion.eu",name.nom,n)
                         os.remove(n)
                         for i in new_rel:
-                            i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
-                            db.session.commit()
+                            print(i.id)
+                            if i.date_retrait_facture == None:
+                                i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
+                                db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
 
@@ -3640,14 +3655,19 @@ def download(mes,temps,id,save):
                     with open(img, 'rb') as image_file:
                          image= base64.b64encode(image_file.read()).decode()
                     su=list()
+                    re=list()
                     for i in new_rel:
-                        su.append(i.commision)
+                        if i.mission__data.etat == True:
+                            su.append(i.commision)
+                        else:
+                            re.append(i.commision)
                     fin=sum(su)
+                    releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3662,8 +3682,9 @@ def download(mes,temps,id,save):
                         send_pdf("vincent@resilion.eu",name.nom,n)
                         os.remove(n)
                         for i in new_rel:
-                            i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
-                            db.session.commit()
+                            if i.date_retrait_facture == None:
+                                i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
+                                db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
     return redirect(url_for('users.main'))
