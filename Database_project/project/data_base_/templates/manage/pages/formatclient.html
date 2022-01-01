@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <style>
+        @media print {
+            .new-page {
+                page-break-before: always;
+            }
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        tr:hover {
+            background-color: #D6EEEE;
+        }
+        
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        hr {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: 2em;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 3px;
+            width: 700px;
+        }
+        
+        .ticket3 {
+            width: 480px;
+            height: 150px;
+            /* margin-top: 40px; */
+            margin-left: 100px;
+            /* margin-right: auto;  */
+            border: 5px solid black;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            position: relative;
+        }
+        
+        .ticket {
+            width: 480px;
+            height: 200px;
+            /* margin-top: 40px; */
+            margin-left: 60px;
+            /* margin-right: auto;  */
+            border: 1px solid navy;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            position: relative;
+        }
+        
+        .ticket1 {
+            width: 300px;
+            height: 200px;
+            margin-top: 20px;
+            /* margin-left: auto; */
+            margin-right: auto;
+            border: 1px solid navy;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            position: relative;
+        }
+        
+        .left {
+            /* 
+      display: inline-block;
+      border-right: 1px dashed navy; */
+            height: 92%;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(4, auto);
+            grid-column-gap: 0px;
+            grid-row-gap: 10px;
+        }
+        
+        .rigthE {
+            /* display: inline-block;
+      border-right: 1px solid black;  */
+            height: 0%;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(4, auto);
+            grid-column-gap: 0px;
+            grid-row-gap: 10px;
+        }
+        /* .rightE{
+      display: inline-block;
+      height: 100%;
+      padding: 20px;
+       background-image: url('https://pdfmark.com/images/laughing.png');
+      background-repeat: no-repeat; 
+      background-size: 80px;
+      background-position: top 20px right 20px;
+    }  */
+        
+        html,
+        body,
+        td {
+            font-size: 13px;
+        }
+        
+        #items {
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #items th,
+        #items td {
+            padding: 5px;
+            border: 1px solid black;
+        }
+        
+        #items tr td {
+            text-align: right;
+            width: 100px;
+        }
+        
+        .showname {
+            font-size: 40px;
+            font-weight: bold;
+            color: #9900ff;
+        }
+        
+        #items tr td:first-child {
+            text-align: left;
+            width: auto;
+        }
+    </style> 
+</head>
+
+<body>
+    <table style="width: 800px; margin-left: auto; margin-right: auto">
+        <tr>
+            <td style="vertical-align: top; text-align: left">
+                <!-- <td style="vertical-align: top; width: 50%"> -->
+
+                <img src="data:;base64,{{image}}" width="100" height="130"> <br>
+                <strong> TRUSTEXPERTI3SE Ltd </strong><br> Registration / Enregistrement No 9949961 <br> 25 Station Road <br> B14 7SR Birmingham <br> Royaume Uni - UK <br>
+            </td>
+            <td style="vertical-align: top; text-align: right; margin-right: 500px">
+                <!-- <h2>INVOICE</h2>
+        <img src="https://pdfmark.com/Logo.png" style="width:80px; height:80px;">
+        <br><br> -->
+                <strong>
+            Facture / Invoice No :{{nro}}<br><br>
+            Date : {{total.Date_de_creation.strftime('%d. %m. %Y')}} <br><br>
+            Pays / Country:France<br><br> 
+            Client / Customer: {{Nom.nom}} {{Nom.prenom}}
+        </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top; padding-top: 20px; padding-bottom: 20px;">
+                <hr>
+                <div>
+                    <div class="ticket1">
+                        <div class="left">
+                            <div><strong>FACTURATION / BILLING :</strong></div>
+                            <div>{{Nom.nom}} {{Nom.prenom}}<br> <br> Client Numero</div>
+
+                        </div>
+                        <div class="ticket">
+                            <div class="rigthE">
+                                <strong>Par virement / By transfert to : </strong> <br> RELEVE D'IDENTITE BANCAIRE - STATEMENT OF ACCOUNT Numéro de compte bancaire international - International bank account number
+                                <strong>IBAN : <br><br>
+                     <strong>BIC / SWIFT</strong>
+                                </strong>
+                            </div>
+                            <div class="rigthE">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+            </td>
+        </tr>
+        <tr>
+    </table>
+    <table style="width: 800px; margin-left: auto; margin-right: auto">
+        <tr>
+            <td>
+                <center>
+                    <hr><strong>Règlement / Payment : xxxxxxxxx  </strong> <strong>Contact : </strong>
+                    <hr>
+                </center>
+                <h2>
+                    <center> Prestations de constat en état des lieux réalisées à votre demande, récapitulatif des missions page suivant.</center>
+                </h2>
+                <p style="margin-left: 100px; margin-right: auto"> <strong> Auto-liquidation TVA France </strong></p>
+
+
+                <div class="ticket3">
+                    <div class="rigthE">
+                        <strong>Montant / Amount : {{total.Montant_HT}}</strong>
+                        <strong>TVA : 0</strong>
+                        <strong>Total prix / price : {{total.Montant_HT}}</strong>
+                        <strong>Facture / Invoice No : {{nro}}<br><br>
+                          
+                  </div>
+                     
+              </div>
+            </td>
+          </tr>
+        
+
+
+
+    
+    </tr>
+
+    
+    
+
+  </table>
+<br><br>
+
+<p class="new-page">Page 2</p>
+  <table style="width: 800px; margin-left: auto; margin-right: auto">
+      
+        <thead>
+            <tr>
+                <td style="vertical-align: top; text-align: left">
+              <!-- <td style="vertical-align: top; width: 50%"> -->
+                
+                <img src="data:;base64,{{image}}" width="100" height="130"> <br>
+                <strong> TRUSTEXPERTI3SE Ltd </strong><br> Registration / Enregistrement No 9949961 <br> 25 Station Road <br> B14 7SR Birmingham <br> Royaume Uni - UK <br>
+                  </td>
+      
+            </tr>
+            <tr>
+                <strong>  <th>No Mission</th>
+                    <th>DATE REALISE EDL</th>
+                    <th>Type</th>
+                    <th>Proprietaire</th>
+                    <th>Locataire</th>
+                    <th>ville</th>
+                    <th>Appt-Pav</th>
+                    <th>Type</th>
+                    <th>LOGEMENT MEUBLE</th>
+                    <th>Surface/m<sup>2</sup></th>
+                    <th>Tarif ht/€</th>
+            </tr></strong>
+        </thead>
+        <tbody>
+            {%for fac in factura %}
+                <tr>
+                    <td>{{fac.mission__data_.id}}</td>
+                    <td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
+                    <td>{{fac.mission__data_.TYPE_EDL}}</td>
+                    <td>{{fac.mission__data_.NOMPROPRIO}}</td>
+                    <td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+                    <td>{{fac.mission__data_.Ville_Bien}}</td>
+                    <td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
+                    <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
+                    <td>{{fac.mission__data_.LOGEMENT_MEUBLE}}</td>
+                    <td>{{fac.mission__data_.surface_logement1}}</td>
+                    <td>{{fac.mission__data_.PRIX_HT_EDL}}</td>   
+                </tr>    
+            {%endfor%}
+        </tbody>
+        
+            
+    </table>
+
+
+</body>
+
+</html>

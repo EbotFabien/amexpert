@@ -4205,10 +4205,10 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4247,10 +4247,10 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4300,10 +4300,10 @@ def gestion(id,save):
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):
