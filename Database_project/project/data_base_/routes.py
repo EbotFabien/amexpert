@@ -3,7 +3,7 @@ from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient,lienta
+from Database_project.project.data_base_.client_data  import lient,lienta,clientdoc
 from Database_project.project.data_base_.expert_data  import xpert,xperte
 from Database_project.project.data_base_.tarif_data  import arif
 from Database_project.project.data_base_.Suivi  import suiv
@@ -2885,7 +2885,9 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             if table == 'client':
-                    lienta(loc)
+                    #lienta(loc)
+                    client=Client.query.all()
+                    clientdoc(client,loc)
                     '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
