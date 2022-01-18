@@ -286,54 +286,6 @@ class suivi_prospect(db.Model):
     def __repr__(self):
         return '<suivi_prospect %r>' %self.id
 
-class Facturation(db.Model):
-    __table_args__ = {'extend_existing': True}
-
-    __tablename__ = 'Facturation'
-
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    Facture_no  = db.Column(db.Integer)
-    Date_    = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    Pays  = db.Column(db.String,default='')
-    Destinataire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
-    expediteur  = db.Column(db.Integer, db.ForeignKey('Expert.id'))
-    client_data_=db.relationship("Client", 
-        primaryjoin=(Destinataire == Client.id),
-        backref=db.backref('client_data_',  uselist=False),  uselist=False)
-
-    Montant  = db.Column(db.String,default='')
-    TVA  = db.Column(db.String,default='')
-    Total  = db.Column(db.String,default='')
-    Type  = db.Column(db.String,default='')
-    Proprietaire  = db.Column(db.Integer, db.ForeignKey('Client.id'))
-    Locataire   =db.Column(db.Integer, db.ForeignKey('Client.id'))
-    Ville  = db.Column(db.String,default='')
-    Surface  = db.Column(db.String,default='')
-    Tarif  = db.Column(db.String,default='')
-    Appt_Pav  = db.Column(db.String,default='')
-    Visibility =db.Column(db.Boolean,default=True)
-    
-
-    def __init__(self,pays,des,exp,mont,total,Type,prop,locat,ville,surface,tarif,appt_pav):
-        self.Pays =pays
-        self.Destinataire =des
-        self.expediteur =exp
-        self.Montant =mont
-        self.Total =total
-        self.Type =Type
-        self.Proprietaire =prop
-        self.Locataire =locat
-        self.Ville =ville
-        self.Surface =surface
-        self.Tarif =tarif
-        self.Appt_Pav = appt_pav
-
-
-
-    def __repr__(self):
-        return '<Facturation %r>' %self.id
-
-
 
 
 
@@ -369,62 +321,11 @@ class Expert_History(db.Model):
     def __repr__(self):
         return '<Expert_History %r>' %self.id
 
-class Agenda(db.Model):
-    __table_args__ = {'extend_existing': True}
-
-    __tablename__ = 'Agenda'
-
-    id = db.Column(db.Integer,primary_key=True)
-    Ref_agenda_date=db.Column(db.DateTime(),default=datetime.utcnow)
-    client_id=db.Column(db.Integer, ForeignKey('Client.id', onupdate="CASCADE", ondelete="CASCADE")) 
-    client_data_=db.relationship("Client", 
-        primaryjoin=(client_id == Client.id),
-        backref=db.backref('_client_data_',  uselist=False),  uselist=False)
-
-    Organisateur = db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  
-    Organisateur_data_=db.relationship("Expert", 
-        primaryjoin=(Organisateur == Expert.id),
-        backref=db.backref('Organisateur_data_',  uselist=False),  uselist=False)
-
-    Titre_du_Rdv =db.Column(db.String,default='')
-    Adresse1_Rdv =db.Column(db.String,default='')
-    Adresse2_Rdv =db.Column(db.String,default='')
-    Code_postal_Rdv =db.Column(db.String,default='')
-    Ville_du_Rdv =db.Column(db.String,default='')
-    Date_Rdv =db.Column(db.String,default='')
-    Heure_début_Rdv =db.Column(db.String,default='')
-    Heure_fin_Rdv =db.Column(db.String,default='')
-    Date_Rdv_annulé =db.Column(db.String,default='')
-    Informations_reservees_service_planification =db.Column(db.String,default='')
-    Informations_generales =db.Column(db.String,default='')
-    Informations_de_suivi_de_Rdv =db.Column(db.String,default='')
-    Chemin_de_fichier_joint =db.Column(db.String,default='')
-    visibility =db.Column(db.Boolean,default=True)
 
 
-    def __repr__(self):
-        return '<Agenda %r>' %self.id
 
     
 
-class Agenda_expert(db.Model):
-    __table_args__ = {'extend_existing': True}
-
-    __tablename__ = 'Agenda_expert'
-
-
-    id = db.Column(db.Integer,primary_key=True)
-
-    agenda_taken=db.Column(db.Integer, ForeignKey('Agenda.id', onupdate="CASCADE", ondelete="CASCADE")) 
-
-    Participant_invité =db.Column(db.Integer, ForeignKey('Expert.id', onupdate="CASCADE", ondelete="CASCADE"))  
-
-    validation = db.Column(db.Boolean,default=False)
- 
-    visibility =db.Column(db.Boolean,default=True)
-
-    def __repr__(self):
-        return '<Agenda_expert %r>' %self.id
 
 
 class Tarif_base(db.Model):

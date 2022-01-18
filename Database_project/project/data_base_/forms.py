@@ -7,7 +7,7 @@ from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base
 from wtforms.fields.html5 import DateField
 from sqlalchemy import or_, and_, desc,asc
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
-from datetime import date,timedelta,datetime
+from datetime import date,timedelta,datetime,timezone 
 import wtforms.validators as validators
 
 
@@ -67,9 +67,19 @@ class mission_export(FlaskForm):
                              choices=[('Semaine', 'Semaine'), ('Mois', 'Mois'),('Jour','Jour')])
 
     Date =DateField('Date Export',
-                           validators=[validators.InputRequired()])  	
+                    format='%Y-%m-%d',
+                    validators=[validators.InputRequired()]
+                   )  	
 
     submit = SubmitField('Exporter')
+
+    #def __init__(self, *args, **kwargs):
+    #    super().__init__(*args, **kwargs)
+    '''def val(self,val):
+        if not self.Date.data:
+            now_utc = datetime.now(timezone.utc)
+            start=datetime.combine(now_utc,datetime.min.time())
+            self.Date.data = val'''
 
 class RegistrationForm(FlaskForm):
     def validate_email(self,email):

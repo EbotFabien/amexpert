@@ -1,5 +1,5 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
-from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Agenda,Facturation,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
+from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
@@ -2605,17 +2605,7 @@ def search ():
             else:
                 title = "Mission"
             return render_template('manage/pages/search_results.html', missions=missions, highlight='mission', title=title, table=table, search=request.args.get('keyword')) 
-        elif table == 'facturation':
-            try :
-                if isinstance(int(key),int) == True:
-                   facturation_ = Facturation.query.filter(and_(or_(Facturation.Facture_no==int(key),Facturation.Pays.like(search),Facturation.Destinataire==int(key),Facturation.expéditeur==int(key),Facturation.Type.like(search)),Facturation.Visibility == True)).all()
-            except:    
-                facturation_ = Facturation.query.filter(and_(or_(Facturation.Pays.like(search),Facturation.Type.like(search)),Facturation.Visibility == True)).all()
-            if len(facturation_) > 1:
-                title = "Facturations"  #this search needs to be checked when fixing the db
-            else:
-                title = "Facturation"
-            return render_template('manage/pages/search_results.html', highlight='', Facturation__=facturation_, title=title, table=table, search=request.args.get('keyword')) 
+        
 
 
 
@@ -3638,8 +3628,7 @@ def download(mes,temps,id,save):
                         os.rename(fil,n)
                         send_pdf("vincent@resilion.eu",name.nom,n)
                         os.remove(n)
-                        for i in new_rel:
-                            print(i.id)
+                        for i in new_rel: 
                             if i.date_retrait_facture == None:
                                 i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
                                 db.session.commit()
@@ -3745,6 +3734,8 @@ def gestion(id,save):
 def exportm():
     if current_user.TYPE == "Admin":
             form=mission_export()
+            now_utc = datetime.now(timezone.utc)
+            start=datetime.combine(now_utc,datetime.min.time())
             if form.validate_on_submit():
                 temp=app.config['MISS']
                 mi=[]
@@ -3768,6 +3759,7 @@ def exportm():
                     name="missionex_"+gen_name()
                     return exo.export(mi,name)
                 flash(f'Pas de Mission','Warning')
+            
             return render_template('manage/pages/exportmission.html',form=form, highlight='mission')
     return redirect(url_for('users.main'))
 

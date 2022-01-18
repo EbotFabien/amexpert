@@ -17,8 +17,8 @@ class Config:
     SUIV=['Client','Responsable','Commentaire','Date Creation','Date Modification']
     UPLOAD_FOLDER=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'files')#os, 'files'.getcwd()+'/data_base_/static/files'
     UPLOAD_Export=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export')
-    WKHTMLTOPDF_BIN_PATH =r"/usr/local/bin"
-    #WKHTMLTOPDF_BIN_PATH =r"C:\Program Files\wkhtmltopdf\bin"
+    #WKHTMLTOPDF_BIN_PATH =r"/usr/local/bin"
+    WKHTMLTOPDF_BIN_PATH =r"C:\Program Files\wkhtmltopdf\bin"
     #WKHTMLTOPDF_USE_CELERY = True
     PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
     DEBUG = True
