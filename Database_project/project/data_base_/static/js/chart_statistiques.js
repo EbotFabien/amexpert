@@ -1,5 +1,6 @@
+
 async function getMissionDataPerYearData () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionperyear'
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionperyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
@@ -15,18 +16,18 @@ getMissionDataPerYearData().then(missions => {
         })
         missionsPerYear.config.data.labels = years
         missionsPerYear.config.data.datasets[0].data = totalMissionsPerYear
-        missionsPerYear.config.data.datasets[0].label = 'Mission(s) par An'
+        //missionsPerYear.config.data.datasets[0].label = 'Mission(s) par An'
         missionsPerYear.update()
 })
 
-async function getAmountWorkedPerYear () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionencashyear'
+async function getAmountWorkedPerYear (type="bar") {
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionencashyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
 }
 
-getAmountWorkedPerYear().then(amountPerYear => {
+getAmountWorkedPerYear(type="bar").then(amountPerYear => {
     const years = amountPerYear.data.map(
         function (index) {
             return index.year
@@ -36,13 +37,15 @@ getAmountWorkedPerYear().then(amountPerYear => {
             return index.total
         })
         totalAmountPerYear.config.data.labels = years
+        //totalAmountPerYear.config.type = "line"
+        //totalAmountPerYear.config.options.legend.display = false
         totalAmountPerYear.config.data.datasets[0].data = AmountPerYear 
-        totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
+        //totalAmountPerYear.config.data.datasets[0].label = 'Chiffre d\'affaire (€) par An'
         totalAmountPerYear.update()
 })
 
 async function getMissionsPerMonth () {
-    const URL = 'https://app.amexpert.pro/dashboard/missionpermonth'
+    const URL = 'https://amexpert10.ddns.net/dashboard/missionpermonth'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
@@ -59,12 +62,13 @@ getMissionsPerMonth().then(amountPerMonth => {
         })
     missionsPerMonth.config.data.labels = months
     missionsPerMonth.config.data.datasets[0].data  = total
-    missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par Mois'
+    //missionsPerMonth.config.data.datasets[0].label = 'Mission(s) par Mois'
     missionsPerMonth.update()
 })
 
 // setup 
 const data = {
+    type:'',
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
     label: '',
@@ -87,7 +91,7 @@ const data = {
         'rgba(255, 159, 64, 1)',
         'rgba(0, 0, 0, 1)'
     ],
-    borderWidth: 1
+    borderWidth: .5
     }]
 };
 
@@ -96,6 +100,19 @@ const config = {
     type: 'bar',
     data,
     options: {
+        plugins:{
+            legend: {
+                display: false
+            }
+        },
+        tooltips: {
+            callbacks: {
+            label: function(tooltipItem) {
+            console.log(tooltipItem)
+                return tooltipItem.yLabel;
+            }
+          }
+        },
         responsive: true,
         scales: {
             y: {
@@ -125,4 +142,15 @@ const totalAmountPerYear = new Chart(
     document.getElementById('totalAmountPerYear'),
     config
 );
+
+// const expertTotalPerMonth = new Chart(
+//     document.getElementById('expertTotalPerMonth'),
+//     config
+// );
+
+
+// const expertTotalPerYear = new Chart(
+//     document.getElementById('expertTotalPerYear'),
+//     config
+// );
 

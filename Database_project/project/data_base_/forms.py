@@ -12,6 +12,7 @@ import wtforms.validators as validators
 
 
 
+
  #bitvicessh
 def validatep(self,email):
         try :
@@ -20,10 +21,11 @@ def validatep(self,email):
             raise ValidationError("Le numero n'a pas ete bien saisie")
 
 def validates(self,email):
-        a=str(email.data)
-        if len(a) < 14 or len(a)>14:
-        
-            raise ValidationError("14 chiffres")
+        try :
+            int(email.data)
+            
+        except:
+            raise ValidationError("Le numero n'a pas ete bien saisie")
 
 def validatei(self,email):
         a=str(email.data)
@@ -157,11 +159,11 @@ class Expert_editForm(FlaskForm):
         if email:
             return True
 
-    username =StringField("Identifiant",
-                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
+    username =StringField("Identifiant")
+                                #validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
-    Numero =StringField('Téléphone portable',
-                                validators=[validators.InputRequired(),validatep,length(min=10 ,max=10)])
+    Numero =IntegerField('Téléphone portable',
+                                validators=[validators.InputRequired()])#,validatep,length(min=9 ,max=9)])
 
     email =StringField('E-mail')
 
@@ -179,11 +181,11 @@ class Expert_editForm(FlaskForm):
     secteur =StringField('Secteur')
 
 
-    siret =IntegerField('siret', validators=[validators.InputRequired(),validatep,validates])
+    siret =IntegerField('siret', validators=[validators.InputRequired()])
 
     trigramme =StringField('Trigramme')
 
-    code_tva =StringField('Code TVA', validators=[validators.InputRequired(),validatep,length(min=4 ,max=4)])
+    code_tva =StringField('Code TVA')
                         
     taux_tva =DecimalField('Taux TVA', validators=[validators.InputRequired()])
 
@@ -207,7 +209,7 @@ class Expert_editForm(FlaskForm):
 
     adresse2=StringField('Adresse 2')
 
-    cp=IntegerField('Code Postal')
+    cp=IntegerField('Code Postal', validators=[validators.InputRequired()])
     login_google=StringField('Login google')
     pwd_google=StringField('Pwd Google')
     login_backof=StringField('Login Backof')
@@ -699,7 +701,7 @@ class Client_Form(FlaskForm):
                            validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
                            validators=[validators.InputRequired()])
@@ -720,8 +722,8 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[validators.InputRequired()])
     
-    Siret=IntegerField("Siret N°",
-                           validators=[validators.InputRequired(),validates])
+    Siret=StringField('Siret',
+                           validators=[validatep,length(min=14 ,max=14)])  
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])
@@ -762,35 +764,38 @@ class Client_Form(FlaskForm):
 class Client_edit(FlaskForm):
 
     def validate2(self,email,client):
-        email = Client.query.filter(and_(Client.email==email,Client.id!=client)).first()
+        if email !='':
+            email = Client.query.filter(and_(Client.email==email,Client.id!=client)).first()
 
-        if email:
-            return True
+            if email:
+                return True
         
     def validate3(self,email,client):
-        email = prospect.query.filter(and_(prospect.email==email,prospect.id!=client)).first()
+        if email !='':
+            email = prospect.query.filter(and_(prospect.email==email,prospect.id!=client)).first()
 
-        if email:
-            return True
+            if email:
+                return True
     
     
 
     Type=SelectField('Type',
                              choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
 
-    Societe =StringField('Société',
-                           validators=[validators.InputRequired()])
+    Societe =StringField('Société')
+                           #validators=[validators.InputRequired()])
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Nom et prénom',
-                           validators=[validators.InputRequired()])
+    NOM =StringField('Nom et prénom')
+                           #validators=[validators.InputRequired()])
     
     email =StringField('E-mail')
 
-    Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+    Numero =IntegerField('Téléphone portable',
+                           validators=[validators.InputRequired()])
+                           #validators=[validatep,length(min=9 ,max=9)])
 
     Adresse1=StringField('Adresse1')
     
@@ -798,12 +803,13 @@ class Client_edit(FlaskForm):
 
     CP=IntegerField('Code Postal',
                            validators=[validators.InputRequired()])
+                           #validators=[validatep,length(min=5 ,max=5)])
     
-    Ville=StringField('Ville',
-                           validators=[validators.InputRequired()])
+    Ville=StringField('Ville')
+                           #validators=[validators.InputRequired()])
     
-    Siret=IntegerField("Siret N°",
-                           validators=[validators.InputRequired(),validates])
+    Siret=IntegerField('Siret',
+                           validators=[validators.InputRequired()])#,validatep])
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])
@@ -839,27 +845,28 @@ class Client_edit(FlaskForm):
 class Negotiateur_Form(FlaskForm):
 
     def nego(self,email,cont):
-        email = Client_negotiateur.query.filter(and_(Client_negotiateur.email==email,Client_negotiateur.id!=cont)).first()
+        if email !='':
+            email = Client_negotiateur.query.filter(and_(Client_negotiateur.email==email,Client_negotiateur.id!=cont)).first()
 
-        if email:
-            return True
+            if email:
+                return True
        
 
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Nom et prénom',
-                           validators=[validators.InputRequired()])
+    NOM =StringField('Nom et prénom')
+                           #validators=[validators.InputRequired()])
     
     email =StringField('E-mail')
 
-    Numero =StringField('Téléphone portable',
-                           validators=[validatep,length(min=10 ,max=10)])
+    Numero =IntegerField('Téléphone portable',
+                           validators=[validators.InputRequired()])
 
     Adresse=StringField('Adresse')
 
     CP=IntegerField('Code Postal',
-                           validators=[validators.InputRequired(),validatei])
+                           validators=[validators.InputRequired()])
     
     Ville=StringField('Ville')
     
@@ -887,14 +894,26 @@ class Negotiateur_Form(FlaskForm):
 
 class Negotiateur_Form1(FlaskForm):  
 
+    def validate_username(self,username):
+        user = Client_negotiateur.query.filter_by(nom=username.data).first()
+
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
+    def validate_email(self,email):
+        email = Client_negotiateur.query.filter_by(email=email.data).first()
+
+        if email:
+            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+
     Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur'), ('Madame', 'Madame'), ('Mademoiselle', 'Mademoiselle')])
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
 
     NOM =StringField('Nom et prénom',
-                           validators=[validators.InputRequired()])
+                           validators=[validators.InputRequired(),validate_username])
     
     email =StringField('E-mail',
-                           validators=[validators.InputRequired(),Email()])
+                           validators=[validators.InputRequired(),Email(),validate_email])
 
     Numero =StringField('Téléphone portable',
                            validators=[validatep,length(min=10 ,max=10)])
@@ -915,17 +934,7 @@ class Negotiateur_Form1(FlaskForm):
 
 
 
-    def validate_username(self,username):
-        user = Client_negotiateur.query.filter_by(nom=username.data).first()
-
-        if user:
-            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
-
-    def validate_email(self,email):
-        email = Client_negotiateur.query.filter_by(email=email.data).first()
-
-        if email:
-            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+    
 
 class Suivi_Client(FlaskForm):
     def validate_email(self,email):

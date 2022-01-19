@@ -42,18 +42,21 @@ def xpert(loc):
         wb_obj = openpyxl.load_workbook(loc,data_only=True)
         anomalie=[]
         sheet=wb_obj.active
-        if sheet["B"][0].value!='identité agent'and sheet["C"][0].value!='Trigramme'and sheet["D"][0].value!='date entrée'and sheet["P"][0].value!='Ville':
-                    return False
+        '''if sheet["B"][0].value!='identité agent'and sheet["C"][0].value!='Trigramme'and sheet["D"][0].value!='date entrée'and sheet["P"][0].value!='Ville':
+                    return False'''
         for i in range(1,sheet.max_row):
-            n=sheet["M"][i].value
-            if type(n) == str:
-                cli=Expert.query.filter_by(nom=str(sheet["B"][i].value.lower())).first()
+            #n=sheet["M"][i].value
+            #if type(n) == str:
+                cli=Expert.query.filter_by(full=str(sheet["O"][i].value.lower())).first()
                 if cli  is None:
                     exp=Expert()
                     his=Expert_History()
                     
-                    exp.nom=regex1(sheet["B"][i].value,'str1')
-                    numero=regex1(sheet["S"][i].value,'int')
+                    exp.nom=regex1(sheet["A"][i].value,'str1')
+                    exp.full=regex1(sheet["O"][i].value,'str3')
+                    exp.genre=regex1(sheet["P"][i].value,'str1')
+                    exp.prenom=regex1(sheet["B"][i].value,'str1')
+                    '''numero=regex1(sheet["S"][i].value,'int')
                     if numero == 'Failed':
                         reason="erreur  de numero dans la colonne  Telephone  ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -65,12 +68,12 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue
                     else:
-                        exp.numero=numero
-                    exp.TYPE=regex1(sheet["I"][i].value,'str1')
-                    exp.email=regex1(sheet["T"][i].value,'str1')
-                    exp.email_perso=regex1(sheet["U"][i].value,'str1')
-                    exp.code_tva=regex1(sheet["Q"][i].value,'str1')
-                    taux_tva=regex1(sheet["R"][i].value,'int')   
+                        exp.numero=numero'''
+                    exp.TYPE=regex1(sheet["D"][i].value,'str1')
+                    '''exp.email=regex1(sheet["T"][i].value,'str1')
+                    exp.email_perso=regex1(sheet["U"][i].value,'str1')'''
+                    exp.code_tva=regex1(sheet["G"][i].value,'str1')
+                    taux_tva=regex1(sheet["H"][i].value,'int')   
                     if taux_tva == 'Failed':
                         reason="erreur  de numero dans la colonne  Taux tva ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -83,7 +86,7 @@ def xpert(loc):
                         continue 
                     else:
                         exp.taux_tva=taux_tva
-                    siret=regex1(sheet["L"][i].value,'int')
+                    siret=regex1(sheet["F"][i].value,'int')
                     if siret == 'Failed':
                         reason="erreur  de numero dans la colonne  Siret ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -96,7 +99,7 @@ def xpert(loc):
                         continue 
                     else:
                         exp.siret=siret
-                    date_entree=regex1(sheet["D"][i].value,'date')
+                    date_entree=regex1(sheet["E"][i].value,'date')
                     if date_entree == False:
                         reason="erreur  de numero dans la colonne  date entree ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -112,9 +115,9 @@ def xpert(loc):
                     exp.trigramme=regex1(sheet["C"][i].value,'str1')    
                     
                     his.secteur=regex1(sheet["J"][i].value,'str1') 
-                    his.adresse1=regex1(sheet["M"][i].value,'str1') 
-                    his.adresse2=regex1(sheet["N"][i].value,'str1') 
-                    cp=regex1(sheet["O"][i].value,'int') 
+                    his.adresse1=regex1(sheet["K"][i].value,'str1') 
+                    his.adresse2=regex1(sheet["L"][i].value,'str1')
+                    cp=regex1(sheet["M"][i].value,'int') 
                     if cp=='Failed':
                         reason="erreur  de numero dans la colonne  CP ,veuillez verifier toute colonne avant d'envoyer"
                         anomalie.append([sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
@@ -127,16 +130,16 @@ def xpert(loc):
                         continue 
                     else:
                         his.cp=cp 
-                    his.ville=regex1(sheet["P"][i].value,'str1') 
-                    his.login_backof=regex1(sheet["V"][i].value,'str1') 
+                    his.ville=regex1(sheet["N"][i].value,'str1') 
+                    '''his.login_backof=regex1(sheet["V"][i].value,'str1') 
                     his.pwd_backof=regex1(sheet["W"][i].value,'str1') 
                     his.login_extranet=regex1(sheet["Z"][i].value,'str1') 
                     his.pwd_extranet=regex1(sheet["AA"][i].value,'str1') 
                     his.login_google=regex1(sheet["X"][i].value,'str1') 
                     his.pwd_google=regex1(sheet["AB"][i].value,'str1') 
-                    his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1') 
-                    his.actif_parti=regex1(sheet["E"][i].value,'str1') 
-                    his.type_certification=regex1(sheet["H"][i].value,'str1') 
+                    his.observations_de_suivi=regex1(sheet["AD"][i].value,'str1')'''
+                    his.actif_parti=regex1(sheet["I"][i].value,'str1') 
+                    '''his.type_certification=regex1(sheet["H"][i].value,'str1') 
                     date_certification_initiale=regex1(sheet["F"][i].value,'date') #CHECK FOR IF STATE
                     if date_certification_initiale == False:
                         reason="erreur  de numero dans la colonne  date_certification_initiale  ,veuillez verifier toute colonne avant d'envoyer"
@@ -162,8 +165,8 @@ def xpert(loc):
                         sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,reason])
                         continue 
                     else:
-                        his.date_renouv_certification=date_renouv_certification
-                    his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') 
+                        his.date_renouv_certification=date_renouv_certification'''
+                    ''''his.pwd_gsuite=regex1(sheet["AB"][i].value,'date') '''
                     db.session.add(exp)
                     db.session.add(his)
                     db.session.commit()

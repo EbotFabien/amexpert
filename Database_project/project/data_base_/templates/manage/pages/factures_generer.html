@@ -32,12 +32,14 @@
             <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">       
                 <thead class="">
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Missions</th>
+                        <th scope="col">ID FACTURE</th>
+                        <th scope="col">ID Mission</th>
                         <th scope="col">Intervenants</th>
                         <th scope="col">Prix Mission € HT</th> 
                         <th scope="col">Date d'arrêt compte Mensuel</th>
                         <th scope="col">Date Génération</th> 
+                        <th scope="col">TOTAL FACT</th>
+                        <th scope="col">TOTAL RLV</th>
                         <th scope="col">Date envoie </br> Facture au CDC</th>
                         <th scope="col">Commission AC </br> mission réaliser</th>
                         <th></th>
@@ -53,6 +55,8 @@
                                 <td>{{mission.prix_mission}}</td>
                                 <td>{{mission.date_cmpte_mensuel.strftime('%d/%m/%Y')}}</td>
                                 <td>{% if mission.date_generation != None %} {{mission.date_generation.strftime('%d/%m/%Y')}} {% endif %}</td>
+                                <td>{{mission.total}}</td>
+                                <td>{{mission.releve}}</td>
                                 <td>{% if mission.date_envoie_Facture != None %}{{mission.date_envoie_Facture.strftime('%d/%m/%Y')}}{% endif %}</td>
                                 <td>{% if mission.commission_ac != None %}{{mission.commission_ac}}{% endif %}</td>
                                 <td> <a href="{{url_for('users.choosedg', id=mission.id)}}" title="mettre date_generation" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>

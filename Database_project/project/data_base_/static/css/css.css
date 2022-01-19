@@ -339,7 +339,7 @@ a{
   background: #db7b1d;
   color: #373737!important;
   display: none;
-  width: 70%;
+  width: 100%;
   z-index: 222222;
   left: 100%;
   top: 0;
@@ -465,9 +465,21 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
 .w-100 {
   width: 100%;
 }
+.fa-left{
+  position: absolute;top: 10px;left: 90%;
+}
+.dropdown-menu.dropdown-menu-end.show {
+  display: block;
+  /*width: 89%;*/
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  background: #fff;
+  border: 1px solid;
+}
 .section-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(100%/5),1fr));
+  grid-template-columns: repeat(auto-fit, minmax(calc(150px/5),1fr));
   /* padding: 10px 50px; */
   margin-top: 25px;
   grid-gap: 10px;

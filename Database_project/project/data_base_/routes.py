@@ -25,6 +25,7 @@ import base64
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
+
 locale.setlocale(locale.LC_TIME,'fr_FR.UTF-8')
 
 users =Blueprint('users',__name__)
@@ -35,6 +36,70 @@ wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
+@users.route('/clean', methods=['GET', 'POST'])
+def clean():
+    cli=prospect.query.filter_by(visibility=True).all()
+    for i in cli:
+        '''i.appli=False
+        db.session.commit()'''
+        '''i.anom=False
+        i.reason=''
+        db.session.commit()'''
+        if len(str(i.siret)) > 5 or  i.societe != '':
+            i.TYPE ='Professionel'
+            db.session.commit()
+        if len(str(i.siret)) < 5 and i.societe != '':
+            i.TYPE ='Particulier'
+            db.session.commit()
+        '''if len(str(i.numero)) >= 10 :
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()
+        if len(str(i.numero)) <= 8:
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()'''
+        #'''if len(str(i.numero)) == 9:
+        #    v=str(i.numero)
+        #    i.numero='0'+v
+        #    db.session.commit()'''
+    cli=Client.query.filter_by(visibility=True).all()
+    for i in cli:
+        if len(str(i.siret)) > 5 or  i.societe != '':
+            i.TYPE ='Professionel'
+            db.session.commit()
+        if len(str(i.siret)) < 5 and i.societe != '':
+            i.TYPE ='Particulier'
+            db.session.commit()
+        '''i.anom=False
+        i.reason=''
+        db.session.commit()
+        if len(str(i.numero)) < 9 :
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()
+        if len(str(i.numero)) == 9:
+            v=str(i.numero)
+            i.numero='0'+v
+            db.session.commit()
+        if len(str(i.numero)) >= 10 :
+            if i.numero[0]!='0':
+                i.anom=True
+                i.reason='Anomalie sur le numero de telephone'
+                db.session.commit()'''
+        #if len(str(i.siret)) > 5 and i.societe == '':
+        #    i.TYPE ='Professionel'
+        #    db.session.commit()
+        #if len(str(i.siret)) < 5 and i.societe != '':
+        #    i.TYPE ='Particulier'
+        #    db.session.commit()
+       
+         
+    return redirect(url_for('users.main'))
+
 @users.route('/client', methods=['GET', 'POST'])
 @login_required
 def client():
@@ -44,9 +109,7 @@ def client():
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
-    #aex=Expert.query.filter_by(id=6).first()
-    #aex.password=hashed_password
-    #db.session.commit()"
+    
     if current_user.TYPE == "Admin":
         client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
         history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
@@ -64,7 +127,12 @@ def client():
         #     client_=Client.query.filter_by(visibility=True).order_by(desc(Client.id)).paginate(page=page, per_page=PER_PAGE)
         # else:
         #     client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).paginate(page=page, per_page=PER_PAGE)
-        return render_template('manage/pages/client.html',cli_ent=zip(client_,history),legend="client", highlight='client')
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        ano = Client.query.filter_by(anom=True).count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
+        prospro = Client.query.filter_by(TYPE ='Professionel').count()
+        prospart = Client.query.filter_by(TYPE ='Particulier').count()
+        return render_template('manage/pages/client.html',prospro=prospro,prospart=prospart,ano=ano,actc=actc,patc=patc,cli_ent=zip(client_,history),legend="client", highlight='client')
     return redirect(url_for('users.main'))
  
 @users.route('/ajouter/client',methods=['GET','POST'])
@@ -239,15 +307,20 @@ def edit_client(id):
 @login_required
 def mission():
 
-    if current_user:
+    if current_user.TYPE == 'Admin':
         page = request.args.get('page',1,type=int)
         key=request.args.get('keyword')
         date=request.args.get('date')
+        date2=request.args.get('date2')
+        if date and date2:
+            dat=datetime.fromisoformat(date)
+            dat2=datetime.fromisoformat(date2)
+        Type = request.args.get('ron')
         table =  request.args.get('table')
         table2 =  request.args.get('table2')
-        Type = request.args.get('ron')
         reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
         notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+        ano=Mission.query.filter(Mission.Anomalie==True).count()
 
         
         
@@ -258,77 +331,232 @@ def mission():
                     int(key)
                     Cli=Client.query.filter_by(reference=key).first()
                     if Cli:
-                        mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                        mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                 except:
-                    expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
+                    expert=Expert.query.filter(Expert.nom.contains(str(key.upper()))).first()
                     if expert:
-                        mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                        return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                        mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                     else:
                         try:
-                            mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                            mission_=Mission.query.filter(and_(Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                         except:
-                            mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                            mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
             except:
             
-                mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
-            
-        if date:
-            mission_=Mission.query.filter(and_(or_(Mission.DATE_REALISE_EDL==date,Mission.DATE_FACTURE==date),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+                mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+        if date and date2 and Type != None:
+                    if Type == "r":
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
+                    if Type == "nr":
+                        mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
+        if date and date2:
+            mission_=Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=None,legend="mission", highlight='mission')
         
         if Type == "r":
-            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,Type=Type,legend="mission", highlight='mission')
         
         if Type == "nr":
-            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,date=date,legend="mission", highlight='mission')
+            mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Type=Type,Mission=mission_,legend="mission", highlight='mission')
 
         if table and table2:
             if table == "mission":
                 if table2 == "asc" :
-                    mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
-                    mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,Mission=mission_,legend="mission", highlight='mission')
+                    mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,legend="mission", highlight='mission')
             if table == "edl" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "ht" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "ht" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
             if table == "fac" :
                 if table2 == "asc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(asc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
                 if table2 == "desc" :
                     mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
-                    return render_template('manage/pages/mission.html',reg=reglee,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
         
         else:
             mission_=Mission.query.filter_by(Visibility=True).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
-            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission',reg=reglee,non=notreglee)
+            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission',reg=reglee,ano=ano,non=notreglee)
+    if current_user != 'Admin':
+        page = request.args.get('page',1,type=int)
+        key=request.args.get('keyword')
+        date=request.args.get('date')
+        date2=request.args.get('date2')
+        if date and date2:
+            dat=datetime.fromisoformat(date)
+            dat2=datetime.fromisoformat(date2)
+        table =  request.args.get('table')
+        table2 =  request.args.get('table2')
+        Type = request.args.get('ron')
+        reglee=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
+        notreglee=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
+        ano=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+
+        
+        
+        
+        if key:
+            try:
+                try:
+                    int(key)
+                    Cli=Client.query.filter_by(reference=key).first()
+                    if Cli:
+                        mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                except:
+                    expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
+                    if expert:
+                        mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                        return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                    else:
+                        try:
+                            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.PRIX_HT_EDL==float(key),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+                        except:
+                            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+            except:
+            
+                mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
+        if date and date2 and Type != None:
+            if Type == "r":
+                mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=date,Mission.DATE_REALISE_EDL<=date2,Mission.DATE_FACT_REGLEE!=None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
+            if Type == "nr":
+                mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=dat,Mission.DATE_REALISE_EDL<=date,Mission.DATE_FACT_REGLEE==None,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=Type,legend="mission", highlight='mission')
+        if date and date2:
+            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_REALISE_EDL>=dat,Mission.DATE_REALISE_EDL<=dat2,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,date=date,date2=date2,Type=None,legend="mission", highlight='mission')
+        
+        if Type == "r":
+            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,Type=Type,legend="mission", highlight='mission')
+        
+        if Type == "nr":
+            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,Type=Type,legend="mission", highlight='mission')
+
+        if table and table2:
+            if table == "mission":
+                if table2 == "asc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                if table2 == "desc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,legend="mission", highlight='mission')
+            if table == "edl" :
+                if table2 == "asc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(asc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                if table2 == "desc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+            if table == "ht" :
+                if table2 == "asc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                if table2 == "desc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+            if table == "ht" :
+                if table2 == "asc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(asc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                if table2 == "desc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.PRIX_HT_EDL)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+            if table == "fac" :
+                if table2 == "asc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(asc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+                if table2 == "desc" :
+                    mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.DATE_FACTURE)).paginate(page=page ,per_page=50)
+                    return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,table=table,table2=table2,Mission=mission_,legend="mission", highlight='mission')
+        
+        else:
+            mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Visibility==True)).order_by(desc(Mission.id)).paginate(page=page ,per_page=50)
+            return render_template('manage/pages/mission.html',Mission=mission_,legend="mission", highlight='mission',reg=reglee,ano=ano,non=notreglee)
 
 
     return redirect(url_for('users.main'))
@@ -346,10 +574,10 @@ def choose(Type,id=None):
             print('ok1')
             price=list()
             if Type == "client":
-                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
+                mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())#check query
             
            # if Type == "single":
-              #  mission_=list(Mission.query.filter(and_(Mission.id==id,Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())
+              #  mission_=list(Mission.query.filter(and_(Mission.id==id,Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())
             if mission_ == price:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choose',id=id))
@@ -379,13 +607,13 @@ def choose(Type,id=None):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                                             meuble=float(tarif.edl_prix_std)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
                                                 db.session.commit()
                                             price.append(float(mission.PRIX_HT_EDL))
                                             
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_prix_std
                                                 db.session.commit()
                                             price.append(float(mission.PRIX_HT_EDL))
@@ -394,13 +622,13 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                                         meuble=float(tarif.edl_appt_prix_f1)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                         
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -409,12 +637,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f2)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -422,12 +650,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f3)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                             db.session.commit()
                                         price.append(float(tarif.mission.PRIX_HT_EDL))
@@ -436,12 +664,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f4)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -449,12 +677,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f5)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -462,12 +690,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.edl_appt_prix_f6)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -475,12 +703,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                                         meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -489,12 +717,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -503,12 +731,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -516,12 +744,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -531,12 +759,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
@@ -544,25 +772,25 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                 if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             meuble=float(tarif.edl_pav_villa_prix_t6)/2
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                                             db.session.commit()
                                         price.append(float(tarif.mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -570,12 +798,12 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -583,24 +811,24 @@ def choose(Type,id=None):
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if mission.CODE_FACTURATION[2:5] == '150':
                                         meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))
                                     else:
-                                        if mission.PRIX_HT_EDL == None :
+                                        if mission.PRIX_HT_EDL==0.00 :
                                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                                             db.session.commit()
                                         price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
                                 else:
                                         
-                                        if mission.PRIX_HT_EDL == None:
+                                        if mission.PRIX_HT_EDL==0.00:
                                             mission.PRIX_HT_EDL = 0
                                             db.session.commit()
                                         else:
                                             price.append(float(mission.PRIX_HT_EDL))
                             else:
-                                if mission.PRIX_HT_EDL == None:
+                                if mission.PRIX_HT_EDL==0.00:
                                     mission.PRIX_HT_EDL = 0
                                     db.session.commit()
                                 else:
@@ -655,14 +883,14 @@ def rectify(id):
                         tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                         if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                             meuble=float(tarif.edl_prix_std)/2
-                            if mission.PRIX_HT_EDL==None:
+                            if mission.PRIX_HT_EDL==0.00:
                                 mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
                                 db.session.commit()
                                 done(failed,id)
                                 return redirect(url_for('users.show_fac',id=failed.facture))
                             
                         else:
-                            if mission.PRIX_HT_EDL==None:
+                            if mission.PRIX_HT_EDL==0.00:
                                 mission.PRIX_HT_EDL = tarif.edl_prix_std
                                 db.session.commit()
                                 done(failed,id)
@@ -672,14 +900,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                         meuble=float(tarif.edl_appt_prix_f1)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
                             db.session.commit()
                             done(failed,id)
@@ -689,13 +917,13 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.edl_appt_prix_f2)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
                             db.session.commit()
                             done(failed,id)
@@ -704,13 +932,13 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.edl_appt_prix_f3)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                             db.session.commit()
                             done(failed,id)
@@ -720,14 +948,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.edl_appt_prix_f4)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                         return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
                             db.session.commit()
                             done(failed,id)
@@ -737,14 +965,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.edl_appt_prix_f5)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
                             db.session.commit()
                             done(failed,id)
@@ -754,14 +982,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.edl_appt_prix_f6)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
                             db.session.commit()
                             done(failed,id)
@@ -771,14 +999,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':#check print
                         meuble=float(tarif.EDL_APPT_prix_F7)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
                             db.session.commit()
                             done(failed,id)
@@ -789,14 +1017,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
                             db.session.commit()
                             done(failed,id)
@@ -807,14 +1035,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
                             db.session.commit()
                             done(failed,id)
@@ -824,14 +1052,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
                             db.session.commit()
                             done(failed,id)
@@ -843,14 +1071,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
                             db.session.commit()
                             done(failed,id)
@@ -859,14 +1087,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
                             db.session.commit()
                             done(failed,id)
@@ -875,7 +1103,7 @@ def rectify(id):
                 if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             meuble=float(tarif.edl_pav_villa_prix_t6)/2
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
                             db.session.commit()
@@ -883,7 +1111,7 @@ def rectify(id):
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                             db.session.commit()
                             done(failed,id)
@@ -893,14 +1121,14 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                         
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
                             db.session.commit()
                             done(failed,id)
@@ -910,13 +1138,13 @@ def rectify(id):
                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                     if mission.CODE_FACTURATION[2:5] == '150':
                         meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
                             db.session.commit()
                             done(failed,id)
                             return redirect(url_for('users.show_fac',id=failed.facture))
                     else:
-                        if mission.PRIX_HT_EDL == None :
+                        if mission.PRIX_HT_EDL==0.00 :
                             mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                             db.session.commit()
                             done(failed,id)
@@ -938,8 +1166,8 @@ def create_facturec():
         form=Facturation_Form()
         
         
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
 
         
             
@@ -953,6 +1181,7 @@ def create_facturec():
             db.session.commit()
             for i in mission_:
                 i.NRO_FACTURE = facture.n_facture
+                i.appli=True
                 i.DATE_FACTURE = facture.Date_de_creation
                 if _mission_:
                     for m in _mission_:
@@ -1001,7 +1230,7 @@ def show_fac(id):
 @login_required
 def client_mission(id):
     if current_user.TYPE == "Admin":
-        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==id,Mission.NRO_FACTURE=='')).order_by(desc(Mission.id)).all())
         client = Client.query.filter_by(id=id).first()
         return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')# design a page for clients to see missions by their mission id and date only
     
@@ -1291,7 +1520,9 @@ def expert():
         page = request.args.get('page', 1, type=int)
         expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
         history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
-        return render_template('manage/pages/expert.html',Expert=zip(expert_,history), legend="expert", highlight='expert')
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        return render_template('manage/pages/expert.html',acte=acte,pate=pate,Expert=zip(expert_,history), legend="expert", highlight='expert')
 
     return redirect(url_for('users.main'))
 
@@ -1354,6 +1585,12 @@ def edit_expert(id):
         form = Expert_editForm()
         expert = Expert.query.filter_by(id=id).first_or_404()
         form.Expert_id.data=id
+        
+        if expert.numero == None:
+            expert.numero =0
+            db.session.commit()
+
+
         if form.validate_on_submit():
             
             f=form.validate2(form.email.data,form.Expert_id.data)
@@ -1630,6 +1867,10 @@ def make_session_permanent():
 @users.route('/login',methods=['GET','POST'])
 def login():
     db.create_all()
+    #miss=Mission.query.all()
+    #for i in miss:
+     #   i.appli=False
+      #  db.session.commit()
     '''expert=Expert(genre='Mr.',nom="Administrateur",numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert)
     db.session.commit()
@@ -1651,7 +1892,10 @@ def login():
     db.session.commit()'''
 
     if current_user.is_authenticated:
-       return redirect(url_for('users.main'))
+        if current_user.TYPE=='Admin':
+            return redirect(url_for('users.main'))
+        else:
+            return redirect(url_for('users.exdash'))
     form = LoginForm()
     if form.validate_on_submit():
         name=Expert.query.filter_by(login=form.username.data).first()#put login
@@ -1710,18 +1954,106 @@ def logout():
 @login_required
 def main():
     db.create_all()
-    if current_user.TYPE == "Admin":
+    if current_user.TYPE== 'Admin':
         clients = Client.query.filter_by(visibility=True).count()
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
+        prospro = prospect.query.filter_by(TYPE ='Professionel').count()
+        prospart = prospect.query.filter_by(TYPE ='Particulier').count()
         missions = Mission.query.filter_by(Visibility=True).count()
+        prospects = prospect.query.filter_by(visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
-        facturations =facturation_client.query.filter_by(visibility=True).count()
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        facturations =int(Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count())+int(facturation_client.query.filter_by(visibility=True).count())+int(compte_mensuel.query.count())
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+        ano=Mission.query.filter(Mission.Anomalie==True).count()
+        fact_importe=Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count()
+        gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+        ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+        facr=facturation_client.query.filter_by(valide=True).count()
+        facnotr=facturation_client.query.filter_by(valide=False).count()
+        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id)).count()
+        regexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
+        nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
+        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+        nexf=compte_mensuel.query.join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfng=compte_mensuel.query.filter(compte_mensuel.date_generation==None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+       
         mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
         expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
-
-        return render_template('manage/dashboard.html',expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth, client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
-    elif current_user:
-        return redirect (url_for('users.mes_factures',id=current_user.id))
+        if current_user.TYPE== 'Admin':
+            return render_template('manage/dashboard.html',prospro=prospro,prospart=prospart,fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
+        else:
+            return render_template('manage/dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
         
+    return redirect(url_for('users.login'))
+
+
+@users.route('/exdash',methods=['GET','POST'])
+@login_required
+def exdash():
+    if current_user:
+        clients = Client.query.filter_by(visibility=True).count()
+        actc = Client_History.query.filter_by(etat_client='Actif').count()
+        patc = Client_History.query.filter_by(etat_client='Parti').count()
+        missions = Mission.query.filter_by(Visibility=True).count()
+        prospects = prospect.query.filter_by(visibility=True).count()
+        Experts = Expert.query.filter_by(visibility=True).count()
+        acte = Expert_History.query.filter_by(actif_parti='actif').count()
+        pate = Expert_History.query.filter_by(actif_parti='Parti').count()
+        facturations =int(Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count())+int(facturation_client.query.filter_by(visibility=True).count())+int(compte_mensuel.query.count())
+        reglee=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).count()
+        notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
+        ano=Mission.query.filter(Mission.Anomalie==True).count()
+        fact_importe=Mission.query.filter(and_(Mission.appli==False,Mission.NRO_FACTURE!='')).count()
+        gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+        ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+        facr=facturation_client.query.filter_by(valide=True).count()
+        facnotr=facturation_client.query.filter_by(valide=False).count()
+        expm=Mission.query.filter(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id)).count()
+        regexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE!=None)).count()
+        nregexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.DATE_FACT_REGLEE==None)).count()
+        anoexp=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
+                Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
+                Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Anomalie==True)).count()
+        nexf=compte_mensuel.query.join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfg=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+        nexfng=compte_mensuel.query.filter(compte_mensuel.date_generation==None).join(
+                                        expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
+                                            expert_facturation.expert_id==current_user.id).count()
+       
+        mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
+        expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
+        if current_user.TYPE != 'Admin':
+            return render_template('manage/pages/expert_dashboard.html',anoexp=anoexp,regexp=regexp,nregexp=nregexp,missionexpert=expm,factureexpert=nexf,factureexpertgenere=nexfg,factureexpertnongenere=nexfng,title='Portail', highlight='dashboard')
+         
     return redirect(url_for('users.login'))
 
 @users.route('/client/<int:id>/négociateurs')
@@ -1835,7 +2167,10 @@ def prospect_():
         page = request.args.get('page', 1, type=int)
         client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
         history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
-        return render_template('manage/pages/prospect.html',Client=zip(client_,history),legend="client", highlight='prospect')
+        prospro = prospect.query.filter_by(TYPE ='Professionel').count()
+        prospart = prospect.query.filter_by(TYPE ='Particulier').count()
+        ano = prospect.query.filter_by(anom=True).count()
+        return render_template('manage/pages/prospect.html',ano=ano,prospro=prospro,prospart=prospart,Client=zip(client_,history),legend="client", highlight='prospect')
 
     
     return redirect(url_for('users.main'))
@@ -1913,7 +2248,7 @@ def edit_prospect(id):
         if form.validate_on_submit():
             f=form.validate3(form.email.data,form.client_id.data)
             if f==True:
-                flash(f"l'email es Deja pris",'Warning')
+                flash(f"l'email est Deja pris",'Warning')
                 return redirect(url_for('users.edit_prospect', id=client.id))
             
             if client.id==int(form.client_id.data):
@@ -2022,7 +2357,7 @@ def export():
 def up():
     #db.create_all()
     db.create_all()
-    '''expert1=Expert(genre='0',nom='0',numero=0,TYPE='0', email='0' )
+    '''expert1=Expert(genre='0',nom='',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert1)
     db.session.add(expert)
@@ -2032,7 +2367,7 @@ def up():
     expert.visibility =False
     hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
     expert.password=hashed_password
-    db.session.commit()
+    db.session.commit()'''
     #expert=Expert('M','Admin','Admin','test0001@gmail.com','1234567')
     #db.session.add(expert)
     #db.session.commit()'''
@@ -2068,7 +2403,7 @@ def uploader_():
             uploaded_file.save(file_path)
             if table == 'client':
                     lient(loc)
-                    if lient(loc) == False:
+                    '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     #flash(f"Vous avez importer les donnees avec success",'success')
@@ -2078,25 +2413,25 @@ def uploader_():
                     if lient(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                    return lient(loc)
+                    return lient(loc)'''
                     #return redirect(url_for('users.client'))
 
             
             if table == 'suivi':
                     suiv(loc)
-                    if suiv(loc) == False:
+                    '''if suiv(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     if suiv(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
                     flash(f"Vos données ont été importées avec succès",'success')
-                    return redirect(url_for('users.up'))
+                    return redirect(url_for('users.up'))'''
                     #return suiv(loc)
                 
             if table == 'expert':
                     xpert(loc)
-                    if xpert(loc) == False:
+                    '''if xpert(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                     if xpert(loc) == True:
@@ -2105,18 +2440,18 @@ def uploader_():
                     if xpert(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est xlsx/xlsm/xltx/xltm pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                    return xpert(loc)
+                    return xpert(loc)'''
                
             if table == 'TarifC':
                 
                 arif(loc)
-                if arif(loc) == False:
+                '''if arif(loc) == False:
                     flash(f"Verifier la structure de votre fichier svp",'warning')
                     return redirect(url_for('users.up'))
                 if arif(loc) == True:
                         flash(f"Vos données ont été importées avec succès",'success')
                         return redirect(url_for('users.up'))
-                return arif(loc)
+                return arif(loc)'''
                 
             if table == 'mission':
                 #Base(loc)
@@ -2124,10 +2459,10 @@ def uploader_():
                 #Missions2(loc,'27')
                 #Missions2(loc,'28')
                 #Missions2(loc,'29')
-                #Missions2(loc,'31')'''
+                #Missions2(loc,'31')
                 
                 Missions1(loc)
-                if Missions1(loc) == False:
+                '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
                 if Missions1(loc) == True:
@@ -2136,7 +2471,7 @@ def uploader_():
                 if Missions1(loc) == 'Fake':
                         flash(f"Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide.",'warning')
                         return redirect(url_for('users.up'))
-                return Missions1(loc)
+                return Missions1(loc)'''
                 
                
             # save the file1362
@@ -2197,9 +2532,9 @@ def addlogin(id):
             return redirect(url_for('users.show_expert',id=id))
     return render_template('manage/pages/add_login.html',form=form,client=client)
 
-@users.app_errorhandler(404)
+'''@users.app_errorhandler(404)
 def error_404(error):
-    return render_template('errors/404.html'),404
+    return render_template('errors/404.html'),404''' 
 
 @users.app_errorhandler(403)
 def error_403(error):
@@ -2303,7 +2638,7 @@ def choosev(Type):
             relation={}
             price={}
             if Type == "month":
-                         mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE==None)).order_by(asc(Mission.id)).all())#check query
+                         mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.DATE_REALISE_EDL<=end,Mission.NRO_FACTURE=='')).order_by(asc(Mission.id)).all())#check query
             if mission_ == client:
                 flash(f'cette date a deja ete facture','success')
                 return redirect(url_for('users.choosev',Type='month'))
@@ -2344,13 +2679,13 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                                             meuble=float(tarif.edl_prix_std)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                             
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_prix_std
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2360,13 +2695,13 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                                             meuble=float(tarif.edl_appt_prix_f1)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                             
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2375,12 +2710,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.edl_appt_prix_f2)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2388,12 +2723,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.edl_appt_prix_f3)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2403,12 +2738,12 @@ def choosev(Type):
                                         print(mission.id)
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.edl_appt_prix_f4)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2416,12 +2751,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.edl_appt_prix_f5)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2429,12 +2764,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.edl_appt_prix_f6)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2442,12 +2777,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':#check print
                                             meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2456,12 +2791,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2470,12 +2805,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2483,12 +2818,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2498,12 +2833,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2511,12 +2846,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
@@ -2524,12 +2859,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -2537,12 +2872,12 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -2550,23 +2885,23 @@ def choosev(Type):
                                         tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                         if mission.CODE_FACTURATION[2:5] == '150':
                                             meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                         else:
-                                            if mission.PRIX_HT_EDL==None:
+                                            if mission.PRIX_HT_EDL==0.00:
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                                                 db.session.commit()
                                             price[i].append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
                                     else:
-                                        if mission.PRIX_HT_EDL == None:
+                                        if mission.PRIX_HT_EDL==0.00:
                                             mission.PRIX_HT_EDL = 0
                                             db.session.commit()
                                         else:
                                             price[i].append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL == None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = 0
                                         db.session.commit()
                                     else:
@@ -2603,8 +2938,8 @@ def create_facturem():
         relation={}
         relation2={}
         price=list()
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==False)).order_by(desc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE==None,Mission.Visibility==True,Mission.coherent==True)).order_by(desc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False)).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True)).order_by(desc(Mission.id)).all())#check query
         
         if mission_:
             for i in mission_:
@@ -2634,6 +2969,7 @@ def create_facturem():
                 for mission in relation[i]:
                     price.append(float(mission.PRIX_HT_EDL))
                     mission.NRO_FACTURE = facture.n_facture
+                    mission.appli=True
                     mission.DATE_FACTURE = facture.Date_de_creation
                     fact_m=facturation_mission(ref_mission=mission.id,fact_mission=facture.id)
                     db.session.add(fact_m)
@@ -2674,7 +3010,7 @@ def choosep():
         pid=mission.Reference_BAILLEUR
         try:
             for i in a:
-                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
+                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE=='',Mission.Visibility==True)).first()
                 if mission:
                     v=mission.Reference_BAILLEUR
                     m.append(mission.id)
@@ -2692,13 +3028,13 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
                                     meuble=float(tarif.edl_prix_std)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
                                         db.session.commit()
                                     price[i].append(float(mission.PRIX_HT_EDL))
                                     
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_prix_std
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2706,14 +3042,14 @@ def choosep():
                                 
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         meuble=float(tarif.edl_appt_prix_f1)/2
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                     
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2722,12 +3058,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.edl_appt_prix_f2)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2735,12 +3071,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.edl_appt_prix_f3)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2749,12 +3085,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.edl_appt_prix_f4)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2762,12 +3098,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.edl_appt_prix_f5)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2775,12 +3111,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.edl_appt_prix_f6)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2788,12 +3124,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':#check print
                                     meuble=float(tarif.EDL_APPT_prix_F7)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2802,12 +3138,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2816,12 +3152,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
                                         db.session.commit()
                                     price.append(float(tarif.edl_pav_villa_prix_t2))
@@ -2829,12 +3165,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2844,12 +3180,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2857,12 +3193,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
@@ -2870,12 +3206,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
                                         db.session.commit() 
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -2883,12 +3219,12 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
@@ -2896,30 +3232,30 @@ def choosep():
                                 tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                 if mission.CODE_FACTURATION[2:5] == '150':
                                     meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))
                                 else:
-                                    if mission.PRIX_HT_EDL==None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
                                         db.session.commit()
                                     price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
                             else:
-                                    if mission.PRIX_HT_EDL == None:
+                                    if mission.PRIX_HT_EDL==0.00:
                                         mission.PRIX_HT_EDL = 0
                                         db.session.commit()
                                     else:
                                         price[i].append(float(mission.PRIX_HT_EDL))
                         else:
-                            if mission.PRIX_HT_EDL == None:
+                            if mission.PRIX_HT_EDL==0.00:
                                 mission.PRIX_HT_EDL = 0
                                 db.session.commit()
                             else:
                                 price[i].append(float(mission.PRIX_HT_EDL))
         except:
             flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
-            mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==pid,Mission.NRO_FACTURE==None)).order_by(desc(Mission.id)).all())
+            mission_=list(Mission.query.filter(and_(Mission.Visibility==True,Mission.Reference_BAILLEUR==pid,Mission.NRO_FACTURE=='')).order_by(desc(Mission.id)).all())
             client = Client.query.filter_by(id=pid).first()
             return render_template('manage/pages/client_mission.html',client=client,missions=mission_,legend="mission", highlight='mission')
 
@@ -2971,7 +3307,7 @@ def create_facturep():
         missions=list()
         if mi is not None:
             for i in mi:
-                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE==None,Mission.Visibility==True)).first()
+                mission=Mission.query.filter(and_(Mission.id==int(i),Mission.NRO_FACTURE=='',Mission.Visibility==True)).first()
                 missions.append(mission)
 
             facture=facturation_client(Montant_HT=request.form['Montant_HT'],Statut='attente',client=request.form['Reference_client'])
@@ -2983,6 +3319,7 @@ def create_facturep():
 
             for i in missions:
                 i.NRO_FACTURE = facture.n_facture
+                i.appli=True
                 i.DATE_FACTURE = facture.Date_de_creation
                 fact_m=facturation_mission(ref_mission=i.id,fact_mission=facture.id)
                 db.session.add(fact_m)
@@ -3040,7 +3377,7 @@ def chooseef():
             
             price=list()
             
-            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.DATE_REALISE_EDL<=end,Mission.Facex==False)).order_by(asc(Mission.id)).all())#check query
+            mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=start,Mission.Visibility==True,Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=end,Mission.Facex==False)).order_by(asc(Mission.id)).all())#check query
             if mission_ != price:
                 for i in mission_:
                     price.append(i.PRIX_HT_EDL)
@@ -3063,10 +3400,10 @@ def create_facturee():
         #def ex(id):
         #rint(request)
         
-        _mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage ==None)).order_by(desc(Mission.id)).all())
-        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=None,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False,Mission.Prix_ht_chiffrage !=None)).order_by(desc(Mission.id)).all())
+        #_mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL==0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
+        mission=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.PRIX_HT_EDL!=0.00,Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.Visibility==True,Mission.Facex ==False)).order_by(desc(Mission.id)).all())
         #option for prix ht_edl = None
-        ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
+        '''ty={1:'RIAS sans abonnement (PMFACT)',2:'RIAS avec abonnement (PMFACT)',3:'AC Missions réalisées',4:'TS Technicien contrôleur-suiveur',5:'TM Technicien manager',
                 6:'TA Technicien agent',7:'SM Sales manager',8:'SA Sales agent suiveur client',
                 9:'PLANSUIV Suivi RDV',10:'PLANSAISIE Suivi agenda',11:'PLANRESP Responsable planning'
                 ,12:'Chiffrage Agent réalisateur',13:'Chiffrage AS',14:'Chiffrage responsable'}
@@ -3074,7 +3411,7 @@ def create_facturee():
         for i,j in zip(ty,p):
            exee=Type_expert(type_ex=ty[i],pourcentage=j/100,type_releve=i)
            db.session.add(exee)
-           db.session.commit()
+           db.session.commit()'''
         
         for i in mission:
             #implement facture number
@@ -3083,6 +3420,7 @@ def create_facturee():
             Type=Type_expert.query.filter_by(id=3).first()
             ex=Expert.query.filter_by(id=i.ID_INTERV).first()
             tot=list()
+            Rel=list()
             if i.DATE_FACT_REGLEE != None:
                 mensuel=compte_mensuel(mission=i.id,intervenant=ex.nom,date_cmpte_mensuel=request.form['Fin'],prix_mission=i.PRIX_HT_EDL,etat=True,commission_ac=Type.pourcentage*i.PRIX_HT_EDL)
                 db.session.add(mensuel)
@@ -3110,7 +3448,10 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
-                tot.append(expert.commision)
+                if mensuel.etat == True:
+                    tot.append(expert.commision)
+                else:
+                    Rel.append(expert.commision)
             for R in chiffa:
                 ex=Expert.query.filter_by(id=chiffa[R]).first()
                 Type=Type_expert.query.filter_by(id=R).first()
@@ -3123,10 +3464,14 @@ def create_facturee():
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
                 db.session.commit()
-                tot.append(expert.commision)
+                if mensuel.etat == True:
+                    tot.append(expert.commision)
+                else:
+                    Rel.append(expert.commision)
             mensuel.total=sum(tot)
+            mensuel.releve=sum(Rel)
             db.session.commit()
-        for i in _mission:
+        '''for i in _mission:
             #implement facture number
             i.Facex =True
             db.session.commit()
@@ -3169,7 +3514,7 @@ def create_facturee():
                 spli=date1.split("-")
                 fac=''.join(spli)
                 expert.facture =fac+"-"+str(ex.trigramme)+"-"+str(Type.id)
-                db.session.commit()
+                db.session.commit()'''
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
     return redirect(url_for('users.main'))
@@ -3215,7 +3560,8 @@ def choosedg(id):
 @login_required
 def mes_factures(id):
     mes=request.args.get('releve')
-    temps=request.args.get('time')      
+    temps=request.args.get('time')    
+    nom=Expert.query.filter_by(id=id).first()
     releve=Type_expert.query.join(expert_facturation,(expert_facturation.type_expert == Type_expert.id)).filter(and_(expert_facturation.expert_id==id,expert_facturation.envoye==False)).all()
     rel=[]
     test=[]
@@ -3227,21 +3573,27 @@ def mes_factures(id):
             rel.append(i)
     now_utc = datetime.now(timezone.utc)
     start=datetime.combine(now_utc,datetime.min.time())
+    
+
     if  temps == "nouvelle":
+        if mes == None:
+            return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation>=start - timedelta(days=30)).all()
         
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+        return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     
     if  temps == "ancienne":
+        if mes == None:
+            return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
         new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                         compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                             compte_mensuel.date_generation<start - timedelta(days=30)).all()
-        return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+        return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
     mes=None
     temps=None
-    return render_template('manage/pages/mes_factures.html', highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
+    return render_template('manage/pages/mes_factures.html',nom=nom.nom, highlight='expert',rel=rel,new_rel=new_rel,id=id,temps=temps,mes=mes)
 
 
 @users.route('/<mes>/<temps>/<id>/<save>/download')
@@ -3249,18 +3601,30 @@ def mes_factures(id):
 def download(mes,temps,id,save):
     if current_user: 
             name=Expert.query.filter_by(id=int(id)).first()
+            histo=Expert_History.query.filter_by(id=int(id)).first()
             now_utc = datetime.now(timezone.utc)
             start=datetime.combine(now_utc,datetime.min.time())
             if  temps == "nouvelle":
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                     compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                         compte_mensuel.date_generation>=start - timedelta(days=30)).all()
-                    img=url_for('static', filename='images/logo/logo.png')
+                    img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+                    with open(img, 'rb') as image_file:
+                         image= base64.b64encode(image_file.read()).decode()
+                    su=list()
+                    re=list()
+                    for i in new_rel:
+                        if i.mission__data.etat == True:
+                            su.append(i.commision)
+                        else:
+                            re.append(i.commision)
+                    fin=sum(su)
+                    releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3274,6 +3638,11 @@ def download(mes,temps,id,save):
                         os.rename(fil,n)
                         send_pdf("vincent@resilion.eu",name.nom,n)
                         os.remove(n)
+                        for i in new_rel:
+                            print(i.id)
+                            if i.date_retrait_facture == None:
+                                i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
+                                db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
             if  temps == "ancienne":
@@ -3282,12 +3651,23 @@ def download(mes,temps,id,save):
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
 
-                    img=url_for('static', filename='images/logo/logo.png')
+                    img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+                    with open(img, 'rb') as image_file:
+                         image= base64.b64encode(image_file.read()).decode()
+                    su=list()
+                    re=list()
+                    for i in new_rel:
+                        if i.mission__data.etat == True:
+                            su.append(i.commision)
+                        else:
+                            re.append(i.commision)
+                    fin=sum(su)
+                    releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=False, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/amexpert_pdf.html', download=True, save=True, new_rel=new_rel,Nom=name.nom)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -3301,6 +3681,10 @@ def download(mes,temps,id,save):
                         os.rename(fil,n)
                         send_pdf("vincent@resilion.eu",name.nom,n)
                         os.remove(n)
+                        for i in new_rel:
+                            if i.date_retrait_facture == None:
+                                i.date_retrait_facture=datetime.combine(now_utc,datetime.min.time())
+                                db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
 
@@ -3316,21 +3700,26 @@ def gestion(id,save):
         for i in factura:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
-
+        total=facturation_client.query.filter_by(fact_mission=id).first()
         s1=set(abnormal)
         s2=set(factura)
         facture = list(s2.difference(s1))
-        name=factura[0].facturation_client__data_.client__data_.nom
+        name1=factura[0].facturation_client__data_.client__data_.id
+        name=Client.query.filter_by(id=name1).first()
+        his=Client_History.query.filter_by(id=name1).first()
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
+        with open(img, 'rb') as image_file:
+                image= base64.b64encode(image_file.read()).decode()
         if failed:
             flash(f'Corigee vos factures incorrecte svp','Warning')
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=False,nro=NRO, facture=facture,Nom=name)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/centre_ges.html', download=True, save=True,nro=NRO, facture=facture,Nom=name)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):
@@ -3510,7 +3899,7 @@ def missionpermonth():
 
     for mission in missionspermonth:
         if mission[0]!=None:
-            a={"month":mission[0].strftime('%B'),"total":str(mission[1])}
+            a={"month":mission[0].strftime('%B').capitalize(),"total":str(mission[1])}
             data.append(a)
 
     #json_dump = json.dumps(data)
@@ -3537,7 +3926,70 @@ def currentmonth():
         'res':1,
         'data':data
     },200
+@users.route('/dashboard/expertmissionpermonth')
+def expertmissionpermonth():
+    
+    expertmissionpermonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount FROM public."Mission" WHERE ("ID_AS"=:param3 OR "ID_INTERV"=:param3) AND "DATE_REALISE_EDL"=date_trunc(:param2,"DATE_REALISE_EDL") GROUP BY 1   ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})
+   
+    data={}
 
+    data=[]
+
+    for mission in expertmissionpermonth:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            data.append(a)
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/expertencashperyear')
+def expertencashperyear():
+    expertencashperyear=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public.expert_facturation WHERE "expert_id" =:param3 AND "date_retrait_facture" IS NOT NULL GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})  
+
+    data={}
+
+    data=[]
+
+    for mission in expertencashperyear:
+        if mission[0]!=None:
+            a={"year":mission[0].strftime('%Y'),"total":str(mission[1])}
+            data.append(a)
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
+@users.route('/dashboard/expertencashpermonth')
+def expertencashpermonth():
+    expertencashpermonth=db.session.execute('SELECT date_trunc(:param2,"date_retrait_facture") AS date_retrait_facture, SUM("commision") as SumTotal FROM public.expert_facturation WHERE "expert_id" =:param3 AND "date_retrait_facture" IS NOT NULL GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year',"param3":current_user.id})  
+
+    data={}
+
+    data=[]
+
+    for mission in expertencashpermonth:
+        if mission[0]!=None:
+            a={"month":mission[0].strftime('%B').capitalize(),"total":str(mission[1])}
+            data.append(a)
+
+    
+    #json_dump = json.dumps(data)
+ 
+    
+    return {
+        'res':1,
+        'data':data
+    },200
 @users.route('/dashboard/missionencashyear')
 def mission_encashyear():
     mission_encashyear=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL, SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL  GROUP BY 1 ORDER BY 1 ',{"param":'year'})
