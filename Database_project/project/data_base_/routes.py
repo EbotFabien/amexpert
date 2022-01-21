@@ -2327,7 +2327,7 @@ def delete_suivip(id):
 @login_required
 def edit_suivip(id):
     if current_user.TYPE == "Admin":
-        form = Suivi_Client()
+        form = Suivi_Client()       
         suivi = suivi_prospect.query.filter_by(id=id).first_or_404()
         ex=Expert.query.filter_by(id=suivi.responsable).first()
         #if current_user.id == suivi.responsable:
