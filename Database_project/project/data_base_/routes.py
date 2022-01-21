@@ -2201,7 +2201,7 @@ def ajouter_prospect():
             client_history.login_extranet=form.LoginExtranet.data
             db.session.commit()
             flash(f'Prospect créé avec succès','success')
-            return redirect(url_for('show_prospect',id=user.id))
+            return redirect(url_for('users.show_prospect',id=user.id))
         print("didn't validate on submit")    
         return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect", highlight='prospect')
     else:
