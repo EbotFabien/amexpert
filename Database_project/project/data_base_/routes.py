@@ -2302,7 +2302,7 @@ def ajouter_suivip(id):
         form=Suivi_Client() 
         client = prospect.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data,Expert.trigramme!='')).first()  #.lower()
             suivi=suivi_prospect(client.id,email.id,form.commentaire.data)
             db.session.add(suivi)
             db.session.commit()

@@ -948,7 +948,7 @@ class Negotiateur_Form1(FlaskForm):
 
 class Suivi_Client(FlaskForm):
     def validate_email(self,email):
-        email = Expert.query.filter(and_(Expert.trigramme==email.data.lower(),Expert.trigramme!='')).first()
+        email = Expert.query.filter(and_(Expert.trigramme==email.data,Expert.trigramme!='')).first() #.lower()
 
         if email is None:
             raise ValidationError("Cet expert n'existe pas veuillez ressaisir le trigramme")
