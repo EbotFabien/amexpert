@@ -182,7 +182,7 @@ def ajouter_suivic(id):
         form=Suivi_Client()
         client = Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data,Expert.trigramme!='')).first()#.lower()
             suivi=suivi_client(client.id,email.id,form.commentaire.data)
             db.session.add(suivi) 
             db.session.commit()
@@ -208,15 +208,16 @@ def edit_suivi(id):
     if current_user.TYPE == "Admin":
         form = Suivi_Client()
         suivi = suivi_client.query.filter_by(id=id).first_or_404()
+        ex=Expert.query.filter_by(id=suivi.responsable).first()
         #if current_user.id == suivi.responsable:
         if form.validate_on_submit():
-            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data,Expert.trigramme!='')).first()#.lower()
             suivi.commentaire = form.commentaire.data
             suivi.responsable =email.id
             db.session.commit()
             flash(f'Le suivi a été modifié','success')
             return redirect(url_for('users.suivi_client_', id=suivi.client))
-        return render_template('manage/pages/edit_suivi.html', suivi=suivi,form=form, highlight="client")
+        return render_template('manage/pages/edit_suivi.html',ex=ex, suivi=suivi,form=form, highlight="client")
         #else:
            # flash(f'Vous ne pouvez pas modifier ce suivi','warning')
            # return redirect(url_for('users.suivi_client_', id=suivi.client))
@@ -2322,22 +2323,23 @@ def delete_suivip(id):
         return redirect(url_for('users.suivi_prospect_', id=id))
     return redirect(url_for('users.suivi_prospect_', id=id))
 
-@users.route('/edit/<int:id>/suivi_propect', methods=['GET'])
+@users.route('/edit/<int:id>/suivi_propect', methods=['GET','POST'])
 @login_required
 def edit_suivip(id):
     if current_user.TYPE == "Admin":
         form = Suivi_Client()
         suivi = suivi_prospect.query.filter_by(id=id).first_or_404()
+        ex=Expert.query.filter_by(id=suivi.responsable).first()
         #if current_user.id == suivi.responsable:
         if form.validate_on_submit():
-            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data.lower(),Expert.trigramme!='')).first()
+            email = Expert.query.filter(and_(Expert.trigramme==form.expert.data,Expert.trigramme!='')).first()#.lower()
             suivi.commentaire =form.commentaire.data
             suivi.responsable =email.id
             db.session.commit()
             flash(f'Le suivi a été modifiées','success')
             return redirect(url_for('users.suivi_prospect_',id=suivi.prospect_id))
 
-        return render_template('manage/pages/edit_suivi_p.html', suivi=suivi,highlight='prospect',form=form)
+        return render_template('manage/pages/edit_suivi_p.html',ex=ex, suivi=suivi,highlight='prospect',form=form)
         #else:
            # flash(f'Vous ne pouvez pas modifier ce suivi','warning')
            # return redirect(url_for('users.suivi_prospect_', id=id))
