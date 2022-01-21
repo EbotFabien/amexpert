@@ -113,7 +113,7 @@
 
 		.invoice table .no {
 		    color: #fff;
-		    font-size: 1.6em;
+		    font-size: 1em;
 		    background: #000000
 		}
 
@@ -196,6 +196,13 @@
 		    background: #e7f2ff;
 		    padding: 10px;
 		}
+		table {
+			font-size: 1em;
+		}
+
+		/**td {
+			word-break: break-word;
+		}**/
 	</style>
 	<style type="text/css">
 		.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -251,7 +258,7 @@
 	</style>
 </head>
 <body>
-	<div class="container">
+	<div class="container" style="min-width: 100%;">
     <div class="card">
         <div class="card-body">
             <div id="invoice">
@@ -293,29 +300,29 @@
                                 <div class="col invoice-details">
                                     <h1 class="invoice-id"><td>Detail de compte |{{new_rel[0].releve_data.type_ex}}</td></h1>
                                     <div class="date">Arrêter de compte fin: {{new_rel[0].mission__data.date_cmpte_mensuel.strftime('%d. %m. %Y')}}</div>
-                                    
+
                                 </div>
                             </div>
                             <table>
                                 <thead>
                                     <tr>
-                                        <th >ID mission</th>
+                                        <th >ID </th>
 										<th class="text-left">Date mission</th>
 										<th class="text-right">Bailleur</th>
-										<th class="text-right">AS</th>
+										<th class="text-right">Agent Secteur</th>
 										<th class="text-right">Locataire</th>
 										<th class="text-right">ville de mission</th>
-										<th class="text-right">Numero de Facture</th>
+										<th class="text-right"># de Facture</th>
 										<th class="text-right"><span>Facture Client</span>-<br><span>Emise</span></th>
 										<th class="text-right"><span>Facture Client</span>-<br><span>acquittée</span></th>
-										<th class="text-right">Pourcentage</th>
+										<th class="text-right">%</th>
 										<th class="text-right">Montant</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 									{%for mission_ in new_rel %}
 									<tr>
-										<td class="no">{{mission_.mission__data.mission}}</td> 
+										<td class="no">{{mission_.mission__data.mission}}</td>
 										<td class="text-left">{{mission_.mission__data.mission__data.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
 										<td class="unit">{{mission_.mission__data.mission__data.Bailleur__data.nom}}</td>
 										<td class="unit">{{mission_.mission__data.intervenant}}</td>
