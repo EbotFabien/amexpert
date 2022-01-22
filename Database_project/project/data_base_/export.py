@@ -101,9 +101,9 @@ class Export(data):
 
     def expert_data(self,exp,ex,dat=dat):
         for i,v in exp:
-            ex.append([i.id,i.nom,i.trigramme,i.date_entree,v.actif_parti,v.date_certification_initiale,v.date_renouv_certification,v.type_certification,i.TYPE,
+            ex.append([i.id,i.nom,i.trigramme,i.date_entree,v.actif_parti,i.TYPE,
     v.secteur,"",i.siret,v.adresse1,v.adresse2,v.cp,v.ville,i.code_tva,i.taux_tva,i.numero,i.email,i.email_perso,v.login_backof,v.pwd_backof,
-    v.login_google,v.pwd_extranet,v.login_extranet,v.pwd_extranet,v.pwd_gsuite,v.pwd_google,v.observations_de_suivi])
+    v.login_google,v.pwd_extranet,v.login_extranet,v.pwd_extranet,v.pwd_gsuite,v.pwd_google,v.observations_de_suivi]) #,v.date_certification_initiale,v.date_renouv_certification,v.type_certification
         return ex
 
     def client_data(self,exp,ex,dat=dat):

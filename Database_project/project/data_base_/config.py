@@ -40,10 +40,9 @@ class Config:
         "%Respon Cell Dev","Nom agent Cell Dev","% Agent Cell Dev","Nom Agent CellTech","% Agent Cell Tech","Nom Respon Cell Tech"
         ,"% Respon Cell Tech","Nom Suiveur Cell Tech","% Suiveur Cell Tech","Nom Respon Cell Planif","% Respon Cell Planif",	
         "Nom Suiveur Cell Planif","% Suiveur Cell Planif","Nom Agent saisie Cell Planif","% Agent saisie CEll planif"]
-    EXPS=["ID","identité agent","Trigramme","date entrée","Actif  Parti","Date certification initiale","date renouv certification",
-    	"Type certification","AS AC AP","secteur activité","secteur intervnention","SIRET","Adresse 1","Adresse 2","CP",
+    EXPS=["ID","identité agent","Trigramme","date entrée","Actif  Parti""AS AC AP","secteur activité","secteur intervnention","SIRET","Adresse 1","Adresse 2","CP",
         "Ville","Code Tva","Taux Tva","Téléphone","email groupe","email perso","Login backof","PWD backof","Login tablette",
-    	"PWD backof","Login extranet","Pwd extranet","Pwd Gsuite","Pwd Samsung","Observations de suivi"]    
+    	"PWD backof","Login extranet","Pwd extranet","Pwd Gsuite","Pwd Samsung","Observations de suivi"] #,"Date certification initiale","date renouv certification","Type certification",    
     CLI=['ID','Reference','Type','P/C','Societe','Enseigne','Titre','Nom','email',"Numero","Siret","Date entree","Adresse1","Adresse2",
     'Etat_client','CP','Ville','Pays',"Login Extranet","MPD Extranet","Abonnement"]
     NEG=['Client','Genre','Nom','Email','Numero',"Date entree","Adresse",'Etat_client','CP','Ville','Pays',"Abonnement"]
