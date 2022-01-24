@@ -36,7 +36,7 @@
                                   <div class="control">
                                    {% if form.expert.errors %}
                                     {{form.expert(class="input is-invalid") }}
-                                    <div class="invalid-feedback">
+                                    <div class="invalid-feedback">  
                                         {% for error in form.expert.errors %}
                                             <span>{{ error }}</span>
                                         {% endfor %}
