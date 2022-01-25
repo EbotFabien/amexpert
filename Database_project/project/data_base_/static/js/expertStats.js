@@ -1,5 +1,5 @@
 async function getExpertTotalPerMonth () {
-        const URL = 'http://bo.amexpert.pro:8083/dashboard/expertencashpermonth'
+        const URL = 'https://bo.amexpert.pro:8083/dashboard/expertencashpermonth'
         const response = await fetch(URL)
         const datapoints = await response.json()
         return datapoints
@@ -22,7 +22,7 @@ async function getExpertTotalPerMonth () {
 
 
     async function getExpertTotalPerYear () {
-        const URL = 'http://bo.amexpert.pro:8083/dashboard/expertencashperyear'
+        const URL = 'https://bo.amexpert.pro:8083/dashboard/expertencashperyear'
         const response = await fetch(URL)
         const datapoints = await response.json()
         return datapoints
