@@ -3686,11 +3686,12 @@ def gestion(id,save):
     if current_user.TYPE == "Admin":
         abnormal =list()
         factura = list(facturation_mission.query.filter_by(fact_mission=id).all())
+        print(factura)
         NRO=factura[0].facturation_client__data_.n_facture
         for i in factura:
             if i.mission__data_.Anomalie == True:
                 abnormal.append(i)
-        total=facturation_client.query.filter_by(fact_mission=id).first()
+        total=facturation_client.query.filter_by(id=id).first()
         s1=set(abnormal)
         s2=set(factura)
         facture = list(s2.difference(s1))
