@@ -1,6 +1,6 @@
 
 async function getMissionDataPerYearData () {
-    const URL = 'https://bo.amexpert.pro:8083/dashboard/missionperyear'
+    const URL = 'https://bo.amexpert.pro:4443/dashboard/missionperyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
@@ -21,7 +21,7 @@ getMissionDataPerYearData().then(missions => {
 })
 
 async function getAmountWorkedPerYear (type="bar") {
-    const URL = 'https://bo.amexpert.pro:8083/dashboard/missionencashyear'
+    const URL = 'https://bo.amexpert.pro:4443/dashboard/missionencashyear'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
@@ -45,7 +45,7 @@ getAmountWorkedPerYear(type="bar").then(amountPerYear => {
 })
 
 async function getMissionsPerMonth () {
-    const URL = 'http://bo.amexpert.pro:8083/dashboard/missionpermonth'
+    const URL = 'http://bo.amexpert.pro:4443/dashboard/missionpermonth'
     const response = await fetch(URL)
     const datapoints = await response.json()
     return datapoints
