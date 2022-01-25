@@ -1272,6 +1272,8 @@ def datereg(id):
         now_utc = datetime.now(timezone.utc)
         start=datetime.combine(now_utc,datetime.min.time())
         failed = list(Facturation_history.query.filter(and_(Facturation_history.facture==id,Facturation_history.visibility==True)).all())
+        reglee=facturation_client.query.filter_by(valide=True).count()
+        notreglee=facturation_client.query.filter_by(valide=False).count()
         
         if failed:
             flash(f'Veuillez corriger votre factures Numero' +str(id),'Warning')
@@ -1284,7 +1286,7 @@ def datereg(id):
             miss.DATE_FACT_REGLEE = start
             db.session.commit()
             flash(f'La facture a été réglé avec succès','success')
-            return render_template('manage/pages/facturationa.html',legend="facturation",highlight='client',facturations=facturation) 
+            return render_template('manage/pages/facturationa.html',legend="facturation",highlight='client',facturations=facturation,reglee=reglee,not_=notreglee) 
 #shows all the factures of the clients,make a page that will show all the data of this particular table
     return redirect(url_for('users.main'))
 
@@ -3716,7 +3718,8 @@ def gestion(id,save):
                     if fil.endswith('.pdf'):
                         f=fil
                         break
-                nom=''.join(name)
+                
+                nom=''.join(name.nom)
                 las=nom+'.pdf'
                 #try:
                 fil=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf',f)
