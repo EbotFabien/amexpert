@@ -294,7 +294,7 @@
                                 </div>
                                 <div class="col invoice-details">
                                     <h1 class="invoice-id">Facture Numero {{nro}}</h1>
-                                    <div class="date">Date_de_creation: {{total.Date_de_creation}}</div>
+                                    <div class="date">Date_de_creation: {{total.Date_de_creation.strftime('%d. %m. %Y')}}</div>
                                    
                                 </div>
                             </div>
@@ -317,7 +317,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {%for fac in facture %}
+                                    {%for fac in factura %}
 										<tr>
 											<td class="no">{{fac.mission__data_.id}}</td>
 											<td class="text-left">{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
@@ -337,7 +337,7 @@
                                     <tr>
                                         <td colspan="5"></td>
                                         <td colspan="5">SUBTOTAL</td>
-                                        <td>{{total}}</td>
+                                        <td>{{total.Montant_HT}}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="5"></td>
