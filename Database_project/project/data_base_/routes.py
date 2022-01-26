@@ -335,7 +335,7 @@ def mission():
                         mission_=Mission.query.filter(and_(Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                 except:
-                    expert=Expert.query.filter(Expert.nom.contains(str(key.upper()))).first()
+                    expert=Expert.query.filter(Expert.nom.like(key)).first()
                     if expert:
                         mission_=Mission.query.filter(and_(Mission.ID_AS==expert.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
@@ -444,7 +444,7 @@ def mission():
                 Mission.ID_Suiveur_Cell_Planif==current_user.id,Mission.ID_Agent_saisie_Cell_Planif==current_user.id,Mission.ID_Respon_Cell_Planif==current_user.id,Mission.ID_agent_chiffrage==current_user.id,Mission.ID_manager_chiffrage==current_user.id),Mission.Reference_BAILLEUR==Cli.id,Mission.Visibility==True)).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
                         return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,key=key,Mission=mission_,legend="mission", highlight='mission')
                 except:
-                    expert=Expert.query.filter(Expert.nom.contains(str(key.lower()))).first()
+                    expert=Expert.query.filter(Expert.nom.like(key)).first()
                     if expert:
                         mission_=Mission.query.filter(and_(or_(Mission.ID_AS==current_user.id,Mission.ID_INTERV==current_user.id,Mission.ID_Suiveur_Cell_Tech==current_user.id,Mission.ID_Agent_CellTech==current_user.id,
                 Mission.ID_Respon_Cell_Tech==current_user.id,Mission.ID_Respon_Cell_Dev==current_user.id,Mission.ID_agent_Cell_Dev==current_user.id,
