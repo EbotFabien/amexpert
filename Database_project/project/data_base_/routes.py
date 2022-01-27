@@ -2569,14 +2569,14 @@ def search ():
         search = "%{}%".format(request.args.get('keyword'))
         key=request.args.get('keyword')
         if table == 'client':
-            clients = Client.query.filter(and_(or_(Client.nom.contains(str(search.lower())),Client.email.contains(str(search.lower())),Client.numero.contains(str(search.lower())),Client.societe.contains(str(search.lower()))),Client.visibility==True)).all()
+            clients = Client.query.filter(and_(or_(Client.nom.contains(str(search)),Client.email.contains(str(search)),Client.numero.contains(str(search)),Client.societe.contains(str(search))),Client.visibility==True)).all()
             if len(clients) > 1:
                 title = "Clients"
             else:
                 title = "Client"
             return render_template('manage/pages/search_results.html', clients=clients, title=title, highlight='client',table=table, search=request.args.get('keyword'))
         if table == 'prospect':
-            prospects = prospect.query.filter(and_(or_(prospect.nom.contains(str(search.lower())),prospect.email.contains(str(search.lower())),prospect.numero.contains(str(search.lower())),prospect.societe.contains(str(search.lower()))),prospect.visibility==True)).all()
+            prospects = prospect.query.filter(and_(or_(prospect.nom.contains(str(search)),prospect.email.contains(str(search)),prospect.numero.contains(str(search)),prospect.societe.contains(str(search))),prospect.visibility==True)).all()
             if len(prospects) > 1:
                 title = "Prospects"
             else:
@@ -2592,17 +2592,17 @@ def search ():
         elif table == 'expert':
             try :
                 if isinstance(int(key),int) == True:
-                    experts = Expert.query.filter(and_(or_(Expert.nom.like(search),Expert.email.like(search),Expert.TYPE.like(search),Expert.numero.like(search)),Expert.visibility==True)).all()
+                    experts = Expert.query.filter(and_(or_(Expert.nom.contains(search),Expert.email.contains(search),Expert.TYPE.contains(search),Expert.numero.like(search)),Expert.visibility==True)).all()
             except: 
-                experts = Expert.query.filter(and_(or_(Expert.nom.like(search),Expert.email.like(search),Expert.TYPE.like(search)),Expert.visibility==True)).all()
+                experts = Expert.query.filter(and_(or_(Expert.nom.contains(search),Expert.email.contains(search),Expert.TYPE.contains(search)),Expert.visibility==True)).all()
             if len(experts) > 1:
                 title = "Experts"
             else:
                 title = "Expert"
             return render_template('manage/pages/search_results.html', experts=experts, highlight='expert', title=title, table=table, search=request.args.get('keyword'))
         elif table == 'mission':
-            experts = Expert.query.filter(Expert.nom.contains(str(search.lower()))).first()   
-            clients = Client.query.filter(Client.nom.contains(str(search.lower()))).first()
+            experts = Expert.query.filter(Expert.nom.contains(str(search))).first()   
+            clients = Client.query.filter(Client.nom.contains(str(search))).first()
             if  clients:
                 missions = Mission.query.filter(and_(Mission.Reference_BAILLEUR==clients.id,Mission.Visibility==True)).all()
             if  experts:
