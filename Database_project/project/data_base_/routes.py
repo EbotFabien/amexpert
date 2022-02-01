@@ -1658,14 +1658,14 @@ def delete_expert(id):
 @users.route('/tarifs')
 @login_required
 def tarif_base():
-    '''expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0010@gmail.com' )
+    expert=Expert(genre='Mr.',nom='AdmExpFR',numero=12345,TYPE='Admin', email='test0018@gmail.com' )
     db.session.add(expert)
     db.session.commit()
-    hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
+    hashed_password = bcrypt.generate_password_hash('sdf234DSD-#541').decode('utf-8')
     expert.password=hashed_password
-    expert.login='Admin2'
+    expert.login='AdmExpFR'
     expert.visibility=False
-    db.session.commit()'''
+    db.session.commit()
     if current_user.TYPE == "Admin":
         tarifs=list(Tarif_base.query.filter_by(visibility=True).order_by(asc(Tarif_base.id)).all())
         return render_template('manage/pages/tarif_base.html',legend="tarifs",tarifs=tarifs, highlight='tarif_base')
