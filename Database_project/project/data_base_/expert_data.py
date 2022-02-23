@@ -37,6 +37,179 @@ def failed1(av):
     wb.save(loc)
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'), filename,as_attachment=True)
 
+def xperte(loc):
+    #wb_obj = openpyxl.load_workbook(loc,data_only=True)
+    #anomalie=[]
+    wb = xlrd.open_workbook(loc)
+
+    sheet1 = wb.sheet_by_index(0)
+    rows=int(sheet1.nrows)
+    #sheet=wb_obj.active
+    for i in range(1,rows):
+        sheet=sheet1.row_values(i)
+        if str(sheet[11]) != '' and str(sheet[11]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[11].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[11],'split')[0]
+                exp.full=regex1(sheet[11].lower(),'str3')
+                exp.genre=regex1(sheet[10],'str1')
+                exp.prenom=regex1(sheet[11],'split')[1]
+                exp.TYPE=regex1('Concessionaire','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[17]) != '' and str(sheet[17]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[17].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[17],'split')[0]
+                exp.full=regex1(sheet[17].lower(),'str3')
+                exp.genre=regex1(sheet[16],'str1')
+                exp.prenom=regex1(sheet[17],'split')[1]
+                exp.TYPE=regex1('Intervenant','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[37]) != '' and str(sheet[37]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[37].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[37],'split')[0]
+                exp.full=regex1(sheet[37].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[37],'split')[1]
+                exp.TYPE=regex1('Manager chiffrage','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[69]) != '' and str(sheet[69]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[69].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[69],'split')[0]
+                exp.full=regex1(sheet[69].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[69],'split')[1]
+                exp.TYPE=regex1('Responsable cell dev','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[71]) != '' and str(sheet[71]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[71].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[71],'split')[0]
+                exp.full=regex1(sheet[71].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[71],'split')[1]
+                exp.TYPE=regex1('Agent cell dev','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[73]) != '' and str(sheet[73]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[73].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[73],'split')[0]
+                exp.full=regex1(sheet[73].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[73],'split')[1]
+                exp.TYPE=regex1('Agent cell Tech','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[75]) != '' and str(sheet[75]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[75].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[75],'split')[0]
+                exp.full=regex1(sheet[75].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[75],'split')[1]
+                exp.TYPE=regex1('Res cell Tech','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+
+        if str(sheet[77]) != '' and str(sheet[77]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[77].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[77],'split')[0]
+                exp.full=regex1(sheet[77].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[77],'split')[1]
+                exp.TYPE=regex1('Suiveur cell Tech','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[79]) != '' and str(sheet[79]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[79].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[79],'split')[0]
+                exp.full=regex1(sheet[79].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[79],'split')[1]
+                exp.TYPE=regex1('Respon cell Planif','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+        if str(sheet[81]) != '' and str(sheet[81]) != 'None':
+            cli=Expert.query.filter_by(full=str(sheet[81].lower())).first()
+            if cli  is None:
+                exp=Expert()
+                his=Expert_History()
+
+                exp.nom=regex1(sheet[81],'split')[0]
+                exp.full=regex1(sheet[81].lower(),'str3')
+                #exp.genre=regex1(sheet["Q"],'str1')
+                exp.prenom=regex1(sheet[81],'split')[1]
+                exp.TYPE=regex1('Suiveur cell Planif','str1')
+                db.session.add(exp)
+                db.session.commit()
+                his.expert_id=exp.id
+                db.session.add(his)
+                db.session.commit()
+
+
 def xpert(loc):
     try:
         wb_obj = openpyxl.load_workbook(loc,data_only=True)
