@@ -29,7 +29,7 @@ class Client(db.Model):
     prenom = db.Column(db.String,default='')
     email = db.Column(db.String,default='')
     numero = db.Column(db.String,default='')
-    siret=db.Column(db.BigInteger)
+    siret=db.Column(db.BigInteger,default=0)
     date_creation =db.Column(db.DateTime(),default=datetime.utcnow)
     anom= db.Column(db.Boolean,default=False) #you comment
     reason= db.Column(db.String,default='')
@@ -65,7 +65,7 @@ class Expert(db.Model,UserMixin):
     trigramme=db.Column(db.String,default='')
     TYPE=db.Column(db.String,default='')
     date_entree=db.Column(db.DateTime,default=datetime.utcnow)
-    siret=db.Column(db.BigInteger) 
+    siret=db.Column(db.BigInteger,default=0) 
     email = db.Column(db.String,default='')#unique
     email_perso = db.Column(db.String,default='')
     numero = db.Column(db.String)
@@ -105,7 +105,7 @@ class Client_History(db.Model):
     adresse1  = db.Column(db.String,default='')
     adresse2 = db.Column(db.String,default='')
     etat_client=db.Column(db.String,default='')
-    cp 	 = db.Column(db.BigInteger)
+    cp 	 = db.Column(db.BigInteger,default=0)
     ville  = db.Column(db.String,default='')
     pays= db.Column(db.String,default='')
     login_extranet= db.Column(db.String,default='')
@@ -303,7 +303,7 @@ class Expert_History(db.Model):
    # date_renouv_certification=db.Column(db.DateTime())#check this
     adresse1 = db.Column(db.String,default='')
     adresse2 = db.Column(db.String,default='')
-    cp=db.Column(db.Integer)
+    cp=db.Column(db.Integer,default=0)
     login_backof=db.Column(db.String,default='')
     pwd_backof=db.Column(db.String,default='') 
     login_extranet=db.Column(db.String,default='')

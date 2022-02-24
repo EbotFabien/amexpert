@@ -3,8 +3,8 @@ from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient
-from Database_project.project.data_base_.expert_data  import xpert
+from Database_project.project.data_base_.client_data  import lient,lienta
+from Database_project.project.data_base_.expert_data  import xpert,xperte
 from Database_project.project.data_base_.tarif_data  import arif
 from Database_project.project.data_base_.Suivi  import suiv
 from Database_project.project.data_base_.utils import send_reset_email,generate,gen_name,send_pdf
@@ -2367,9 +2367,9 @@ def export():
 @users.route("/televeser", methods=['GET','POST'])
 #@login_required
 def up():
-    #db.create_all()
     db.create_all()
-    '''expert1=Expert(genre='0',nom='',numero=0,TYPE='0', email='0' )
+    '''db.create_all()
+    expert1=Expert(genre='0',nom='',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert1)
     db.session.add(expert)
@@ -2414,7 +2414,7 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             if table == 'client':
-                    lient(loc)
+                    lienta(loc)
                     '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -2442,7 +2442,7 @@ def uploader_():
                     #return suiv(loc)
                 
             if table == 'expert':
-                    xpert(loc)
+                    xperte(loc)
                     '''if xpert(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -2473,7 +2473,7 @@ def uploader_():
                 #Missions2(loc,'29')
                 #Missions2(loc,'31')
                 
-                Missions1(loc)
+                Missions(loc)
                 '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))

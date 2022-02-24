@@ -61,6 +61,20 @@ def regex1(data,Type):
                 
         else:
             return ''
+    if  Type=='split':
+        if type(data)==str and data != '':
+            nom=data.split()
+            if len(nom)>=3:
+                nom=[nom[0],nom[1]+''+nom[2]]
+                return nom
+            if len(nom)>=2:
+                return nom
+            else:
+                last=[nom[0],'']
+                return last
+
+        else:
+            return ['','']
 
     if  Type=='int':
         if type(data) == int:
@@ -75,7 +89,10 @@ def regex1(data,Type):
                 return 'Failed'
         if data == None:
             return 0 
-        else:
+        try:
+
+            return int(data)
+        except:
             return 'Failed'
         
     if  Type=='M':
@@ -118,13 +135,13 @@ def regex1(data,Type):
         if isinstance(data,float) == True:
             return data
         if data == '':
-            return None
+            return 0.00
         if type(data)==str:
             return 0.00
         if data == None:
             return 0.00
         else:
-            return None
+            return 0.00
 
     if  Type == 'perc':
         if type(data) == str:
@@ -277,6 +294,72 @@ def date_(floa,date):
             return v
         except:
             return floa
+
+def lienta(loc):
+    wb = xlrd.open_workbook(loc)
+
+    sheet = wb.sheet_by_index(0)
+    rows=int(sheet.nrows)
+    #wb_obj = openpyxl.load_workbook(loc,data_only=True)
+    anomalie=[]
+   # sheet=wb_obj.active
+    for i in range(0,rows):
+        sheet1=sheet.row_values(i)
+        v=sheet1[0]
+        try:
+            int(v) 
+            
+            cli=Client.query.filter_by(reference=int(sheet1[0])).first()
+            if cli is None:
+                create=Client()
+                
+                Histo=Client_History()
+                
+                create.reference=int(sheet1[0])
+                create.TYPE=regex1(sheet1[12],'str')
+                create.societe=regex1(sheet1[1],'str')
+                #create.enseigne=regex1(sheet1["C"],'str')
+                create.titre=regex1(sheet1[2],'str')
+                create.nom=regex1(sheet1[3],'split')[0]
+                create.prenom=regex1(sheet1[3],'split')[1]
+                #numero=regex1(sheet1[8],'int')
+                #if numero == 'Failed':
+                    #print('failed')
+                    #'''reason='erreur  de numero dans la colonne  Tel principal client ,veuillez verifier toute colonne avant d"envoyer'
+                    #anomalie.append([sheet1["A"],sheet1["B"],sheet1["C"],
+                    #sheet1["D"],sheet1["E"],sheet1["F"],sheet1["G"],
+                    #sheet1["H"],sheet1["I"],sheet1["J"],sheet1["K"],
+                    #sheet1["L"],sheet1["M"],sheet1["N"],sheet1["O"],
+                    #sheet1["P"],sheet1["Q"],reason])'''
+                    #continue
+                #else:
+                create.numero=0
+                db.session.add(create)
+                db.session.commit()
+                cp=regex1(sheet1[6],'int')
+                if cp == 'Failed':
+                   print('failed')
+                   ''' reason='erreur  de numero dans la colonne  code postal ,veuillez verifier toute colonne avant d"envoyer'
+                    anomalie.append([sheet1["A"],sheet1["B"],sheet1["C"],
+                    sheet1["D"],sheet1["E"],sheet1["F"],sheet1["G"],
+                    sheet1["H"],sheet1["I"],sheet1["J"],sheet1["K"],
+                    sheet1["L"],sheet1["M"],sheet1["N"],sheet1["O"],
+                    sheet1["P"],sheet1["Q"],reason])
+                    continue  ''' 
+                else:
+                    Histo.cp=cp
+                Histo.adresse1=regex1(sheet1[4],'str1')
+                Histo.ville=regex1(sheet1[7],'str1')
+                Histo.client_id=create.id
+                db.session.add(Histo)
+                db.session.commit()
+        except:
+            print('ok')
+        
+    if anomalie == []:
+            return True
+    else:
+        return failed(anomalie)
 
 def lient(loc):
     #try:

@@ -1009,137 +1009,138 @@ def expert__(loc):
 
 def Missions(loc):
     
-    print('ok')
-    wb_obj = openpyxl.load_workbook(loc,data_only=True)
-    print(wb_obj.sheetnames)
-    sheet=wb_obj['Sheet1']
-    print(sheet)
+    #print('ok')
+    wb = xlrd.open_workbook(loc)
+
+    sheet1 = wb.sheet_by_index(0)
+    rows=int(sheet1.nrows)
+    #print(sheet)
     reference=[]
     Nom=[]
     num=[]
     
-    for i in range(1,sheet.max_row):
-        
-        print(sheet["I"][i].value)
-        cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
-        if cli is None:
-            cli=Client.query.filter_by(nom=str(sheet["D"][i].value.lower())).first()
+    for i in range(1,rows):
+        sheet=sheet1.row_values(i)
+        #print(sheet["I"][i].value)
+        cli=Client.query.filter_by(reference=int(sheet[0])).first()
+        #if cli is None:
+        #    cli=Client.query.filter_by(nom=str(sheet["D"].lower())).first()
         '''except:
-            cli=Client.query.filter_by(nom=str(sheet["B"][i].value.lower())).first()
+            cli=Client.query.filter_by(nom=str(sheet["B"].lower())).first()
         if cli1 is None:
             try:
-                client=Client(reference=str(sheet["A"][i].value),nom=str(sheet["B"][i].value.lower()))#,date_creation=e
+                client=Client(reference=str(sheet["A"]),nom=str(sheet["B"].lower()))#,date_creation=e
             except:
-                client=Client(reference=str(sheet["A"][i].value))#,date_creation=e
+                client=Client(reference=str(sheet["A"]))#,date_creation=e
             db.session.add(client)
             db.session.commit()   
             history=Client_History(client_id=client.id)
             db.session.commit() '''
         
         #try:
-          #  cli=Client.query.filter_by(reference=str(sheet["A"][i].value)).first()
+          #  cli=Client.query.filter_by(reference=str(sheet["A"])).first()
         #except:
-           # cli1=Client.query.filter_by(nom=str(sheet["B"][i].value)).first()
-        if sheet["L"][i].value is None:
+           # cli1=Client.query.filter_by(nom=str(sheet["B"])).first()
+        if sheet[11] is None:
             SA=0
         else:
-            AS=Expert.query.filter_by(full=str(sheet["L"][i].value.lower())).first()
+            AS=Expert.query.filter_by(full=str(sheet[11].lower())).first()
             if AS is not None:
                 SA= AS.id
             if AS is None :
                 SA= 0
-        if sheet["R"][i].value is None:
+        if sheet[17] is None:
             IV=0
         else:
-            INTERV=Expert.query.filter_by(full=str(sheet["R"][i].value.lower())).first()
+            INTERV=Expert.query.filter_by(full=str(sheet[17].lower())).first()
             if INTERV is not None:
                 IV= INTERV.id
             if INTERV is None  :
                 IV= 0
-        if sheet["AL"][i].value is None:
+        if sheet[37] is None:
             MC=0
         else:
-            M_C=Expert.query.filter_by(full=str(sheet["AL"][i].value.lower())).first()
+            M_C=Expert.query.filter_by(full=str(sheet[37].lower())).first()
             if M_C is not None:
                 MC= M_C.id
             if M_C is None  :
                 MC= 0
-        if sheet["AN"][i].value is None:
+        if sheet[39] is None:
             AC=0
         else:
-            A_C=Expert.query.filter_by(full=str(sheet["AN"][i].value.lower())).first()
+            A_C=Expert.query.filter_by(full=str(sheet[39].lower())).first()
             if A_C is not None:
                 AC= A_C.id
             if A_C is None  :
                 AC= 0
 
-        if sheet["BR"][i].value is None:
+        if sheet[69] is None:
             RCD=0
         else:
-            R_CD=Expert.query.filter_by(full=str(sheet["BR"][i].value.lower())).first()
+            R_CD=Expert.query.filter_by(full=str(sheet[69].lower())).first()#BR
             if R_CD is not None:
                 RCD= R_CD.id
             if R_CD is None  :
                 RCD= 0
 
-        if sheet["BT"][i].value is None:
+        if sheet[71] is None:
             ACD=0
         else:
-            A_CD=Expert.query.filter_by(full=str(sheet["BT"][i].value.lower())).first()
+            A_CD=Expert.query.filter_by(full=str(sheet[71].lower())).first()#bt
             if A_CD is not None:
                 ACD= A_CD.id
             if A_CD is None  :
                 ACD= 0
 
-        if sheet["BV"][i].value is None:
+        if sheet[73] is None:
             ACT=0
         else:
-            A_CT=Expert.query.filter_by(full=str(sheet["BV"][i].value.lower())).first()
+            A_CT=Expert.query.filter_by(full=str(sheet[73].lower())).first()
             if A_CT is not None:
                 ACT= A_CT.id
             if A_CT is None  :
                 ACT= 0
 
-        if sheet["BX"][i].value is None:
+        if sheet[75] is None:
             RCT=0
         else:
-            R_CT=Expert.query.filter_by(full=str(sheet["BX"][i].value.lower())).first()
+            R_CT=Expert.query.filter_by(full=str(sheet[75].lower())).first()
             if R_CT is not None:
                 RCT= R_CT.id
             if R_CT is None  :
                 RCT= 0
 
-        if sheet["BZ"][i].value is None:
+        if sheet[77] is None:
             SCT=0
         else:
-            S_CT=Expert.query.filter_by(full=str(sheet["BZ"][i].value.lower())).first()
+            S_CT=Expert.query.filter_by(full=str(sheet[77].lower())).first()
             if S_CT is not None:
                 SCT= S_CT.id
             if S_CT is None  :
                 SCT= 0
 
-        if sheet["CB"][i].value is None:
+        if sheet[79] is None:
             RCP=0
         else:
-            R_CP=Expert.query.filter_by(full=str(sheet["CB"][i].value.lower())).first()
+            R_CP=Expert.query.filter_by(full=str(sheet[79].lower())).first()
             if R_CP is not None:
                 RCP= R_CP.id
             if R_CP is None  :
                 RCP= 0
 
-        if sheet["CD"][i].value is None:
+        if sheet[81] is None:
             SCP=0
         else:
-            S_CP=Expert.query.filter_by(full=str(sheet["CD"][i].value.lower())).first()
+            S_CP=Expert.query.filter_by(full=str(sheet[81].lower())).first()
             if S_CP is not None:
                 SCP= S_CP.id
             if S_CP is None  :
                 SCP= 0
 
-        if sheet["CF"][i].value is None:
+        if sheet[83] is None:
             ASCP=0
         else:
-            AS_CP=Expert.query.filter_by(full=str(sheet["CF"][i].value.lower())).first()
+            AS_CP=Expert.query.filter_by(full=str(sheet[83].lower())).first()
             if AS_CP is not None:
                 ASCP= AS_CP.id
             if AS_CP is None  :
@@ -1147,84 +1148,203 @@ def Missions(loc):
 
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
-           # old=sheet["A"][i].value,
-            ABONNEMENT	 = sheet["J"][i].value ,
+           # old=sheet["A"],
+            ABONNEMENT	 = sheet[9] ,
             ID_AS	 = SA ,
         
           
-            DATE_REALISE_EDL =sheet["M"][i].value , 	
+            DATE_REALISE_EDL = datetime.datetime(*xlrd.xldate_as_tuple(sheet[12], wb.datemode))  , 	
             ID_INTERV = IV ,
-            NRO_FACTURE = sheet["I"][i].value ,
-            PRIX_HT_EDL = sheet["N"][i].value ,
-            TVA_EDL = sheet["O"][i].value ,
-            PRIX_TTC_EDL = sheet["P"][i].value ,
-            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
-            Adresse1_Bien	 = sheet["V"][i].value ,  
-            Adresse2_Bien	 = sheet["W"][i].value , 
-            CP_Bien	 = sheet["X"][i].value ,  
-            Ville_Bien	 = sheet["Y"][i].value , 
+            #NRO_FACTURE = sheet[8] ,
+            PRIX_HT_EDL = regex1(sheet[13],'S') ,
+            TVA_EDL = regex1(sheet[14],'S') ,
+            PRIX_TTC_EDL = regex1(sheet[15],'S') ,
+            Reference_LOCATAIRE	 =  sheet[20] ,
+            Adresse1_Bien	 = sheet[21] ,  
+            Adresse2_Bien	 = sheet[22] , 
+            CP_Bien	 = regex1(sheet[23],'M') ,  
+            Ville_Bien	 = sheet[24] , 
             
-            CA_HT_AS = sheet["Z"][i].value , 	
-            TVA_AS	 = sheet["AA"][i].value , 
-            CA_TTC_AS = sheet["AB"][i].value , 	
-            CA_HT_AC = sheet["AC"][i].value , 	
-            CA_TTC_AC	 = sheet["AD"][i].value , 
-            CA_HT_TRUST	 = sheet["AE"][i].value , 
-            TVA_TRUST	 = sheet["AF"][i].value ,
-            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
-            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
-            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
-            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
+            CA_HT_AS = regex1(sheet[25],'S') , 	
+            TVA_AS	 = regex1(sheet[26],'S') , 
+            CA_TTC_AS = regex1(sheet[27],'S') , 	
+            CA_HT_AC = regex1(sheet[28],'S') , 	
+            CA_TTC_AC	 = regex1(sheet[29],'S') , 
+            CA_HT_TRUST	 = regex1(sheet[30],'S') , 
+            TVA_TRUST	 = regex1(sheet[31],'S') ,
+            Prix_ht_chiffrage	 = regex1(sheet[33],'S') , 
+            POURCENTAGE_suiveur_chiffrage	 = regex1(sheet[34],'perc') ,
+            POURCENTAGE_AS_chiffrage = regex1(sheet[35],'perc') ,	
+            POURCENTAGE_manager_chiffrage  = regex1(sheet[36],'perc') , 	
             ID_manager_chiffrage  = MC ,
                 
-            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
+            POURCENTAGE_agent_chiffrage = regex1(sheet[38],'perc') ,	
             ID_agent_chiffrage  = AC ,	
             
-            TYPE_EDL = sheet["AO"][i].value ,	
-            TITREPROPRIO = sheet["AQ"][i].value , 		
-            NOMPROPRIO = sheet["AR"][i].value , 	
-            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
-            TYPE_LOGEMENT = sheet["BB"][i].value , 	
-            CODE_AMEXPERT = sheet["AI"][i].value , 	
-            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
-            LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
-            CODE_FACTURATION = sheet["BI"][i].value , 	
-            TYPE_DE_BIEN = sheet["BJ"][i].value , 	
-            surface_logement1 = sheet["BK"][i].value , 		
-            DATE_FACTURE = sheet["AP"][i].value , 	
-            POURCENTAGE_COM_AS_DU_CLIENT = sheet["BQ"][i].value , 	
+            TYPE_EDL = sheet[40] ,	
+            TITREPROPRIO = sheet[42] , 		
+            NOMPROPRIO = sheet[43] , 	
+            #DATE_FACT_REGLEE = sheet["AS"] ,	
+            TYPE_LOGEMENT = sheet[49] , 	
+            CODE_AMEXPERT = sheet[34] , 	
+            COMMENTAIRE_FACTURE = sheet[54] , 	
+            LOGEMENT_MEUBLE =sheet[59] , 	
+            CODE_FACTURATION = sheet[60] , 	
+            TYPE_DE_BIEN = sheet[61] , 	
+            surface_logement1 = regex1(sheet[62],'S') , 		
+           # DATE_FACTURE = sheet["AP"] , bk	
+            POURCENTAGE_COM_AS_DU_CLIENT =regex1(sheet[68],'perc') , 	
             ID_Respon_Cell_Dev	 =RCD ,
             
-            POURCENTAGE_Respon_Cell_Dev = sheet["BS"][i].value , 	
+            POURCENTAGE_Respon_Cell_Dev = regex1(sheet[70],'perc') , 	
             ID_agent_Cell_Dev = ACD, 	
             
-            POURCENTAGE_Agent_Cell_Dev = sheet["BU"][i].value ,	
+            POURCENTAGE_Agent_Cell_Dev = regex1(sheet[71],'perc') ,	
             ID_Agent_CellTech = ACT,  	
             
-            POURCENTAGE_Agent_Cell_Tech = sheet["BW"][i].value , 	
+            POURCENTAGE_Agent_Cell_Tech = regex1(sheet[73],'perc') , 	
             ID_Respon_Cell_Tech = RCT, #######
                 
-            POURCENTAGE_Respon_Cell_Tech = sheet["BY"][i].value ,	
+            POURCENTAGE_Respon_Cell_Tech = regex1(sheet[75],'perc') ,	
             ID_Suiveur_Cell_Tech  = SCT ,
             
-            POURCENTAGE_Suiveur_Cell_Tech	 = sheet["CA"][i].value , 
+            POURCENTAGE_Suiveur_Cell_Tech	 = regex1(sheet[77],'perc') , 
             ID_Respon_Cell_Planif = RCP,
             
-            POURCENTAGE_Respon_Cell_Planif  = sheet["CC"][i].value ,
+            POURCENTAGE_Respon_Cell_Planif  = regex1(sheet[79],'perc') ,
             ID_Suiveur_Cell_Planif  = SCP,
             
-            POURCENTAGE_Suiveur_Cell_Planif	 = sheet["CE"][i].value , 
+            POURCENTAGE_Suiveur_Cell_Planif	 = regex1(sheet[81],'perc') , 
             ID_Agent_saisie_Cell_Planif  = ASCP,
                   
-            POURCENTAGE_Agent_saisie_CEll_planif  = sheet["CG"][i].value )
+            POURCENTAGE_Agent_saisie_CEll_planif  = regex1(sheet[83],'perc') )
             db.session.add(mission)
             db.session.commit()
+            try:
+                if mission.CODE_FACTURATION[-1]=='M':
+                    #print(mission.CODE_FACTURATION[2:5])
+                    mission.CODE_FACTURATION[2:5] == 150
+                    A=mission.CODE_FACTURATION[0:-1]
+                    mission.CODE_FACTURATION = A
+                    #print(mission.CODE_FACTURATION)
+                    db.session.commit()
+
+                if mission.CODE_FACTURATION[-1] == ' ':
+                    #print(mission.CODE_FACTURATION[2:5])
+                    B=mission.CODE_FACTURATION[0:-1] 
+                    mission.CODE_FACTURATION = B
+                    db.session.commit()
+
+                if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
+                        mission.Anomalie = False
+                        mission.reason = None
+                        db.session.commit()
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
+               # print(mission)
+                db.session.commit()
+            #print(mission.CODE_FACTURATION)
+            #print(mission.TYPE_LOGEMENT)
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                   # print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                   # print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    #print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                   # print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
+            try:
+                if mission.TYPE_LOGEMENT[-1] == ' ':
+                   # print( mission.TYPE_LOGEMENT)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                    db.session.commit()
+
+
+                if mission.TYPE_LOGEMENT[-1] == 'M':
+                   # print(mission.TYPE_LOGEMENT)
+                    mission.CODE_FACTURATION[2:5] == 150
+                    #print(mission.CODE_FACTURATION)
+                    B=mission.TYPE_LOGEMENT[0:-1] 
+                    mission.TYPE_LOGEMENT = B
+                   # print(mission.TYPE_LOGEMENT)
+                    db.session.commit()
+
+                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
+                    mission.Anomalie = True
+                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
+                    db.session.commit()
+
+                
+
+                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
+                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
+                        if mission.TYPE_LOGEMENT[0] == "T":
+                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit()
+                        if mission.TYPE_LOGEMENT[0] == "F":
+                            B="APPT-"+str(mission.TYPE_LOGEMENT)
+                            mission.TYPE_LOGEMENT = B
+                            db.session.commit() 
+                    else:
+                        mission.coherent = False 
+                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
+                        db.session.commit()
+                
+            except:
+                mission.coherent = False
+                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
+                db.session.commit()
+            
+            if mission.TYPE_LOGEMENT == None:
+                mission.TYPE_LOGEMENT = ''
+                db.session.commit()
+            if mission.CODE_FACTURATION == None:
+                mission.CODE_FACTURATION = ''
+                db.session.commit()
             
         else:
 
-            Nom.append(sheet["D"][i].value.lower())
+            Nom.append(sheet[3].lower())
             num.append(i)
-            reference.append((sheet["A"][i].value))# make a table for historique des donnees 
+            reference.append((sheet[0]))# make a table for historique des donnees 
             print(reference)
             print(Nom)
             print(num)
@@ -1429,7 +1549,7 @@ def Missions2(loc,n):
             db.session.commit()
             try:
                 if mission.CODE_FACTURATION[-1]=='M':
-                    print(mission.CODE_FACTURATION[2:5])
+                    #print(mission.CODE_FACTURATION[2:5])
                     mission.CODE_FACTURATION[2:5] == 150
                     A=mission.CODE_FACTURATION[0:-1]
                     mission.CODE_FACTURATION = A
@@ -1437,7 +1557,7 @@ def Missions2(loc,n):
                     db.session.commit()
 
                 if mission.CODE_FACTURATION[-1] == ' ':
-                    print(mission.CODE_FACTURATION[2:5])
+                    #print(mission.CODE_FACTURATION[2:5])
                     B=mission.CODE_FACTURATION[0:-1] 
                     mission.CODE_FACTURATION = B
                     db.session.commit()
@@ -1451,8 +1571,8 @@ def Missions2(loc,n):
                 mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
                # print(mission)
                 db.session.commit()
-            print(mission.CODE_FACTURATION)
-            print(mission.TYPE_LOGEMENT)
+            #print(mission.CODE_FACTURATION)
+            #print(mission.TYPE_LOGEMENT)
             try:
                 if mission.TYPE_LOGEMENT[-1] == ' ':
                    # print( mission.TYPE_LOGEMENT)
