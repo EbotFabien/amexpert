@@ -93,6 +93,7 @@
                             <th scope="col">DATE EDL REALISE</th>  	
                             <th scope="col">PRIX HT EDL</th>	  	     	
                             <th scope="col">DATE FACTURE</th>  	
+                            <th scope="col">Anomalie</th>
                             <th scope="col">Etat</th>
                             {% if current_user.TYPE == "Admin" %}  		
                             <th></th>	
@@ -131,6 +132,13 @@
                                     aucune date
                                   {% else %}
                                     {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
+                                  {% endif %}                              
+                                </td>
+                                <td>
+                                  {% if mission_.Anomalie == True %}
+                                    Anomalie
+                                  {% else %}
+                                    False
                                   {% endif %}                              
                                 </td>
                                 <td>
