@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf = 123#Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -1914,6 +1914,13 @@ def login():
     #for i in miss:
      #   i.appli=False
       #  db.session.commit()
+    '''expert=Expert(genre='Mr.',nom='Admin',login='Admin' ,numero=12345,TYPE='Admin', email='test0001@gmail.com' )
+    db.session.add(expert)
+    db.session.commit()
+    expert.visibility =False
+    hashed_password = bcrypt.generate_password_hash('12345').decode('utf-8')
+    expert.password=hashed_password
+    db.session.commit()'''
     '''expert=Expert(genre='Mr.',nom="Administrateur",numero=12345,TYPE='Admin', email='test0001@gmail.com' )
     db.session.add(expert)
     db.session.commit()
@@ -2400,6 +2407,7 @@ def export():
 #@login_required
 def up():
     db.create_all()
+    
     '''db.create_all()
     expert1=Expert(genre='0',nom='',numero=0,TYPE='0', email='0' )
     expert=Expert(genre='Mr.',nom='Admin',numero=12345,TYPE='Admin', email='test0001@gmail.com' )
