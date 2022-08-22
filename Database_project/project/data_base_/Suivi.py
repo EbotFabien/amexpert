@@ -56,4 +56,5 @@ def suiv(loc):
                                     db.session.commit()
     except:
         return 'Fake'
-                
+
+

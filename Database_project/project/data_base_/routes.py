@@ -3717,12 +3717,12 @@ def download(mes,temps,id,save):
                                 db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
-
             if  temps == "ancienne":
 
                     new_rel=expert_facturation.query.filter(and_(expert_facturation.expert_id==id,expert_facturation.type_expert==int(mes),expert_facturation.envoye==False)).join(
                                                 compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).filter(
                                                     compte_mensuel.date_generation<start - timedelta(days=30)).all()
+
                     img=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'images','logo',"logo.png")
                     with open(img, 'rb') as image_file:
                          image= base64.b64encode(image_file.read()).decode()
@@ -3759,6 +3759,7 @@ def download(mes,temps,id,save):
                                 db.session.commit()
                         flash(f'Facture envoyée au centre de gestion','Success')
                         return redirect(url_for('users.mes_factures',id=id,releve=mes,time=temps))
+
     return redirect(url_for('users.main'))
 
 @users.route('/fac/<int:id>/<save>/download',methods=['GET','POST'])
@@ -3808,6 +3809,7 @@ def gestion(id,save):
                 os.remove(n)
                 flash(f'Facture envoyée au centre de gestion','Success')
                 return redirect(url_for('users.show_fac',id=id))
+
             #except:
             #   return redirect(url_for('users.main'))
 
