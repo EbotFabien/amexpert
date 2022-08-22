@@ -1018,7 +1018,7 @@ def Missions(loc):
     reference=[]
     Nom=[]
     missions_=[]
-    num=[]
+    exi=[]
     
     for i in range(0,rows):
         sheet=sheet1.row_values(i)
@@ -1162,7 +1162,9 @@ def Missions(loc):
                 Mission.TVA_EDL == regex1(sheet[14],'S') ,
                 Mission.PRIX_TTC_EDL == regex1(sheet[15],'S') )).first()
                 if mission_check:
-                    print("Mission exists in id " +str(mission_check.id))
+                    if i not in exi:
+                        exi.append(i)
+                        print("Mission exists in id " +str(mission_check.id))
                 else:
                     mission=Mission(Reference_BAILLEUR=cli.id,
                 # old=sheet["A"],
@@ -1281,6 +1283,7 @@ def Missions(loc):
                 sheet[65],sheet[66],sheet[67],sheet[68],sheet[69],sheet[70],sheet[71],sheet[72],
                 sheet[73],sheet[74],sheet[75],sheet[76],sheet[77],sheet[78],sheet[79],sheet[80],
                     sheet[81],sheet[82],sheet[83],sheet[84],reason])
+    print(len(exi))
     if missions_==[]:
         return True
     else:

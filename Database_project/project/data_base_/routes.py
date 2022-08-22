@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-#from flask_wkhtmltopdf import Wkhtmltopdf
+from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = 123#Wkhtmltopdf(app)
+wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
