@@ -3,7 +3,7 @@
  <div style="" class="main-content">
     
     <div class="display-flex justify-content-space-between title-box" style="margin-top: 20px;">
-            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier les informations du client <span style="font-size: small;">{{client.nom}} </span></h2>
+            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;"><i>Modifier les informations du client {{client.nom}} </i> </h2>
              {% if legend == "prospect" %}
             <a href="{{url_for('users.prospect_')}}" title="Consultez la liste des propects" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
         {% endif %}
@@ -60,25 +60,48 @@
                          <hr/>
                   <div class="field is-horizontal">
                       <div class="field-label is-normal">
-                        <label class="label" style="text-align: left;"><small>{{form.NOM.label(class="form-control-label")}}</small></label></div>
+                        <label class="label" style="text-align: left;"><small>{{form.nom.label(class="form-control-label")}}</small></label></div>
                         <div class="field-body">
                           <div class="field"><!---->
                               <div class="control">
-                               {% if form.NOM.errors %}
-                            {{form.NOM(class="input is-invalid", value=client.nom) }}
+                               {% if form.nom.errors %}
+                            {{form.nom(class="input is-invalid", value=client.nom) }}
                             <div class="invalid-feedback">
-                                {% for error in form.NOM.errors %}
+                                {% for error in form.nom.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.NOM(class="input", value=client.nom)}}
+                                    {{form.nom(class="input", value=client.nom)}}
                                 {% endif %}
                               </div>
                                 <p class="help">Non requis</p>
                             </div>
                           </div>
                         </div>
+
+                        <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                  <label class="label" style="text-align: left;"><small>{{form.prenom.label(class="form-control-label")}}</small></label></div>
+                                  <div class="field-body">
+                                    <div class="field"><!---->
+                                        <div class="control">
+                                         {% if form.prenom.errors %}
+                                      {{form.NOM(class="input is-invalid", value=client.prenom) }}
+                                      <div class="invalid-feedback">
+                                          {% for error in form.prenom.errors %}
+                                              <span>{{ error }}</span>
+                                          {% endfor %}
+                                      </div>
+                                          {% else %}
+                                              {{form.prenom(class="input", value=client.prenom)}}
+                                          {% endif %}
+                                        </div>
+                                          <p class="help">Non requis</p>
+                                      </div>
+                                    </div>
+                                  </div>
+
                          <hr/>
                           <div class="field is-horizontal">
                               <div class="field-label is-normal">
@@ -450,8 +473,11 @@
                                         <div class="field-body">
                                           <div class="field">
                                             <div class="control">
-                                              <button type="submit" class="button is-primary is-small"> Modifier </button>
+                                              <button type="submit" class="button is-primary is-small"> Modifiez </button>
+                                               
+                                               <input type="button" type="submit" class="button is-danger is-small" name="Supprimez" value="Supprimez">
                                             </div>
+
                                           </div>
                                         </div>
                                      </div>

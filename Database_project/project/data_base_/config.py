@@ -4,7 +4,7 @@ import smtplib
 
 class Config:
     SECRET_KEY='FABIENCLASSIC'
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:1234@localhost/amexpert"
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:12345@localhost/amexpert"
     #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
     MAIL_SERVER ='smtp.infomaniak.com'#'mail.infomaniak.ch'
     MAIL_PORT = 587

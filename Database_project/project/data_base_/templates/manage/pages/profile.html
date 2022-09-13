@@ -40,24 +40,51 @@
                                                 </div></div>
                                             </div></div>
                                             <hr> -->
-                                            <div class="field is-horizontal">
-                                                <div class="field-label is-normal">
-                                                    <label class="label">{{form.username.label(class="form-control-label")}}</label></div>
-                                                    <div class="field-body"><div class="field"><!---->
-                                                        <div class="control">
-                                                          {% if form.username.errors %}
-                                                          {{form.username(class="input is-invalid", value=client.nom) }}
-                                                          <div class="invalid-feedback">
-                                                              {% for error in form.username.errors %}
-                                                                  <span>{{ error }}</span>
-                                                              {% endfor %}
-                                                          </div>
-                                                              {% else %}
-                                                                  {{form.username(class="input", value=client.nom)}}
-                                                              {% endif %}</div><p class="help"> Veuillez remplir ce champ <!---->
-                                                            </p>
-                                                        </div>
-                                                        </div><!----></div>
+                                        
+
+                                                        <!--Ajout nom-->
+                                                        <div class="field is-horizontal">
+                                                            <div class="field-label is-normal">
+                                                                <label class="label">{{form.nom.label(class="form-control-label")}}</label></div>
+                                                                <div class="field-body"><div class="field"><!---->
+                                                                    <div class="control">
+                                                                      {% if form.nom.errors %}
+                                                                      {{form.nom(class="input is-invalid", value=client.nom) }}
+                                                                      <div class="invalid-feedback">
+                                                                          {% for error in form.nom.errors %}
+                                                                              <span>{{ error }}</span>
+                                                                          {% endfor %}
+                                                                      </div>
+                                                                          {% else %}
+                                                                              {{form.nom(class="input", value=client.nom)}}
+                                                                          {% endif %}</div><p class="help">  Champs obligatoire <!---->
+                                                                        </p>
+                                                                    </div>
+                                                                    </div><!----></div>
+                                                                          <!--Ajout prenom-->
+
+                                                                    <div class="field is-horizontal">
+                                                                        <div class="field-label is-normal">
+                                                                            <label class="label">{{form.prenom.label(class="form-control-label")}}</label></div>
+                                                                            <div class="field-body"><div class="field"><!---->
+                                                                                <div class="control">
+                                                                                  {% if form.prenom.errors %}
+                                                                                  {{form.prenom(class="input is-invalid", value=client.prenom) }}
+                                                                                  <div class="invalid-feedback">
+                                                                                      {% for error in form.prenom.errors %}
+                                                                                          <span>{{ error }}</span>
+                                                                                      {% endfor %}
+                                                                                  </div>
+                                                                                      {% else %}
+                                                                                          {{form.prenom(class="input", value=client.prenom)}}
+                                                                                      {% endif %}</div><p class="help"> Champs obligatoire <!---->
+                                                                                    </p>
+                                                                                </div>
+                                                                                </div><!----></div>
+
+
+
+
                                                         <div class="field is-horizontal">
                                                           <div class="field-label is-normal">
                                                               <label class="label">{{form.login.label(class="form-control-label")}}</label></div>
@@ -74,7 +101,7 @@
                                                                             {{form.login(class="input", value=client.login)}}
                                                                         {% endif %}
                                                                   </div>
-                                                                  <p class="help"> Obligatoire. Votre Identifiant  <!----></p>
+                                                                  <p class="help"> Champs obligatoire.   <!----></p>
                                                               </div>
                                                           </div><!---->
                                                       </div>
@@ -95,7 +122,7 @@
                                                                               {{form.email(class="input", value=client.email)}}
                                                                           {% endif %}
                                                                     </div>
-                                                                    <p class="help"> Obligatoire. Votre Email<!----></p>
+                                                                    <p class="help"> Champs obligatoire.<!----></p>
                                                                 </div>
                                                             </div><!---->
                                                         </div>
@@ -130,7 +157,7 @@
                                 <div>
                                 <div class="field"><label class="label" style="font-weight: 100; text-align:center;">Nom et Prénom</label>
                                     <div class="control is-clearfix">
-                                        <p style="font: small-caption; text-align: center;">{{current_user.nom}}</p>
+                                        <p style="font: small-caption; text-align: center;">{{current_user.nom}}  {{current_user.prenom}}</p>
                                     </div>
                                 </div>
                                 <hr>

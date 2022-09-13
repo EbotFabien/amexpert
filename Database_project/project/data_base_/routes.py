@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf = 12#Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -142,7 +142,7 @@ def ajouter_client():
         form=Client_Form()
         
         if form.validate_on_submit():
-            user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
+            user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.nom.data,prenom=form.prenom.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
             db.session.add(user)
             db.session.commit()
             tous=[]
@@ -288,7 +288,8 @@ def edit_client(id):
                 client.titre = form.Sexe.data
                 client.TYPE = form.Type.data
                 client.enseigne =form.Enseigne.data
-                client.nom = form.NOM.data
+                client.prenom= form.prenom.data
+                client.nom= form.nom.data
                 db.session.commit()
                 flash(f'Informations client modifiées','success')
                 return redirect(url_for('users.show_client',id=id))
@@ -296,10 +297,6 @@ def edit_client(id):
                 
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
         return render_template('manage/pages/edit_client.html', highlight='client', client=client,history=client_history,form=form,legend="client")
-
-
-       
-
 
 
 
@@ -2284,7 +2281,8 @@ def edit_prospect(id):
                 client.titre = form.Sexe.data
                 client.TYPE = form.Type.data
                 client.enseigne =form.Enseigne.data
-                client.nom = form.NOM.data
+                client.nom = form.nom.data
+                client.prenom= form.prenom.data
                 db.session.commit()
                 flash(f'Informations Prospect modifiées','success')
                 return redirect(url_for('users.show_prospect',id=id))
@@ -2511,13 +2509,16 @@ def uploader_():
 def profil():
     if current_user:
         form = RegistrationForm1()
+       
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
             f=form.validate2(form.email.data,current_user.id)
             if f==True:
                 flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.profil'))
-            client.nom =form.username.data
+            client.nom=form.nom.data
+            # ajout prenom
+            client.prenom=form.prenom.data
             client.email=form.email.data
             client.login=form.login.data
             db.session.commit()

@@ -3,7 +3,7 @@
  <div style="" class="main-content">
     
     <div class="display-flex justify-content-space-between title-box" style="margin-top: 20px;">
-            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Modifier les informations du prospect <span style="font-size: small;">{{client.nom}} </span></h2>
+            <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;"><i> Modifier les informations du prospect {{client.nom}} </i></h2>
              
             <a href="{{url_for('users.prospect_')}}" title="Consultez la liste des propects" class="button is-primary is-small"><i class="fas fa-list-ul"></i></a>
         
@@ -29,6 +29,31 @@
                 {% endwith %}
                 <form class="user form-padding" method="POST">
                 {{ form.hidden_tag() }}
+                <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label" style="text-align: left;"><small>{{form.Type.label(class="form-control-label")}}</small></label></div>
+                          <div class="field-body">
+                            <div class="field"><!---->
+                                <div class="control">
+                                 {% if form.Type.errors %}
+                                  {{form.Type(class="input is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.Type.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
+                              </div>
+                                  {% else %}
+                                  <select class="input" id="Type" name="Type">
+                                    <option value="Professionnel" {% if client.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
+                                    <option value="Particulier" {% if client.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
+                                  </select>
+                                  {% endif %}
+                                </div>
+                                  <p class="help"> Champs obligatoire.</p>
+                              </div>
+                            </div>
+                          </div>
+                      <hr/>
                  <div class="field is-horizontal">
                       <div class="field-label is-normal">
                         <label class="label" style="text-align: left;"><small>{{form.Siret.label(class="form-control-label")}}</small></label></div>
@@ -46,32 +71,55 @@
                                     {{form.Siret(class="input", value=client.siret)}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis.</p>
+                                <p class="help">Champs obligatoire.</p>
                             </div>
                           </div>
                         </div>
                          <hr/>
                   <div class="field is-horizontal">
                       <div class="field-label is-normal">
-                        <label class="label" style="text-align: left;"><small>{{form.NOM.label(class="form-control-label")}}</small></label></div>
+                        <label class="label" style="text-align: left;"><small>{{form.nom.label(class="form-control-label")}}</small></label></div>
                         <div class="field-body">
                           <div class="field"><!---->
                               <div class="control">
-                               {% if form.NOM.errors %}
-                            {{form.NOM(class="input is-invalid", value=client.nom) }}
+                               {% if form.nom.errors %}
+                            {{form.nom(class="input is-invalid", value=client.nom) }}
                             <div class="invalid-feedback">
-                                {% for error in form.NOM.errors %}
+                                {% for error in form.nom.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                                 {% else %}
-                                    {{form.NOM(class="input", value=client.nom)}}
+                                    {{form.nom(class="input", value=client.nom)}}
                                 {% endif %}
                               </div>
-                                <p class="help">Requis. Le nom est requis</p>
+                                <p class="help">Champs obligatoire.</p>
                             </div>
                           </div>
                         </div>
+
+                        <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                  <label class="label" style="text-align: left;"><small>{{form.prenom.label(class="form-control-label")}}</small></label></div>
+                                  <div class="field-body">
+                                    <div class="field"><!---->
+                                        <div class="control">
+                                         {% if form.prenom.errors %}
+                                      {{form.prenom(class="input is-invalid", value=client.nom) }}
+                                      <div class="invalid-feedback">
+                                          {% for error in form.prenom.errors %}
+                                              <span>{{ error }}</span>
+                                          {% endfor %}
+                                      </div>
+                                          {% else %}
+                                              {{form.prenom(class="input", value=client.prenom)}}
+                                          {% endif %}
+                                        </div>
+                                          <p class="help">Champs obligatoire.</p>
+                                      </div>
+                                    </div>
+                                  </div>
+
                          <hr/>
                           <div class="field is-horizontal">
                               <div class="field-label is-normal">
@@ -94,36 +142,12 @@
                                         </select>
                                         {% endif %}
                                       </div>
-                                        <p class="help"> Requis. Le titre est requis</p>
+                                        <p class="help"> Champs obligatoire.</p>
                                     </div>
                                   </div>
                                 </div>
                             <hr/>
-                             <div class="field is-horizontal">
-                                      <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.Type.label(class="form-control-label")}}</small></label></div>
-                                        <div class="field-body">
-                                          <div class="field"><!---->
-                                              <div class="control">
-                                               {% if form.Type.errors %}
-                                                {{form.Type(class="input is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.Type.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                                {% else %}
-                                                <select class="input" id="Type" name="Type">
-                                                  <option value="Professionnel" {% if client.TYPE == 'Professionnel' %} selected {% endif %}>Professionnel</option>
-                                                  <option value="Particulier" {% if client.TYPE == 'Particulier' %} selected {% endif %}>Particulier</option>
-                                                </select>
-                                                {% endif %}
-                                              </div>
-                                                <p class="help"> Requis. Le type est requis</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                    <hr/>
+                           
                                      
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
@@ -142,7 +166,7 @@
                                                     {{form.Societe(class="input",value=client.societe)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le nom est requis</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -164,7 +188,7 @@
                                                     {{form.email(class="input", value=client.email)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'email est requis</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -186,7 +210,7 @@
                                                     {{form.Reference(class="input", value=client.reference)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -208,7 +232,7 @@
                                                     {{form.Date_Creation(class="input", value=client.date_creation.strftime('%d. %m. %Y'))}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -231,7 +255,7 @@
                                                     {{form.EtatClient(class="input", value=history.etat_client)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -254,7 +278,7 @@
                                                     {{form.Enseigne(class="input", value=client.enseigne)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis.</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -276,7 +300,7 @@
                                                     {{form.Numero(class="input", value=client.numero)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le numéro est requis</p>
+                                                <p class="help"> Champs obligatoire</p>
                                             </div>
                                           </div>
                                         </div>
@@ -298,7 +322,7 @@
                                                     {{form.Adresse1(class="input", value=history.adresse1)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
+                                                <p class="help"> Champs obligatoire</p>
                                             </div>
                                           </div>
                                         </div>
@@ -320,7 +344,7 @@
                                                     {{form.Adresse2(class="input", value=history.adresse2)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. L'addresse est requis</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -342,7 +366,7 @@
                                                     {{form.CP(class="input", value=history.cp)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le code postal est requis</p>
+                                                <p class="help"> Champs obligatoire. </p>
                                             </div>
                                           </div>
                                         </div>
@@ -364,7 +388,7 @@
                                                     {{form.Ville(class="input", value=history.ville)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. La ville est requis</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -389,7 +413,7 @@
                                                 </select>
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. Le pays est requis</p>
+                                                <p class="help"> Champs obligatoire.</p>
                                             </div>
                                           </div>
                                         </div>
@@ -411,7 +435,7 @@
                                                     {{form.LoginExtranet(class="input", value=history.login_extranet)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. </p>
+                                                <p class="help"> Champs obligatoire. </p>
                                             </div>
                                           </div>
                                         </div>
@@ -433,7 +457,7 @@
                                                     {{form.MdpExtranet(class="input", value=history.mpd_extranet)}}
                                                 {% endif %}
                                               </div>
-                                                <p class="help"> Requis. </p>
+                                                <p class="help"> Champs obligatoire. </p>
                                             </div>
                                           </div>
                                         </div>

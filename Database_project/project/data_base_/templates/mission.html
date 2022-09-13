@@ -200,7 +200,8 @@
                             <td>{{mission_.Nom_Agent_saisie_Cell_Planif}}</td>   	
                             <td>{{mission_.POURCENTAGE_Agent_saisie_CEll_planif}}</td> 
                             <td><button type="button" class="btn btn-primary">Modifier</button></td>
-                            <td><a href="{{ url_for('users.delete',id=mission_.id,type1='mission' )}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                            <td><a href="{{ url_for('users.delete',id=mission_.id,type1='mission' )}}">
+                                <button type="button" class="btn btn-danger">Supprimer  </button></a></td>
                         </tr>
                     {%endfor%}
                 </tbody>
