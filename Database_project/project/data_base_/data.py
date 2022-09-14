@@ -1151,9 +1151,11 @@ def Missions(loc):
             if AS_CP is None  :
                 ASCP= 0
         
-        code=sheet[60]
+        code=''.join(sheet[60])
         logement=sheet[49]
         try:
+            if cli and code[-1]=='M':
+                code=code[0:-1]
             if cli and code[-1]!='M' and logement[-1]!='M':
                 mission_check=Mission.query.filter(and_(Mission.Reference_BAILLEUR==cli.id,
                 Mission.ID_AS==SA,
@@ -1241,9 +1243,15 @@ def Missions(loc):
                     db.session.commit()
                 
             else:
-                if sheet[60][-1]=='M': 
+                if cli is None:
+                    reason='client nexiste pas'
+                elif sheet[60] =='': 
+                    reason='code de facturation es null'
+                elif sheet[49] =='':
+                    reason='Type de logement es null'
+                elif sheet[60][-1]=='M': 
                     reason='Erreur sur le code de facturation'
-                if sheet[49][-1]=='M':
+                elif sheet[49][-1]=='M':
                     reason='Erreur sur le Type de logement'
                 else:
                     reason='reason'

@@ -1,6 +1,6 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
-from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export)
+from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
 from Database_project.project.data_base_.client_data  import lient,lienta
@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf =12# Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -3465,6 +3465,41 @@ def chooseef():
         return render_template('manage/pages/ajouter_facturation_expert.html',highlight='expert',form=form,legend="time")
 
 
+@users.route('/indi/fact/client',methods=['GET','POST'])
+@login_required
+def chooseindc():
+    if current_user.TYPE == "Admin":
+        form=mission_id()
+        form2=Facturationind_Form()
+        if form.validate_on_submit(): 
+            mission=Mission.query.filter(and_(Mission.id==form.ID.data,Mission.Facex==False,Mission.Visibility==True)).first()
+            if mission != None:
+                return render_template('manage/pages/detail_facturationc.html', key=mission,highlight='mission',form=form2)
+
+            else:
+                flash(f'Cette facture a déjà été générée','Warning')
+                return redirect(url_for('users.chooseindc'))
+        
+        return render_template('manage/pages/ajouter_facturation_client_indi.html',highlight='expert',form=form,legend="time")
+
+
+@users.route('/create_factur/indi/',methods=['GET','POST'])
+@login_required
+def create_facturi():
+    if current_user.TYPE == "Admin": 
+        misall=facturation_client.query.order_by(desc(facturation_client.id)).first()
+        miss=Mission.query.filter_by(id=request.form['Mission']).first()
+        fact=facturation_client(Montant_HT=request.form['Montant_HT'],client=miss.Reference_BAILLEUR,Date_mission=miss.DATE_REALISE_EDL)
+        db.session.add(fact)
+        db.session.commit()
+        n_facture=int(misall.id)+1
+        fact.n_facture=n_facture
+        db.session.commit()
+        fact_m=facturation_mission(ref_mission=miss.id,fact_mission=fact.id)
+        db.session.add(fact_m)
+        db.session.commit()
+        return redirect(url_for('users.facturationa'))
+  
 @users.route('/create_facturee/',methods=['GET','POST'])
 @login_required
 def create_facturee():
