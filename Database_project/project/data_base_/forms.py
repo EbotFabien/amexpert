@@ -157,9 +157,6 @@ class RegistrationForm(FlaskForm):
 
     modifier = SubmitField('Modifier')
     
-    
-
-    
 
 
 class Expert_editForm(FlaskForm):
@@ -908,8 +905,8 @@ class Negotiateur_Form(FlaskForm):
 
 class Negotiateur_Form1(FlaskForm):  
 
-    def validate_username(self,username):
-        user = Client_negotiateur.query.filter_by(nom=username.data).first()
+    def validate_username(self,nom):
+        user = Client_negotiateur.query.filter_by(nom=nom.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
@@ -920,12 +917,16 @@ class Negotiateur_Form1(FlaskForm):
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
-    Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
+  
 
-    NOM =StringField('Nom et prénom',
+    nom =StringField('Nom *',
                            validators=[validators.InputRequired(),validate_username])
     
+    prenom =StringField('Prénom',
+                           validators=[validators.InputRequired()])
+    
+    Sexe=SelectField('Sexe',  choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
+
     email =StringField('E-mail',
                            validators=[validators.InputRequired(),Email(),validate_email])
 

@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -2098,10 +2098,10 @@ def ajouter_negotiateur(id):
         form=Negotiateur_Form1()
         client=Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            user=Client_negotiateur(client.id,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data)
+            user=Client_negotiateur(client.id,form.nom.data,form.prenom.data,form.Sexe.data,form.email.data,form.Numero.data,form.Pays.data,form.Ville.data,form.CP.data)
             db.session.add(user)
             db.session.commit()
-            user_history=Client_negotiateur.query.filter(and_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.NOM.data)).first()
+            user_history=Client_negotiateur.query.filter(and_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.nom.data)).first()
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()

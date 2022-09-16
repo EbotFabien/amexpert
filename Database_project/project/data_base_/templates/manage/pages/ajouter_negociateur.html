@@ -50,28 +50,53 @@
                             {% endwith %}
                             <form class="user" method="POST" style="padding: 10px;">
                                 {{ form.hidden_tag() }}
-                                    <div class="field is-horizontal">
-                                      <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.NOM.label(class="form-control-label")}}</small></label></div>
-                                        <div class="field-body">
-                                          <div class="field"><!---->
-                                              <div class="control">
-                                               {% if form.NOM.errors %}
-                                            {{form.Siret(class="input is-invalid", placeholder="Données Alphabetiques") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.NOM.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                                {% else %}
-                                                    {{form.NOM(class="input", placeholder="Données Alphabetiques")}}
-                                                {% endif %}
+                                <div class="field is-horizontal">
+                                        <div class="field-label is-normal">
+                                          <label class="label" style="text-align: left;"><small>{{form.nom.label(class="form-control-label")}}</small></label></div>
+                                          <div class="field-body">
+                                            <div class="field"><!---->
+                                                <div class="control">
+                                                 {% if form.nom.errors %}
+                                              {{form.nom(class="input is-invalid", placeholder="Données Alphabetiques") }}
+                                              <div class="invalid-feedback">
+                                                  {% for error in form.nom.errors %}
+                                                      <span>{{ error }}</span>
+                                                  {% endfor %}
                                               </div>
-                                                <p class="help"> Veuillez remplir ce champ</p>
+                                                  {% else %}
+                                                      {{form.nom(class="input", placeholder="Données Alphabetiques")}}
+                                                  {% endif %}
+                                                </div>
+                                                  <p class="help"> Veuillez remplir ce champ</p>
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                    <hr/>
+                                <hr>
+                              
+                                <div class="field is-horizontal">
+                                        <div class="field-label is-normal">
+                                          <label class="label" style="text-align: left;"><small>{{form.prenom.label(class="form-control-label")}}</small></label></div>
+                                          <div class="field-body">
+                                            <div class="field"><!---->
+                                                <div class="control">
+                                                 {% if form.prenom.errors %}
+                                              {{form.prenom(class="input is-invalid", placeholder="Données Alphabetiques") }}
+                                              <div class="invalid-feedback">
+                                                  {% for error in form.prenom.errors %}
+                                                      <span>{{ error }}</span>
+                                                  {% endfor %}
+                                              </div>
+                                                  {% else %}
+                                                      {{form.prenom(class="input", placeholder="Données Alphabetiques")}}
+                                                  {% endif %}
+                                                </div>
+                                                  <p class="help"> Veuillez remplir ce champ</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                <hr>
+                                
+                                  
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
                                         <label class="label" style="text-align: left;"><small>{{form.Sexe.label(class="form-control-label")}}</small></label></div>
@@ -227,8 +252,10 @@
                                         </div>
                                     <hr/> 
                                    <div class="field is-horizontal">
+
                                     <div class="field-label is-normal"></div>
-                                        <div class="field-body">
+                                       
+                                    <div class="field-body">
                                           <div class="field">
                                             <div class="control">
                                               <button type="submit" class="button is-primary is-small"> Enregistrer </button>
