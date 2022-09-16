@@ -9,9 +9,13 @@
     <span>Mission(s) Réglée(s): {{reg}}</span> <br>
     <span>Mission(s) Non Réglée(s): {{non}}</span> <br>
     <span>Mission(s) Anomalie(s): {{ano}}</span>
+	
     <div class="tile box" style="width: fit-content; margin: 0 auto;
-    justify-content: space-evenly;
-    min-width: 950px;">
+    justify-content: space-evenly; min-width: 950px;">
+	
+	
+	
+	
       <form method="GET" action="{{url_for('users.mission')}}">
         <div class="columns"> 
             <div class="column">
@@ -44,8 +48,7 @@
                 </div>
               </div>
           </div>
-
-            <div class="column">
+          <div class="column">
               <div class="field">
                 <div class="control is-small">
                   <input type="date" name="date" placeholder="dd-mm-yyyy" class="input is-small" >
@@ -70,170 +73,189 @@
       </form>
   </div>
 
-  
-    <section class="tile" style="margin-top: 10px;">
-        <div class="box" style="  width: -webkit-fill-available; width:100%;">
-          <!--div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-            <span><i class="fa fa-users"></i></span>
-          </div-->
-          <div class="table-container" style="overflow-x: scroll;position: relative;">
-            {% with messages = get_flashed_messages(with_categories=true)%}
-                {% if messages %}
-                    {%for category,message in messages%}
-                    <div class="alert alert-{{category}} p-1">
-                        {{message}}
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
-	                    <thead class="">
-                       
-	                	<tr>    <th scope="col">ID</th>
-                            <th scope="col">Reference BAILLEUR</th>  	 
-                            <th scope="col">ID CONCESS</th>	  
-                            <th scope="col">DATE EDL REALISE</th>  	
-                            <th scope="col">PRIX HT EDL</th>	  	     	
-                            <th scope="col">DATE FACTURE</th>  	
-                            <th scope="col">Etat</th>
-                            {% if current_user.TYPE == "Admin" %}  		
-                            <th></th>	
-                            <!-- <th></th> -->
-                            {%endif%}
-                            <th></th>
-	                	</tr>
-	            	</thead>
-		            <tbody>
-		                {%for mission_ in Mission.items %}
-		                    <tr>    
-                                <td>{{mission_.id}}</td> 
-                                <td>{{mission_.Bailleur__data.reference}}</td> 
-                                <td>
-                                {% if mission_.AS__data.nom != "0" %}    	   
-                                  {{mission_.AS__data.nom}}
-                                {% else %}  
-                                
-                                {% endif %}
-                                </td> 
-                                <td>
-                                  {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d/%m/%Y') }}
-                                  {% else %}
-                                  aucune date
-                                  {% endif %}
-                                </td>  	
-                                <td>
-                                  {% if mission_.PRIX_HT_EDL == None %}
-                                    aucune date
-                                  {% else %}
-                                    {{ mission_.PRIX_HT_EDL }}
-                                  {% endif %}               
-                                </td> 	    
-                                <td>
-                                  {% if mission_.DATE_FACTURE == None %}
-                                    aucune date
-                                  {% else %}
-                                    {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
-                                  {% endif %}                              
-                                </td>
-                                <td>
-                                  {% if mission_.DATE_FACT_REGLEE == None %}
-                                    Non Réglée
-                                  {% else %}
-                                    Réglée
-                                  {% endif %}                              
-                                </td>    
-                                {% if current_user.TYPE == "Admin" %} 	 	  	  
-                                <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
-                                <!-- <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer missionsssdsdsd" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> -->
-                                {% endif%}
+
+
+
+
+
+  <section class="tile" style="margin-top: 10px;">
+       
+
+      <div class="box"  style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
+           
+             
+     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+         
+			<div class="display-flex">
+                <span><i class="fa fa-users"></i></span>                
+            </div>        
+	   </div>
+ 
+        <!-- <div class="tile box" style="width: fit-content; margin: 0 auto; justify-content: space-evenly; min-width: 950px;"> -->
+ 
+           <div class="table-container"  style="position: relative;">
+             {% with messages = get_flashed_messages(with_categories=true)%}
+                 {% if messages %}
+                     {%for category,message in messages%}
+                     <div class="alert alert-{{category}} is-small">
+                         {{message}}
+                     </div>sosu
+                     {% endfor %}
+                 {% endif %}
+             {% endwith %}
+             <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
+                       <thead class="">
+                        
+                     <tr>    <th scope="col">ID</th>
+                             <th scope="col">Reference BAILLEUR</th>  	 
+                             <th scope="col">ID CONCESS</th>	  
+                             <th scope="col">DATE EDL REALISE</th>  	
+                             <th scope="col">PRIX HT EDL</th>	  	     	
+                             <th scope="col">DATE FACTURE</th>  	
+                             <th scope="col">Etat</th>
+                             {% if current_user.TYPE == "Admin" %}  		
+                             <th></th>	
+                             <!-- <th></th> -->
+                             {%endif%}
+                             <th></th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     {%for mission_ in Mission.items %}
+                         <tr>    
+                                 <td  scope="row">{{mission_.id}}</td> 
+                                 <td>{{mission_.Bailleur__data.reference}}</td> 
                                  <td>
-                                    <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                </td> 
-		                    </tr> 
-		                {%endfor%}                     
-		            </tbody>         
-	             </table>
-	            </div>
-                 <!-- Pagination Links-->
-                <nav class="pagination" role="navigation" aria-label="pagination">
-                  <ul class="pagination-list">
-                    {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
-                    {% if page_num %}
-                      {% if key %}
-                        {% if request.referrer[30:37] == 'keyword' %}
-                          <li>
-                            <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
-                          </li>
-                        {% else %} 
-                          <li>
-                          <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
-                          </li>
-                        {% endif %}
-                      {% endif %}
-                      {% if Type and not date  %}
-                        {% if Type and not date %}
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                          {% else %} 
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                        {% endif %}
-                      {% endif %}
-                      {% if date and Type == None %}
-                        {% if request.referrer[30:34] == date and date2 %}
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                          {% else %} 
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                        {% endif %}
-                      {% endif %}
-                      {% if date and Type != None %}
-                        {% if request.referrer[30:34] == 'date' and date2 %}
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                          {% else %} 
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                        {% endif %}
-                      {% endif %}
-                      {% if table  %}
-                        {% if table2!= None %}
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                          {% else %} 
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
-                            </li>
-                        {% endif %}
-                      {% endif %}
-                      {% if not date and not key and not table and not Type  %}
-                        {% if Mission.page == page_num %}
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
-                            </li>
-                          {% else %} 
-                            <li>
-                              <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
-                            </li>
-                        {% endif %}
-                      {% endif %}
-                    {% else %}
-                        ....
-                    {% endif %}
-                  {% endfor %}
-                  </ul>
-                </nav>
-            <!-- / fin de la pagination -->
-	        </div>
-        </section>
+                                 {% if mission_.AS__data.nom != "0" %}    	   
+                                   {{mission_.AS__data.nom}}
+                                 {% else %}  
+                                 
+                                 {% endif %}
+                                 </td> 
+                                 <td>
+                                   {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d/%m/%Y') }}
+                                   {% else %}
+                                   aucune date
+                                   {% endif %}
+                                 </td>  	
+                                 <td>
+                                   {% if mission_.PRIX_HT_EDL == None %}
+                                     aucune date
+                                   {% else %}
+                                     {{ mission_.PRIX_HT_EDL }}
+                                   {% endif %}               
+                                 </td> 	    
+                                 <td>
+                                   {% if mission_.DATE_FACTURE == None %}
+                                     aucune date
+                                   {% else %}
+                                     {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
+                                   {% endif %}                              
+                                 </td>
+                                 <td>
+                                   {% if mission_.DATE_FACT_REGLEE == None %}
+                                     Non Réglée
+                                   {% else %}
+                                     Réglée
+                                   {% endif %}                              
+                                 </td>    
+                                 {% if current_user.TYPE == "Admin" %} 	 	  	  
+                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
+                                 <!-- <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer missionsssdsdsd" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> -->
+                                 {% endif%}
+                                  <td>
+                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                 </td> 
+                         </tr> 
+                     {%endfor%}                     
+                 </tbody>         
+                </table>
+               </div>
+                  <!-- Pagination Links-->
+               <!--   <nav class="pagination" role="navigation" aria-label="pagination">
+                   <ul class="pagination-list">
+                     {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+                     {% if page_num %}
+                       {% if key %}
+                         {% if request.referrer[30:37] == 'keyword' %}
+                           <li>
+                             <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                           </li>
+                         {% else %} 
+                           <li>
+                           <a class="pagination-link" href="{{ url_for('users.mission',keyword=key,page=page_num) }}">{{page_num}}</a>
+                           </li>
+                         {% endif %}
+                       {% endif %}
+                       {% if Type and not date  %}
+                         {% if Type and not date %}
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                           {% else %} 
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',ron=Type,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                         {% endif %}
+                       {% endif %}
+                       {% if date and Type == None %}
+                         {% if request.referrer[30:34] == date and date2 %}
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                           {% else %} 
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',date=date,date2=date2,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                         {% endif %}
+                       {% endif %}
+                       {% if date and Type != None %}
+                         {% if request.referrer[30:34] == 'date' and date2 %}
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                           {% else %} 
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',date=date,ron=Type,date2=date2,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                         {% endif %}
+                       {% endif %}
+                       {% if table  %}
+                         {% if table2!= None %}
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                           {% else %} 
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',table=table,table2=table2,date=date,page=page_num) }}">{{page_num}}</a>
+                             </li>
+                         {% endif %}
+                       {% endif %}
+                       {% if not date and not key and not table and not Type  %}
+                         {% if Mission.page == page_num %}
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                             </li>
+                           {% else %} 
+                             <li>
+                               <a class="pagination-link" href="{{ url_for('users.mission',page=page_num) }}">{{page_num}}</a>
+                             </li>
+                         {% endif %}
+                       {% endif %}
+                     {% else %}
+                         ....
+                     {% endif %}
+                   {% endfor %}
+                   </ul>
+                 </nav> -->
+             <!-- / fin de la pagination -->
+           </div>
+         </section>
+
+
+
+
+  
 	    </div>
       <script type="text/javascript">
         /*$(document).ready(function() {

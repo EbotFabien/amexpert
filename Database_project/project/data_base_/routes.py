@@ -298,9 +298,6 @@ def edit_client(id):
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
         return render_template('manage/pages/edit_client.html', highlight='client', client=client,history=client_history,form=form,legend="client")
 
-
-
-
 @users.route('/mission',methods=['GET','POST'])
 @login_required
 def mission():
@@ -320,8 +317,6 @@ def mission():
         notreglee=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).count()
         ano=Mission.query.filter(Mission.Anomalie==True).count()
 
-        
-        
         
         if key:
             try:
@@ -1845,11 +1840,6 @@ def edit_tarif(id):
 
         return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
         #return redirect(url_for('users.edit_tarif', id=id))
-
-
-       
-
-
 
 
 @users.route('/sign_up',methods=['GET','POST'])
