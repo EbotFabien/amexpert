@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf =12# Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -111,8 +111,29 @@ def client():
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
     
     if current_user.TYPE == "Admin":
-        client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
-        history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
+        Type = request.args.get('ron')
+        if Type != None:
+            if Type == "r":
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==True,Client_History.etat_client=='Actif')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "nr":
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==True,Client_History.etat_client=='Parti')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        else:
+            client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
+            history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
         # page = request.args.get('page', 1, type=int)
         #     form_data = request.form
         #     order = request.form.get('order')
@@ -142,7 +163,7 @@ def ajouter_client():
         form=Client_Form()
         
         if form.validate_on_submit():
-            user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
+            user=Client(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.nom.data,prenom=form.prenom.data,email=form.email.data,numero=form.Numero.data,siret=form.Siret.data)
             db.session.add(user)
             db.session.commit()
             tous=[]
@@ -288,7 +309,8 @@ def edit_client(id):
                 client.titre = form.Sexe.data
                 client.TYPE = form.Type.data
                 client.enseigne =form.Enseigne.data
-                client.nom = form.NOM.data
+                client.prenom= form.prenom.data
+                client.nom= form.nom.data
                 db.session.commit()
                 flash(f'Informations client modifiées','success')
                 return redirect(url_for('users.show_client',id=id))
@@ -296,10 +318,6 @@ def edit_client(id):
                 
         client_history=Client_History.query.filter_by(client_id=id).order_by(asc(Client_History.date)).first_or_404()
         return render_template('manage/pages/edit_client.html', highlight='client', client=client,history=client_history,form=form,legend="client")
-
-
-       
-
 
 
 
@@ -1286,7 +1304,26 @@ def facturation(id):
 @login_required
 def facturationa():
     if current_user.TYPE == "Admin":
-        facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())#add visibility
+        Type = request.args.get('ron')
+        cash = request.args.get('keyword')
+        try:
+            cash=int(cash)
+        except:
+            cash=''
+        if Type != None and cash =='':
+            if Type == "r":
+                facturation=list(facturation_client.query.filter_by(valide=True).order_by(desc(facturation_client.id)).all())
+            if Type == "nr":
+                facturation=list(facturation_client.query.filter_by(valide=False).order_by(desc(facturation_client.id)).all())
+        elif Type == None and cash !='':
+            facturation=list(facturation_client.query.filter_by(Montant_HT=cash).order_by(desc(facturation_client.id)).all())
+        elif Type != None and cash !='':
+            if Type == "r":
+                facturation=list(facturation_client.query.filter(and_(facturation_client.Montant_HT==cash,facturation_client.valide==True)).order_by(desc(facturation_client.id)).all())
+            if Type == "nr":
+                facturation=list(facturation_client.query.filter(and_(facturation_client.Montant_HT==cash,facturation_client.valide==False)).order_by(desc(facturation_client.id)).all())
+        else:
+                facturation=list(facturation_client.query.order_by(desc(facturation_client.id)).all())#add visibility
         reglee=facturation_client.query.filter_by(valide=True).count()
         notreglee=facturation_client.query.filter_by(valide=False).count()
         print(notreglee)
@@ -2140,10 +2177,10 @@ def ajouter_negotiateur(id):
         form=Negotiateur_Form1()
         client=Client.query.filter_by(id=id).first_or_404()
         if form.validate_on_submit():
-            user=Client_negotiateur(client.id,form.Sexe.data,form.NOM.data,form.email.data,form.Numero.data)
+            user=Client_negotiateur(client.id,form.nom.data,form.prenom.data,form.Sexe.data,form.email.data,form.Numero.data,form.Pays.data,form.Ville.data,form.CP.data)
             db.session.add(user)
             db.session.commit()
-            user_history=Client_negotiateur.query.filter(and_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.NOM.data)).first()
+            user_history=Client_negotiateur.query.filter(and_(Client_negotiateur.email == form.email.data,Client_negotiateur.nom == form.nom.data)).first()
             user_his=Negotiateur_History(negotiateur_id=user_history.id,adresse=form.Adresse.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
             db.session.add(user_his)
             db.session.commit()
@@ -2215,8 +2252,36 @@ def edit_negotiateur(id):
 def prospect_():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
-        history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
+        Type = request.args.get('ron')
+        Date = request.args.get('date')
+        print(Date)
+        if Type != None:
+            if Type == "r":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Actif')).order_by(asc(prospect_History.id)).all()
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "nr":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
+                print(len(history))
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        else:
+            client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
+            history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
+            
+
+        #print(len(history))
+       
         prospro = prospect.query.filter_by(TYPE ='Professionel').count()
         prospart = prospect.query.filter_by(TYPE ='Particulier').count()
         ano = prospect.query.filter_by(anom=True).count()
@@ -2323,7 +2388,8 @@ def edit_prospect(id):
                 client.titre = form.Sexe.data
                 client.TYPE = form.Type.data
                 client.enseigne =form.Enseigne.data
-                client.nom = form.NOM.data
+                client.nom = form.nom.data
+                client.prenom= form.prenom.data
                 db.session.commit()
                 flash(f'Informations Prospect modifiées','success')
                 return redirect(url_for('users.show_prospect',id=id))
@@ -2551,13 +2617,16 @@ def uploader_():
 def profil():
     if current_user:
         form = RegistrationForm1()
+       
         client=Expert.query.filter_by(id=current_user.id).first()
         if form.validate_on_submit():
             f=form.validate2(form.email.data,current_user.id)
             if f==True:
                 flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.profil'))
-            client.nom =form.username.data
+            client.nom=form.nom.data
+            # ajout prenom
+            client.prenom=form.prenom.data
             client.email=form.email.data
             client.login=form.login.data
             db.session.commit()

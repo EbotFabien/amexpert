@@ -69,6 +69,8 @@
         </div>
       </form>
   </div>
+
+  
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; width:100%;">
           <!--div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -97,7 +99,7 @@
                             <th scope="col">Etat</th>
                             {% if current_user.TYPE == "Admin" %}  		
                             <th></th>	
-                            <th></th>
+                            <!-- <th></th> -->
                             {%endif%}
                             <th></th>
 	                	</tr>
@@ -150,11 +152,11 @@
                                 </td>    
                                 {% if current_user.TYPE == "Admin" %} 	 	  	  
                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
-                                <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
+                                <!-- <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer missionsssdsdsd" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> -->
                                 {% endif%}
-                                <td>
+                                 <td>
                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                </td>
+                                </td> 
 		                    </tr> 
 		                {%endfor%}                     
 		            </tbody>         

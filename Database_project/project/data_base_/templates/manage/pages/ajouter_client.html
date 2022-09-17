@@ -66,25 +66,49 @@
                                     <hr/>
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">
-                                        <label class="label" style="text-align: left;"><small>{{form.NOM.label(class="form-control-label")}}</small></label></div>
+                                        <label class="label" style="text-align: left;"><small>{{form.nom.label(class="form-control-label")}}</small></label></div>
                                         <div class="field-body">
                                           <div class="field"><!---->
                                               <div class="control">
-                                               {% if form.NOM.errors %}
-                                            {{form.Siret(class="input is-invalid", placeholder="Données Alphabetiques. example 'John Doe'") }}
+                                               {% if form.nom.errors %}
+                                            {{form.Siret(class="input is-invalid", placeholder="Entrez votre Nom.") }}
                                             <div class="invalid-feedback">
-                                                {% for error in form.NOM.errors %}
+                                                {% for error in form.nom.errors %}
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                                 {% else %}
-                                                    {{form.NOM(class="input", placeholder="Données Alphabetiques. example 'John Doe'")}}
+                                                    {{form.nom(class="input", placeholder="Entrez votre Nom. ")}}
                                                 {% endif %}
                                               </div>
                                                 <p class="help"> Veuillez remplir ce champ</p>
                                             </div>
                                           </div>
                                         </div>
+
+                                        <div class="field is-horizontal">
+                                                <div class="field-label is-normal">
+                                                  <label class="label" style="text-align: left;"><small>{{form.prenom.label(class="form-control-label")}}</small></label></div>
+                                                  <div class="field-body">
+                                                    <div class="field"><!---->
+                                                        <div class="control">
+                                                         {% if form.prenom.errors %}
+                                                      {{form.Siret(class="input is-invalid", placeholder="Entrez votre prenom. ") }}
+                                                      <div class="invalid-feedback">
+                                                          {% for error in form.prenom.errors %}
+                                                              <span>{{ error }}</span>
+                                                          {% endfor %}
+                                                      </div>
+                                                          {% else %}
+                                                              {{form.prenom(class="input", placeholder="Entrez votre prenom.")}}
+                                                          {% endif %}
+                                                        </div>
+                                                          <p class="help">Champs obligatoire. </p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+
                                     <hr/>
                                     <div class="field is-horizontal">
                                       <div class="field-label is-normal">

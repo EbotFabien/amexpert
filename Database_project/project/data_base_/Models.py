@@ -236,7 +236,6 @@ class prospect(db.Model):
     def __repr__(self):
         return '<prospect %r>' %self.id
 
-
 class prospect_History(db.Model):
     __table_args__ = {'extend_existing': True}
 
@@ -286,9 +285,6 @@ class suivi_prospect(db.Model):
     def __repr__(self):
         return '<suivi_prospect %r>' %self.id
 
-
-
-
 class Expert_History(db.Model):
     __table_args__ = {'extend_existing': True}
 
@@ -320,13 +316,6 @@ class Expert_History(db.Model):
 
     def __repr__(self):
         return '<Expert_History %r>' %self.id
-
-
-
-
-    
-
-
 
 class Tarif_base(db.Model):
     __table_args__ = {'extend_existing': True}
@@ -459,13 +448,6 @@ class Tarifs(db.Model):
     def __repr__(self):
         return '<Tarifs %r>' %self.id
 
-
-    
-
-
-
-
-
 class Mission(db.Model):
     __table_args__ = {'extend_existing': True}
 
@@ -587,10 +569,6 @@ class Mission(db.Model):
     def __repr__(self):
         return '<Mission %r>' %self.id
 
-
-
-
-
 class facturation_client(db.Model):
     __table_args__ = {'extend_existing': True}
 
@@ -620,8 +598,6 @@ class facturation_client(db.Model):
     def __repr__(self):
         return '<facturation_client %r>' %self.id
 
-
-
 class facturation_mission(db.Model):
     __table_args__ = {'extend_existing': True}
 
@@ -641,12 +617,6 @@ class facturation_mission(db.Model):
 
     def __repr__(self):
         return '<facturation_mission %r>' %self.id
-
-
-
-
-
-
 
 class Facturation_history(db.Model):
     __table_args__ = {'extend_existing': True}
@@ -669,8 +639,6 @@ class Facturation_history(db.Model):
 
     def __repr__(self):
         return '<Facturation_history %r>' %self.id
-
-
     
 class compte_mensuel(db.Model):
     __table_args__ = {'extend_existing': True}

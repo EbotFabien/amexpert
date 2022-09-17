@@ -36,18 +36,18 @@ def validatei(self,email):
 class RegistrationForm1(FlaskForm):
     def validate2(self,email,expert):
         email = Expert.query.filter(and_(Expert.email==email,Expert.id!=expert)).first()
-
+      
         if email:
             return True
-    
-    username =StringField("Nom et Prenom",
-                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
-    
-    login =StringField("Identifiant",
-                                validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
-    email =StringField('E-mail',
-                           validators=[validators.InputRequired(),Email()])
+    nom =StringField("Nom * ", validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    prenom =StringField("Prénom *", validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    
+    login =StringField("Identifiant *" ,render_kw={'readonly':True}, validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail *',render_kw={'readonly':True} ,validators=[validators.InputRequired(),Email() ])
 
     submit = SubmitField('Enregistrer')
 
@@ -156,9 +156,6 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Enregistrer')
 
     modifier = SubmitField('Modifier')
-    
-    
-
     
 
 
@@ -729,9 +726,11 @@ class Client_Form(FlaskForm):
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Nom et prénom',
-                           validators=[validators.InputRequired()])
+
+
+    nom = StringField('Nom *',  validators=[validators.InputRequired()])
     
+    prenom = StringField('Prénom *',  validators=[validators.InputRequired()])
     email =StringField('E-mail',
                            validators=[validators.InputRequired(),Email()])
 
@@ -805,55 +804,57 @@ class Client_edit(FlaskForm):
     
     
 
-    Type=SelectField('Type',
-                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
+    Type=SelectField('Type *',
+                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')],
+                             validators=[validators.InputRequired()])
 
-    Societe =StringField('Société')
+    Societe =StringField('Société *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
                            #validators=[validators.InputRequired()])
 
-    Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
+    Sexe=SelectField('Titre *'
+                            ,validators=[validators.InputRequired()]
+                            ,choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
 
-    NOM =StringField('Nom et prénom')
+    # NOM =StringField('Nom et prénom *',validators=[validators.InputRequired(),length(min=4 ,max=20)]) 
                            #validators=[validators.InputRequired()])
-    
-    email =StringField('E-mail')
+    nom = StringField('Nom *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
-    Numero =IntegerField('Téléphone portable',
-                           validators=[validators.InputRequired()])
+    prenom = StringField('Prénom *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    Numero =IntegerField('Téléphone portable *',validators=[validators.InputRequired()])
                            #validators=[validatep,length(min=9 ,max=9)])
 
-    Adresse1=StringField('Adresse1')
+    Adresse1=StringField('Adresse1 *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
-    Adresse2=StringField('Adresse2')
+    Adresse2=StringField('Adresse2 *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
-    CP=IntegerField('Code Postal',
-                           validators=[validators.InputRequired()])
+    CP=IntegerField('Code Postal *',validators=[validators.InputRequired()])
                            #validators=[validatep,length(min=5 ,max=5)])
     
-    Ville=StringField('Ville')
+    Ville=StringField('Ville *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
                            #validators=[validators.InputRequired()])
     
-    Siret=IntegerField('Siret',
-                           validators=[validators.InputRequired()])#,validatep])
+    Siret=IntegerField('Siret *',validators=[validators.InputRequired()])#,validatep])
 
-    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
+    Pays=SelectField("Pays *", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])
 
-    Reference=IntegerField('Reference',
-                           validators=[validators.InputRequired()])
+    Reference=IntegerField('Reference *',validators=[validators.InputRequired()])
     
     Date_Creation=StringField("Date Creation",
                            render_kw={'readonly':True})
 
-    EtatClient=StringField("Etat du client")
-    LoginExtranet = StringField("Login Extranet")
+    EtatClient=SelectField("Etat du client *",validators=[validators.InputRequired(),length(min=4 ,max=20)],choices=[('Actif', 'Actif',), ('Inactif', 'Inactif')]) 
+    
+    LoginExtranet = StringField("Login Extranet *", validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
-    MdpExtranet = StringField("MdpExtranet")
+    MdpExtranet = StringField("MdpExtranet *",validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
     client_id = HiddenField()
 
-    Enseigne=StringField("Enseigne")
+    Enseigne=StringField("Enseigne *", validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
     submit = SubmitField('Enregistrer')
 
@@ -920,8 +921,8 @@ class Negotiateur_Form(FlaskForm):
 
 class Negotiateur_Form1(FlaskForm):  
 
-    def validate_username(self,username):
-        user = Client_negotiateur.query.filter_by(nom=username.data).first()
+    def validate_username(self,nom):
+        user = Client_negotiateur.query.filter_by(nom=nom.data).first()
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
@@ -932,12 +933,16 @@ class Negotiateur_Form1(FlaskForm):
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
-    Sexe=SelectField('Titre',
-                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
+  
 
-    NOM =StringField('Nom et prénom',
+    nom =StringField('Nom *',
                            validators=[validators.InputRequired(),validate_username])
     
+    prenom =StringField('Prénom',
+                           validators=[validators.InputRequired()])
+    
+    Sexe=SelectField('Sexe',  choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'), ('Mademoiselle', 'Mademoiselle')])
+
     email =StringField('E-mail',
                            validators=[validators.InputRequired(),Email(),validate_email])
 
@@ -1184,8 +1189,10 @@ class Mission_editForm(FlaskForm):
 
     Reference_client=IntegerField("Reference Client",
                         validators=[validators.InputRequired(),validate_client])
+    
+    
 
-    ID_Concessionaire=IntegerField("ID Concessionaire",
+    ID_Concessionaire=IntegerField("ID Concessionairess ", render_kw={'readonly':True}, 
                         validators=[validators.InputRequired("You got to enter some rating!"),validate_email])
 
     ABONNEMENT=StringField("Abonnement")
@@ -1400,14 +1407,14 @@ class Invitation_Agenda(FlaskForm):
 
 class Tarif_edit(FlaskForm):
 
-    Type=StringField("Type",
+    Type=StringField("Type ",
                         render_kw={'readonly':True})
 
-    prix=DecimalField("prix")
+    prix=DecimalField("prix *")
     
     tafid=HiddenField()
 
-    surface=IntegerField("surface")
+    surface=IntegerField("surface *")
 
     submit = SubmitField('Enregistrer')
 class time(FlaskForm):
