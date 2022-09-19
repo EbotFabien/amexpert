@@ -475,7 +475,8 @@
                                             <div class="control">
                                               <button type="submit" class="button is-primary is-small"> Modifiez </button>
                                                
-                                               <input type="button" type="submit" class="button is-danger is-small" name="Supprimez" value="Supprimez">
+                                              <a href="{{url_for('users.delete_client', id=client.id)}}"><input type="button" type="submit" class="button is-danger is-small" name="Supprimez" value="Supprimez"></a>
+                                               
                                             </div>
 
                                           </div>

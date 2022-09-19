@@ -305,7 +305,7 @@
                             </div>
                             <table>
                                 <thead>
-                                    <tr>
+                                    <tr> 
                                         <th >ID </th>
 										<th class="text-left">Date mission</th>
 										<th class="text-right">Bailleur</th>
@@ -313,7 +313,7 @@
 										<th class="text-right">Locataire</th>
 										<th class="text-right">ville de mission</th>
 										<th class="text-right"># de Facture</th>
-										<th class="text-right"><span>Facture Client</span>-<br><span>Emise</span></th>
+										<!--th class="text-right"><span>Facture Client</span>-<br><span>Emise</span></th-->
 										<th class="text-right"><span>Facture Client</span>-<br><span>acquittée</span></th>
 										<th class="text-right">%</th>
 										<th class="text-right">Montant</th>
@@ -329,7 +329,12 @@
 										<td class="qty">{{mission_.mission__data.mission__data.Reference_LOCATAIRE}}</td>
 										<td class="qty">{{mission_.mission__data.mission__data.Ville_Bien}}</td>
 										<td class="qty">{{mission_.facture}}</td>
-										<td class="qty">{{mission_.mission__data.mission__data.DATE_FACTURE.strftime('%d. %m. %Y')}}</td>
+										<!--td class="qty">{% if mission_.mission__data.mission__data.DATE_FACTURE == None %}
+											
+											{%else%}
+												{{mission_.mission__data.mission__data.DATE_FACTURE.strftime('%d. %m. %Y')}}
+											{%endif%}
+										</td-->
 										<td class="qty">{% if mission_.mission__data.mission__data.DATE_FACT_REGLEE == None %}
 												non acquittée
 											{%else%}

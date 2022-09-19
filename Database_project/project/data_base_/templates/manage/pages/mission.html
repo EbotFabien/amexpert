@@ -73,107 +73,101 @@
       </form>
   </div>
 
-
-
-
-
-
-  <section class="tile" style="margin-top: 10px;">
-       
-
-      <div class="box"  style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
-           
-             
-     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-         
-			<div class="display-flex">
-                <span><i class="fa fa-users"></i></span>                
-            </div>        
-	   </div>
- 
-        <!-- SQ
-          .<div class="tile box" style="width: fit-content; margin: 0 auto; justify-content: space-evenly; min-width: 950px;"> -->
- 
-           <div class="table-container"  style="position: relative;">
-             {% with messages = get_flashed_messages(with_categories=true)%}
-                 {% if messages %}
-                     {%for category,message in messages%}
-                     <div class="alert alert-{{category}} is-small">
-                         {{message}}
-                     </div>sosu
-                     {% endfor %}
-                 {% endif %}
-             {% endwith %}
-             <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
-                       <thead class="">
-                        
-                     <tr>    <th scope="col">ID</th>
-                             <th scope="col">Reference BAILLEUR</th>  	 
-                             <th scope="col">ID CONCESS</th>	  
-                             <th scope="col">DATE EDL REALISE</th>  	
-                             <th scope="col">PRIX HT EDL</th>	  	     	
-                             <th scope="col">DATE FACTURE</th>  	
-                             <th scope="col">Etat</th>
-                             {% if current_user.TYPE == "Admin" %}  		
-                             <th></th>	
-                             <!-- <th></th> -->
-                             {%endif%}
-                             <th></th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     {%for mission_ in Mission.items %}
-                         <tr>    
-                                 <td  scope="row">{{mission_.id}}</td> 
-                                 <td>{{mission_.Bailleur__data.reference}}</td> 
-                                 <td>
-                                 {% if mission_.AS__data.nom != "0" %}    	   
-                                   {{mission_.AS__data.nom}}
-                                 {% else %}  
-                                 
-                                 {% endif %}
-                                 </td> 
-                                 <td>
-                                   {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d/%m/%Y') }}
-                                   {% else %}
-                                   aucune date
-                                   {% endif %}
-                                 </td>  	
-                                 <td>
-                                   {% if mission_.PRIX_HT_EDL == None %}
-                                     aucune date
-                                   {% else %}
-                                     {{ mission_.PRIX_HT_EDL }}
-                                   {% endif %}               
-                                 </td> 	    
-                                 <td>
-                                   {% if mission_.DATE_FACTURE == None %}
-                                     aucune date
-                                   {% else %}
-                                     {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
-                                   {% endif %}                              
-                                 </td>
-                                 <td>
-                                   {% if mission_.DATE_FACT_REGLEE == None %}
-                                     Non Réglée
-                                   {% else %}
-                                     Réglée
-                                   {% endif %}                              
-                                 </td>    
-                                 {% if current_user.TYPE == "Admin" %} 	 	  	  
-                                 <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
-                                 <!-- <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer missionsssdsdsd" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> -->
-                                 {% endif%}
-                                  <td>
-                                     <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
-                                 </td> 
+  
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available; width:100%;">
+          <!--div style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+            <span><i class="fa fa-users"></i></span>
+          </div-->
+          <div class="table-container" style="overflow-x: scroll;position: relative;">
+            {% with messages = get_flashed_messages(with_categories=true)%}
+                {% if messages %}
+                    {%for category,message in messages%}
+                    <div class="alert alert-{{category}} p-1">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
+	                    <thead class="">
+                       
+	                	<tr>    <th scope="col">ID</th>
+                            <th scope="col">Reference BAILLEUR</th>  	 
+                            <th scope="col">ID CONCESS</th>	  
+                            <th scope="col">DATE EDL REALISE</th>  	
+                            <th scope="col">PRIX HT EDL</th>	  	     	
+                            <th scope="col">DATE FACTURE</th>  	
+                            <th scope="col">Anomalie</th>
+                            <th scope="col">Etat</th>
+                            {% if current_user.TYPE == "Admin" %}  		
+                            <th></th>	
+                            <!-- <th></th> -->
+                            {%endif%}
+                            <th></th>
+	                	</tr>
+	            	</thead>
+		            <tbody>
+		                {%for mission_ in Mission.items %}
+		                    <tr>    
+                                <td>{{mission_.id}}</td> 
+                                <td>{{mission_.Bailleur__data.reference}}</td> 
+                                <td>
+                                {% if mission_.AS__data.nom != "0" %}    	   
+                                  {{mission_.AS__data.nom}}
+                                {% else %}  
+                                
+                                {% endif %}
+                                </td> 
+                                <td>
+                                  {% if mission_.DATE_REALISE_EDL != None %}     {{mission_.DATE_REALISE_EDL.strftime('%d/%m/%Y') }}
+                                  {% else %}
+                                  aucune date
+                                  {% endif %}
+                                </td>  	
+                                <td>
+                                  {% if mission_.PRIX_HT_EDL == None %}
+                                    aucune date
+                                  {% else %}
+                                    {{ mission_.PRIX_HT_EDL }}
+                                  {% endif %}               
+                                </td> 	    
+                                <td>
+                                  {% if mission_.DATE_FACTURE == None %}
+                                    aucune date
+                                  {% else %}
+                                    {{ mission_.DATE_FACTURE.strftime('%d/%m/%Y') }}
+                                  {% endif %}                              
+                                </td>
+                                <td>
+                                  {% if mission_.Anomalie == True %}
+                                    Anomalie
+                                  {% else %}
+                                    False
+                                  {% endif %}                              
+                                </td>
+                                <td>
+                                  {% if mission_.DATE_FACT_REGLEE == None %}
+                                    Non Réglée
+                                  {% else %}
+                                    Réglée
+                                  {% endif %}                              
+                                </td>    
+                                {% if current_user.TYPE == "Admin" %} 	 	  	  
+                                <td><a href="{{url_for('users.edit_mission', id=mission_.id)}}" class=" is-small is-outlined-black is-fullwidth button"><i class="fa fa-pen"></i></a></td>	 
+                                <!-- <td> <a href="{{url_for('users.delete_mission', id=mission_.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer missionsssdsdsd" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td> -->
+                                {% endif%}
+                                
+                                <td>
+                                    <a href="{{url_for('users.show_mission', id=mission_.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                </td> 
                          </tr> 
                      {%endfor%}                     
                  </tbody>         
                 </table>
                </div>
                   <!-- Pagination Links-->
-               <!--   <nav class="pagination" role="navigation" aria-label="pagination">
+               <nav class="pagination" role="navigation" aria-label="pagination">
                    <ul class="pagination-list">
                      {% for page_num in Mission.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
                      {% if page_num %}
@@ -248,7 +242,7 @@
                      {% endif %}
                    {% endfor %}
                    </ul>
-                 </nav> -->
+                 </nav> 
              <!-- / fin de la pagination -->
            </div>
          </section>

@@ -699,6 +699,22 @@ class Facturationex_Form(FlaskForm):
     submit = SubmitField('Générer')
 
 
+class Facturationind_Form(FlaskForm):
+
+    Mission =StringField('Mission ID',
+                             render_kw={'readonly':True})
+
+    Montant_HT =DecimalField('Montant €HT')
+
+    Date_EDL=StringField('Date EDL',
+                           render_kw={'readonly':True})
+
+    Statut=SelectField('Statut',
+                             choices=[('paye', 'paye'), ('attente', 'attente')])
+
+    submit = SubmitField('Facture')
+
+
 class Client_Form(FlaskForm):
        
     Type=SelectField('Type',
@@ -1408,6 +1424,10 @@ class time(FlaskForm):
 
     submit = SubmitField('Enregistrer')
 
+class mission_id(FlaskForm):
+    ID=IntegerField("mission_id")
+
+    submit = SubmitField('Enregistrer')
 
 class Tarif_Base(FlaskForm):
 

@@ -33,11 +33,11 @@
       </form> -->
     
       <!-- / date -->
-      <form method="GET" action="{{url_for('users.mission')}}">
+      <form method="GET" action="{{url_for('users.facturationa')}}">
 
             <div class="columns">
 
-                <div class="column">
+                <!--div class="column">
                         <div class="field">
                           <div class="select is-small">
                                   <select name="ron" >
@@ -47,7 +47,7 @@
                                   </select>
                           </div>
                         </div>
-                    </div>
+                    </div-->
 
           <div class="column">
               <div class="field">
@@ -61,7 +61,7 @@
               </div>
           </div>
 
-          <div class="column">
+          <!--div class="column">
                 <div class="field">
                   <div class="select is-small">
                     <select name="ron" >
@@ -71,16 +71,16 @@
                     </select>
                   </div>
                 </div>
-            </div>
+            </div-->
 
-            <div class="column">
+            <!--div class="column">
               <div class="field">
                 <div class="control is-small">
                   <input type="date" name="date" placeholder="dd-mm-yyyy" class="input is-small" >
                 </div>
                 <small> <p style="font-size: x-small;"><em>Date de création</em></p> </small>
               </div>
-          </div>
+          </div-->
 
           <div class="column">
               <div class="field">
@@ -151,9 +151,8 @@
 							<tr>
 								<th scope="col">id</th>
 								<th scope="col">Client</th>
-								<th scope="col">Societé</th>
-								<th scope="col">N° Facture</th>
 								<th scope="col">Sté facturée</th>
+								<th scope="col">N° Facture</th>
 								<th scope="col">Montant € HT</th>
 								<th scope="col">Date de creation</th> 
 								<th scope="col">Etat</th>
@@ -170,7 +169,6 @@
 										<th scope="row">{{facturation.id}}</th>
 										<td>{{facturation.client__data_.nom}}</td>
 										<td>{{facturation.client__data_.societe}}</td>
-										<td>{{facturation.n_facture}}</td>
 										<td>{{facturation.n_facture}}</td>
 										<td>{{facturation.Montant_HT}}</td>
 										<td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 
