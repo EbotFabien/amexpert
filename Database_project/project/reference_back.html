@@ -14,3 +14,8 @@ les données dans ce champs la
 
 @users.route('/mission',methods=['GET','POST']): 
     1.  Les filtres "Etats Missions" et date ne fonctionnent pas, fonctionnent qu’ensemble remplis. 
+
+    @users.route('/edit/<int:id>/prospect', methods=['GET','POST']) : 
+        le client demande ici d'ajouter un menu deroulant " état du prospect" (prospect chaud, prospect tiede, prospect froid) et 
+        d'ajouter ce champs dans le tableau : tu a definis ces champs dans ta base de données nn?
+        
