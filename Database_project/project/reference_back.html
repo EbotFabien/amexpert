@@ -31,7 +31,8 @@ les données dans ce champs la
     @users.route('/edit/<int:id>/prospect', methods=['GET','POST']) :  
          A ce niveau j'ai disposé juste le champs 'type' en premiere position sauf que Sara demande a ce que 
          Selon le choix, faire apparaître ou disparaître les champs "Siret"; "Société”
-         
+          
+                                            28/09/2022
          
     
     @users.route('/edit/<int:id>/expert', methods=['GET','POST'])
@@ -39,4 +40,13 @@ les données dans ce champs la
         "Suite vérification clic sur modification de l’agent, mise en état “PARTI” enregistrement.
          Le message apparait et dit bien enregistré mais suite nouvelle recherche le dit agent FOUCHARD 
          est toujours présent et ACTIF alors que le chois PARTI avait été bien validé"
+
+    @users.route('/client/<int:id>/facture')
+        A ce niveau j'ai rajouter un champs societé facture dans le tableau de facturation client; 
+        regard coté back coent afficher les données dans la colonne societé facturees
+        
+        @users.route('/facture')
+        A ce niveau deux composants du filtre on été disposé a savoir : type facture et etat de facture
+        et ensuite jai la colonne type facture a mon niveau, tu devra verifier si effectivement les données de cette 
+        colone sont bien retourné
         
