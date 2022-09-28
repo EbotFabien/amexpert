@@ -26,6 +26,10 @@
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
+  <!-- Import du jquery -->
+ <!--  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
 
 </head>
 <body id="page-top">
@@ -47,7 +51,8 @@
         <div class="dropdown" id="dropdown">
           <div class="dropdown-trigger" style="overflow: hidden;">
             <button class="button button-custom-style admin-dropdown" onclick="toggleDropdown()" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span><small style="font: small-caption;">Bienvenue</small> {{current_user.nom}}</span>
+              <!-- <span><small style="font: small-caption;">Bienvenue</small> {{current_user.nom}}</span> -->
+              <span><b>Bienvenue {{current_user.nom}}</b></span>
                 <span class="icon is-small">
                   <i class="fas fa-angle-down" aria-hidden="true"></i>
                 </span>
@@ -99,6 +104,7 @@
   </a>
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
     <script src="{{url_for('static', filename='js/toggle.js')}}"></script>
+    <script src="{{url_for('static', filename='js/accordeon.js')}}"></script>
 
      <!-- Bootstrap core JavaScript-->
     <!-- <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>    -->

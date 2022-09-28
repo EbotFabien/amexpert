@@ -61,26 +61,26 @@
               </div>
           </div>
 
-          <!--div class="column">
+          <div class="column">
                 <div class="field">
                   <div class="select is-small">
                     <select name="ron" >
-                      <option selected disabled>---FACTURES---</option>
+                      <option selected disabled>--- TYPES FACTURES---</option>
                       <option value="r">Facture à la mission</option>
                       <option value="nr">Facture en relevé </option>
                     </select>
                   </div>
                 </div>
-            </div-->
+            </div>
 
-            <!--div class="column">
+            <div class="column">
               <div class="field">
                 <div class="control is-small">
                   <input type="date" name="date" placeholder="dd-mm-yyyy" class="input is-small" >
                 </div>
                 <small> <p style="font-size: x-small;"><em>Date de création</em></p> </small>
               </div>
-          </div-->
+          </div>
 
           <div class="column">
               <div class="field">
@@ -152,7 +152,8 @@
 								<th scope="col">id</th>
 								<th scope="col">Client</th>
 								<th scope="col">Sté facturée</th>
-								<th scope="col">N° Facture</th>
+                <th scope="col">N° Facture</th>
+                <th scope="col">Type Facture</th>
 								<th scope="col">Montant € HT</th>
 								<th scope="col">Date de creation</th> 
 								<th scope="col">Etat</th>
@@ -170,7 +171,8 @@
 										<td>{{facturation.client__data_.nom}}</td>
 										<td>{{facturation.client__data_.societe}}</td>
 										<td>{{facturation.n_facture}}</td>
-										<td>{{facturation.Montant_HT}}</td>
+                    <td>{{facturation.n_facture}}</td>
+                    <td>{{facturation.Montant_HT}}</td>
 										<td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 
 										<td>{% if facturation.valide == True %}
 												Réglée
