@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -2245,7 +2245,7 @@ def prospect_():
         Type = request.args.get('ron')
         Date = request.args.get('date')
         print(Date)
-        if Type != None:
+        if Type != None and Date == None:
             if Type == "r":
                 his=[]
                 client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
@@ -2265,6 +2265,35 @@ def prospect_():
                 for i in client_:
                     if i.id not in his:
                         client_.remove(i)
+        if Date !=None and Type !=None:
+            if Type == "r":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Actif')).order_by(asc(prospect_History.id)).all()
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "nr":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
+                print(len(history))
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        if Date !=None and Type == None:
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True)).order_by(asc(prospect_History.id)).all()
+                for i in client_:
+                    his.append(i.id)
+                for i in history:
+                    if i.prospect not in his:
+                        history.remove(i)
         else:
             client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
             history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
@@ -2635,7 +2664,8 @@ def addlogin(id):
             if f==True:
                 flash(f"l'email est déja prise",'warning')
                 return redirect(url_for('users.addlogin',id=id))
-            client.nom =form.username.data
+            client.nom =form.nom.data
+            client.prenom =form.prenom.data
             client.email=form.email.data
             client.login=form.login.data
             db.session.commit()
@@ -3939,7 +3969,8 @@ def exportm():
                     mi=exo.mission_data(miss,mi)
                     name="missionex_"+gen_name()
                     return exo.export(mi,name)
-                flash(f'Pas de Mission','Warning')
+                flash(f'Pas de Mission pour cette date','Warning')
+                return redirect(url_for('users.exportm'))
             
             return render_template('manage/pages/exportmission.html',form=form, highlight='mission')
     return redirect(url_for('users.main'))
