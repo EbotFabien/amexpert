@@ -28,6 +28,7 @@
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">N° Facture</th>
+                            <th scope="col">Société facturées</th>
                             <th scope="col">Montant € HT</th>
                             <th scope="col">Date de creation</th> 
                             
@@ -39,6 +40,7 @@
                             {%for facturation in facturations %}
                                 <tr>
                                     <th scope="row">{{facturation.id}}</th>
+                                    <td>{{facturation.n_facture}}</td>
                                     <td>{{facturation.n_facture}}</td>
                                     <td>{{facturation.Montant_HT}}</td>
                                     <td>{{facturation.Date_de_creation.strftime('%d. %m. %Y')}}</td> 

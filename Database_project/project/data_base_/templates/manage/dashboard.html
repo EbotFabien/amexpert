@@ -21,8 +21,8 @@
             <p>nombre de clients</p>
             <h4 class="icon">{{client}}</h4>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Client actif(s): {{actc}}</a>
-              <a class="dropdown-item" href="#">Client parti(s): {{patc}}</a>
+              <a class="dropdown-item" href="#">Client(s) actif(s): {{actc}}</a>
+              <a class="dropdown-item" href="#">Client(s) parti(s): {{patc}}</a>
             </div>
         </div>
         <div class="card">
@@ -30,8 +30,8 @@
             <p>nombre d'agents</p>
             <h4 class="icon">{{expert}}</h4>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Agent actif(s): {{acte}}</a>
-              <a class="dropdown-item" href="#">Agent inactif(s): {{pate}}</a>
+              <a class="dropdown-item" href="#">Agent(s) actif(s): {{acte}}</a>
+              <a class="dropdown-item" href="#">Agent(s) inactif(s): {{pate}}</a>
             </div>
         </div> 
         <div class="card">
@@ -51,11 +51,11 @@
           <!--small style="text-align: center;
 display: block;"><span class="has-text-centered">Nombre de factures extérieur</span> <br> </small--> 
           <div class="dropdown-menu dropdown-menu-end" style="overflow: scroll;">
-            <a class="dropdown-item" href="#">Facture expert générée(s): {{gener}}</a>
-            <a class="dropdown-item" href="#">Facture expert non générée(s): {{ngener}}</a>
-            <a class="dropdown-item" href="#">Facture client importé: {{fact_importe}}</a>
-            <a class="dropdown-item" href="#">Facture  client réglé(s) depuis l'aplication: {{facr}}</a>
-            <a class="dropdown-item" href="#">Facture client non réglé(s) depuis l'aplication: {{facnotr}}</a>
+            <a class="dropdown-item" href="#">Facture(s) expert(s) générée(s): {{gener}}</a>
+            <a class="dropdown-item" href="#">Facture(s) expert(s) non générée(s): {{ngener}}</a>
+            <a class="dropdown-item" href="#">Facture(s) client(s) importée(s): {{fact_importe}}</a>
+            <a class="dropdown-item" href="#">Facture(s)  client(s) réglée(s) depuis l'aplication: {{facr}}</a>
+            <a class="dropdown-item" href="#">Facture(s) client(s) non réglée(s) depuis l'aplication: {{facnotr}}</a>
           </div>
         </div>
     </div>
@@ -131,12 +131,13 @@ display: block;"><span class="has-text-centered">Nombre de factures extérieur</
           </div> 
         {% endif %}
       </div>
+
       <div class="stat-charts" style="margin-top: .25rem;">   
         {% if current_user.TYPE == 'Admin' %}  
         <div class="card" style="padding:0px;">
            <header class="card-header">
             <p class="card-header-title">
-              Mission(s) par mois 
+              Mission(s) par mois
               <div>
                 <!--<button onclick="draw_line('line')">Line</button>
                 <button onclick="draw_bar('bar')">Bar</button>-->

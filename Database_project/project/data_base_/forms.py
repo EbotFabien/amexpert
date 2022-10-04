@@ -94,13 +94,13 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
-    username =StringField("Identifiant",
+    username =StringField("Identifiant *",
                                 validators=[validators.InputRequired(),length(min=4 ,max=20)])
     
-    Numero =StringField('Téléphone portable',
+    Numero =StringField('Téléphone portable *',
                                 validators=[validators.InputRequired(),validatep,length(min=10 ,max=10)])
 
-    email =StringField('E-mail',
+    email =StringField('E-mail *',
                            validators=[validators.InputRequired(),Email(),validate_email])
 
     password =PasswordField('Mot de passe',
@@ -109,7 +109,7 @@ class RegistrationForm(FlaskForm):
     confirm_password =PasswordField('Confirmer le mot de passe',
                                   validators=[EqualTo('password')])
     
-    email_perso =StringField('E-mail perso')
+    email_perso =StringField('E-mail perso *' ,validators=[validators.InputRequired()])
 
     Type_Expert=SelectField('Type d\'expert',
                              choices=[('Interv', 'Interv'), ('CONCESS', 'CONCESS'), ('agent Cell Dev', 'agent Cell Dev'),('Interv', 'Interv'),('Suiveur Cell Tech', 'Suiveur Cell Tech'),('Suiveur Cell Planif', 'Suiveur Cell Planif'),('Admin', 'Admin'),('Audit', 'Audit')])
@@ -120,7 +120,7 @@ class RegistrationForm(FlaskForm):
     secteur =StringField('Secteur')
 
 
-    siret =IntegerField('siret', validators=[validators.InputRequired()])
+    siret =IntegerField('siret *', validators=[validators.InputRequired()])
 
     trigramme =StringField('trigramme')
 
@@ -848,9 +848,9 @@ class Client_edit(FlaskForm):
 
     EtatClient=SelectField("Etat du client *",validators=[validators.InputRequired(),length(min=4 ,max=20)],choices=[('Actif', 'Actif',), ('Inactif', 'Inactif')]) 
     
-    LoginExtranet = StringField("Login Extranet *", validators=[validators.InputRequired(),length(min=4 ,max=20)])
+    LoginExtranet = StringField("Login Extranet *", validators=[validators.InputRequired(),length(min=4 ,max=20)], render_kw={'readonly':True})
 
-    MdpExtranet = StringField("MdpExtranet *",validators=[validators.InputRequired(),length(min=4 ,max=20)])
+    MdpExtranet = StringField("MdpExtranet *",validators=[validators.InputRequired(),length(min=4 ,max=20)], render_kw={'readonly':True})
 
     client_id = HiddenField()
 
@@ -1189,6 +1189,9 @@ class Mission_editForm(FlaskForm):
 
     Reference_client=IntegerField("Reference Client",
                         validators=[validators.InputRequired(),validate_client])
+
+    
+    Nom= StringField("Nom Bailleur *",render_kw={'readonly':True})
     
     
 

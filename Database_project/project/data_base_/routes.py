@@ -1506,6 +1506,7 @@ def edit_mission(id):
             if int(form.misid.data) == mission.id:
                 check=Client.query.filter_by(reference=form.Reference_client.data).first()
                 if check:
+                    
                     mission.Reference_BAILLEUR = check.id
                     mission.ABONNEMENT = form.ABONNEMENT.data
                     mission.ID_AS=form.ID_Concessionaire.data
