@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-#from flask_wkhtmltopdf import Wkhtmltopdf
+from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-#wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -112,7 +112,8 @@ def client():
     
     if current_user.TYPE == "Admin":
         Type = request.args.get('ron')
-        if Type != None:
+        Vis = request.args.get('vis')
+        if Type != None and Vis == None:
             if Type == "r":
                 his=[]
                 client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
@@ -131,7 +132,66 @@ def client():
                 for i in client_:
                     if i.id not in his:
                         client_.remove(i)
-        else:
+        
+        if Type == None and Vis != None:
+            if Vis == "r":
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==True)).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Vis == "nr":
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==False)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==False)).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        
+        if Type != None and Vis != None:
+            if Type == "r" and Vis == 'r':
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==True,Client_History.etat_client=='Actif')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "r" and Vis == 'nr':
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==False)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==False,Client_History.etat_client=='Actif')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "nr" and Vis == 'r':
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==True)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==True,Client_History.etat_client=='Parti')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Type == "nr" and Vis == 'nr':
+                his=[]
+                client_=Client.query.filter(and_(Client.visibility==False)).order_by(asc(Client.id)).all()
+                history=Client_History.query.filter(and_(Client_History.visibility==False,Client_History.etat_client=='Parti')).order_by(asc(Client_History.id)).all()
+                for i in history:
+                    his.append(i.client_id)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        
+        if Type == None and Vis == None:
             client_=Client.query.filter_by(visibility=True).order_by(asc(Client.id)).all()
             history=Client_History.query.filter_by(visibility=True).order_by(asc(Client_History.id)).all()
         # page = request.args.get('page', 1, type=int)
@@ -2245,8 +2305,8 @@ def prospect_():
         page = request.args.get('page', 1, type=int)
         Type = request.args.get('ron')
         Date = request.args.get('date')
-        print(Date)
-        if Type != None and Date == None:
+        Vis = request.args.get('vis')
+        if Type != None and Date == None or Date =='' and Vis == None:
             if Type == "r":
                 his=[]
                 client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
@@ -2260,48 +2320,122 @@ def prospect_():
                 his=[]
                 client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
                 history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
-                print(len(history))
                 for i in history:
                     his.append(i.prospect)
                 for i in client_:
                     if i.id not in his:
                         client_.remove(i)
-        if Date !=None and Type !=None:
+        if Date !=None and Type !=None and Vis == None :
             if Type == "r":
                 his=[]
-                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect.date_creation==Date)).order_by(asc(prospect.id)).all()
                 history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Actif')).order_by(asc(prospect_History.id)).all()
+                
                 for i in history:
                     his.append(i.prospect)
                 for i in client_:
                     if i.id not in his:
                         client_.remove(i)
+
+                
             if Type == "nr":
                 his=[]
-                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect.date_creation==Date)).order_by(asc(prospect.id)).all()
                 history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
-                print(len(history))
+                
                 for i in history:
                     his.append(i.prospect)
                 for i in client_:
                     if i.id not in his:
                         client_.remove(i)
-        if Date !=None and Type == None:
+                
+               
+               
+        
+        if Date != None and Type == None and Vis == None:
+                
                 his=[]
-                client_=prospect.query.filter(and_(prospect.visibility==True,prospect_History.date_creation==Date)).order_by(asc(prospect.id)).all()
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect.date_creation==Date)).order_by(asc(prospect.id)).all()
                 history=prospect_History.query.filter(and_(prospect_History.visibility==True)).order_by(asc(prospect_History.id)).all()
-                for i in client_:
-                    his.append(i.id)
+                #if client_!=[]:
                 for i in history:
-                    if i.prospect not in his:
-                        history.remove(i)
-        else:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+        if Date == None or Date =='' and Type ==None and Vis != None :
+            if Vis == "r":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True,prospect.date_creation==Date)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True)).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+
+                
+            if Vis == "nr":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==False,prospect.date_creation==Date)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==False)).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)   
+
+        if Date== None or Date =='' and Type !=None and Vis != None :
+            if Vis == "r" and  Type == "r":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Actif')).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+
+            if Vis == "r" and  Type == "nr":
+                his=[]
+                client_=prospect.query.filter(and_(prospect.visibility==True)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==True,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)
+            if Vis == "nr" and  Type == "r":
+                his=[] #'Parti'
+                client_=prospect.query.filter(and_(prospect.visibility==False)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==False,prospect_History.etat_client=='Actif')).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i) 
+            if Vis == "nr" and  Type == "nr":
+                his=[] #'Parti'
+                client_=prospect.query.filter(and_(prospect.visibility==False)).order_by(asc(prospect.id)).all()
+                history=prospect_History.query.filter(and_(prospect_History.visibility==False,prospect_History.etat_client=='Parti')).order_by(asc(prospect_History.id)).all()
+                
+                for i in history:
+                    his.append(i.prospect)
+                for i in client_:
+                    if i.id not in his:
+                        client_.remove(i)   
+                
+        if Date == None or Date =='' and Type == None and Vis == None :
             client_=prospect.query.filter_by(visibility=True).order_by(asc(prospect.id)).all()
             history=prospect_History.query.filter_by(visibility=True).order_by(asc(prospect_History.id)).all()
             
 
-        #print(len(history))
-       
+ 
         prospro = prospect.query.filter_by(TYPE ='Professionel').count()
         prospart = prospect.query.filter_by(TYPE ='Particulier').count()
         ano = prospect.query.filter_by(anom=True).count()
@@ -3715,6 +3849,25 @@ def create_facturee():
                 db.session.commit()'''
             #implement total for the missions,where type releve1 not equal to 3
         return redirect(url_for('users.allex'))
+    return redirect(url_for('users.main'))
+
+
+@users.route('/tous/facturation/intervenant/mensuel',methods=['GET','POST'])
+@login_required
+def intervenant():
+    if current_user.TYPE == "Admin":
+        inter_cons=expert_facturation.query.join(compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).join(Expert,(Expert.id == expert_facturation.expert_id)).filter(Expert.TYPE=='Intervenant de constat').all()
+        return render_template('manage/pages/facture_missions.html',highlight='mission',legend='Intervenant de Constat',facture=inter_cons)
+
+    return redirect(url_for('users.main'))
+
+@users.route('/tous/facturation/agent_cons/mensuel',methods=['GET','POST'])
+@login_required
+def agent_cons():
+    if current_user.TYPE == "Admin":
+        agent_cons=expert_facturation.query.join(compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).join(Expert,(Expert.id == expert_facturation.expert_id)).filter(Expert.TYPE=='Agent de secteur').all()
+        return render_template('manage/pages/facture_missions.html',highlight='mission',legend='Agent Constat',facture=agent_cons)
+
     return redirect(url_for('users.main'))
 
 @users.route('/tous/facturation/mensuel',methods=['GET','POST'])

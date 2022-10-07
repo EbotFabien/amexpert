@@ -31,7 +31,6 @@
             <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">  
                     <thead>
                     <tr>
-                        <th scope="col">id</th> 
                         <th scope="col">TITRE</th>
                         <th scope="col">Nom </th>
                         <th scope="col">Prenom</th>
@@ -72,7 +71,6 @@
                     <tbody>
                         {%for expert,history in Expert %}
                             <tr>
-                                <td scope="row">{{expert.id}}</td>
                                 <td>{{expert.genre}}</td>
                                 <td>{{expert.nom}}</td>
                                 <td>{{expert.prenom}}</td>

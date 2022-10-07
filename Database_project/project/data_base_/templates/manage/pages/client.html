@@ -35,9 +35,23 @@
                                       <option value="r">Actif</option>
                                       <option value="nr">Inactif</option>
                                     </select>
-                                  </div>
+                            </div>
+
+                            
 
                         </div>
+                        
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <div class="select is-small">
+                        <select name="vis" >
+                          <option selected disabled>---Visibilite Client(s)---</option>
+                          <option value="r">Actif</option>
+                          <option value="nr">Supprimer</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                   <div class="column is-one-quarter" style="padding-right: 500px;">
                     <div class="are-small">
@@ -61,7 +75,6 @@
             <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">       
                 <thead class="">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Titre</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prenom</th>
@@ -82,7 +95,6 @@
                     <tbody>
                         {%for client_,history in cli_ent %}
                             <tr>
-                                <td scope="row">{{client_.id}}</td>
                                 <td>{{client_.titre}}</td>
                                 <td> {{client_.nom }}</td>
                                 <td>{{client_.prenom }}</td>
