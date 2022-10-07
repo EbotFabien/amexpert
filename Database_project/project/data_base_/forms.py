@@ -45,7 +45,7 @@ class RegistrationForm1(FlaskForm):
     prenom =StringField("Prénom *", validators=[validators.InputRequired(),length(min=4 ,max=20)])
 
     
-    login =StringField("Identifiant *" ,render_kw={'readonly':True}, validators=[validators.InputRequired(),length(min=4 ,max=20)])
+    login =StringField("Identifiant *" , validators=[validators.InputRequired(),Email() ])
 
     email =StringField('E-mail *',render_kw={'readonly':True} ,validators=[validators.InputRequired(),Email() ])
 

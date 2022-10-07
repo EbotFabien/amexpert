@@ -1,0 +1,4 @@
+expert_facturation.join(compte_mensuel,(compte_mensuel.id == expert_facturation.mission))
+.join(Expert,(Expert.id == expert_facturation.expert_id)).filter(TYPE='Intervenant de constat').all()
+expert_facturation.query.filter_by(mission=id).all() 
+/tous/facturation/mensuel

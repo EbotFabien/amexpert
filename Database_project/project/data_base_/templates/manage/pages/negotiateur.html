@@ -27,7 +27,6 @@
             <table class="table iis-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">
                         <thead class="">
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">client</th>
                            
                             <!-- <th scope="col">SOCIETE</th> -->
@@ -48,7 +47,6 @@
                         <tbody>
                             {%for client_ in Client %}
                                 <tr>
-                                    <th scope="row">{{client_.id}}</th>
                                     <td>{{client_.client__nego.nom}}</td>
                                    
                                     <!-- <td>{{client_.SOCIETE}}</td> -->
