@@ -30,14 +30,14 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form method="GET" action="{{url_for('users.client')}}">
+            <form method="GET" action="{{url_for('users.expert')}}">
                 <div class="columns"> 
                     <div class="column">
                       <div class="field">
 
                             <div class="select is-small" style="padding-left: 500px;">
                                     <select name="ron" >
-                                      <option selected disabled>---Etat Client(S)---</option>
+                                      <option selected disabled>---Etat Expert(S)---</option>
                                       <option value="r">Actif</option>
                                       <option value="nr">Inactif</option>
                                     </select>
@@ -45,6 +45,21 @@
 
                         </div>
                   </div>
+                  <div class="column">
+                    <div class="field">
+
+                          <div class="select is-small" style="padding-left: 500px;">
+                                  <select name="ron" >
+                                    <option selected disabled>---Visibilite Expert(S)---</option>
+                                    <option value="r">Actif</option>
+                                    <option value="nr">Supprimer</option>
+                                  </select>
+                                </div>
+
+                      </div>
+                </div>
+                  
+                 
                   <div class="column is-one-quarter" style="padding-right: 500px;">
                     <div class="are-small">
                         <button class="button is-small is-success">Filtrer</button>

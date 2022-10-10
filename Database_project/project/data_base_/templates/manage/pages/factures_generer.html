@@ -13,16 +13,16 @@
     min-width: 900px;">
       
       <!-- / date -->
-      <form method="GET" action="{{url_for('users.mission')}}">
+      <form method="GET" action="{{url_for('users.allex')}}">
 
         <div class="columns"> 
           <div class="column">
               <div class="field">
                 <div class="select is-small">
-                  <select name="ron" >
-                    <option selected disabled>---Etat Mission(S)---</option>
-                    <option value="r">Missions réglés</option>
-                    <option value="nr">Missions non réglés</option>
+                  <select name="reg" >
+                    <option selected disabled>---Etat Facture(S)---</option>
+                    <option value="r">Facture générée(s)</option>
+                    <option value="nr">Facture Non générée(s)</option>
                   </select>
                 </div>
               </div>
@@ -30,10 +30,10 @@
           <div class="column">
               <div class="field">
                     <div class="select is-small">
-                            <select name="ron" >
-                              <option selected disabled>---Etat Mission(S)---</option>
-                              <option value="r">Missions réglés</option>
-                              <option value="nr">Missions non réglés</option>
+                            <select name="env" >
+                              <option selected disabled>---Etat d'envoie---</option>
+                              <option value="r">Facture Envoyee</option>
+                              <option value="nr">Facture Non Envoyee</option>
                             </select>
                           </div>
               

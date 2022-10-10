@@ -1646,8 +1646,118 @@ def delete_mission(id):
 def expert():
     if current_user.TYPE == "Admin":
         page = request.args.get('page', 1, type=int)
-        expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
-        history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
+        Type = request.args.get('ron')
+        Vis = request.args.get('vis')
+        if Type != None and Vis == None:
+            if Type == "r":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True,Expert_History.actif_parti=='actif')).order_by(desc(Expert_History.id)).all()
+                
+                
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+               
+            if Type == "nr":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True,Expert_History.actif_parti=='Parti')).order_by(desc(Expert_History.id)).all()
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+        if Type != None and Vis != None:
+            if Type == "r" and Vis == "r":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True,Expert_History.actif_parti=='actif')).order_by(desc(Expert_History.id)).all()
+                
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+            if Type == "r" and Vis == "nr":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=False).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==False,Expert_History.actif_parti=='actif')).order_by(desc(Expert_History.id)).all()
+                
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+               
+            if Type == "nr" and Vis == "nr":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=False).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==False,Expert_History.actif_parti=='Parti')).order_by(desc(Expert_History.id)).all()
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+            if Type == "nr" and Vis == "r":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True,Expert_History.actif_parti=='Parti')).order_by(desc(Expert_History.id)).all()
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+
+        if Type == None and Vis != None:
+            if Vis == "r":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True)).order_by(desc(Expert_History.id)).all()
+                
+                
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+               
+            if Vis == "nr":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=False).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==False)).order_by(desc(Expert_History.id)).all()
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+        if Type != None and Vis != None:
+            if Vis == "r":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==True)).order_by(desc(Expert_History.id)).all()
+                
+                
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+                 
+            if Vis == "nr":
+                his=[]
+                expert_=Expert.query.filter_by(visibility=False).order_by(desc(Expert.id)).all()
+                history=Expert_History.query.filter(and_(Expert_History.visibility==False)).order_by(desc(Expert_History.id)).all()
+                for i in history:
+                    his.append(i.expert_id)
+                for i in expert_:
+                    if i.id not in his:
+                        expert_.remove(i)
+        if Type == None and Vis == None:
+            expert_=Expert.query.filter_by(visibility=True).order_by(desc(Expert.id)).all()
+            history=Expert_History.query.filter_by(visibility=True).order_by(desc(Expert_History.id)).all()
         acte = Expert_History.query.filter_by(actif_parti='actif').count()
         pate = Expert_History.query.filter_by(actif_parti='Parti').count()
         return render_template('manage/pages/expert.html',acte=acte,pate=pate,Expert=zip(expert_,history), legend="expert", highlight='expert')
@@ -2096,8 +2206,8 @@ def main():
         clients = Client.query.filter_by(visibility=True).count()
         actc = Client_History.query.filter_by(etat_client='Actif').count()
         patc = Client_History.query.filter_by(etat_client='Parti').count()
-        prospro = prospect.query.filter_by(TYPE ='Professionel').count()
-        prospart = prospect.query.filter_by(TYPE ='Particulier').count()
+        prospro =prospect_History.query.filter_by(etat_client='Actif').count()
+        prospart = prospect_History.query.filter_by(etat_client='Parti').count()
         missions = Mission.query.filter_by(Visibility=True).count()
         prospects = prospect.query.filter_by(visibility=True).count()
         Experts = Expert.query.filter_by(visibility=True).count()
@@ -3874,10 +3984,32 @@ def agent_cons():
 @login_required
 def allex():
     if current_user.TYPE == "Admin":
-           facture=compte_mensuel.query.all() 
-           gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
-           ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
-           return render_template('manage/pages/factures_generer.html',facture=facture,highlight='mission',gene=gene,ngene=ngene)
+            Type = request.args.get('reg')
+            env = request.args.get('env')
+            if Type !=None and env== None:
+                if Type =="r":
+                    facture=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).all() 
+                if Type =="nr":
+                    facture=compte_mensuel.query.filter(compte_mensuel.date_generation==None).all()
+            if Type ==None and env != None:
+                if env =="r":
+                    facture=compte_mensuel.query.filter(compte_mensuel.date_envoie_Facture!=None).all() 
+                if env =="nr":
+                    facture=compte_mensuel.query.filter(compte_mensuel.date_envoie_Facture==None).all()
+            if Type !=None and env != None:
+                if env =="r" and Type =="r":
+                    facture=compte_mensuel.query.filter(and_(compte_mensuel.date_envoie_Facture!=None,compte_mensuel.date_generation!=None)).all() 
+                if env =="r" and Type =="nr":
+                    facture=compte_mensuel.query.filter(and_(compte_mensuel.date_envoie_Facture!=None,compte_mensuel.date_generation==None)).all()
+                if env =="nr" and Type =="nr":
+                    facture=compte_mensuel.query.filter(and_(compte_mensuel.date_envoie_Facture==None,compte_mensuel.date_generation==None)).all()
+                if env =="nr" and Type =="r":
+                    facture=compte_mensuel.query.filter(and_(compte_mensuel.date_envoie_Facture==None,compte_mensuel.date_generation!=None)).all()
+            if Type ==None and env== None:
+                    facture=compte_mensuel.query.all() 
+            gene=compte_mensuel.query.filter(compte_mensuel.date_generation!=None).count()
+            ngene=compte_mensuel.query.filter(compte_mensuel.date_generation==None).count()
+            return render_template('manage/pages/factures_generer.html',facture=facture,highlight='mission',gene=gene,ngene=ngene)
 
     return redirect(url_for('users.main'))
 
