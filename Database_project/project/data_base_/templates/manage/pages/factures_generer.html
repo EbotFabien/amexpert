@@ -11,6 +11,43 @@
     <div class="tile box" style="width: fit-content; margin: 0 auto;
     justify-content: space-evenly;
     min-width: 900px;">
+      
+      <!-- / date -->
+      <form method="GET" action="{{url_for('users.mission')}}">
+
+        <div class="columns"> 
+          <div class="column">
+              <div class="field">
+                <div class="select is-small">
+                  <select name="ron" >
+                    <option selected disabled>---Etat Mission(S)---</option>
+                    <option value="r">Missions réglés</option>
+                    <option value="nr">Missions non réglés</option>
+                  </select>
+                </div>
+              </div>
+          </div>
+          <div class="column">
+              <div class="field">
+                    <div class="select is-small">
+                            <select name="ron" >
+                              <option selected disabled>---Etat Mission(S)---</option>
+                              <option value="r">Missions réglés</option>
+                              <option value="nr">Missions non réglés</option>
+                            </select>
+                          </div>
+              
+              </div>
+          </div>
+         
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
 
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">

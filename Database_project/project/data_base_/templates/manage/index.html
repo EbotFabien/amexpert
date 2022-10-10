@@ -61,20 +61,24 @@
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
               
-                <a href="/profil" class="dropdown-item">
-                  Profil
+                <a href="/profil" class="dropdown-item"> 
+                    <i class='fas fa-user-circle' style='font-size:17px'></i> 
+                 Profil 
                 </a>
               {% if current_user.TYPE == "Admin" %}
                 <a href="/televeser" class="dropdown-item">
-                  Importer
+                  <i class='fas fa-file-import' style='font-size:17px'></i>
+                 Importer 
                 </a>
                 <a href="/exporter" class="dropdown-item">
+                  <i class='fas fa-file-export' style='font-size:17px'></i>
                   Exporter
                 </a>
                 <hr class="dropdown-divider">
               {% endif %}
                 <a href="/logout" class="dropdown-item">
-                  <Datag>Déconnexion</Datag>
+                  <i class='fas fa-sign-out-alt'style='font-size:17px'></i>
+                   <Datag>Déconnexion</Datag>
                 </a>
               </div>
             </div>
