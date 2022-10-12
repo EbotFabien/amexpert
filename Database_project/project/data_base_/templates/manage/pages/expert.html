@@ -12,12 +12,14 @@
     <div class="tile box" style="width: fit-content; margin: 0 auto;
     justify-content: space-evenly;
     min-width: 950px;">
+    
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
           <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <span><i class="fa fa-users"></i></span>
             
           </div>
+          
           <div class="table-container" style="position: relative;">
             {% with messages = get_flashed_messages(with_categories=true)%}
                 {% if messages %}
@@ -28,10 +30,49 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+            <form method="GET" action="{{url_for('users.expert')}}">
+                <div class="columns"> 
+                    <div class="column">
+                      <div class="field">
+
+                            <div class="select is-small" style="padding-left: 500px;">
+                                    <select name="ron" >
+                                      <option selected disabled>---Etat Expert(S)---</option>
+                                      <option value="r">Actif</option>
+                                      <option value="nr">Inactif</option>
+                                    </select>
+                                  </div>
+
+                        </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+
+                          <div class="select is-small" style="padding-left: 500px;">
+                                  <select name="ron" >
+                                    <option selected disabled>---Visibilite Expert(S)---</option>
+                                    <option value="r">Actif</option>
+                                    <option value="nr">Supprimer</option>
+                                  </select>
+                                </div>
+
+                      </div>
+                </div>
+                  
+                 
+                  <div class="column is-one-quarter" style="padding-right: 500px;">
+                    <div class="are-small">
+                        <button class="button is-small is-success">Filtrer</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              
+
             <table class="table is-hoverable is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">  
                     <thead>
                     <tr>
-                        <th scope="col">id</th> 
                         <th scope="col">TITRE</th>
                         <th scope="col">Nom </th>
                         <th scope="col">Prenom</th>
@@ -72,7 +113,6 @@
                     <tbody>
                         {%for expert,history in Expert %}
                             <tr>
-                                <td scope="row">{{expert.id}}</td>
                                 <td>{{expert.genre}}</td>
                                 <td>{{expert.nom}}</td>
                                 <td>{{expert.prenom}}</td>

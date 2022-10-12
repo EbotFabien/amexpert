@@ -4,7 +4,11 @@
     
     
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Facture N° {{id}} Mission N° {{miss}}</h2>
+        {% if legend %}
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Facture des {{legend}}</h2>
+        {% else %}
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Facture N° {{id}} Mission N° {{miss}}</h2>
+        {% endif %}
     </div>
 
     <section class="tile" style="margin-top: 10px;">

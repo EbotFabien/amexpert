@@ -89,17 +89,19 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;"> 
+            <table class="table" id="table_id" style="overflow-x: scroll;min-width: 800px;table-layout:auto;"> 
+                <!-- <table class="table" id="table_id" style=" table-layout:auto; width: 800px;">  -->
 	                    <thead class="">
                        
 	                	<tr>    <th scope="col">ID</th>
-                            <th scope="col">Reference BAILLEUR</th>  	 
+                            <th scope="col">Reference BAILLEUR</th>  
+                            <th scope="col">Nom BAILLEUR</th>  	 
                             <th scope="col">ID CONCESS</th>	  
                             <th scope="col">DATE EDL REALISE</th>  	
                             <th scope="col">PRIX HT EDL</th>	  	     	
                             <th scope="col">DATE FACTURE</th>  	
                             <th scope="col">Anomalie</th>
-                            <th scope="col">Etat</th>
+                            <th scope="col">Etat de facture</th>
                             {% if current_user.TYPE == "Admin" %}  		
                             <th></th>	
                             <!-- <th></th> -->
@@ -111,7 +113,8 @@
 		                {%for mission_ in Mission.items %}
 		                    <tr>    
                                 <td>{{mission_.id}}</td> 
-                                <td>{{mission_.Bailleur__data.reference}}</td> 
+                                <td>{{mission_.Bailleur__data.reference}}</td>
+                                <td>{{mission_.Bailleur__data.nom}}</td> 
                                 <td>
                                 {% if mission_.AS__data.nom != "0" %}    	   
                                   {{mission_.AS__data.nom}}

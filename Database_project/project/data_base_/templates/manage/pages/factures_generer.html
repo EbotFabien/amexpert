@@ -11,6 +11,43 @@
     <div class="tile box" style="width: fit-content; margin: 0 auto;
     justify-content: space-evenly;
     min-width: 900px;">
+      
+      <!-- / date -->
+      <form method="GET" action="{{url_for('users.allex')}}">
+
+        <div class="columns"> 
+          <div class="column">
+              <div class="field">
+                <div class="select is-small">
+                  <select name="reg" >
+                    <option selected disabled>---Etat Facture(S)---</option>
+                    <option value="r">Facture générée(s)</option>
+                    <option value="nr">Facture Non générée(s)</option>
+                  </select>
+                </div>
+              </div>
+          </div>
+          <div class="column">
+              <div class="field">
+                    <div class="select is-small">
+                            <select name="env" >
+                              <option selected disabled>---Etat d'envoie---</option>
+                              <option value="r">Facture Envoyee</option>
+                              <option value="nr">Facture Non Envoyee</option>
+                            </select>
+                          </div>
+              
+              </div>
+          </div>
+         
+          <div class="column">
+            <div class="buttons are-small">
+                <button class="button is-success">Filtrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
 
     <section class="tile" style="margin-top: 10px;">
         <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">
@@ -34,7 +71,7 @@
                     <tr>
                         <th scope="col">ID FACTURE</th>
                         <th scope="col">ID Mission</th>
-                        <th scope="col">Intervenants</th>
+                        <th scope="col">Expert</th>
                         <th scope="col">Prix Mission € HT</th> 
                         <th scope="col">Date d'arrêt compte Mensuel</th>
                         <th scope="col">Date Génération</th> 
