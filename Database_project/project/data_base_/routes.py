@@ -22,7 +22,7 @@ import json
 import base64
 #from wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 
@@ -32,7 +32,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -437,7 +437,7 @@ def mission():
         if Type == "r":
             mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE!=None).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
             return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Mission=mission_,Type=Type,legend="mission", highlight='mission')
-        
+         
         if Type == "nr":
             mission_=Mission.query.filter(Mission.DATE_FACT_REGLEE==None).order_by(desc(Mission.DATE_REALISE_EDL)).paginate(page=page ,per_page=50)
             return render_template('manage/pages/mission.html',reg=reglee,ano=ano,non=notreglee,Type=Type,Mission=mission_,legend="mission", highlight='mission')
@@ -3962,7 +3962,7 @@ def create_facturee():
     return redirect(url_for('users.main'))
 
 
-@users.route('/tous/facturation/intervenant/mensuel',methods=['GET','POST'])
+@users.route('/tous/facturation/intervenant_cons/mensuel',methods=['GET','POST'])
 @login_required
 def intervenant():
     if current_user.TYPE == "Admin":
@@ -3971,12 +3971,12 @@ def intervenant():
 
     return redirect(url_for('users.main'))
 
-@users.route('/tous/facturation/agent_cons/mensuel',methods=['GET','POST'])
+@users.route('/tous/facturation/agent_Secteur/mensuel',methods=['GET','POST'])
 @login_required
 def agent_cons():
     if current_user.TYPE == "Admin":
         agent_cons=expert_facturation.query.join(compte_mensuel,(compte_mensuel.id == expert_facturation.mission)).join(Expert,(Expert.id == expert_facturation.expert_id)).filter(Expert.TYPE=='Agent de secteur').all()
-        return render_template('manage/pages/facture_missions.html',highlight='mission',legend='Agent Constat',facture=agent_cons)
+        return render_template('manage/pages/facture_missions.html',highlight='mission',legend='Agent Secteur',facture=agent_cons)
 
     return redirect(url_for('users.main'))
 
