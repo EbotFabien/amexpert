@@ -1,0 +1,74 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Facturation</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-3 justify-content-between d-flex align-items-center">
+	            <h6 class="m-0 font-weight-bold text-gray-600">Facturation de {{facturations[0].client__data_.nom}}</h6>
+	        </div>
+	        <div class="card-body">
+	            <div class="table-responsive">
+                    {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}} is-small">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+	                <table class="table" id="dataTable" style="width:100%">
+                        <thead class="">
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">N° Facture</th>
+                            <th scope="col">Montant HT</th>
+                            <th scope="col">Mission Reussi</th> 
+                            <th scope="col">Mission Echoue</th>
+                            <th scope="col">Date de creation</th> 
+                            
+                            <th></th> 
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%for facturation in facturations %}
+                                <tr>
+                                    <th scope="row">{{facturation.id}}</th>
+                                    <td>{{facturation.n_facture}}</td>
+                                    <td>{{facturation.Montant_HT}}</td>
+                                    <td>{{s}}</td> 
+                                    <td>{{f}}</td>
+                                    <td>{{facturation.Date_de_creation}}</td> 
+                                      
+                                    <td style="">
+                                        <a href="{{url_for('users.show_fac', id=facturation.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                        
+                                    </td>
+                                    <td>
+                                        <a href="{{url_for('users.delete_facturation', id=facturation.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="modifier" class="center button is-danger	 is-small"><i class="fa fa-trash"></i></a> &nbsp;
+                                    </td> 
+                                </tr>
+                               
+                            {%endfor%}
+                        </tbody>
+                    </table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+{% endblock %}

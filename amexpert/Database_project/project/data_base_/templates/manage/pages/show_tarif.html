@@ -1,0 +1,446 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Tarifs</h2>
+    </div>
+     <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fas fa-file-invoice"></i></span>
+            <div class="control has-icons-left has-icons-right">
+             
+            </div>
+          </div>
+          <div class="table-container" style="overflow-x: scroll;position: relative;">
+          	 <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" style="text-align: left;"><small>NOM</small></label>
+                </div>
+                <div class="field-body is-normal">
+                  	<div class="field"><!---->
+                      	<p>{{tarif.data_client.nom}}</p>
+                    </div>
+                  </div>
+                </div>
+            <hr/>
+          	<div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F1</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f1}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F2</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f2}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F3</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f3}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+            <hr />
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PRIX STD</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                              {{tarif.edl_prix_std}}                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F4</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f4}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F5</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f5}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F6</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_appt_prix_f6}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+            <hr />
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>CHIF APPT prix F1</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_appt_prix_f1}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>CHIF APPT prix F2</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_appt_prix_f2}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>CHIF APPT prix F3</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_appt_prix_f3}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>   
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>CHIF APPT prix F4</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_appt_prix_f4}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>    
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>CHIF APPT prix F5</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_appt_prix_f5}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+            <hr />
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T1</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                              {{tarif.edl_pav_villa_prix_t1}}                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T2</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t2}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T3</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t3}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F4</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t4}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+               <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T5</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                              {{tarif.edl_pav_villa_prix_t5}}                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T6</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t6}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL PAV villa prix T7</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t7}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>EDL APPT prix F8</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.edl_pav_villa_prix_t8}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+            <hr />
+             <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" style="text-align: left;"><small>CHIF APPT prix stu</small></label>
+                </div>
+                <div class="field-body is-normal">
+                  	<div class="field"><!---->
+                      	<p>{{tarif.chif_appt_prix_stu}}</p>
+                    </div>
+                  </div>
+                </div>
+            <hr/>
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t1</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                              {{tarif.chif_pav_villa_prix_t1}}                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t2</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t2}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t3</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t3}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t4</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t4}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+               <div class="columns">
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t5</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                              {{tarif.chif_pav_villa_prix_t5}}                                                   
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t6</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t6}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>      
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t7</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t7}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-vertical">
+                        <div class="is-normal">
+                            <label class="label"><small>Chif pav villa prix t8</small>
+                        </label>
+                        </div>
+                        <div class="field-body">
+                          	<div class="field">
+                          		{{tarif.chif_pav_villa_prix_t8}}                                 
+                            </div>
+                      </div>
+                    </div>
+                </div>                                
+            </div>
+            <hr />
+          </div>
+      </div>
+  </section>
+ 	   
+	<section class="">
+
+		<article class="card">
+		
+		<div class="card-body">
+			<div class="row"> 
+				
+				<div class="col-md-4">
+					
+					<strong>commentaire_libre:</strong> {{tarif.commentaire_libre}} <br>
+					
+			 		</p>
+				</div> 
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		</article>
+	
+		 <!-- order-group.// --> 
+	</section>
+</div>
+{%endblock%}

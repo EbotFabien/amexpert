@@ -1,0 +1,169 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+	<div class="container-fluid">
+		  <!-- Page Heading -->
+		  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">Facture</h1>
+			<h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+		</div>
+ 	    <!-- Content Row -->
+ 	    <div class="row">
+			<main class="col-md-12">
+				<article class="card">
+				<header class="card-header">
+					<strong class="d-inline-block mr-3">Facture No {{facture[0].facturation_client__data_.n_facture}}</strong>
+				</header>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-4">
+                            <h4>Information du concerné</h4>
+							<p>Reference: <strong>{{facture[0].mission__data_.Bailleur__data.reference}}</strong></p>
+							<p>Societe: <strong>{{facture[0].mission__data_.Bailleur__data.societe}}</strong></p>
+                            <p>Montant_HT: <strong>{{facture[0].facturation_client__data_.Montant_HT}}</strong></p>
+							<p>Nom : <strong>{{facture[0].mission__data_.Bailleur__data.nom}}</strong></p>
+							<p>Email: <strong>{{facture[0].mission__data_.Bailleur__data.email}}</strong></p>
+						</div>
+
+                        <div class="col-md-4">
+                            <p>Date de creation de la Facture: <strong>{{facture[0].facturation_client__data_.Date_de_creation|string|truncate(14, True)}}</strong></p>
+                            <p>Statut: <strong>{{facture[0].facturation_client__data_.Statut}}</strong></p>
+
+						</div>
+						
+					</div>
+					<div class="row"> 
+						
+						<div class="col-md-12">
+                            <H5>Mission Success </H5>
+                            <table class="table table-bordered" id="dataTable" style="width:100%">
+                                <thead class="">
+                                <tr>
+                                    <th>No Mission</th>
+                                    <th>DATE REALISE EDL</th>
+                                    <th>Type</th>
+                                    <th>Proprietaire</th>
+                                    <th>Locataire</th>
+                                    <th>ville</th>
+                                    <th>Appt-Pav</th>
+                                    <th>Type</th>
+                                    <th>Surface</th>
+                                    <th>Tarif ht</th>
+                                    
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {%for fac in facture %}
+                                        <tr>
+                                            <td>{{fac.mission__data_.old}}</td>
+                                            <td>{{fac.mission__data_.DATE_REALISE_EDL}}</td>
+                                            <td>{{fac.mission__data_.TYPE_EDL}}</td>
+                                            <td>{{fac.mission__data_.NOMPROPRIO}}</td>
+                                            <td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+                                            <td>{{fac.mission__data_.Ville_Bien}}</td>
+                                            <td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
+                                            <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
+                                            <td>{{fac.mission__data_.surface_logement1}}</td>
+                                            <td>{{fac.mission__data_.PRIX_HT_EDL}}</td>   
+                                        
+                                        </tr>    
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            
+						</div>
+                        <div class="row"> 
+						
+                            <div class="col-md-12">
+                                <H5>Mission Success avec anomalie</H5>
+                                <table class="table table-bordered" id="dataTable" style="width:100%">
+                                    <thead class="">
+                                    <tr>
+                                        <th>No Mission</th>
+                                        <th>DATE REALISE EDL</th>
+                                        <th>Type</th>
+                                        <th>Proprietaire</th>
+                                        <th>Locataire</th>
+                                        <th>ville</th>
+                                        <th>Appt-Pav</th>
+                                        <th>Type</th>
+                                        <th>Code Facturation</th>
+                                        <th>Surface</th>
+                                        <th>Tarif</th>
+                                        <th>Anomalie</th>
+    
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for fac in abnormal %}
+                                            <tr>
+                                                <td>{{fac.mission__data_.old}}</td>
+                                                <td>{{fac.mission__data_.DATE_REALISE_EDL}}</td>
+                                                <td>{{fac.mission__data_.TYPE_EDL}}</td>
+                                                <td>{{fac.mission__data_.NOMPROPRIO}}</td>
+                                                <td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+                                                <td>{{fac.mission__data_.Ville_Bien}}</td>
+                                                <td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
+                                                <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
+                                                <td>{{fac.mission__data_.CODE_FACTURATION}}</td>
+                                                <td>{{fac.mission__data_.surface_logement1}}</td>
+                                                <td>{{fac.mission__data_.PRIX_HT_EDL}}</td> 
+                                                <td>{{fac.mission__data_.reason}}</td>   
+                                            </tr>    
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-12">
+                                <H5>Mission echouer</H5>
+                                <table class="table table-bordered" id="dataTable" style="width:100%">
+                                    <thead class="">
+                                    <tr>
+                                        <th>No Mission</th>
+                                        <th>DATE REALISE EDL</th>
+                                        <th>Type</th>
+                                        <th>Proprietaire</th>
+                                        <th>Locataire</th>
+                                        <th>ville</th>
+                                        <th>Appt-Pav</th>
+                                        <th>Type</th>
+                                        <th>Code Facturation</th>
+                                        <th>Surface</th>
+                                        <th>Anomalie</th>
+                                        <th>Rectifier</th>
+    
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for fac in failed %}
+                                            <tr>
+                                                <td>{{fac.mission__data.old}}</td>
+                                                <td>{{fac.mission__data.DATE_REALISE_EDL}}</td>
+                                                <td>{{fac.mission__data.TYPE_EDL}}</td>
+                                                <td>{{fac.mission__data.NOMPROPRIO}}</td>
+                                                <td>{{fac.mission__data.Reference_LOCATAIRE}}</td>
+                                                <td>{{fac.mission__data.Ville_Bien}}</td>
+                                                <td>{{fac.mission__data.TYPE_DE_BIEN}}</td>
+                                                <td>{{fac.mission__data.TYPE_LOGEMENT}}</td>
+                                                <td>{{fac.mission__data.CODE_FACTURATION}}</td>
+                                                <td>{{fac.mission__data.surface_logement1}}</td>
+                                                <td>{{fac.mission__data.reason}}</td>
+                                                <td> <a href="#" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a></td>   
+                                            </tr>    
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+					</div> <!-- row.// -->
+				</div> <!-- card-body .// -->
+				</article>
+				<!-- order-group.// --> 
+			</main>
+		</div>
+	</div>
+    <!-- /.container-fluid -->
+{%endblock%}

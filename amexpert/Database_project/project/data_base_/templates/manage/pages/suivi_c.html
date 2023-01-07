@@ -1,0 +1,92 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div class="container-fluid">
+      <!-- Page Heading -->
+      <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Suivi du client</h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+    </div>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h3 class="text-gray-800"></h3>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-1 justify-content-between d-flex" style="display: flex;justify-content: space-between;"> 
+                {% if legend == "prospect" %}
+                    <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Suivi de  {{cli.nom}}</h6>
+                    <a href="{{url_for('users.ajouter_suivip', id=ID)}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un suivi prospect</span></a>
+                {% endif %}
+                {% if legend == "client" %}
+                    <h6 class="m-0 font-weight-bold d-inline"><i class="fa fa-users" style="font-size: 25px;"></i>Suivi du Client  {{cli.nom}}</h6>
+                    <a href="{{url_for('users.ajouter_suivic', id=ID)}}" title="ajouter un client" class="button is-black is-small pull-right"><span class="is-warning">ajouter un suivi client</span></a>
+                {% endif %}
+                
+               
+	        </div>
+	        <div class="card-body">
+	            <div class="table-responsive">
+                      {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}} is-small">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+	                <table class="table table-bordered" id="dataTable" style="width:100%">
+                        <thead class="">
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">client</th>
+                            <th scope="col">responsable</th>
+                            <th scope="col">commentaire</th>
+                            <th scope="col">data cree</th>
+                            <th scope="col">date Modifier</th>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%for  suivi in Suivi %}
+                                <tr>
+                                    <th scope="row">{{suivi.id}}</th>
+                                    <td>{{suivi.suivi__data.nom}}</td>
+                                    <td>{{suivi.responsable__data.nom}}</td>
+                                    <td>{{suivi.commentaire}}</td>
+                                    <td>{{suivi.date_creation}}</td>
+                                    <td>{{suivi.date_modif}}</td>
+                                    {% if legend == "client" %}
+                                        <td> <a href="{{url_for('users.edit_suivi', id=suivi.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                        <td> <a href="{{url_for('users.delete_suivi', id=suivi.id)}}" onclick="return confirm('Voulez vous supprimer?')" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
+                                    {% endif %}
+                                    {% if legend == "prospect" %}
+                                        <td> <a href="{{url_for('users.edit_suivip', id=suivi.id)}}" title="modifier" class="button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                        <td> <a href="{{url_for('users.delete_suivip', id=suivi.id)}}" onclick="return confirm('Voulez vous supprimer?')" class=" is-small is-danger is-fullwidth button"><i class="fa fa-trash"></i></a></td>
+                                    {% endif %}
+                                        
+                                </tr>    
+                            {%endfor%}
+                        </tbody>
+                    </table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+{% endblock %}
+
+
+
+
+
+

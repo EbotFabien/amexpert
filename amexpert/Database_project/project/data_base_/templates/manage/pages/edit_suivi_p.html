@@ -1,0 +1,72 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+ <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Suivi Client prospect </h1>
+        <h3 class="text-gray-800"><i class="far fa-arrow-alt-circle-left" onclick="history.back(-1)"></i></h3>
+    </div>
+    <!-- Content Row -->
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-6 col-lg-6 mx-auto">
+            <div class="card shadow mb-4">
+	        <div class="card-header py-1 d-flex justify-content-between align-items-center">
+	            <h6 class="m-0 font-weight-bold is-gray">Modifiers suivi</h6>
+                 <a href="{{url_for('users.suivi_prospect_', id=suivi.prospect_id)}}" class="button is-black is-small pull-right"> les suivi du prospects {{suivi.suivi__data.nom}}</a>
+	        </div>
+	        <div class="card-body">
+	            <div class="row">
+                    <div class="col-lg-12 mx-auto">
+                        <div class="">
+                            {% with messages = get_flashed_messages(with_categories=true)%}
+                            {% if messages %}
+                            {%for category,message in messages%}
+                            <div class="alert alert-{{category}}">
+                                {{message}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form method="POST" class="user"  action="{{url_for('users.update_suivip', id=suivi.id)}}">
+                                {{ form.hidden_tag() }}
+                                <fieldset class="form-group">
+                                <!-- <legend class="mb4">Créer un Expert</legend> -->
+                                <div class="row">
+                                   <div class="col-md-6">
+                                       <div class="form-group">
+                                        {{form.commentaire.label(class="form-control-label")}}
+                                
+                                        {% if form.commentaire.errors %}
+                                            {{form.commentaire(class="input is-small is-invalid", value=suivi.commentaire) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.commentaire.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{form.commentaire(class="input is-small", value=suivi.commentaire )}}
+                                        {% endif %}
+                                    </div>
+                                   </div>
+                                </div>
+                            </fieldset>
+                            <div class="form-group">
+                                    {{form.submit(class="button is-small is-success btn-block")}}    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+    <!-- /.container-fluid -->
+{%endblock%}

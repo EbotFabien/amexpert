@@ -1,0 +1,111 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div style="" class="main-content">
+    {% include 'manage/partials/search.html'%}
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+      <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Experts</h2>
+      <a href="/ajouter/expert" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
+    </div>
+
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fa fa-users"></i></span>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-small is-rounded" type="text" placeholder="Rechercher  ">
+              <span class="icon is-small is-right">
+                <i class="fas fa-search"></i>  
+              </span>
+            </div>
+          </div>
+          <div class="table-container" style="overflow-x: scroll;position: relative;">
+            {% with messages = get_flashed_messages(with_categories=true)%}
+                {% if messages %}
+                    {%for category,message in messages%}
+                    <div class="alert alert-{{category}} p-1">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <table class="table" style="overflow-x: scroll;min-width: 800px;">  
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Numero</th>
+                        <th></th>
+                        <th></th> 
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {%for expert in Expert.items %}
+                            <tr>
+                                <th scope="row">{{expert.id}}</th>
+                                <td>{{expert.TITRE}} {{expert.nom}}</td>
+                                <td>{{expert.TYPE}}</td>
+                                <td>{{expert.email}}</td>
+                                <td>{{expert.numero}}</td>
+                                <td><a href="{{url_for('users.edit_expert', id=expert.id)}}" class="button is-outlined-black is-small is-fullwidt center"><i class="fa fa-pen"></i></a></td>
+                                <td style="">
+                                    <a href="{{url_for('users.show_expert', id=expert.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                    
+                                </td>
+                                <!-- <td><a href="#" class="button center is-primary is-small"><i class="fa fa-eye"></i></a></td> -->
+                                <td> <a href="{{url_for('users.delete_expert', id=expert.id)}}" onclick="return confirm('Voulez vous supprimer?')" title="supprimer" class="center is-small is-danger is-fullwidt button"><i class="fa fa-trash"></i></a></td>   
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+	            </div>
+                 <!-- Pagination Links-->
+              <div style="display: flex; justify-content: space-between;">
+                 <p class="text-right mt-3">
+                   Showing page {{ Expert.page }} of {{ Expert.pages }}
+                </p>        
+                <div class="text-right pagination">
+                    <a href="{{ url_for('users.expert', page=Expert.prev_num) }}"
+                       class="btn btn-outline-dark 
+                       {% if Expert.page == 1 %}disabled{% endif %}">
+                        &laquo;
+                    </a>
+                <!-- Loop through the number of pages to display a link for each-->
+                    {% for page_num in Expert.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                <!-- Check for the active page and set the link to "Active"-->
+                            {% if Expert.page == page_num %}
+                            <a href="{{ url_for('users.expert', page=page_num) }}"
+                               class="is-current pagination-link">
+                                {{ page_num }}
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('users.expert', page=page_num) }}"
+                               class="btn pagination-link">
+                                {{ page_num }}
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{{ url_for('users.expert', page=Expert.next_num) }}"
+                       class="btn btn-outline-dark 
+                       {% if Expert.page == Expert.pages %}disabled{% endif %}">
+                        &raquo;
+                    </a>
+                </div>
+               
+            </div>
+            <!--end of pagination -->
+	        </div>
+	    </div>
+	</div>
+    <!-- Pie Chart --> 
+</div>
+
+    <!-- Content Row -->
+</div>
+{% endblock %}
