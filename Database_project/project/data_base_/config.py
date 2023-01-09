@@ -46,10 +46,14 @@ class Config:
     CLI=['ID','Reference','Type','P/C','Societe','Enseigne','Titre','Nom','email',"Numero","Siret","Date entree","Adresse1","Adresse2",
     'Etat_client','CP','Ville','Pays',"Login Extranet","MPD Extranet","Abonnement"]
     NEG=['Client','Genre','Nom','Email','Numero',"Date entree","Adresse",'Etat_client','CP','Ville','Pays',"Abonnement"]
-    TARIFS=["Client","Edl Prix STD","Edl Appt prix F1","Edl Appt prix F2","Edl Appt prix F3","Edl Appt prix F4","Edl Appt prix F5"
-    ,"Edl Appt prix F6","Edl pav Villa prix t1","Edl pav Villa prix t2","Edl pav Villa prix t3","Edl pav Villa prix t4","Edl pav Villa prix t5"
-    ,"Edl pav Villa prix t6","Edl pav Villa prix t7","Edl pav Villa prix t8","Chif appt prix std","Chif appt prix f1","Chif appt prix f2"
-    ,"Chif appt prix f3","Chif appt prix f4","Chif appt prix f5","Chif appt prix f6","Chif pav villa prix T1","Chif pav villa prix T2",
+    TARIFS=["Client","Edl Prix STD","Edl Appt prix F1","Edl Appt prix F2",
+            "Edl Appt prix F3","Edl Appt prix F4","Edl Appt prix F5"
+    ,"Edl Appt prix F6","Edl pav Villa prix t1","Edl pav Villa prix t2",
+    "Edl pav Villa prix t3","Edl pav Villa prix t4","Edl pav Villa prix t5"
+    ,"Edl pav Villa prix t6","Edl pav Villa prix t7","Edl pav Villa prix t8",
+    "Chif appt prix std","Chif appt prix f1","Chif appt prix f2"
+    ,"Chif appt prix f3","Chif appt prix f4","Chif appt prix f5","Chif appt prix f6",
+    "Chif pav villa prix T1","Chif pav villa prix T2",
     "Chif pav villa prix T3","Chif pav villa prix T4","Chif pav villa prix T5","Chif pav villa prix T6","Chif pav villa prix T7"
     ,"Chif pav villa prix T8","Chif appt prix  stu","Chif appt prix F1","Chif appt prix F2","Chif appt prix F3","Chif appt prix F4"
     ,"Chif appt prix F5","Chif appt prix F6","Chif pav villa prix T1","Chif pav villa prix T2","Chif pav villa prix T3","Chif pav villa prix T4"
