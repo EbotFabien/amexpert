@@ -20,7 +20,7 @@ import sqlalchemy as sa
 from sqlalchemy import extract
 import json
 import base64
-from wkhtmltopdf import wkhtmltopdf
+#sfrom wkhtmltopdf import wkhtmltopdf
 from flask_wkhtmltopdf import render_template_to_pdf
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
