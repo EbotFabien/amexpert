@@ -1972,7 +1972,6 @@ def ajouter_tarif(id,typo):
         client = Client.query.filter_by(id=id).first_or_404()
         if typo =="norm":
             if form.validate_on_submit():
-                
                 tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
                 ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
                 chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
