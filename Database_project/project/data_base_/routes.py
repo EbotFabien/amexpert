@@ -1,4 +1,4 @@
-from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
+from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory,jsonify
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
@@ -25,6 +25,7 @@ import base64
 from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
+import json
 
 locale.setlocale(locale.LC_TIME,'fr_FR.UTF-8')
 
@@ -1942,12 +1943,16 @@ def tarif_ajouter():
     return redirect(url_for('users.main'))
          
 
-@users.route('/client/<int:id>/tarifs')
-@login_required
-def tarifs(id):
-    if current_user.TYPE == "Admin":
-        tarifs=list(Tarifs.query.filter(and_(Tarifs.reference_client==id,Tarifs.visibility==True)).all())
-        return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs, highlight='tarifs')
+@users.route('/client/<int:id>/<str:typo>/tarifs')
+def tarifs(id,typo):
+    if id and typo:
+        if typo == "norm":
+            tarifs=list(Tarifs.query.filter(and_(Tarifs.reference_client==id,Tarifs.visibility==True)).all())
+            return render_template('manage/pages/tarif.html',legend="tarifs",tarifs=tarifs, highlight='tarifs')
+        if typo == "ext":
+            tarifs=list(Tarifs.query.filter(and_(Tarifs.reference_client==id,Tarifs.visibility==True)).all())
+            return jsonify({"Tarifs":json.dumps(tarifs)}),200
+
 
     return redirect(url_for('users.main'))
 
@@ -1960,127 +1965,223 @@ def show_tarif(id):
 
 
 
-@users.route('/client/<int:id>/ajouter/tarifs/', methods=['GET','POST'])
-@login_required
-def ajouter_tarif(id):
-    if current_user.TYPE == 'Admin':
+@users.route('/client/<int:id>/<str:typo>/ajouter/tarifs/', methods=['GET','POST'])
+def ajouter_tarif(id,typo):
+    if id and typo:
         form = Tarif_Form()
         client = Client.query.filter_by(id=id).first_or_404()
-        if form.validate_on_submit():
-            
-            tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
-            ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
-            chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
-            chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data,chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data,chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data,code_tva=form.code_tva.data,referent_as_client=form.referent_as_client.data,com_as_sur_ca_client=form.com_as_sur_ca_client.data,cell_dev_ref_responsable=form.cell_dev_ref_responsable.data,prix_autre=form.prix_autre.data,taux_meuble=form.taux_meuble.data,
-            com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data,cell_dev_ref_agent=form.cell_dev_ref_agent.data,com_cell_dev_ref_agent=form.com_cell_dev_ref_agent.data,cell_tech_ref_agent=form.cell_tech_ref_agent.data,com_cell_tech_Ref_agent=form.com_cell_tech_Ref_agent.data,
-            cell_tech_ref_responsable=form.cell_tech_ref_responsable.data,com_cell_tech_ref_responsable=form.com_cell_tech_ref_responsable.data,cell_tech_ref_suiveur=form.cell_tech_ref_suiveur.data,com_cell_tech_ref_suiveur=form.com_cell_tech_ref_suiveur.data,cell_planif_ref_responsable=form.cell_planif_ref_responsable.data,
-            com_cell_planif_ref_responsable=form.com_cell_planif_ref_responsable.data,cell_planif_ref_suiveur=form.cell_planif_ref_suiveur.data,com_cell_planif_ref_suiveur=form.com_cell_planif_ref_suiveur.data,cell_planif_ref_agent_saisie=form.cell_planif_ref_agent_saisie.data,com_cell_planif_ref_agent_saisie=form.com_cell_planif_ref_agent_saisie.data,
-            commentaire_libre=form.commentaire_libre.data,chif_appt_prix_f6=form.chif_appt_prix_f6.data)
+        if typo =="norm":
+            if form.validate_on_submit():
+                tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
+                ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
+                chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
+                chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data,chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data,chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data,code_tva=form.code_tva.data,referent_as_client=form.referent_as_client.data,com_as_sur_ca_client=form.com_as_sur_ca_client.data,cell_dev_ref_responsable=form.cell_dev_ref_responsable.data,prix_autre=form.prix_autre.data,taux_meuble=form.taux_meuble.data,
+                com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data,cell_dev_ref_agent=form.cell_dev_ref_agent.data,com_cell_dev_ref_agent=form.com_cell_dev_ref_agent.data,cell_tech_ref_agent=form.cell_tech_ref_agent.data,com_cell_tech_Ref_agent=form.com_cell_tech_Ref_agent.data,
+                cell_tech_ref_responsable=form.cell_tech_ref_responsable.data,com_cell_tech_ref_responsable=form.com_cell_tech_ref_responsable.data,cell_tech_ref_suiveur=form.cell_tech_ref_suiveur.data,com_cell_tech_ref_suiveur=form.com_cell_tech_ref_suiveur.data,cell_planif_ref_responsable=form.cell_planif_ref_responsable.data,
+                com_cell_planif_ref_responsable=form.com_cell_planif_ref_responsable.data,cell_planif_ref_suiveur=form.cell_planif_ref_suiveur.data,com_cell_planif_ref_suiveur=form.com_cell_planif_ref_suiveur.data,cell_planif_ref_agent_saisie=form.cell_planif_ref_agent_saisie.data,com_cell_planif_ref_agent_saisie=form.com_cell_planif_ref_agent_saisie.data,
+                commentaire_libre=form.commentaire_libre.data,chif_appt_prix_f6=form.chif_appt_prix_f6.data)
+                db.session.add(tarif)
+                db.session.commit()
+                flash(f'Le tarif a été créé avec succès', 'success')
+                return redirect(url_for('users.tarifs',id=id))
+        if typo == "ext":
+            tarif = Tarifs(reference_client=client.id,edl_prix_std=request.json["edl_prix_std"],edl_appt_prix_f1=request.jsonjson["edl_appt_prix_f1"],edl_appt_prix_f2=request.json["edl_appt_prix_f2"],edl_appt_prix_f3=request.json["edl_appt_prix_f3"],edl_appt_prix_f4=request.json["edl_appt_prix_f4"],edl_appt_prix_f5=request.json["edl_appt_prix_f5"],edl_appt_prix_f6=request.json["edl_appt_prix_f6"],edl_pav_villa_prix_t1=request.json["edl_pav_villa_prix_t1"],
+            edl_pav_villa_prix_t2=request.json["edl_pav_villa_prix_t2"],edl_pav_villa_prix_t3=request.json["edl_pav_villa_prix_t3"],edl_pav_villa_prix_t4=request.json["edl_pav_villa_prix_t4"],edl_pav_villa_prix_t5=request.json["edl_pav_villa_prix_t5"],edl_pav_villa_prix_t6=request.json["edl_pav_villa_prix_t6"],edl_pav_villa_prix_t7=request.json["edl_pav_villa_prix_t7"],edl_pav_villa_prix_t8=request.json["edl_pav_villa_prix_t8"],chif_appt_prix_stu=request.json["chif_appt_prix_stu"],chif_appt_prix_f1=request.json["chif_appt_prix_f1"],chif_appt_prix_f2=request.json["chif_appt_prix_f2"],
+            chif_appt_prix_f3=request.json["chif_appt_prix_f3"],chif_appt_prix_f4=request.json["chif_appt_prix_f4"],chif_appt_prix_f5=request.json["chif_appt_prix_f5"],chif_pav_villa_prix_t1=request.json["chif_pav_villa_prix_t1"],chif_pav_villa_prix_t2=request.json["chif_pav_villa_prix_t2"],chif_pav_villa_prix_t3=request.json["chif_pav_villa_prix_t3"],chif_pav_villa_prix_t4=request.json["chif_pav_villa_prix_t4"],chif_pav_villa_prix_t5=request.json["chif_pav_villa_prix_t5"],
+            chif_pav_villa_prix_t6=request.json["chif_pav_villa_prix_t6"],chif_pav_villa_prix_t7=request.json["chif_pav_villa_prix_t7"],chif_pav_villa_prix_t8=request.json["chif_pav_villa_prix_t8"],code_tva=request.json["code_tva"],referent_as_client=request.json["referent_as_client"],com_as_sur_ca_client=request.json["com_as_sur_ca_client"],cell_dev_ref_responsable=request.json["cell_dev_ref_responsable"],prix_autre=request.json["prix_autre"],taux_meuble=request.json["taux_meuble"],
+            com_cell_dev_ref_responsable=request.json["com_cell_dev_ref_responsable"],cell_dev_ref_agent=request.json["cell_dev_ref_agent"],com_cell_dev_ref_agent=request.json["com_cell_dev_ref_agent"],cell_tech_ref_agent=request.json["cell_tech_ref_agent"],com_cell_tech_Ref_agent=request.json["com_cell_tech_Ref_agent"],
+            cell_tech_ref_responsable=request.json["cell_tech_ref_responsable"],com_cell_tech_ref_responsable=request.json["com_cell_tech_ref_responsable"],cell_tech_ref_suiveur=request.json["cell_tech_ref_suiveur"],com_cell_tech_ref_suiveur=request.json["com_cell_tech_ref_suiveur"],cell_planif_ref_responsable=request.json["cell_planif_ref_responsable"],
+            com_cell_planif_ref_responsable=request.json["com_cell_planif_ref_responsable"],cell_planif_ref_suiveur=request.json["cell_planif_ref_suiveur"],com_cell_planif_ref_suiveur=request.json["com_cell_planif_ref_suiveur"],cell_planif_ref_agent_saisie=request.json["cell_planif_ref_agent_saisie"],com_cell_planif_ref_agent_saisie=request.json["com_cell_planif_ref_agent_saisie"],
+            commentaire_libre=request.json["commentaire_libre"],chif_appt_prix_f6=request.json["chif_appt_prix_f6"])
             db.session.add(tarif)
             db.session.commit()
-            flash(f'Le tarif a été créé avec succès', 'success')
-            return redirect(url_for('users.tarifs',id=id))
+            return jsonify({"status":"Data sent succesfully"}),200
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert", highlight='tarif')
     return redirect(url_for('users.main'))
 
 
-@users.route('/delete/<int:id>/tarif')
-@login_required
-def delete_tarif(id):
-    if current_user.TYPE == "Admin":
+@users.route('/delete/<int:id>/<str:typo>/tarif', methods=['GET','POST','DELETE'])
+def delete_tarif(id,typo):
+    if typo == "norm":
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
         tarif.visibility = False
         db.session.commit()
         flash(f'Les données du Tarif ont été suprimmées','success')
         return redirect(url_for('users.tarifs',id=id))
-
-@users.route('/edit/<int:id>/tarif', methods=['GET','POST'])
-@login_required
-def edit_tarif(id):
-    if current_user.TYPE == "Admin":
-        form = Tarif_Form()
+    if typo == "ext":
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        form.tafid.data = tarif.id
-        if  form.validate_on_submit():
-            if form.tafid.data == tarif.id:
-                tarif.edl_prix_std=form.edl_prix_std.data    
-                tarif.edl_appt_prix_f1=form.edl_appt_prix_f1.data
-                tarif.edl_appt_prix_f2=form.edl_appt_prix_f2.data
-                tarif.edl_appt_prix_f3=form.edl_appt_prix_f3.data
-                tarif.edl_appt_prix_f4 =form.edl_appt_prix_f4.data
-                tarif.edl_appt_prix_f5=form.edl_appt_prix_f5.data
-                tarif.edl_appt_prix_f6=form.edl_appt_prix_f6.data
-                tarif.edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data
-                tarif.edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
-                tarif.edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data
-                tarif.edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data
-                tarif.edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data
-                tarif.edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data
-                tarif.edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data
-                tarif.edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data
-                tarif.chif_appt_prix_stu=form.chif_appt_prix_stu.data
-                tarif.chif_appt_prix_f1 =form.chif_appt_prix_f1.data
-                tarif.chif_appt_prix_f2  =form.chif_appt_prix_f2.data
-                tarif.chif_appt_prix_f3  =form.chif_appt_prix_f3.data
-                tarif.chif_appt_prix_f4  =form.chif_appt_prix_f4.data
-                tarif.chif_appt_prix_f5=form.chif_appt_prix_f5.data
-                tarif.chif_appt_prix_f6  =form.chif_appt_prix_f6.data
-                tarif.chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data
-                tarif.chif_pav_villa_prix_t2 =form.chif_pav_villa_prix_t2.data
-                tarif.chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data
-                tarif.chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data
-                tarif.chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data
-                tarif.chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data
-                tarif.chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data
-                tarif.chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data
-                tarif.prix_autre=form.prix_autre.data
+        tarif.visibility = False
+        db.session.commit()
+        return jsonify({"status":"Data deleted succesfully"}),200
+    
 
-                tarif.code_tva=form.code_tva.data
+@users.route('/edit/<int:id>/<str:typo>/tarif', methods=['GET','POST','PUT'])
+def edit_tarif(id,typo):
+    if id and typo:
+        if typo == "norm":
+            form = Tarif_Form()
+            tarif = Tarifs.query.filter_by(id=id).first_or_404()
+            form.tafid.data = tarif.id
+            if  form.validate_on_submit():
+                if form.tafid.data == tarif.id:
+                    tarif.edl_prix_std=form.edl_prix_std.data    
+                    tarif.edl_appt_prix_f1=form.edl_appt_prix_f1.data
+                    tarif.edl_appt_prix_f2=form.edl_appt_prix_f2.data
+                    tarif.edl_appt_prix_f3=form.edl_appt_prix_f3.data
+                    tarif.edl_appt_prix_f4 =form.edl_appt_prix_f4.data
+                    tarif.edl_appt_prix_f5=form.edl_appt_prix_f5.data
+                    tarif.edl_appt_prix_f6=form.edl_appt_prix_f6.data
+                    tarif.edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data
+                    tarif.edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
+                    tarif.edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data
+                    tarif.edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data
+                    tarif.edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data
+                    tarif.edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data
+                    tarif.edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data
+                    tarif.edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data
+                    tarif.chif_appt_prix_stu=form.chif_appt_prix_stu.data
+                    tarif.chif_appt_prix_f1 =form.chif_appt_prix_f1.data
+                    tarif.chif_appt_prix_f2  =form.chif_appt_prix_f2.data
+                    tarif.chif_appt_prix_f3  =form.chif_appt_prix_f3.data
+                    tarif.chif_appt_prix_f4  =form.chif_appt_prix_f4.data
+                    tarif.chif_appt_prix_f5=form.chif_appt_prix_f5.data
+                    tarif.chif_appt_prix_f6  =form.chif_appt_prix_f6.data
+                    tarif.chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data
+                    tarif.chif_pav_villa_prix_t2 =form.chif_pav_villa_prix_t2.data
+                    tarif.chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data
+                    tarif.chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data
+                    tarif.chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data
+                    tarif.chif_pav_villa_prix_t6=form.chif_pav_villa_prix_t6.data
+                    tarif.chif_pav_villa_prix_t7=form.chif_pav_villa_prix_t7.data
+                    tarif.chif_pav_villa_prix_t8=form.chif_pav_villa_prix_t8.data
+                    tarif.prix_autre=form.prix_autre.data
 
-                tarif.taux_meuble=form.taux_meuble.data
+                    tarif.code_tva=form.code_tva.data
 
-                tarif.referent_as_client=form.referent_as_client.data
+                    tarif.taux_meuble=form.taux_meuble.data
 
-                tarif.com_as_sur_ca_client=form.com_as_sur_ca_client.data
+                    tarif.referent_as_client=form.referent_as_client.data
 
-                tarif.cell_dev_ref_responsable =form.cell_dev_ref_responsable.data
+                    tarif.com_as_sur_ca_client=form.com_as_sur_ca_client.data
 
-                tarif.com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data 
+                    tarif.cell_dev_ref_responsable =form.cell_dev_ref_responsable.data
 
-                tarif.cell_dev_ref_agent =form.cell_dev_ref_agent.data
+                    tarif.com_cell_dev_ref_responsable=form.com_cell_dev_ref_responsable.data 
 
-                tarif.com_cell_dev_ref_agent =form.com_cell_dev_ref_agent.data
+                    tarif.cell_dev_ref_agent =form.cell_dev_ref_agent.data
 
-                tarif.cell_tech_ref_agent  =form.cell_tech_ref_agent.data
+                    tarif.com_cell_dev_ref_agent =form.com_cell_dev_ref_agent.data
 
-                tarif.com_cell_tech_Ref_agent =form.com_cell_tech_Ref_agent.data
+                    tarif.cell_tech_ref_agent  =form.cell_tech_ref_agent.data
 
-                tarif.cell_tech_ref_responsable =form.cell_tech_ref_responsable.data
+                    tarif.com_cell_tech_Ref_agent =form.com_cell_tech_Ref_agent.data
 
-                tarif.com_cell_tech_ref_responsable =form.com_cell_tech_ref_responsable.data
+                    tarif.cell_tech_ref_responsable =form.cell_tech_ref_responsable.data
 
-                tarif.cell_tech_ref_suiveur =form.cell_tech_ref_suiveur.data
+                    tarif.com_cell_tech_ref_responsable =form.com_cell_tech_ref_responsable.data
 
-                tarif.com_cell_tech_ref_suiveur =form.com_cell_tech_ref_suiveur.data
+                    tarif.cell_tech_ref_suiveur =form.cell_tech_ref_suiveur.data
 
-                tarif.cell_planif_ref_responsable =form.cell_planif_ref_responsable.data
+                    tarif.com_cell_tech_ref_suiveur =form.com_cell_tech_ref_suiveur.data
 
-                tarif.com_cell_planif_ref_responsable =form.com_cell_planif_ref_responsable.data
+                    tarif.cell_planif_ref_responsable =form.cell_planif_ref_responsable.data
 
-                tarif.cell_planif_ref_suiveur =form.cell_planif_ref_suiveur.data
+                    tarif.com_cell_planif_ref_responsable =form.com_cell_planif_ref_responsable.data
 
-                tarif.com_cell_planif_ref_suiveur =form.com_cell_planif_ref_suiveur.data
+                    tarif.cell_planif_ref_suiveur =form.cell_planif_ref_suiveur.data
 
-                tarif.cell_planif_ref_agent_saisie =form.cell_planif_ref_agent_saisie.data
+                    tarif.com_cell_planif_ref_suiveur =form.com_cell_planif_ref_suiveur.data
 
-                tarif.com_cell_planif_ref_agent_saisie =form.com_cell_planif_ref_agent_saisie.data
+                    tarif.cell_planif_ref_agent_saisie =form.cell_planif_ref_agent_saisie.data
 
-                tarif.commentaire_libre =form.commentaire_libre.data
+                    tarif.com_cell_planif_ref_agent_saisie =form.com_cell_planif_ref_agent_saisie.data
+
+                    tarif.commentaire_libre =form.commentaire_libre.data
+                    
+                    db.session.commit()
+                    flash(f'Les données du tarif ont été modifiées','success')
+                    return redirect(url_for('users.tarifs',id=id))
+
+        if typo == "ext":
+            tarif = Tarifs.query.filter_by(id=id).first()
+            if tarif:
+                tarif.edl_prix_std=request.json["edl_prix_std"]    
+                tarif.edl_appt_prix_f1=request.json["edl_appt_prix_f1"]
+                tarif.edl_appt_prix_f2=request.json["edl_appt_prix_f2"]
+                tarif.edl_appt_prix_f3=request.json["edl_appt_prix_f3"]
+                tarif.edl_appt_prix_f4 =request.json["edl_appt_prix_f4"]
+                tarif.edl_appt_prix_f5=request.json["edl_appt_prix_f5"]
+                tarif.edl_appt_prix_f6=request.json["edl_appt_prix_f6"]
+                tarif.edl_pav_villa_prix_t1=request.json["edl_pav_villa_prix_t1"]
+                tarif.edl_pav_villa_prix_t2=request.json["edl_pav_villa_prix_t2"]
+                tarif.edl_pav_villa_prix_t3=request.json["edl_pav_villa_prix_t3"]
+                tarif.edl_pav_villa_prix_t4=request.json["edl_pav_villa_prix_t4"]
+                tarif.edl_pav_villa_prix_t5=request.json["edl_pav_villa_prix_t5"]
+                tarif.edl_pav_villa_prix_t6=request.json["edl_pav_villa_prix_t6"]
+                tarif.edl_pav_villa_prix_t7=request.json["edl_pav_villa_prix_t7"]
+                tarif.edl_pav_villa_prix_t8=request.json["edl_pav_villa_prix_t8"]
+                tarif.chif_appt_prix_stu=request.json["chif_appt_prix_stu"]
+                tarif.chif_appt_prix_f1 =request.json["chif_appt_prix_f1"]
+                tarif.chif_appt_prix_f2  =request.json["chif_appt_prix_f2"]
+                tarif.chif_appt_prix_f3  =request.json["chif_appt_prix_f3"]
+                tarif.chif_appt_prix_f4  =request.json["chif_appt_prix_f4"]
+                tarif.chif_appt_prix_f5=request.json["chif_appt_prix_f5"]
+                tarif.chif_appt_prix_f6  =request.json["chif_appt_prix_f6"]
+                tarif.chif_pav_villa_prix_t1=request.json["chif_pav_villa_prix_t1"]
+                tarif.chif_pav_villa_prix_t2 =request.json["chif_pav_villa_prix_t2"]
+                tarif.chif_pav_villa_prix_t3=request.json["chif_pav_villa_prix_t3"]
+                tarif.chif_pav_villa_prix_t4=request.json["chif_pav_villa_prix_t4"]
+                tarif.chif_pav_villa_prix_t5=request.json["chif_pav_villa_prix_t5"]
+                tarif.chif_pav_villa_prix_t6=request.json["chif_pav_villa_prix_t6"]
+                tarif.chif_pav_villa_prix_t7=request.json["chif_pav_villa_prix_t7"]
+                tarif.chif_pav_villa_prix_t8=request.json["chif_pav_villa_prix_t8"]
+                tarif.prix_autre=request.json["prix_autre"]
+
+                tarif.code_tva=request.json["code_tva"]
+
+                tarif.taux_meuble=request.json["taux_meuble"]
+
+                tarif.referent_as_client=request.json["referent_as_client"]
+
+                tarif.com_as_sur_ca_client=request.json["com_as_sur_ca_client"]
+
+                tarif.cell_dev_ref_responsable =request.json["cell_dev_ref_responsable"]
+
+                tarif.com_cell_dev_ref_responsable=request.json["com_cell_dev_ref_responsable"] 
+
+                tarif.cell_dev_ref_agent =request.json["cell_dev_ref_agent"]
+
+                tarif.com_cell_dev_ref_agent =request.json["com_cell_dev_ref_agent"]
+
+                tarif.cell_tech_ref_agent  =request.json["cell_tech_ref_agent"]
+
+                tarif.com_cell_tech_Ref_agent =request.json["com_cell_tech_Ref_agent"]
+
+                tarif.cell_tech_ref_responsable =request.json["cell_tech_ref_responsable"]
+
+                tarif.com_cell_tech_ref_responsable =request.json["com_cell_tech_ref_responsable"]
+
+                tarif.cell_tech_ref_suiveur =request.json["cell_tech_ref_suiveur"]
+
+                tarif.com_cell_tech_ref_suiveur =request.json["com_cell_tech_ref_suiveur"]
+
+                tarif.cell_planif_ref_responsable =request.json["cell_planif_ref_responsable"]
+
+                tarif.com_cell_planif_ref_responsable =request.json["com_cell_planif_ref_responsable"]
+
+                tarif.cell_planif_ref_suiveur =request.json["cell_planif_ref_suiveur"]
+
+                tarif.com_cell_planif_ref_suiveur =request.json["com_cell_planif_ref_suiveur"]
+
+                tarif.cell_planif_ref_agent_saisie =request.json["cell_planif_ref_agent_saisie"]
+
+                tarif.com_cell_planif_ref_agent_saisie =request.json["com_cell_planif_ref_agent_saisie"]
+
+                tarif.commentaire_libre =request.json["commentaire_libre"]
                 
                 db.session.commit()
-                flash(f'Les données du tarif ont été modifiées','success')
-                return redirect(url_for('users.tarifs',id=id))
-
+                return jsonify({"status":"Data modified succesfully"}),200
+            
         return render_template('manage/pages/edit_tarif.html', expert=tarif,form=form, highlight='tarif')
         #return redirect(url_for('users.edit_tarif', id=id))
 
