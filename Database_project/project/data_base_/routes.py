@@ -2000,7 +2000,7 @@ def ajouter_tarif(id,typo):
     return redirect(url_for('users.main'))
 
 
-@users.route('/delete/<int:id>/<str:typo>/tarif', methods=['GET','POST'])
+@users.route('/delete/<int:id>/<str:typo>/tarif', methods=['GET','POST','DELETE'])
 def delete_tarif(id,typo):
     if typo == "norm":
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
@@ -2015,7 +2015,7 @@ def delete_tarif(id,typo):
         return jsonify({"status":"Data deleted succesfully"}),200
     
 
-@users.route('/edit/<int:id>/<str:typo>/tarif', methods=['GET','POST'])
+@users.route('/edit/<int:id>/<str:typo>/tarif', methods=['GET','POST','PUT'])
 def edit_tarif(id,typo):
     if id and typo:
         if typo == "norm":
