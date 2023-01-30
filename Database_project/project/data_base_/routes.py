@@ -4247,7 +4247,7 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=True,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
