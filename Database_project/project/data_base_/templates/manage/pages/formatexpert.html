@@ -19,7 +19,7 @@
            padding: 0; 
         }
         .pdf__container {
-            width: 800px;
+            width: 1000px;
             margin: 0 auto;
         }
         .main__header {
@@ -108,8 +108,8 @@
             border-bottom: 1px solid #DDD;
         }
 
-        td {
-            word-break:break-all;
+        td:not(:nth-child(1), :nth-child(2),:nth-child(5),:nth-child(7),:nth-child(8),:nth-child(9),:nth-child(10)) {
+            word-break: break-all;
         }
 
         @media print {
