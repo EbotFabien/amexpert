@@ -108,6 +108,10 @@
             border-bottom: 1px solid #DDD;
         }
 
+        td {
+            word-break:break-all;
+        }
+
         @media print {
   .new-page {
     page-break-before: always;
@@ -119,17 +123,17 @@
     <section class="pdf__container">
         <header class="main__header">
             <div class="left__header__section">
-                <img src="" width="100" height="130" />
+                <img src="data:;base64,{{image}}" width="100" height="130" />
                 <br>
                 <strong>TRUSTEXPERTI3SE Ltd</strong>
                     <br />Registration / Enregistrement No 9949961 <br /> 
                     25 Station Road <br /> B14 7SR Birmingham <br /> Royaume Uni - UK <br />
             </div>
             <div class="right__header__section">
-                <p><strong>Facture/Invoice</strong><br /> No: 00002585</p>
-                <p><strong>Date</strong><br /> 09/10/2002</p>
-                <p><strong>Pays</strong> /<br /> <strong>Country</strong>: Cameroun</p>
-                <p><strong>Client / Customer</strong>:<br /> Ismael</p>
+                <p><strong>Detail de compte</strong><br />{{new_rel[0].releve_data.type_ex}}</p>
+                <p><strong>Arrêter de compte fin:</strong><br/>{{new_rel[0].mission__data.date_cmpte_mensuel.strftime('%d. %m. %Y')}}</p>
+                <p><strong>Adresse</strong> /<br /> <strong>Cp</strong>: {{histo.adresse1}} / {{histo.cp}}</p>
+                <p><strong>Client / Customer</strong>:<br /> {{Nom.nom}} {{Nom.prenom}}</p>
             </div>
         </header>
         <header class="secondary__header">
@@ -138,9 +142,9 @@
                 <div class="left__side">
                     <h5>FACTURATION / BILLING:</h5>
                     <br />
-                    <p>Madame</p>
+                    <p>De</p>
                     <br />
-                    <p>Client Numéro</p>
+                    <p>{{Nom.nom}} {{Nom.prenom}}</p>
                 </div>
                 <div class="right__side">
                    <h5>Par virement / By transfert to :</h5>
@@ -161,17 +165,16 @@
             <div class="amount__section">
                 <p style="margin-bottom: 5px;"><strong>Auto-liquidation TVA France</strong></p>
                 <div class="amount__section__content">
-                    <p><strong>Montant / Amount:</strong></p>
-                    <p><strong>TVA:</strong></p>
-                    <p><strong>Total prix / price: </strong></p>
-                    <p><strong>Facture / Invoice No:</strong></p>
+                    <p><strong>TOTAL RLV: {{releve}}</strong></p>
+                    <p><strong>TVA:0</strong></p>
+                    <p><strong>TOTAL FACT: {{fin}}</strong></p>
                 </div>
             </div>
         </header>
-        <div class="new-page" style="margin: 10px"></div>
+        <div style = "display:block; clear:both; page-break-after:always;"></div>
         <header class="main__header">
             <div class="left__header__section">
-                <img src="" width="100" height="130" />
+                <img src="data:;base64,{{image}}" width="100" height="130" />
                 <br>
                 <strong> TRUSTEXPERTI3SE Ltd </strong><br> Registration / Enregistrement No 9949961 <br> 25 Station Road <br> B14 7SR Birmingham <br> Royaume Uni - UK <br>
             </div>
@@ -180,73 +183,45 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date Constat</th>
-                    <th>Type</th>
-                    <th>Proprietaire</th>
-                    <th>Locataire</th>
-                    <th>Ville</th>
-                    <th>Appt-Pav</th>
-                    <th>Type</th>
-                    <th>Surface</th>
-                    <th>N code</th>
-                  </tr>
+                        <th>ID</th>
+                        <th>Date mission</th>
+                        <th>Bailleur</th>
+                        <th>Agent Secteur</th>
+                        <th>Locataire</th>
+                        <th>ville de mission</th>
+                        <th># de Facture</th>
+                        <!--th><span>Facture Client</span>-<br><span>Emise</span></th-->
+                        <th><span>Facture Client</span>-<br><span>acquittée</span></th>
+                        <th>%</th>
+                        <th>Montant</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>$100</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                    </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>$100</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                    </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>$100</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                    </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>$100</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                    </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>$100</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                        <td>$150</td>
-                    </tr>
+                    {%for mission_ in new_rel %}
+                        <tr>
+                            <td>{{mission_.mission__data.mission}}</td>
+                            <td>{{mission_.mission__data.mission__data.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
+                            <td>{{mission_.mission__data.mission__data.Bailleur__data.nom}}</td>
+                            <td>{{mission_.mission__data.intervenant}}</td>
+                            <td>{{mission_.mission__data.mission__data.Reference_LOCATAIRE}}</td>
+                            <td>{{mission_.mission__data.mission__data.Ville_Bien}}</td>
+                            <td>{{mission_.facture}}</td>
+                            <!--td class="qty">{% if mission_.mission__data.mission__data.DATE_FACTURE == None %}
+                                
+                                {%else%}
+                                    {{mission_.mission__data.mission__data.DATE_FACTURE.strftime('%d. %m. %Y')}}
+                                {%endif%}
+                            </td-->
+                            <td>{% if mission_.mission__data.mission__data.DATE_FACT_REGLEE == None %}
+                                    non acquittée
+                                {%else%}
+                                    en contrôle
+                                {%endif%}
+                            </td>
+                            <td>{{mission_.releve_data.pourcentage}}</td>
+                            <td>{{mission_.commision}}</td>
+                        </tr>
+                        {%endfor%}
                 </tbody>
             </table>
         </div>
