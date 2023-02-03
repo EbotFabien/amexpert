@@ -21,8 +21,8 @@ from sqlalchemy import extract
 import json
 import base64
 #sfrom wkhtmltopdf import wkhtmltopdf
-from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import render_template_to_pdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 import json
@@ -33,7 +33,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
