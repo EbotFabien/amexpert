@@ -3,7 +3,7 @@ from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient,lienta
+from Database_project.project.data_base_.client_data  import lient,lienta,clientdoc
 from Database_project.project.data_base_.expert_data  import xpert,xperte
 from Database_project.project.data_base_.tarif_data  import arif
 from Database_project.project.data_base_.Suivi  import suiv
@@ -1943,7 +1943,7 @@ def tarif_ajouter():
     return redirect(url_for('users.main'))
          
 
-@users.route('/client/<int:id>/<str:typo>/tarifs')
+@users.route('/client/<int:id>/<string:typo>/tarifs')
 def tarifs(id,typo):
     if id and typo:
         if typo == "norm":
@@ -1965,14 +1965,13 @@ def show_tarif(id):
 
 
 
-@users.route('/client/<int:id>/<str:typo>/ajouter/tarifs/', methods=['GET','POST'])
+@users.route('/client/<int:id>/<string:typo>/ajouter/tarifs/', methods=['GET','POST'])
 def ajouter_tarif(id,typo):
     if id and typo:
         form = Tarif_Form()
         client = Client.query.filter_by(id=id).first_or_404()
         if typo =="norm":
             if form.validate_on_submit():
-                
                 tarif = Tarifs(reference_client=client.id,edl_prix_std=form.edl_prix_std.data,edl_appt_prix_f1=form.edl_appt_prix_f1.data,edl_appt_prix_f2=form.edl_appt_prix_f2.data,edl_appt_prix_f3=form.edl_appt_prix_f3.data,edl_appt_prix_f4=form.edl_appt_prix_f4.data,edl_appt_prix_f5=form.edl_appt_prix_f5.data,edl_appt_prix_f6=form.edl_appt_prix_f6.data,edl_pav_villa_prix_t1=form.edl_pav_villa_prix_t1.data,edl_pav_villa_prix_t2=form.edl_pav_villa_prix_t2.data
                 ,edl_pav_villa_prix_t3=form.edl_pav_villa_prix_t3.data,edl_pav_villa_prix_t4=form.edl_pav_villa_prix_t4.data,edl_pav_villa_prix_t5=form.edl_pav_villa_prix_t5.data,edl_pav_villa_prix_t6=form.edl_pav_villa_prix_t6.data,edl_pav_villa_prix_t7=form.edl_pav_villa_prix_t7.data,edl_pav_villa_prix_t8=form.edl_pav_villa_prix_t8.data,chif_appt_prix_stu=form.chif_appt_prix_stu.data,chif_appt_prix_f1=form.chif_appt_prix_f1.data,chif_appt_prix_f2=form.chif_appt_prix_f2.data,
                 chif_appt_prix_f3=form.chif_appt_prix_f3.data,chif_appt_prix_f4=form.chif_appt_prix_f4.data,chif_appt_prix_f5=form.chif_appt_prix_f5.data,chif_pav_villa_prix_t1=form.chif_pav_villa_prix_t1.data,chif_pav_villa_prix_t2=form.chif_pav_villa_prix_t2.data,chif_pav_villa_prix_t3=form.chif_pav_villa_prix_t3.data,chif_pav_villa_prix_t4=form.chif_pav_villa_prix_t4.data,chif_pav_villa_prix_t5=form.chif_pav_villa_prix_t5.data,
@@ -2001,7 +2000,7 @@ def ajouter_tarif(id,typo):
     return redirect(url_for('users.main'))
 
 
-@users.route('/delete/<int:id>/<str:typo>/tarif', methods=['GET','POST'])
+@users.route('/delete/<int:id>/<string:typo>/tarif', methods=['GET','POST','DELETE'])
 def delete_tarif(id,typo):
     if typo == "norm":
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
@@ -2016,7 +2015,7 @@ def delete_tarif(id,typo):
         return jsonify({"status":"Data deleted succesfully"}),200
     
 
-@users.route('/edit/<int:id>/<str:typo>/tarif', methods=['GET','POST'])
+@users.route('/edit/<int:id>/<string:typo>/tarif', methods=['GET','POST','PUT'])
 def edit_tarif(id,typo):
     if id and typo:
         if typo == "norm":
@@ -2886,7 +2885,9 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             if table == 'client':
-                    lienta(loc)
+                    #lienta(loc)
+                    client=Client.query.all()
+                    clientdoc(client,loc)
                     '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -4206,10 +4207,10 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4248,10 +4249,10 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
-                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+                        res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4301,10 +4302,10 @@ def gestion(id,save):
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/pdf1.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        p, td, th {
+            font-size: 13px;
+        }
+        p, h6, h5 {
+           margin: 0;
+           padding: 0; 
+        }
+        .pdf__container {
+            width: 1000px;
+            margin: 0 auto;
+        }
+        .main__header {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
+            display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 10px;
+        }
+
+        .left__header__section {
+            font-size: 13px;
+        }
+       
+        .right__header__section {
+            text-align: right;
+        }
+        .right__header__section p {
+            margin-bottom: 6px;
+        }
+        .secondary__header {
+            position: relative;
+            padding: 10px 5px 20px;
+            border-bottom: 1px solid #DDD;
+        }
+        .secondary__header__hr {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: 2em;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 3px;
+            width: 700px;
+        }
+        .secondary__header__content {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
+            display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            column-gap: 10px;
+        }
+        .left__side {
+            border: 1px solid navy;
+            padding: 10px;
+            width: 250px;
+        }
+        .right__side {
+            font-size: 13px;
+            border: 1px solid navy;
+            padding: 5px 10px;
+            width: 468px;
+        }
+        .tertiary__header {
+            border-bottom: 1px solid #DDD;
+        }
+        .amount__section {
+            width: 490px;
+            margin: 5px auto;
+        }
+        .amount__section__content {
+            padding: 10px;
+            border: 5px solid black;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        td, th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #DDD;
+        }
+
+        td:not(:nth-child(1), :nth-child(2),:nth-child(3),:nth-child(9),:nth-child(10),:nth-child(11)) {
+            word-break: break-all;
+        }
+
+        @media print {
+  .new-page {
+    page-break-before: always;
+  }
+}
+    </style>
+</head>
+<body>
+    <section class="pdf__container">
+        <header class="main__header">
+            <div class="left__header__section">
+                <img src="data:;base64,{{image}}" width="100" height="130" />
+                <br>
+                <strong>TRUSTEXPERTI3SE Ltd</strong>
+                    <br />Registration / Enregistrement No 9949961 <br /> 
+                    25 Station Road <br /> B14 7SR Birmingham <br /> Royaume Uni - UK <br />
+            </div>
+            <div class="right__header__section">
+                <p><strong>Facture/Invoice</strong><br /> No: {{nro}}</p>
+                <p><strong>Date</strong><br />{{total.Date_de_creation.strftime('%d. %m. %Y')}}</p>
+                <p><strong>Pays</strong> /<br /> <strong>Country</strong>: France</p>
+                <p><strong>Client / Customer</strong>:<br />{{Nom.nom}} {{Nom.prenom}}</p>
+            </div>
+        </header>
+        <header class="secondary__header">
+            <hr class="secondary__header__hr" />
+            <div class="secondary__header__content">
+                <div class="left__side">
+                    <h5>FACTURATION / BILLING:</h5>
+                    <br />
+                    <p>Monsieur/Madame</p>
+                    <br />
+                    <p>Client:{{Nom.nom}} {{Nom.prenom}}</p>
+                </div>
+                <div class="right__side">
+                   <h5>Par virement / By transfert to :</h5>
+                   <br />
+                   <p>RELEVE D'IDENTITE BANCAIRE - STATEMENT OF ACCOUNT </p>
+                   <p>Numéro de compte bancaire international - International bank account number</p>
+                   <br />
+                   <p><strong>IBAN</strong>:</p>
+                   <p><strong>BIC / SWIFT</strong>:</p>
+                </div>
+            </div>
+        </header>
+        <header class="tertiary__header">
+            <hr />
+                <strong><p style="text-align: center;">Règlement / Payment : xxxxxxxxx Contact : </p></strong>
+            <hr />
+            <h4 style="text-align: center;"><strong>Prestations de constat en état des lieux réalisées à votre demande, récapitulatif des missions page suivant.</strong></h4>
+            <div class="amount__section">
+                <p style="margin-bottom: 5px;"><strong>Auto-liquidation TVA France</strong></p>
+                <div class="amount__section__content">
+                    <p><strong>Montant / Amount: {{total.Montant_HT}}</strong></p>
+                    <p><strong>TVA:</strong></p>
+                    <p><strong>Total prix / price: {{total.Montant_HT}} </strong></p>
+                    <p><strong>Facture / Invoice No: {{nro}}</strong></p>
+                </div>
+            </div>
+        </header>
+        <div style = "display:block; clear:both; page-break-after:always;"></div>
+        <header class="main__header">
+            <div class="left__header__section">
+                <img src="data:;base64,{{image}}" width="100" height="130" />
+                <br>
+                <strong> TRUSTEXPERTI3SE Ltd </strong><br> Registration / Enregistrement No 9949961 <br> 25 Station Road <br> B14 7SR Birmingham <br> Royaume Uni - UK <br>
+            </div>
+        </header>
+        <div class="table__container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No Mission</th>
+                        <th>DATE REALISE EDL</th>
+                        <th>Type</th>
+                        <th>Proprietaire</th>
+                        <th>Locataire</th>
+                        <th>ville</th>
+                        <th>Appt-Pav</th>
+                        <th>Type</th>
+                        <th>LOGEMENT MEUBLE</th>
+                        <th>Surface/m<sup>2</sup></th>
+                        <th>Tarif ht/€</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {%for fac in factura %}
+                        <tr>
+                            <td>{{fac.mission__data_.id}}</td>
+                            <td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
+                            <td>{{fac.mission__data_.TYPE_EDL}}</td>
+                            <td>{{fac.mission__data_.NOMPROPRIO}}</td>
+                            <td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+                            <td>{{fac.mission__data_.Ville_Bien}}</td>
+                            <td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
+                            <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>
+                            <td>{{fac.mission__data_.LOGEMENT_MEUBLE}}</td>
+                            <td>{{fac.mission__data_.surface_logement1}}</td>
+                            <td>{{fac.mission__data_.PRIX_HT_EDL}}</td>   
+                        </tr>    
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>
