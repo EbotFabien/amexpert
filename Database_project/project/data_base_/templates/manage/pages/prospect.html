@@ -12,23 +12,7 @@
     <div class="tile box" style="width: fit-content; margin: 0 auto;
     justify-content: space-evenly;
     min-width: 950px;">
-        <!-- <form method="GET" action="{{url_for('users.mission')}}">
-        <div class="columns"> 
-            <div class="column">
-              <div class="field">
-                <div class="select is-small">
-                        <select name="ron" >
-                          <option selected disabled>---Departement(S)---</option>
-                          <option value="r">Departement x</option>
-                          <option value="nr">Departement y</option>
-                          <option value="nr">Departement z</option>
-                        </select>
-                </div>
-              </div>
-          </div>
-          
-        </div>
-      </form> -->
+
 
         <!-- / date -->
         <form method="GET" action="{{url_for('users.prospect_')}}">
@@ -108,10 +92,9 @@
     <section class="tile" style="margin-top: 10px;">
 
 
-        <div class="box" style="  width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
+        <div class="box" style="width: -webkit-fill-available;max-width: -moz-available;width: 100%;">
 
-            <div class="tile box" style=" margin: 0 auto;
-    justify-content: space-evenly;">
+            <div class="tile box" style=" margin: 0 auto; justify-content: space-evenly;">
 
                 <div class="table-container" style="position: relative;">
                     {% with messages = get_flashed_messages(with_categories=true)%} {% if messages %} {%for category,message in messages%}
