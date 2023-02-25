@@ -3,7 +3,7 @@ from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
 from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
-from Database_project.project.data_base_.client_data  import lient,lienta,clientdoc
+from Database_project.project.data_base_.client_data  import lient,lienta,clientdoc,geta
 from Database_project.project.data_base_.expert_data  import xpert,xperte
 from Database_project.project.data_base_.tarif_data  import arif
 from Database_project.project.data_base_.Suivi  import suiv
@@ -22,7 +22,7 @@ import json
 import base64
 #sfrom wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-#from flask_wkhtmltopdf import Wkhtmltopdf
+from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 import json
@@ -33,7 +33,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-#wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf = Wkhtmltopdf(app)
 
 PER_PAGE = 10
 
@@ -2887,7 +2887,8 @@ def uploader_():
             if table == 'client':
                     #lienta(loc)
                     client=Client.query.all()
-                    clientdoc(client,loc)
+                    #clientdoc(client,loc)
+                    geta(client)
                     '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -2940,13 +2941,18 @@ def uploader_():
                 
             if table == 'mission':
                 #Base(loc)
-                #Missions2(loc,'26')
-                #Missions2(loc,'27')
-                #Missions2(loc,'28')
-                #Missions2(loc,'29')
-                #Missions2(loc,'31')
+                expt=Expert.query.all()
+                for i in expt:
+                    a=''.join((i.full).split())
+                    i.full=a.lower()
+                    i.nom=(i.nom).lower()
+                    i.prenom=(i.prenom).lower()
+                    db.session.commit()
+                Missions2(loc)
                 
-                Missions(loc)
+                
+                
+                #Missions(loc)
                 '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))

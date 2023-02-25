@@ -8,6 +8,86 @@ import flask as pd
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 import os
 
+def  geta(client):
+    wb_obj1= xlrd.open_workbook("C:/Users/user/Downloads/Telegram Desktop/Missions sans ref bailleur complété.xls")
+    sheet1 = wb_obj1.sheet_by_index(0)
+    rows=int(sheet1.nrows)
+    dictio={}
+    for i in range(0,rows):
+        sheet=sheet1.row_values(i)
+        dictio[sheet[0]]=sheet[1]
+    def fix(loc):
+        wb_obj = openpyxl.load_workbook(loc,data_only=True)
+        available=[]
+        sheet=wb_obj.active
+        for i in range(0,sheet.max_row):
+            v=sheet["B"][i].value
+            if v in dictio.values():
+                available.append([list(filter(lambda x: dictio[x] == v, dictio))[0],sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            else:
+                c=v
+                data=''.join(filter(str.isalnum,c))
+                data=data.lower()
+                for v in client:
+                    cli=''.join(filter(str.isalnum,v.societe))
+                    cli=cli.lower()
+                    if data==cli:
+                        a=1
+                        available.append([v.reference,sheet["B"][i].value,sheet["C"][i].value,
+                                            sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                            sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                            sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                            sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                            sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                            sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                            sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                            sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                            sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                            sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                            sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                            sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                            sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                            sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                            sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                            sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                            sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                            sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                            sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+                        break
+            
+                
+        return available
+    
+    first=fix("C:/Users/user/Downloads/du_20221201_au_20221231_Exportadres_EDL.xlsx")
+    second=fix("C:/Users/user/Downloads/du_20221101_au_20221130_Exportadres_EDL-_1_.xlsx")
+    third=fix("C:/Users/user/Downloads/du_20221001_au_20221031_Exportadres_EDL.xlsx")
+    #failed=fix("C:/Users/user/Downloads/du_20221201_au_20221231_Exportadres_EDL.xlsx")[1]
+   
+    
+    return failed(first),good1(second),good2(third)#,
+    #,good1(second),good2(third),failed(first)
+
+
+
 
 def clientdoc(client,loc):
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
@@ -55,8 +135,11 @@ def clientdoc(client,loc):
             if sheet["B"][i].value not in fail:
                 fail.append(sheet["B"][i].value)
 
-    print(fail)
-    return failed(fail),good1(available)
+
+    final=[] 
+    for i in fail:
+        final.append(["",i])
+    return failed(final)
 
 
 def regex1(data,Type):
@@ -242,7 +325,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='20221201_20221231mauvais.xls'
+    filename='du_20221201_au_20221231_Exportadres_EDL.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -271,7 +354,7 @@ def failed1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='prospect_failed.xls'
+    filename='oct_failed.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -299,7 +382,7 @@ def good1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='20221201_20221031bien.xls'
+    filename='du_20221101_au_20221130_Exportadres_EDL-_1_.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -327,7 +410,7 @@ def good2(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='client_good.xls'
+    filename='du_20221001_au_20221031_Exportadres_EDL.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
