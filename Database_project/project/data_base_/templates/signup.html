@@ -60,7 +60,8 @@
                             <span style="color: red;">{{ error }}</span>
                             {% endfor %}
                         </div>
-                        {% endif %}
+                        {% endif %} 
+                       
                         <div class="form-check mt-2">
                             {{form.remember(class="form-check-input")}}
                             {{form.remember.label(class="form-check-label")}}
@@ -93,6 +94,17 @@
 
 
 {% elif legend == "sign_up" %}
+ <!--div class="form-group"
+                            style="transform: scale(0.86); webkit-transform: scale(0.86); transform-origin: 0 0; webkit-transform-origin: 0 0;">
+                            {{form.recaptcha}}
+                        </div>
+                        {% if form.recaptcha.errors %}
+                        <div class="form-group">
+                            {% for error in form.recaptcha.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %} -->
 <div class="auth">
     <img src="{{url_for('static', filename='images/logo/logo.png')}}" style="height: 100px;
     position: absolute;left: 50%;transform: translate(-50%); top:10px; z-index: 888;">

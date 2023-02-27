@@ -1300,6 +1300,8 @@ def Missions(loc):
         return True
     else:
         return failed(missions_)
+    
+
         
 
 def fix_mission():
@@ -1416,63 +1418,188 @@ def Base(loc):
 
 
 
-def Missions2(loc,n):
+def Missions2(loc):
     
     wb_obj = openpyxl.load_workbook(loc,data_only=True)
-    print(wb_obj.sheetnames)
-    sheet=wb_obj[n]
     
-    reference=[]
+    sheet=wb_obj.active
+    
+    available=[]
     
     for i in range(1,sheet.max_row):
+        try:
+            int(sheet["A"][i].value)
+        except:
+            available.append(["Valeur reference pas correct",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            continue
         cli=Client.query.filter_by(reference=int(sheet["A"][i].value)).first()
+        if cli == None:
+            cli=Client(reference=int(sheet["A"][i].value),societe=sheet["B"][i].value)
+            db.session.add(cli)
+            db.session.commit()
+            his=Client_History(client_id=cli.id)
+            db.session.add(his)
+            db.session.commit()
+        if sheet["R"][i].value is None or sheet["R"][i].value == '':
+                available.append(["Valuer d'intervenant null",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+                continue
+        else:
+            INTERV=Expert.query.filter(or_(Expert.full==''.join((sheet["R"][i].value.lower()).split()),Expert.nom==''.join((sheet["R"][i].value.lower()).split()),Expert.prenom==''.join((sheet["R"][i].value.lower()).split()))).first()
+            if INTERV is not None:
+                IV= INTERV.id
+             
+            if INTERV is None  :
+               experto=Expert(full=''.join((sheet["R"][i].value.lower()).split()),nom=''.join((sheet["R"][i].value.lower()).split()))
+               db.session.add(experto)
+               db.session.commit()
+               his=Expert_History(expert_id=experto.id)
+               db.session.add(his)
+               db.session.commit()
+               IV=experto.id
+        loge=sheet["AX"][i].value
+        if loge == None:
+            available.append(["logement meuble vide",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            continue
+        loge=''.join(loge.strip())
+        if loge == '':
+            available.append(["logement meuble vide",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            continue
+        if loge[-1]=='M':
+            loge1=loge[0:-1]
+        code=sheet["BI"][i].value
+        code=''.join(code)
+        if code[-1]=='M':
+            code=code[0:-1]
+        if code == "AUTRE":
+            code='TS250'
+        if code[0]!='T':
+            available.append(["logement meuble vide",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
+                                    sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
+                                    sheet["H"][i].value,sheet["I"][i].value,sheet["J"][i].value,sheet["K"][i].value,
+                                    sheet["L"][i].value,sheet["M"][i].value,sheet["N"][i].value,sheet["O"][i].value,
+                                    sheet["P"][i].value,sheet["Q"][i].value,sheet["R"][i].value,sheet["S"][i].value,
+                                    sheet["T"][i].value,sheet["U"][i].value,sheet["V"][i].value,sheet["W"][i].value,
+                                    sheet["X"][i].value,sheet["Y"][i].value,sheet["Z"][i].value,sheet["AA"][i].value,
+                                    sheet["AB"][i].value,sheet["AC"][i].value,sheet["AD"][i].value,sheet["AE"][i].value,
+                                    sheet["AF"][i].value,sheet["AG"][i].value,sheet["AH"][i].value,sheet["AI"][i].value,
+                                    sheet["AJ"][i].value,sheet["AK"][i].value,sheet["AL"][i].value,sheet["AM"][i].value,
+                                    sheet["AN"][i].value,sheet["AO"][i].value,sheet["AP"][i].value,sheet["AQ"][i].value,
+                                    sheet["AR"][i].value,sheet["AS"][i].value,sheet["AT"][i].value,sheet["AU"][i].value,
+                                    sheet["AV"][i].value,sheet["AW"][i].value,sheet["AX"][i].value,sheet["AY"][i].value,
+                                    sheet["AZ"][i].value,sheet["BA"][i].value,sheet["BB"][i].value,sheet["BC"][i].value,
+                                    sheet["BD"][i].value,sheet["BE"][i].value,sheet["BF"][i].value,sheet["BG"][i].value,
+                                    sheet["BH"][i].value,sheet["BI"][i].value,sheet["BJ"][i].value,sheet["BK"][i].value,
+                                    sheet["BL"][i].value,sheet["BM"][i].value,sheet["BN"][i].value,sheet["BO"][i].value,
+                                    sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
+                                    sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
+                                    sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            continue
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
-           # old=sheet["A"][i].value,
-            ABONNEMENT	 = sheet["J"][i].value ,
             ID_AS	 = 0 ,
         
           
             DATE_REALISE_EDL =sheet["M"][i].value , 	
-            ID_INTERV = 0 ,
-            NRO_FACTURE = sheet["I"][i].value ,
-            PRIX_HT_EDL = sheet["N"][i].value ,
-            TVA_EDL = sheet["O"][i].value ,
-            PRIX_TTC_EDL = sheet["P"][i].value ,
-            Reference_LOCATAIRE	 =  sheet["U"][i].value ,
+            ID_INTERV =IV ,
+            
+            Reference_LOCATAIRE	 =  sheet["S"][i].value ,
             Adresse1_Bien	 = sheet["V"][i].value ,  
             Adresse2_Bien	 = sheet["W"][i].value , 
-            CP_Bien	 = sheet["X"][i].value ,  
+            CP_Bien	 = regex1(sheet["X"][i].value,'M') ,  
             Ville_Bien	 = sheet["Y"][i].value , 
             
-            CA_HT_AS = sheet["Z"][i].value , 	
-            TVA_AS	 = sheet["AA"][i].value , 
-            CA_TTC_AS = sheet["AB"][i].value , 	
-            CA_HT_AC = sheet["AC"][i].value , 	
-            CA_TTC_AC	 = sheet["AD"][i].value , 
-            CA_HT_TRUST	 = sheet["AE"][i].value , 
-            TVA_TRUST	 = sheet["AF"][i].value ,
-            Prix_ht_chiffrage	 = sheet["AH"][i].value , 
-            POURCENTAGE_suiveur_chiffrage	 = sheet["AI"][i].value ,
-            POURCENTAGE_AS_chiffrage = sheet["AJ"][i].value ,	
-            POURCENTAGE_manager_chiffrage  = sheet["AK"][i].value , 	
+           
             ID_manager_chiffrage  = 0 ,
-                
-            POURCENTAGE_agent_chiffrage = sheet["AM"][i].value ,	
+                	
             ID_agent_chiffrage  = 0 ,	
             
             TYPE_EDL = sheet["AO"][i].value ,	
             TITREPROPRIO = sheet["AQ"][i].value , 		
             NOMPROPRIO = sheet["AR"][i].value , 	
-            DATE_FACT_REGLEE = sheet["AS"][i].value ,	
-            TYPE_LOGEMENT = sheet["AX"][i].value , 	
-            CODE_AMEXPERT = sheet["BB"][i].value , 	
-            COMMENTAIRE_FACTURE = sheet["BC"][i].value , 	
+           
+            TYPE_LOGEMENT = loge , 	
+            CODE_AMEXPERT = sheet["BB"][i].value , 	 	
             LOGEMENT_MEUBLE =sheet["BH"][i].value , 	
-            CODE_FACTURATION = sheet["BI"][i].value , 	
+            CODE_FACTURATION = code , 	
             TYPE_DE_BIEN = sheet["BJ"][i].value , 	
-            surface_logement1 = sheet["BK"][i].value , 		
-            DATE_FACTURE = sheet["I"][i].value , 	 	
+            surface_logement1 = regex1(sheet["BK"][i].value,'S'), 		
+             	
             ID_Respon_Cell_Dev	 =0 ,
             
            
@@ -1498,331 +1625,12 @@ def Missions2(loc,n):
                   
              )
             db.session.add(mission)
-            db.session.commit()
-            try:
-                if mission.CODE_FACTURATION[-1]=='M':
-                    #print(mission.CODE_FACTURATION[2:5])
-                    mission.CODE_FACTURATION[2:5] == 150
-                    A=mission.CODE_FACTURATION[0:-1]
-                    mission.CODE_FACTURATION = A
-                    #print(mission.CODE_FACTURATION)
-                    db.session.commit()
-
-                if mission.CODE_FACTURATION[-1] == ' ':
-                    #print(mission.CODE_FACTURATION[2:5])
-                    B=mission.CODE_FACTURATION[0:-1] 
-                    mission.CODE_FACTURATION = B
-                    db.session.commit()
-
-                if mission.CODE_FACTURATION[-2:] == "00" or  mission.CODE_FACTURATION[-2:] == "50" :
-                        mission.Anomalie = False
-                        mission.reason = None
-                        db.session.commit()
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du code facturation incorrect sur  "
-               # print(mission)
-                db.session.commit()
-            #print(mission.CODE_FACTURATION)
-            #print(mission.TYPE_LOGEMENT)
-            try:
-                if mission.TYPE_LOGEMENT[-1] == ' ':
-                   # print( mission.TYPE_LOGEMENT)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                    db.session.commit()
-
-
-                if mission.TYPE_LOGEMENT[-1] == 'M':
-                   # print(mission.TYPE_LOGEMENT)
-                    mission.CODE_FACTURATION[2:5] == 150
-                    #print(mission.CODE_FACTURATION)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                   # print(mission.TYPE_LOGEMENT)
-                    db.session.commit()
-
-                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
-                    mission.Anomalie = True
-                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
-                    db.session.commit()
-
-                
-
-                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
-                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
-                        if mission.TYPE_LOGEMENT[0] == "T":
-                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit()
-                        if mission.TYPE_LOGEMENT[0] == "F":
-                            B="APPT-"+str(mission.TYPE_LOGEMENT)
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit() 
-                    else:
-                        mission.coherent = False 
-                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
-                        db.session.commit()
-                
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
-                db.session.commit()
-            try:
-                if mission.TYPE_LOGEMENT[-1] == ' ':
-                   # print( mission.TYPE_LOGEMENT)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                    db.session.commit()
-
-
-                if mission.TYPE_LOGEMENT[-1] == 'M':
-                   # print(mission.TYPE_LOGEMENT)
-                    mission.CODE_FACTURATION[2:5] == 150
-                    #print(mission.CODE_FACTURATION)
-                    B=mission.TYPE_LOGEMENT[0:-1] 
-                    mission.TYPE_LOGEMENT = B
-                   # print(mission.TYPE_LOGEMENT)
-                    db.session.commit()
-
-                if mission.TYPE_LOGEMENT[-2:] != mission.CODE_FACTURATION[-2:]  :
-                    mission.Anomalie = True
-                    mission.reason = "Anomalie non bloquante traite en  "+str(mission.TYPE_LOGEMENT[-2:])
-                    db.session.commit()
-
-                
-
-                if len(mission.TYPE_LOGEMENT[0:4]) < 3 :
-                    if len(mission.TYPE_LOGEMENT[0:2]) == 2:
-                        if mission.TYPE_LOGEMENT[0] == "T":
-                            B="PAV-"+str(mission.TYPE_LOGEMENT) 
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit()
-                        if mission.TYPE_LOGEMENT[0] == "F":
-                            B="APPT-"+str(mission.TYPE_LOGEMENT)
-                            mission.TYPE_LOGEMENT = B
-                            db.session.commit() 
-                    else:
-                        mission.coherent = False 
-                        mission.reason = "Anomalie bloquante codification du type de logement incorrect sur  "+str(mission.TYPE_LOGEMENT)
-                        db.session.commit()
-                
-            except:
-                mission.coherent = False
-                mission.reason = "Anomalie bloquante codification du type de logement incorrect "
-                db.session.commit()
-            
-            if mission.TYPE_LOGEMENT == None:
-                mission.TYPE_LOGEMENT = ''
-                db.session.commit()
-            if mission.CODE_FACTURATION == None:
-                mission.CODE_FACTURATION = ''
-                db.session.commit()
-            try:
-                if mission.CODE_FACTURATION[0:2] == 'TS':
-                    mission.PRIX_HT_EDL = mission.CODE_FACTURATION[2:5]
-                    db.session.commit()
-                if mission.CODE_FACTURATION[0:2] == 'TN':
-                
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '1'   :
-                        
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                            meuble=float(tarif.edl_appt_prix_f1)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f1) + float(meuble)
-                            db.session.commit()
-                            
-                            
-                        else:
-                            
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f1
-                            db.session.commit()
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U'   :
-                        
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print# fix
-                            meuble=float(tarif.edl_prix_std)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_prix_std) + float(meuble)
-                            db.session.commit()
-                            
-                            
-                        else:
-                            
-                            mission.PRIX_HT_EDL = tarif.edl_prix_std
-                            db.session.commit()
-
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '2':
-                        #print('APPT 2')
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.edl_appt_prix_f2)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f2) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f2
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '3':
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.edl_appt_prix_f3)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f3) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
-                        
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.edl_appt_prix_f4)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f4) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f4
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '5':
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.edl_appt_prix_f5)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f5) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f5
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '6':
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.edl_appt_prix_f6)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f6) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f6
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '7':
-                        tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':#check print
-                            meuble=float(tarif.EDL_APPT_prix_F7)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_appt_prix_f7) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_appt_prix_f7
-                            db.session.commit()
-                            
-
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '1' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t1)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t1) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t1
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '2' :
-                        
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t2)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t2) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t2
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '3' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t3)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t3) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t3
-                            db.session.commit()
-                            
-                
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '4' :
-                        
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t4)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t4) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t4
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '5' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t5)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t5) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t5
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '6' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t6)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t6) + float(meuble)
-                            db.session.commit()
-                                
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t7)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t7) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t7
-                            db.session.commit()
-                            
-                    if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '8' :
-                        tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
-                        if mission.CODE_FACTURATION[2:5] == '150':
-                            meuble=float(tarif.edl_pav_villa_prix_t8)/2
-                            mission.PRIX_HT_EDL = float(tarif.edl_pav_villa_prix_t8) + float(meuble)
-                            db.session.commit()
-                            
-                        else:
-                            mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t8
-                            db.session.commit()
-                    else:
-                       if mission.PRIX_HT_EDL == None:
-                            mission.PRIX_HT_EDL = 0
-                            db.session.commit()
-            except:
-                print("done")
-                                    
-            
-                
-            
+            db.session.commit() 
         else:
-           # reference.append(vii)# make a table for historique des donnees 
-            print(reference)
+           print(2250)
+
+    
+    return failed(available)
 
 
 
@@ -1845,7 +1653,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='Mission_failed.xls'
+    filename='all_Echouer.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
