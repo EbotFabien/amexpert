@@ -1653,7 +1653,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-    filename='all_Echouer.xls'
+    filename='Echouer_missions.xls'
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
