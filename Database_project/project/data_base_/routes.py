@@ -739,7 +739,7 @@ def choose(Type,id=None):
                                             if mission.PRIX_HT_EDL==0.00 :
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                                 db.session.commit()
-                                    price.append(float(tarif.mission.PRIX_HT_EDL))
+                                    price.append(float(mission.PRIX_HT_EDL))
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
@@ -884,7 +884,7 @@ def choose(Type,id=None):
                                             if mission.PRIX_HT_EDL==0.00 :
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                                                 db.session.commit()
-                                    price.append(float(tarif.mission.PRIX_HT_EDL))#goes up to 8  '''
+                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
                                 if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if tarif != None :
@@ -928,7 +928,7 @@ def choose(Type,id=None):
                                     price.append(float(mission.PRIX_HT_EDL))
             except:
                 flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
-                return redirect(url_for('users.choose',id=id))   
+                return redirect(url_for('users.choose',Type="client",id=id))   
             print(price)
             add_sum=sum(price)
             if Type == "client":
