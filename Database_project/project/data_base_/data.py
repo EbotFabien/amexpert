@@ -1543,7 +1543,7 @@ def Missions2(loc):
         if loge[-1]=='M':
             loge1=loge[0:-1]
         code=sheet["BI"][i].value
-        code=''.join(code)
+        code=''.join(code.strip())
         if code[-1]=='M':
             code=code[0:-1]
         if code == "AUTRE":

@@ -22,7 +22,7 @@ import json
 import base64
 #sfrom wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 import json
@@ -33,7 +33,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+#wkhtmltopdf = Wkhtmltopdf(app)
 
 
 
@@ -41,66 +41,18 @@ PER_PAGE = 10
 
 @users.route('/clean', methods=['GET', 'POST'])
 def clean():
-    cli=prospect.query.filter_by(visibility=True).all()
+    cli=Mission.query.filter(Mission.id>=27062).all()
     for i in cli:
-        '''i.appli=False
-        db.session.commit()'''
-        '''i.anom=False
-        i.reason=''
-        db.session.commit()'''
-        if len(str(i.siret)) > 5 or  i.societe != '':
-            i.TYPE ='Professionel'
-            db.session.commit()
-        if len(str(i.siret)) < 5 and i.societe != '':
-            i.TYPE ='Particulier'
-            db.session.commit()
-        '''if len(str(i.numero)) >= 10 :
-            if i.numero[0]!='0':
-                i.anom=True
-                i.reason='Anomalie sur le numero de telephone'
-                db.session.commit()
-        if len(str(i.numero)) <= 8:
-            if i.numero[0]!='0':
-                i.anom=True
-                i.reason='Anomalie sur le numero de telephone'
-                db.session.commit()'''
-        #'''if len(str(i.numero)) == 9:
-        #    v=str(i.numero)
-        #    i.numero='0'+v
-        #    db.session.commit()'''
-    cli=Client.query.filter_by(visibility=True).all()
-    for i in cli:
-        if len(str(i.siret)) > 5 or  i.societe != '':
-            i.TYPE ='Professionel'
-            db.session.commit()
-        if len(str(i.siret)) < 5 and i.societe != '':
-            i.TYPE ='Particulier'
-            db.session.commit()
-        '''i.anom=False
-        i.reason=''
+        v=i.TYPE_LOGEMENT.replace(' ','')
+        if v[-1] =='':
+            v=v[0:-1]
+        if v[-1]=='M':
+            v=v[0:-1]
+
+        i.TYPE_LOGEMENT=v
         db.session.commit()
-        if len(str(i.numero)) < 9 :
-            if i.numero[0]!='0':
-                i.anom=True
-                i.reason='Anomalie sur le numero de telephone'
-                db.session.commit()
-        if len(str(i.numero)) == 9:
-            v=str(i.numero)
-            i.numero='0'+v
-            db.session.commit()
-        if len(str(i.numero)) >= 10 :
-            if i.numero[0]!='0':
-                i.anom=True
-                i.reason='Anomalie sur le numero de telephone'
-                db.session.commit()'''
-        #if len(str(i.siret)) > 5 and i.societe == '':
-        #    i.TYPE ='Professionel'
-        #    db.session.commit()
-        #if len(str(i.siret)) < 5 and i.societe != '':
-        #    i.TYPE ='Particulier'
-        #    db.session.commit()
-       
-         
+            
+   
     return redirect(url_for('users.main'))
 
 @users.route('/client', methods=['GET', 'POST'])
