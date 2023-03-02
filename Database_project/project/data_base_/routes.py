@@ -2,7 +2,7 @@ from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from Database_project.project.data_base_.Models import db,Tarifs,Mission,Client,Expert,Expert_History,Client_History,Client_negotiateur,Negotiateur_History,suivi_client,prospect,prospect_History,prospect,suivi_client,suivi_prospect,facturation_client,facturation_mission,Tarif_base,Facturation_history,expert_facturation,compte_mensuel,Type_expert
 from Database_project.project.data_base_.forms import (RegistrationForm,UpdateAccountForm,Mission_editForm, LoginForm ,tableform,Negotiateur_Form1,Client_Form,Facturation_Form, Tarif_Form,RequestResetForm,ResetPasswordForm,Suivi_Client,Expert_editForm,Mission_add,Invitation_Agenda,time,Tarif_Base,Agenda_form,Negotiateur_Form,Tarif_edit,Client_edit,RegistrationForm1,Facturationex_Form,rectify_Form,mission_export,mission_id,Facturationind_Form)
 from Database_project.project.data_base_ import bcrypt
-from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1
+from Database_project.project.data_base_.data  import Missions,expert__,insert_client,fix_mission,Base,reset,Missions2,Missions1,failed
 from Database_project.project.data_base_.client_data  import lient,lienta,clientdoc,geta
 from Database_project.project.data_base_.expert_data  import xpert,xperte
 from Database_project.project.data_base_.tarif_data  import arif
@@ -112,7 +112,7 @@ def client():
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
-    
+   
     if current_user.TYPE == "Admin":
         Type = request.args.get('ron')
         Vis = request.args.get('vis')
@@ -677,7 +677,7 @@ def choose(Type,id=None):
                         else:
                             
                             if mission.CODE_FACTURATION[0:2] == 'TS':
-                                price.append(mission.CODE_FACTURATION[3:-1])
+                                price.append(float(mission.CODE_FACTURATION[3:-1]))
                             if mission.CODE_FACTURATION[0:2] == 'TN':
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
                                         
@@ -929,6 +929,7 @@ def choose(Type,id=None):
             except:
                 flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
                 return redirect(url_for('users.choose',id=id))   
+            print(price)
             add_sum=sum(price)
             if Type == "client":
                 return render_template('manage/pages/ajouter_facturationc.html', highlight='mission', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
@@ -3158,7 +3159,7 @@ def choosev(Type):
                             else:
                                 
                                 if mission.CODE_FACTURATION[0:2] == 'TS':
-                                    price[i].append(mission.CODE_FACTURATION[3:-1])
+                                    price[i].append(float(mission.CODE_FACTURATION[3:-1]))
                                 if mission.CODE_FACTURATION[0:2] == 'TN':
 
                                     if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
@@ -3524,7 +3525,7 @@ def choosep():
                     else:
                         
                         if mission.CODE_FACTURATION[0:2] == 'TS':
-                            price.append(mission.CODE_FACTURATION[3:-1])
+                            price.append(float(mission.CODE_FACTURATION[3:-1]))
                         if mission.CODE_FACTURATION[0:2] == 'TN':
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
