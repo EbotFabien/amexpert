@@ -2903,8 +2903,11 @@ def uploader_():
                     i.nom=(i.nom).lower()
                     i.prenom=(i.prenom).lower()
                     db.session.commit()
-                Missions2(loc)
-                
+                try:
+                    return Missions2(loc)
+                except:
+                    flash(f"Verifier la structure de votre fichier svp et Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide",'warning')
+                    return redirect(url_for('users.up'))
                 
                 
                 #Missions(loc)
