@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Generic single-database configuration.
+=======
+Single-database configuration for Flask.
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e

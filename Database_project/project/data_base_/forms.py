@@ -4,7 +4,10 @@ from flask_login import current_user
 from wtforms import StringField,PasswordField,SubmitField,BooleanField,SelectField, IntegerField,DecimalField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,length,Email,EqualTo,ValidationError,Optional,NumberRange
 from Database_project.project.data_base_.Models import Expert ,Client,Tarif_base,Client_negotiateur,prospect
+
 from wtforms.fields.html5 import DateField
+#from wtforms.fields import DateField
+
 from sqlalchemy import or_, and_, desc,asc
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint
 from datetime import date,timedelta,datetime,timezone 
@@ -718,7 +721,8 @@ class Facturationind_Form(FlaskForm):
 class Client_Form(FlaskForm):
        
     Type=SelectField('Type',
-                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')])
+                          choices=[ ('Particulier', 'Particulier'),('Professionnel', 'Professionnel')])
+
 
     Societe =StringField('Société',
                            validators=[validators.InputRequired()])
@@ -758,7 +762,7 @@ class Client_Form(FlaskForm):
     Date_Creation=StringField("Date Creation",
                            render_kw={'readonly':True})
 
-    EtatClient=SelectField("EtatClient", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
+    EtatClient=SelectField("Etat Client", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
                         validators=[validators.InputRequired()])
 
     LoginExtranet = StringField("Login Extranet")
@@ -836,7 +840,10 @@ class Client_edit(FlaskForm):
     Ville=StringField('Ville *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
                            #validators=[validators.InputRequired()])
     
-    Siret=IntegerField('Siret *',validators=[validators.InputRequired()])#,validatep])
+
+    #Siret=IntegerField('Siret *',validators=[validators.InputRequired()])#,validatep])
+    Siret=IntegerField('Siret *')#,validatep,,validators=[validators.InputRequired()]])
+
 
     Pays=SelectField("Pays *", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])

@@ -4,6 +4,7 @@ import smtplib
 
 class Config:
     SECRET_KEY='FABIENCLASSIC'
+    #SQLALCHEMY_DATABASE_URI = "sqlite:///test_db.db"
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:12345@localhost/amexpert"
     #SQLALCHEMY_DATABASE_URI =  "postgresql+psycopg2://postgres:1234@localhost/amexpert" 
     MAIL_SERVER ='smtp.infomaniak.com'#'mail.infomaniak.ch'
@@ -20,7 +21,8 @@ class Config:
     WKHTMLTOPDF_BIN_PATH =r"/usr/local/bin"
     #WKHTMLTOPDF_BIN_PATH =r"C:\Program Files\wkhtmltopdf\bin"
     WKHTMLTOPDF_USE_CELERY = True
-    PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf2')
+    PDF_DIR_PATH1 =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf2')
+    PDF_DIR_PATH =  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
     DEBUG = True
     CACHE_TYPE= "simple" # Flask-Caching related configs
     CACHE_DEFAULT_TIMEOUT= 300
