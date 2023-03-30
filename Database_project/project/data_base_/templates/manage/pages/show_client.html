@@ -34,17 +34,10 @@
 		  		<a href="{{url_for('users.facturation', id=client.id)}}" title="" style="background: #795a64; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir son historique de facturation</a>
 		  	</div>
 			  <div class="column">
-<<<<<<< HEAD
 				<a href="{{url_for('users.tarifs', id=client.id,typo='norm')}}" title="" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Tarifs</a>
 			</div>
 			<div class="column">
 		  		<a href="{{url_for('users.ajouter_tarif', id=client.id,typo='norm')}}" style="color: #fff; background: #219EBC;" title="modifier" class="button is-small is-fullwidth">Ajouter un Tarif</a>
-=======
-				<a href="{{url_for('users.tarifs', id=client.id)}}" title="" style="background: #03071E; color: #fff;" class="button is-outlined-black is-small is-fullwidth">Voir ses Tarifs</a>
-			</div>
-			<div class="column">
-		  		<a href="{{url_for('users.ajouter_tarif', id=client.id)}}" style="color: #fff; background: #219EBC;" title="modifier" class="button is-small is-fullwidth">Ajouter un Tarif</a>
->>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 		  	</div>
 		</div>
 	{% endif %}

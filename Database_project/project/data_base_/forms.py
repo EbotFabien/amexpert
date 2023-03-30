@@ -724,8 +724,7 @@ class Client_Form(FlaskForm):
                           choices=[ ('Particulier', 'Particulier'),('Professionnel', 'Professionnel')])
 
 
-    Societe =StringField('Société',
-                           validators=[validators.InputRequired()])
+    Societe =StringField('Société')
 
     Sexe=SelectField('Titre',
                              choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
@@ -751,8 +750,8 @@ class Client_Form(FlaskForm):
     Ville=StringField('Ville',
                            validators=[validators.InputRequired()])
     
-    Siret=StringField('Siret',
-                           validators=[validatep,length(min=14 ,max=14)])  
+    Siret=StringField('Siret')
+                          # validators=[validatep,length(min=14 ,max=14)])  
 
     Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
                         validators=[validators.InputRequired()])

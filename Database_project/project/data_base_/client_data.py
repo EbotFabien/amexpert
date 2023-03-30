@@ -8,7 +8,6 @@ import flask as pd
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory
 import os
 
-
 def  geta(client):
     wb_obj1= xlrd.open_workbook("C:/Users/user/Downloads/Telegram Desktop/Missions sans ref bailleur complété.xls")
     sheet1 = wb_obj1.sheet_by_index(0)
@@ -270,7 +269,13 @@ def regex1(data,Type):
         if data == '':
             return 0.00
         if type(data)==str:
-            return 0.00
+            try:
+                data=data.replace(',','.')
+                return round(float(data),2)
+            except:
+                return 0.00
+        if type(data)==int:
+            return round(int(data),2)
         if data == None:
             return 0.00
         else:
@@ -326,9 +331,7 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-
     filename='du_20221201_au_20221231_Exportadres_EDL.xls'
-
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -357,9 +360,7 @@ def failed1(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-
     filename='oct_failed.xls'
-
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -388,7 +389,6 @@ def good1(av):
                     ws.write(v, q, i)
             v=v+1
     filename='du_20221101_au_20221130_Exportadres_EDL-_1_.xls'
-
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path
@@ -416,9 +416,7 @@ def good2(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
-
     filename='du_20221001_au_20221031_Exportadres_EDL.xls'
-
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path

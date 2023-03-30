@@ -1235,8 +1235,8 @@ def create_facturec():
         form=Facturation_Form()
         
         
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(asc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(asc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
 
         
             
@@ -4278,9 +4278,6 @@ def gestion(id,save):
         s1=set(abnormal)
         s2=set(factura)
         facture = list(s2.difference(s1))
-        surf=0
-        for i in facture:
-           surf+=i.mission__data_.surface_logement1 
         name1=factura[0].facturation_client__data_.client__data_.id
         name=Client.query.filter_by(id=name1).first()
         his=Client_History.query.filter_by(id=name1).first()
@@ -4293,10 +4290,10 @@ def gestion(id,save):
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his,surf=surf,download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his,surf=surf,download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
 
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:

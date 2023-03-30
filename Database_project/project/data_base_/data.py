@@ -1569,7 +1569,7 @@ def Missions2(loc):
                                     sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
                                     sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
             continue
-        miss=Mission.query.filter(and_(Mission.CODE_AMEXPERT==sheet["BB"][i].value,Mission.NOMPROPRIO==sheet["AR"][i].value,Mission.Reference_LOCATAIRE==sheet["S"][i].value)).first()
+        miss=Mission.query.filter(and_(Mission.CODE_AMEXPERT==str(sheet["BB"][i].value),Mission.NOMPROPRIO==sheet["AR"][i].value,Mission.Reference_LOCATAIRE==str(sheet["S"][i].value))).first()
         if miss:
             available.append(["Mission n'existe pas en db",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
@@ -1601,6 +1601,7 @@ def Missions2(loc):
             ID_INTERV =IV ,
             
             Reference_LOCATAIRE	 =  sheet["S"][i].value ,
+	    old =sheet["U"][i].value, 
             Adresse1_Bien	 = sheet["V"][i].value ,  
             Adresse2_Bien	 = sheet["W"][i].value , 
             CP_Bien	 = regex1(sheet["X"][i].value,'M') ,  
