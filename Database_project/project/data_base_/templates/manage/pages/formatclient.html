@@ -87,14 +87,19 @@
         }
         .tertiary__header {
             border-bottom: 1px solid #DDD;
+            padding-top: 50px ;
         }
         .amount__section {
             width: 490px;
-            margin: 5px auto;
+            /*margin: 5px auto;*/
+            padding-top: 170px ;
+            
         }
         .amount__section__content {
             padding: 10px;
             border: 5px solid black;
+            height: 200px;
+            
         }
         table {
             border-collapse: collapse;
@@ -132,8 +137,8 @@
             <div class="right__header__section">
                 <p><strong>Facture/Invoice</strong><br /> No: {{nro}}</p>
                 <p><strong>Date</strong><br />{{total.Date_de_creation.strftime('%d. %m. %Y')}}</p>
-                <p><strong>Pays</strong> /<br /> <strong>Country</strong>: France</p>
-                <p><strong>Client / Customer</strong>:<br />{{Nom.nom}} {{Nom.prenom}}</p>
+                <p><strong>Pays / Country</strong>:<br /> France</p>
+                <p><strong>Client / Customer</strong>:<br />{{Nom.reference}} </p>
             </div>
         </header>
         <header class="secondary__header">
@@ -142,32 +147,62 @@
                 <div class="left__side">
                     <h5>FACTURATION / BILLING:</h5>
                     <br />
-                    <p>Monsieur/Madame</p>
+                    <p>{{Nom.societe}}</p>
                     <br />
-                    <p>Client:{{Nom.nom}} {{Nom.prenom}}</p>
+                    <p>Monsieur/Madame </p> <p>Client:{{Nom.nom}} {{Nom.prenom}}</p>
+                    <br />
+                    <p>{{his.cp}} {{his.adresse1}} {{his.adresse2}}</p>
+                    <br />
+                    <p style = "text-align:center;"><b>Client No TVA intra-communautaire</b></p>
+                    <br />
+                    <p style = "text-align:center;"><b>FR39793315211</b></p>
                 </div>
                 <div class="right__side">
                    <h5>Par virement / By transfert to :</h5>
                    <br />
-                   <p>RELEVE D'IDENTITE BANCAIRE - STATEMENT OF ACCOUNT </p>
-                   <p>Numéro de compte bancaire international - International bank account number</p>
+                   <p style = "text-align:center;">RELEVE D'IDENTITE BANCAIRE - STATEMENT OF ACCOUNT </p>
                    <br />
-                   <p><strong>IBAN</strong>:</p>
-                   <p><strong>BIC / SWIFT</strong>:</p>
+                   <p style = "text-align:center;">Numéro de compte bancaire international - International bank account number</p>
+                   <br />
+                   <div class="secondary__header__content">
+                    <div>
+                        <h1><strong>REVOLUT</strong>:</h1>
+                        <br />
+                        <p><strong>IBAN</strong>: GB56 REVO 0099 6900 1819 94</p>
+                        <br />
+                        <p><strong>BIC / SWIFT</strong>: REVOGB21</p>
+                        <br />
+                    </div>
+                    <div>
+                        <h1><strong>TRUSTEXPERTISE</strong>:</h1>
+                        <br />
+                        <p><strong>25 Station Road</strong>:</p>
+                        <br />
+                        <p><strong>B14 7SR Birmingham</strong>:</p>
+                        <br />
+                        <p><strong>Royaume Uni - UK</strong>:</p>
+                        <br />
+                    </div>
+                    
+                   </span>
+                  
                 </div>
             </div>
         </header>
         <header class="tertiary__header">
             <hr />
-                <strong><p style="text-align: center;">Règlement / Payment : xxxxxxxxx Contact : </p></strong>
+                <strong><span style="padding-left: 90px;" >Règlement / Payment : à Réception/immediat </span>  <span style="padding-left: 90px;">Contact : comptabilite@amexpert.uk</span></strong>
             <hr />
             <h4 style="text-align: center;"><strong>Prestations de constat en état des lieux réalisées à votre demande, récapitulatif des missions page suivant.</strong></h4>
             <div class="amount__section">
-                <p style="margin-bottom: 5px;"><strong>Auto-liquidation TVA France</strong></p>
+                <p style="margin-bottom: 5px; "><strong>Auto-liquidation TVA France</strong></p>
                 <div class="amount__section__content">
                     <p><strong>Montant / Amount: {{total.Montant_HT}}</strong></p>
-                    <p><strong>TVA:</strong></p>
-                    <p><strong>Total prix / price: {{total.Montant_HT}} </strong></p>
+                    <br>
+                    <p><strong>TVA:0.00</strong></p>
+                    <br>
+                    <p><strong>Total prix / price: {{total.Montant_HT}} €</strong></p>
+                    <br>
                     <p><strong>Facture / Invoice No: {{nro}}</strong></p>
                 </div>
             </div>
@@ -183,9 +218,50 @@
         <div class="table__container">
             <table>
                 <thead>
-                    <tr>
+                    <th><h1>Summary/Recapitulatif</h1> </th>
+                  <tr>
+                        <th>Nbr / Qte Mission</th>
+                        <th></th>
+                        <th></th>
+                        <th>No Invoice/facture</th>
+                        <th></th>
+                        <th></th>
+                        <th>Date invoice</th>
+                        <th></th>
+                        <th></th>
+                        <th>Total surface</th>
+                        <th>Tarif ht/€</th>
+                  </tr>
+                  <tr>
+                    <th>{{factura|length}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{nro}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{total.Date_de_creation.strftime('%d. %m. %Y')}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{surf}} €</th>
+                    <th>{{total.Montant_HT}} €</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <th><h1>Details de Facture</h1></th>
+                  <tr>
                         <th>No Mission</th>
-                        <th>DATE REALISE EDL</th>
+                        <th>DATE  EDL REALISE</th>
                         <th>Type</th>
                         <th>Proprietaire</th>
                         <th>Locataire</th>
@@ -204,7 +280,7 @@
                             <td>{{fac.mission__data_.DATE_REALISE_EDL.strftime('%d. %m. %Y')}}</td>
                             <td>{{fac.mission__data_.TYPE_EDL}}</td>
                             <td>{{fac.mission__data_.NOMPROPRIO}}</td>
-                            <td>{{fac.mission__data_.Reference_LOCATAIRE}}</td>
+                            <td>{{fac.mission__data_.old}}</td>
                             <td>{{fac.mission__data_.Ville_Bien}}</td>
                             <td>{{fac.mission__data_.TYPE_DE_BIEN}}</td>
                             <td>{{fac.mission__data_.TYPE_LOGEMENT}}</td>

@@ -1594,6 +1594,7 @@ def Missions2(loc):
                                     sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
                                     sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
                                     sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
+            print('exist')
             continue
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
@@ -1651,6 +1652,8 @@ def Missions2(loc):
              )
             db.session.add(mission)
             db.session.commit() 
+            print(sheet["BK"][i].value)
+            print(mission.surface_logement1)
         else:
            print(2250)
 

@@ -22,7 +22,7 @@ import json
 import base64
 #sfrom wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 import json
@@ -33,7 +33,7 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf = 11#Wkhtmltopdf(app)
 
 
 
@@ -2903,11 +2903,11 @@ def uploader_():
                     i.nom=(i.nom).lower()
                     i.prenom=(i.prenom).lower()
                     db.session.commit()
-                try:
-                    return Missions2(loc)
-                except:
-                    flash(f"Verifier la structure de votre fichier svp et Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide",'warning')
-                    return redirect(url_for('users.up'))
+                #try:
+                return Missions2(loc)
+                #except:
+                #    flash(f"Verifier la structure de votre fichier svp et Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide",'warning')
+                #    return redirect(url_for('users.up'))
                 
                 
                 #Missions(loc)
@@ -4254,6 +4254,9 @@ def gestion(id,save):
         s1=set(abnormal)
         s2=set(factura)
         facture = list(s2.difference(s1))
+        surf=0
+        for i in facture:
+           surf+=i.mission__data_.surface_logement1 
         name1=factura[0].facturation_client__data_.client__data_.id
         name=Client.query.filter_by(id=name1).first()
         his=Client_History.query.filter_by(id=name1).first()

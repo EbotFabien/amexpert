@@ -269,7 +269,13 @@ def regex1(data,Type):
         if data == '':
             return 0.00
         if type(data)==str:
-            return 0.00
+            try:
+                data=data.replace(',','.')
+                return round(float(data),2)
+            except:
+                return 0.00
+        if type(data)==int:
+            return round(int(data),2)
         if data == None:
             return 0.00
         else:
