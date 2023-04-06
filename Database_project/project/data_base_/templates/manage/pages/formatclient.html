@@ -88,6 +88,7 @@
         .tertiary__header {
             border-bottom: 1px solid #DDD;
             padding-top: 50px ;
+            padding-top: 50px ;
         }
         .amount__section {
             width: 490px;
@@ -98,8 +99,6 @@
         .amount__section__content {
             padding: 10px;
             border: 5px solid black;
-            height: 200px;
-            
         }
         table {
             border-collapse: collapse;
@@ -197,11 +196,11 @@
             <div class="amount__section">
                 <p style="margin-bottom: 5px; "><strong>Auto-liquidation TVA France</strong></p>
                 <div class="amount__section__content">
-                    <p><strong>Montant / Amount: {{total.Montant_HT}}</strong></p>
+                    <p><strong>Montant / Amount: {{total.Montant_HT/2}}</strong></p>
                     <br>
                     <p><strong>TVA:0.00</strong></p>
                     <br>
-                    <p><strong>Total prix / price: {{total.Montant_HT}} €</strong></p>
+                    <p><strong>Total prix / price: {{total.Montant_HT/2}} €</strong></p>
                     <br>
                     <p><strong>Facture / Invoice No: {{nro}}</strong></p>
                 </div>
@@ -243,7 +242,7 @@
                     <th></th>
                     <th></th>
                     <th>{{surf}} €</th>
-                    <th>{{total.Montant_HT}} €</th>
+                    <th>{{total.Montant_HT/2}} €</th>
                   </tr>
                   <tr>
                     <th></th>
@@ -271,6 +270,32 @@
                         <th>LOGEMENT MEUBLE</th>
                         <th>Surface/m<sup>2</sup></th>
                         <th>Tarif ht/€</th>
+                  </tr>
+                  <tr>
+                    <th>{{factura|length}}</th>
+                    <th>{{total.Date_de_creation.strftime('%d. %m. %Y')}}</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>XXX</th>
+                    <th>{{surf}} €</th>
+                    <th>{{total.Montant_HT/2}} €</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>

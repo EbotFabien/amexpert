@@ -1300,7 +1300,6 @@ def Missions(loc):
         return True
     else:
         return failed(missions_)
-    
 
         
 
@@ -1414,8 +1413,6 @@ def Base(loc):
 
     
 #def suivi(loc):
-
-
 
 
 def Missions2(loc):
@@ -1572,7 +1569,7 @@ def Missions2(loc):
                                     sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
                                     sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
             continue
-        miss=Mission.query.filter(and_(Mission.CODE_AMEXPERT==sheet["BB"][i].value,Mission.NOMPROPRIO==sheet["AR"][i].value,Mission.Reference_LOCATAIRE==sheet["S"][i].value)).first()
+        miss=Mission.query.filter(and_(Mission.CODE_AMEXPERT==str(sheet["BB"][i].value),Mission.NOMPROPRIO==sheet["AR"][i].value,Mission.Reference_LOCATAIRE==str(sheet["S"][i].value))).first()
         if miss:
             available.append(["Mission n'existe pas en db",sheet["A"][i].value,sheet["B"][i].value,sheet["C"][i].value,
                                     sheet["D"][i].value,sheet["E"][i].value,sheet["F"][i].value,sheet["G"][i].value,
@@ -1594,7 +1591,6 @@ def Missions2(loc):
                                     sheet["BP"][i].value,sheet["BQ"][i].value,sheet["BR"][i].value,sheet["BS"][i].value,
                                     sheet["BT"][i].value,sheet["BU"][i].value,sheet["BV"][i].value,sheet["BW"][i].value,
                                     sheet["BX"][i].value,sheet["BY"][i].value,sheet["BZ"][i].value])
-            print('exist')
             continue
         if cli:
             mission=Mission(Reference_BAILLEUR=cli.id,
@@ -1605,6 +1601,7 @@ def Missions2(loc):
             ID_INTERV =IV ,
             
             Reference_LOCATAIRE	 =  sheet["S"][i].value ,
+	        old =sheet["U"][i].value, 
             Adresse1_Bien	 = sheet["V"][i].value ,  
             Adresse2_Bien	 = sheet["W"][i].value , 
             CP_Bien	 = regex1(sheet["X"][i].value,'M') ,  
@@ -1662,6 +1659,7 @@ def Missions2(loc):
 
 
 
+
 def failed(av):
     ba=[]
     v=0
@@ -1681,7 +1679,9 @@ def failed(av):
                 else:
                     ws.write(v, q, i)
             v=v+1
+
     filename='Echouer_missions.xls'
+
     file_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static','export'),filename)
     loc=str(file_path)
     # set the file path

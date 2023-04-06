@@ -41,6 +41,7 @@ PER_PAGE = 10
 
 @users.route('/clean', methods=['GET', 'POST'])
 def clean():
+
     cli=Mission.query.filter(Mission.id>=27062).all()
     for i in cli:
         v=i.TYPE_LOGEMENT.replace(' ','')
@@ -51,8 +52,7 @@ def clean():
 
         i.TYPE_LOGEMENT=v
         db.session.commit()
-            
-   
+                   
     return redirect(url_for('users.main'))
 
 @users.route('/client', methods=['GET', 'POST'])
@@ -64,7 +64,7 @@ def client():
     db.create_all()
     a='12345'
     #hashed_password = bcrypt.generate_password_hash(a).decode('utf-8')
-   
+
     if current_user.TYPE == "Admin":
         Type = request.args.get('ron')
         Vis = request.args.get('vis')
@@ -629,7 +629,9 @@ def choose(Type,id=None):
                         else:
                             
                             if mission.CODE_FACTURATION[0:2] == 'TS':
+
                                 price.append(float(mission.CODE_FACTURATION[3:-1]))
+
                             if mission.CODE_FACTURATION[0:2] == 'TN':
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
                                         
@@ -691,7 +693,9 @@ def choose(Type,id=None):
                                             if mission.PRIX_HT_EDL==0.00 :
                                                 mission.PRIX_HT_EDL = tarif.edl_appt_prix_f3
                                                 db.session.commit()
+
                                     price.append(float(mission.PRIX_HT_EDL))
+
                                 if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == '4':
                                     
                                     tarif=Tarifs.query.filter_by(reference_client = mission.Bailleur__data.id).first()
@@ -836,7 +840,10 @@ def choose(Type,id=None):
                                             if mission.PRIX_HT_EDL==0.00 :
                                                 mission.PRIX_HT_EDL = tarif.edl_pav_villa_prix_t6
                                                 db.session.commit()
-                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  '''
+
+                                    price.append(float(mission.PRIX_HT_EDL))#goes up to 8  
+
+
                                 if mission.TYPE_LOGEMENT[0:3] == 'PAV' and mission.TYPE_LOGEMENT[-1] == '7' :
                                     tarif=Tarifs.query.filter_by(reference_client=mission.Bailleur__data.id).first()
                                     if tarif != None :
@@ -880,8 +887,10 @@ def choose(Type,id=None):
                                     price.append(float(mission.PRIX_HT_EDL))
             except:
                 flash(f"Veuillez vérifier le tarif du client, assurez-vous qu'il est correct",'warning')
+
                 return redirect(url_for('users.choose',Type="client",id=id))   
             print(price)
+
             add_sum=sum(price)
             if Type == "client":
                 return render_template('manage/pages/ajouter_facturationc.html', highlight='mission', mission=mission_,form=form2,sum=add_sum,start=start,end=end)
@@ -1228,8 +1237,8 @@ def create_facturec():
         form=Facturation_Form()
         
         
-        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())
-        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(desc(Mission.id)).all())#check query
+        _mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==False,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(asc(Mission.id)).all())
+        mission_=list(Mission.query.filter(and_(Mission.DATE_REALISE_EDL>=request.form['Demarrer'],Mission.DATE_REALISE_EDL<=request.form['Fin'],Mission.NRO_FACTURE=='',Mission.Visibility==True,Mission.coherent==True,Mission.Reference_BAILLEUR==request.form['Reference_client'])).order_by(asc(Mission.id)).all())#check query
 
         
             
@@ -1239,7 +1248,7 @@ def create_facturec():
             db.session.add(facture)
             db.session.commit()
             factura=str(facture.Date_de_creation)
-            facture.n_facture=str(facture.id)+'-'+str(factura[2:4])+str(factura[5:7])+'-C'
+            facture.n_facture=str(factura[2:4])+'0'+str(facture.id)+'-001'
             db.session.commit()
             for i in mission_:
                 i.NRO_FACTURE = facture.n_facture
@@ -1898,6 +1907,7 @@ def tarif_ajouter():
     return redirect(url_for('users.main'))
          
 
+
 @users.route('/client/<int:id>/<string:typo>/tarifs')
 def tarifs(id,typo):
     if id and typo:
@@ -1909,6 +1919,7 @@ def tarifs(id,typo):
             return jsonify({"Tarifs":json.dumps(tarifs)}),200
 
 
+
     return redirect(url_for('users.main'))
 
 @users.route('/show/<int:id>/tarifs', methods=['GET'])
@@ -1917,6 +1928,7 @@ def show_tarif(id):
     if current_user.TYPE == "Admin":
         tarif_ = Tarifs.query.filter_by(id=id).first_or_404()
         return render_template('manage/pages/show_tarif.html', tarif=tarif_,legend="tarif", highlight='tarif')
+
 
 
 
@@ -1951,23 +1963,21 @@ def ajouter_tarif(id,typo):
             db.session.add(tarif)
             db.session.commit()
             return jsonify({"status":"Data sent succesfully"}),200
+
         return render_template('manage/pages/ajouter_tarif.html',form=form, legend="expert", highlight='tarif')
     return redirect(url_for('users.main'))
 
 
-@users.route('/delete/<int:id>/<string:typo>/tarif', methods=['GET','POST','DELETE'])
-def delete_tarif(id,typo):
-    if typo == "norm":
+
+@users.route('/delete/<int:id>/tarif')
+@login_required
+def delete_tarif(id):
+    if current_user.TYPE == "Admin":
         tarif = Tarifs.query.filter_by(id=id).first_or_404()
         tarif.visibility = False
         db.session.commit()
         flash(f'Les données du Tarif ont été suprimmées','success')
         return redirect(url_for('users.tarifs',id=id))
-    if typo == "ext":
-        tarif = Tarifs.query.filter_by(id=id).first_or_404()
-        tarif.visibility = False
-        db.session.commit()
-        return jsonify({"status":"Data deleted succesfully"}),200
     
 
 @users.route('/edit/<int:id>/<string:typo>/tarif', methods=['GET','POST','PUT'])
@@ -2616,7 +2626,7 @@ def ajouter_prospect():
     if current_user.TYPE == "Admin":
         form=Client_Form()
         if form.validate_on_submit():
-            user=prospect(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.NOM.data,email=form.email.data,numero=form.Numero.data)
+            user=prospect(TYPE=form.Type.data,societe=form.Societe.data,titre=form.Sexe.data,nom=form.nom.data,email=form.email.data,numero=form.Numero.data)
             db.session.add(user)
             db.session.commit()
             tous=[]
@@ -2625,7 +2635,7 @@ def ajouter_prospect():
                 tous.append(i.reference)
             user.reference =generate(tous)
             db.session.commit()
-            user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.NOM.data)).first()
+            user_history=prospect.query.filter(and_(prospect.email==form.email.data,prospect.nom==form.nom.data)).first()
             user_history.siret=form.Siret.data
             db.session.commit()
             client_history=prospect_History(prospect=user_history.id,adresse1=form.Adresse1.data,adresse2=form.Adresse2.data,cp=form.CP.data,ville=form.Ville.data,pays=form.Pays.data)
@@ -2638,7 +2648,9 @@ def ajouter_prospect():
             flash(f'Prospect créé avec succès','success')
             return redirect(url_for('users.show_prospect',id=user.id))
         print("didn't validate on submit")    
-        return render_template('manage/pages/ajouter_client.html',form=form,legend="prospect", highlight='prospect')
+
+        return render_template('manage/pages/ajouter_prospect.html',form=form,legend="prospect", highlight='prospect')
+
     else:
         return redirect(url_for('users.main'))
 
@@ -2840,10 +2852,13 @@ def uploader_():
             # set the file path
             uploaded_file.save(file_path)
             if table == 'client':
+
                     #lienta(loc)
                     client=Client.query.all()
                     #clientdoc(client,loc)
                     geta(client)
+                    #lienta(loc)
+
                     '''if lient(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -2896,6 +2911,7 @@ def uploader_():
                 
             if table == 'mission':
                 #Base(loc)
+
                 expt=Expert.query.all()
                 for i in expt:
                     a=''.join((i.full).split())
@@ -2903,14 +2919,12 @@ def uploader_():
                     i.nom=(i.nom).lower()
                     i.prenom=(i.prenom).lower()
                     db.session.commit()
-                #try:
-                return Missions2(loc)
-                #except:
-                #    flash(f"Verifier la structure de votre fichier svp et Assurez-vous que le type de fichier est .XLS pour permettre une importation rapide",'warning')
-                #    return redirect(url_for('users.up'))
+                Missions2(loc)
+                
                 
                 
                 #Missions(loc)
+
                 '''if Missions1(loc) == False:
                         flash(f"Verifier la structure de votre fichier svp",'warning')
                         return redirect(url_for('users.up'))
@@ -3114,7 +3128,9 @@ def choosev(Type):
                             else:
                                 
                                 if mission.CODE_FACTURATION[0:2] == 'TS':
+
                                     price[i].append(float(mission.CODE_FACTURATION[3:-1]))
+
                                 if mission.CODE_FACTURATION[0:2] == 'TN':
 
                                     if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
@@ -3480,7 +3496,9 @@ def choosep():
                     else:
                         
                         if mission.CODE_FACTURATION[0:2] == 'TS':
+
                             price.append(float(mission.CODE_FACTURATION[3:-1]))
+
                         if mission.CODE_FACTURATION[0:2] == 'TN':
                             if mission.TYPE_LOGEMENT[0:4] == 'APPT' and mission.TYPE_LOGEMENT[-1] == 'U' :
                                 tarif=Tarifs.query.filter_by(reference_client = mission.Reference_BAILLEUR).first()
@@ -4171,10 +4189,12 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
+
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4213,10 +4233,12 @@ def download(mes,temps,id,save):
                     fin=sum(su)
                     releve=sum(re)
                     if save =="false":
+
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True, save=False,histo=histo, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
                         return res
                     if save == "true":
                         res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatexpert.html', download=True,histo=histo, save=True, new_rel=new_rel,Nom=name,image=image,fin=fin,releve=releve)
+
                         files=os.listdir(app.config['PDF_DIR_PATH'])
                         for fil in files:
         
@@ -4269,10 +4291,11 @@ def gestion(id,save):
             return render_template('manage/pages/show_facture.html',gd=len(facture),abd=len(abnormal),fld=len(failed),nro=NRO,facture=facture,factura=factura,failed=failed,abnormal=abnormal,id=id)
         else:
             if save =="false":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his,surf=surf,download=True,total=total, save=False,nro=NRO,factura=factura,Nom=name,image=image)
                 return res
             if save == "true":
-                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his, download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
+                res=wkhtmltopdf.render_template_to_pdf('manage/pages/formatclient.html',his=his,surf=surf,download=True, total=total,save=True,nro=NRO, factura=factura,Nom=name,image=image)
+
                 files=os.listdir(app.config['PDF_DIR_PATH'])
                 for fil in files:
                     if fil.endswith('.pdf'):
@@ -4668,3 +4691,5 @@ def p():
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "inline; filename=output.pdf"
     return response'''
+
+

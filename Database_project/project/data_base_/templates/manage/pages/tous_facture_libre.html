@@ -1,0 +1,90 @@
+{% extends 'manage/index.html' %}
+{% block manage_content %}
+<div class="main-content">
+    
+    
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Tous les factures libre</h2>
+    </div>
+
+    <section class="tile" style="margin-top: 10px;">
+        <div class="box" style="  width: -webkit-fill-available; max-width: -moz-available;width: 100%;">
+          <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="display-flex">
+                <span><i class="fa fa-users"></i></span>                
+            </div>           
+          </div>
+          <div class="table-container" style="position: relative;">
+            {% with messages = get_flashed_messages(with_categories=true)%}
+                {% if messages %}
+                    {%for category,message in messages%}
+                    <div class="alert alert-{{category}} is-small">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <table class="table is-striped" id="table_id" style="overflow-x: scroll;min-width: 800px;">       
+                <thead class="">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Civilite</th>
+                        <th scope="col">No_Fact</th>
+                        <th scope="col">Datepaye</th> 
+                        <th scope="col">Quantite</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        {%for mission in facture %}
+                            <tr>
+                                <td scope="row">{{mission.id}}</td>
+                                <td>{{mission.nom}}</td>
+                                <td>{{mission.civilite}}</td>
+                                <td>{{ mission.no_fact}}</td>
+                                <td>{{mission.datepaye}}</td>
+                                <td>{{mission.quantite}}</td>
+                                <td> <a href="{{url_for('fact_l.fact_indi', id=mission.id)}}" title="imprimer Factures" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a> </td>
+                                 
+                            </tr>    
+                        {%endfor%}
+
+                    </tbody>
+                </table>
+	            </div>
+            <!-- Pagination Links-->
+            
+            <!-- / fin de la pagination -->
+	        </div>
+        </section>
+	    </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var table = $('#table_id').DataTable({
+                    //'scrollX':true,
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.11.2/i18n/fr_fr.json'
+                    }
+                });
+            
+                $('#table_id tbody').on( 'click', 'tr', function () {
+                    if ( $(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                    }
+                    else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                } );
+            
+                $('#button').click( function () {
+                    table.row('.selected').remove().draw( false );
+                } );
+            } );
+        </script>
+    </style>
+        
+	</style>
+{% endblock %}

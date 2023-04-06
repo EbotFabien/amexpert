@@ -3,8 +3,12 @@ from __future__ import with_statement
 import logging
 from logging.config import fileConfig
 
+<<<<<<< HEAD
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
+=======
+from flask import current_app
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 
 from alembic import context
 
@@ -17,15 +21,34 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
+<<<<<<< HEAD
+=======
+
+def get_engine():
+    try:
+        # this works with Flask-SQLAlchemy<3 and Alchemical
+        return current_app.extensions['migrate'].db.get_engine()
+    except TypeError:
+        # this works with Flask-SQLAlchemy>=3
+        return current_app.extensions['migrate'].db.engine
+
+
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+<<<<<<< HEAD
 from flask import current_app
 config.set_main_option(
     'sqlalchemy.url', current_app.config.get(
         'SQLALCHEMY_DATABASE_URI').replace('%', '%%'))
 target_metadata = current_app.extensions['migrate'].db.metadata
+=======
+config.set_main_option(
+    'sqlalchemy.url', str(get_engine().url).replace('%', '%%'))
+target_db = current_app.extensions['migrate'].db
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -33,6 +56,15 @@ target_metadata = current_app.extensions['migrate'].db.metadata
 # ... etc.
 
 
+<<<<<<< HEAD
+=======
+def get_metadata():
+    if hasattr(target_db, 'metadatas'):
+        return target_db.metadatas[None]
+    return target_db.metadata
+
+
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -47,7 +79,11 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
+<<<<<<< HEAD
         url=url, target_metadata=target_metadata, literal_binds=True
+=======
+        url=url, target_metadata=get_metadata(), literal_binds=True
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
     )
 
     with context.begin_transaction():
@@ -72,16 +108,24 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
+<<<<<<< HEAD
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
         poolclass=pool.NullPool,
     )
+=======
+    connectable = get_engine()
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
 
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
+<<<<<<< HEAD
             target_metadata=target_metadata,
+=======
+            target_metadata=get_metadata(),
+>>>>>>> c6c4135ede4e808be5c4f7b824a3d3f819d4c77e
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args
         )
