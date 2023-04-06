@@ -37,6 +37,15 @@
             </a>
 
             </li>
+            <li class="{% if highlight == 'facture' %} active {% endif %} has-submenu" style="position: relative;">
+                <span class="menu_icon"><i class="fas fa-users"></i></span> <span class="menu_text">FACTURATION LIBRE</span>
+                <ul class="sub-menu">
+                    <li> <a href="{{url_for('fact_l.search_fact')}}" style="color: #000">Cree une facture libre</a></li>
+                    <li> <a href="{{url_for('fact_l.voislibre')}}" style="color: #000">Voir tous les facture libre</a></li>
+            </ul>
+            
+
+            </li>
             {% endif %}
             <li class="{% if highlight == 'mission' %} active {% endif %} has-submenu" style="position: relative;">
                 <a href="/mission"><span class="menu_icon"><i class="fas fa-bullseye"></i></span> <span class="menu_text">Mission</span>
