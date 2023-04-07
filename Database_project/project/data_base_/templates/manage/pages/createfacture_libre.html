@@ -37,14 +37,14 @@
                     <div class="field"><!---->
                         <div class="control">
                          {% if form.nom.errors %}
-                          {{form.nom(class="input is-invalid",value=data.nom") }}
+                          {{form.nom(class="input is-invalid",value=data.nom) }}
                       <div class="invalid-feedback">
                           {% for error in form.nom.errors %}
                               <span>{{ error }}</span>
                           {% endfor %}
                       </div>
                           {% else %}
-                              {{form.nom(class="input",value=data.nom")}}
+                              {{form.nom(class="input",value=data.nom)}}
                           {% endif %}
                         </div>
                           <p class="help"> Veuillez remplir ce champ</p>
@@ -59,14 +59,14 @@
                     <div class="field"><!---->
                         <div class="control">
                          {% if form.prenom.errors %}
-                          {{form.prenom(class="input is-invalid",value=data.prenom") }}
+                          {{form.prenom(class="input is-invalid",value=data.prenom) }}
                       <div class="invalid-feedback">
                           {% for error in form.prenom.errors %}
                               <span>{{ error }}</span>
                           {% endfor %}
                       </div>
                           {% else %}
-                              {{form.prenom(class="input",value=data.prenom")}}
+                              {{form.prenom(class="input",value=data.prenom)}}
                           {% endif %}
                         </div>
                           <p class="help"> Veuillez remplir ce champ</p>
@@ -81,14 +81,14 @@
                         <div class="field"><!---->
                             <div class="control">
                              {% if form.numero.errors %}
-                              {{form.numero(class="input is-invalid",value=data.numero") }}
+                              {{form.numero(class="input is-invalid",value=data.numero) }}
                           <div class="invalid-feedback">
                               {% for error in form.numero.errors %}
                                   <span>{{ error }}</span>
                               {% endfor %}
                           </div>
                               {% else %}
-                                  {{form.numero(class="input",value=data.numero")}}
+                                  {{form.numero(class="input",value=data.numero)}}
                               {% endif %}
                             </div>
                               <p class="help"> Veuillez remplir ce champ</p>
@@ -205,7 +205,7 @@
                               {{form.ville(class="input",value=his.ville)}}
                           {% endif %}
                         </div>
-                          <p class="help"> Requis. type d'expert est requis</p>
+                          <p class="help"> Non requis</p>
                       </div>
                     </div>
                   </div>
@@ -326,10 +326,10 @@
                                     {% endfor %}
                                 </div>
                                     {% else %}
-                                        {{form.montant_ht(class="input",  placeholder="Données Alpha-numérique (100 charactères max)")}}
+                                        {{form.montant_ht(class="input")}}
                                     {% endif %}
                                   </div>
-                                    <p class="help"> Requis. La adresse est requis</p>
+                                    <p class="help"> Requis. Montant est requis</p>
                                 </div>
                               </div>
                             </div>
@@ -344,17 +344,17 @@
                                 <div class="field"><!---->
                                     <div class="control">
                                     {% if form.intitule.errors %}
-                                    {{form.intitule(class="input is-invalid",  placeholder="Données Alpha-numérique (100 charactères max)") }}
+                                    {{form.intitule(class="input is-invalid") }}
                                 <div class="invalid-feedback">
                                     {% for error in form.intitule.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                     {% else %}
-                                        {{form.intitule(class="input",  placeholder="Données Alpha-numérique (100 charactères max)")}}
+                                        {{form.intitule(class="input")}}
                                     {% endif %}
                                     </div>
-                                    <p class="help"> Non requis </p>
+                                    <p class="help">requis </p>
                                 </div>
                                 </div>
                             </div>
@@ -376,7 +376,7 @@
                                         {{form.prix_uni(class="input",  placeholder="Données Alpha-numérique (100 charactères max)")}}
                                     {% endif %}
                                     </div>
-                                    <p class="help"> Non requis </p>
+                                    <p class="help">requis </p>
                                 </div>
                                 </div>
                             </div>
@@ -388,14 +388,14 @@
                                 <div class="field"><!---->
                                     <div class="control">
                                     {% if form.ref_commande.errors %}
-                                    {{form.ref_commande(class="input is-invalid",  placeholder="Données Alpha-numérique (100 charactères max)") }}
+                                    {{form.ref_commande(class="input is-invalid") }}
                                 <div class="invalid-feedback">
                                     {% for error in form.ref_commande.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                     {% else %}
-                                        {{form.ref_commande(class="input",  placeholder="Données Alpha-numérique (100 charactères max)")}}
+                                        {{form.ref_commande(class="input")}}
                                     {% endif %}
                                     </div>
                                     <p class="help"> Non requis </p>
@@ -403,7 +403,7 @@
                                 </div>
                             </div>
                         
-            </div>
+            </div> 
 
             
             <button class="accordion">Montant Total HT E</button>
@@ -411,20 +411,20 @@
               <hr/>
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label" style="text-align: left;"><small>{{form.siret.label(class="form-control-label")}}</small></label>
+                    <label class="label" style="text-align: left;"><small>{{form.montant_ht.label(class="form-control-label")}}</small></label>
                 </div>
                 <div class="field-body">
                   <div class="field"><!---->
                       <div class="control">
-                       {% if form.siret.errors %}
-                        {{form.siret(class="input is-invalid", placeholder="Données numérique à 14 chiffres. example '75271334700041'") }}
+                       {% if form.montant_ht.errors %}
+                        {{form.montant_ht(class="input is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.siret.errors %}
+                        {% for error in form.montant_ht.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                         {% else %}
-                            {{form.siret(class="input", placeholder="Données numérique à 14 chiffres. example '75271334700041'")}}
+                            {{form.montant_ht(class="input")}}
                         {% endif %}
                       </div>
                         <p class="help"> Veuillez remplir ce champ</p>
