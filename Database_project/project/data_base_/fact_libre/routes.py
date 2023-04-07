@@ -86,7 +86,7 @@ def createlibre(id,Type):
             )
             db.session.add(Facturation)
             db.session.commit()
-            date=Facturation.datefact
+            date=str(Facturation.datefact)
             fact=str(date[2:4])+'0000'+str(Facturation.id)+'-001'
             if Facturation.type_prest == "EDL":
                 Facturation.no_fact="AED"+fact

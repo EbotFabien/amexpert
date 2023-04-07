@@ -221,8 +221,8 @@
 
                 <div id="content">
                     <div id="left">
-                        <div id="object1"><strong>Facturé a : </strong> <br> Réference donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
-                            <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilité :{{facture.civilite}} <br> Nom & Prenom :{{facture.nom}}{{facture.prenom}} <br> Telephone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
+                        <div id="object1"><strong>Facture a : </strong> <br> Reference donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
+                            <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilite :{{facture.civilite}} <br> Nom & Prenom :{{facture.nom}}{{facture.prenom}} <br> Telephone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
                             <strong>ADRESSE : </strong><br> Numero & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
 
 
@@ -245,7 +245,7 @@
 
                 <hr>
                 <center>
-                    <h1>Audit énergétique réalisé à votre demande</h1>
+                    <h1>{{facture.type_prest}} realise a votre demande</h1>
                 </center>
 
                 <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
@@ -255,9 +255,9 @@
                         <strong>
                         <th>Ref Commande</th>
                         <th>Description</th>
-                        <th>Quantité</th>
-                        <th>Prix Unitaire € HT</th>
-                        <th>Montant € </th>
+                        <th>Quantite</th>
+                        <th>Prix Unitaire  HT</th>
+                        <th>Montant  </th>
               
                      </strong>
                     </tr>
@@ -265,7 +265,7 @@
 
                         <strong>
                     <td>{{facture.ref_commande}}</td>
-                    <td>{{facture.civilite}}</td>
+                    <td></td>
                     <td>{{facture.quantite}}</td>
                     <td>{{facture.prix_uni}} </td>
                     <td>{{facture.montant_ht}}</td>
