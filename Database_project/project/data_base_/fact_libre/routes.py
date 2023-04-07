@@ -111,7 +111,7 @@ def voislibre():
 @login_required
 def fact_indi(id):
     facture=Facturation_libre.query.filter_by(id=id).first()
-    img=os.path.join(os.path.dirname('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
+    img=os.path.join('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
     with open(img, 'rb') as image_file:
             image= base64.b64encode(image_file.read()).decode()
     res=wkhtmltopdf.render_template_to_pdf('manage/pages/pint_libre.html', download=True, save=False,image=image,facture=facture)
