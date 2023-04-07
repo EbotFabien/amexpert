@@ -64,6 +64,46 @@ class rectify_Form(FlaskForm):
 
     submit = SubmitField('Modifier')
 
+class facturation_libre(FlaskForm):
+    	   
+    identite=HiddenField()
+
+    type_phys = StringField("Type de Prestataire",
+                        validators=[validators.InputRequired()])
+    trigramme = StringField("Trigramme")
+    civilite = StringField("Civilite")
+    numero = StringField("Numero")
+    nom = StringField("Nom")
+    prenom = StringField("Prenom")
+    email = StringField("Email")
+    cp = StringField("Code Postal")
+    ville = StringField("Ville")
+    adresse = StringField("Adresse")
+    type_prest = SelectField('Type de Prestation',
+                             choices=[('EDL', 'EDL'), ('AUDIT ENERGETIQUE', 'AUDIT ENERGETIQUE'),('MANDAT DE REPRESENTATION','MANDAT DE REPRESENTATION')])
+    quantite = StringField("Quantite")
+    ref_commande = StringField("Reference commande")
+    intitule = StringField("Intitule de la Prestation")
+    remise = StringField("Remise en %",
+                        validators=[validators.InputRequired()])
+    details = SelectField('Details de Paiement',
+                             choices=[('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois'),('15 jours a reception de facture', '15 jours a reception de facture'),('7 jours a reception de facture', '7 jours a reception de facture')])
+    
+    montant_ht =DecimalField("Montant Total HT",
+                        validators=[validators.InputRequired()])
+    montant_rem =DecimalField("Montant Total HT avec Remise ",
+                        validators=[validators.InputRequired()])
+    prix_uni =DecimalField("Prix Unitaire HTE",
+                        validators=[validators.InputRequired()])
+    datepaye=DateField('Date Payement',
+                    format='%Y-%m-%d',
+                    validators=[validators.InputRequired()]
+                   )
+    type_paye = SelectField('Type de Paiement',
+                             choices=[('Virement Bancaire', 'Virement Bancaire'), ('Lien de Paiement', 'Lien de Paiement')])
+    
+    submit = SubmitField('Valider')
+
 class mission_export(FlaskForm):
     
     Temps =  SelectField('Saison Export',
