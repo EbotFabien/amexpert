@@ -18,14 +18,16 @@ from datetime import date,timedelta,datetime,timezone
 from Database_project.project.data_base_.export import Export
 import sqlalchemy as sa
 from sqlalchemy import extract
+from sqlalchemy.sql import text
 import json
 import base64
 #sfrom wkhtmltopdf import wkhtmltopdf
 #from flask_wkhtmltopdf import render_template_to_pdf
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 from flask import session
 import locale
 import json
+
 
 locale.setlocale(locale.LC_TIME,'fr_FR.UTF-8')
 
@@ -33,8 +35,8 @@ users =Blueprint('users',__name__)
 app= create_app()
 exo=Export()
 
-wkhtmltopdf = Wkhtmltopdf(app)
-
+#wkhtmltopdf = Wkhtmltopdf(app)
+wkhtmltopdf=0
 PER_PAGE = 10
 
 @users.route('/clean', methods=['GET', 'POST'])
@@ -2308,8 +2310,8 @@ def main():
                                         expert_facturation,(expert_facturation.mission == compte_mensuel.id)).filter(
                                             expert_facturation.expert_id==current_user.id).count()
        
-        mission_encashmonth=db.session.execute('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'})
-        expertpermonth=db.session.execute('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 ',{"param":'month',"param2":'year'}) #do for month
+        mission_encashmonth=db.session.execute(text('SELECT date_trunc(:param,"DATE_REALISE_EDL") AS DATE_REALISE_EDL,COUNT(*) as TotalCount,SUM("PRIX_HT_EDL") as SumTotal FROM public."Mission" WHERE "DATE_FACT_REGLEE" IS NOT NULL and date_trunc(:param2,"DATE_REALISE_EDL") = date_trunc(:param2,current_date)  GROUP BY 1 ORDER BY 1 '),{"param":'month',"param2":'year'})
+        expertpermonth=db.session.execute(text('SELECT date_trunc(:param,"date_cmpte_mensuel") AS date_cmpte_mensuel, COUNT(*) as TotalCount,SUM("total") as SumTotal FROM public.compte_mensuel WHERE date_trunc(:param2,"date_cmpte_mensuel") = date_trunc(:param2,current_date) GROUP BY 1 ORDER BY 1 '),{"param":'month',"param2":'year'}) #do for month
         if current_user.TYPE== 'Admin':
             return render_template('manage/dashboard.html',prospro=prospro,prospart=prospart,fact_importe=fact_importe, prospects=prospects, actc=actc,patc=patc,acte=acte,pate=pate,facr=facr,facnotr=facnotr,gener=gene,ngener=ngene,ano=ano,expertpermonth=expertpermonth,title='Portail',mission_encashmonth=mission_encashmonth,reg=reglee,not_reg=notreglee,client=clients, mission=missions, facturation=facturations,expert=Experts, highlight='dashboard')
         else:
@@ -2465,10 +2467,6 @@ def edit_negotiateur(id):
                 return redirect(url_for('users.show_negotiateur', id=id))
         client_history=Negotiateur_History.query.filter_by(negotiateur_id=id).order_by(asc(Negotiateur_History.date)).first_or_404()
         return render_template('manage/pages/edit_negotiateur.html', client=client,highlight='client',history=client_history,form=form,legend="edit_negotiateur")
-
-
-
-
 
 
 
@@ -2672,7 +2670,6 @@ def delete_prospect(id):
         return redirect(url_for('users.prospect_'))
 
 
-
 @users.route('/show/<int:id>/prospect', methods=['GET'])
 @login_required
 def show_prospect(id):
@@ -2725,9 +2722,6 @@ def edit_prospect(id):
                 return redirect(url_for('users.show_prospect',id=id))
         client_history=prospect_History.query.filter_by(prospect=id).order_by(asc(prospect_History.date)).first_or_404()
         return render_template('manage/pages/edit_prospect.html',highlight='prospect', client=client,history=client_history,form=form)
-
-
-
 
 
 
@@ -2789,9 +2783,6 @@ def edit_suivip(id):
            # flash(f'Vous ne pouvez pas modifier ce suivi','warning')
            # return redirect(url_for('users.suivi_prospect_', id=id))
     return redirect(url_for('users.client'))
-
-
-
 
 
 @users.route("/exporter", methods=['GET','POST'])
@@ -3013,11 +3004,6 @@ def error_403(error):
 def error_500(error):
     return render_template('errors/500.html'),500
 
-
-
-
-
-
 @users.route('/search', methods=['GET'])
 @login_required
 def search ():
@@ -3075,14 +3061,7 @@ def search ():
                 title = "Mission"
             return render_template('manage/pages/search_results.html', missions=missions, highlight='mission', title=title, table=table, search=request.args.get('keyword')) 
         
-
-
-
-
-
 #/choose
-
-
 
 @users.route('/choose/<string:Type>/mission',methods=['GET','POST'])
 @login_required
@@ -3401,10 +3380,6 @@ def choosev(Type):
     return redirect(url_for('users.main'))
 
 
-
-
-
-
 @users.route('/create_facturem/',methods=['GET','POST'])
 @login_required
 def create_facturem():
@@ -3468,8 +3443,6 @@ def create_facturem():
             return redirect(url_for('users.facturationa'))
     return redirect(url_for('users.main'))        
         
-            
-               
 
 @users.route('/choose/mission',methods=['GET','POST'])
 @login_required
@@ -3787,9 +3760,6 @@ def facturation_relever():
     #form2=Facturation_Form()
     return render_template('manage/pages/facture_missions.html', highlight='expert')
 
-
-
-
 @users.route('/create_facturep/',methods=['GET','POST'])
 @login_required
 def create_facturep():
@@ -3825,9 +3795,6 @@ def create_facturep():
             return redirect(url_for('users.facturation',id=request.form['Reference_client']))
     return redirect(url_for('users.main'))
         
-
-
-
 
 @users.route('/menu/factures/',methods=['GET','POST'])
 @login_required
