@@ -197,11 +197,11 @@
             <div class="amount__section">
                 <p style="margin-bottom: 5px; "><strong>Auto-liquidation TVA France</strong></p>
                 <div class="amount__section__content">
-                    <p><strong>Montant / Amount: {{total.Montant_HT}}</strong></p>
+                    <p><strong>Montant / Amount: {{total.Montant_HT/2}}</strong></p>
                     <br>
                     <p><strong>TVA:0.00</strong></p>
                     <br>
-                    <p><strong>Total prix / price: {{total.Montant_HT}} €</strong></p>
+                    <p><strong>Total prix / price: {{total.Montant_HT/2}} €</strong></p>
                     <br>
                     <p><strong>Facture / Invoice No: {{nro}}</strong></p>
                 </div>
@@ -218,9 +218,50 @@
         <div class="table__container">
             <table>
                 <thead>
+                    <th><h1>Summary/Recapitulatif</h1> </th>
+                  <tr>
+                        <th>Nbr / Qte Mission</th>
+                        <th></th>
+                        <th></th>
+                        <th>No Invoice/facture</th>
+                        <th></th>
+                        <th></th>
+                        <th>Date invoice</th>
+                        <th></th>
+                        <th></th>
+                        <th>Total surface</th>
+                        <th>Tarif ht/€</th>
+                  </tr>
+                  <tr>
+                    <th>{{factura|length}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{nro}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{total.Date_de_creation.strftime('%d. %m. %Y')}}</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{surf}}/m<sup>2</sup></th>
+                    <th>{{total.Montant_HT/2}} €</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <th><h1>Details de Facture</h1></th>
                   <tr>
                         <th>No Mission</th>
-                        <th>DATE REALISE EDL</th>
+                        <th>DATE  EDL REALISE</th>
                         <th>Type</th>
                         <th>Proprietaire</th>
                         <th>Locataire</th>
@@ -230,32 +271,6 @@
                         <th>LOGEMENT MEUBLE</th>
                         <th>Surface/m<sup>2</sup></th>
                         <th>Tarif ht/€</th>
-                  </tr>
-                  <tr>
-                    <th>{{factura|length}}</th>
-                    <th>{{total.Date_de_creation.strftime('%d. %m. %Y')}}</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>XXX</th>
-                    <th>{{surf}} €</th>
-                    <th>{{total.Montant_HT}} €</th>
-                  </tr>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
