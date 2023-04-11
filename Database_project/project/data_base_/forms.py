@@ -200,8 +200,6 @@ class RegistrationForm(FlaskForm):
 
     modifier = SubmitField('Modifier')
     
-
-
 class Expert_editForm(FlaskForm):
     def validate2(self,email,expert):
         email = Expert.query.filter(and_(Expert.email==email,Expert.id!=expert)).first()
@@ -291,6 +289,7 @@ class ResetPasswordForm(FlaskForm):
     confirm_password =PasswordField('Confirmez votre Mot de Passe',
                                   validators=[validators.InputRequired(),EqualTo('password')])
     submit = SubmitField('Réinitialiser le mot de passe')
+
 class LoginForm(FlaskForm):
     username =StringField("Identifiant",
                                      validators=[validators.InputRequired(),length(min=4 ,max=20, message='Le champ est obligatoire')])
@@ -306,8 +305,6 @@ class tableform(FlaskForm):
         table =StringField('table',validators=[validators.InputRequired()])
 
         submit = SubmitField('Recherchez')
-
-
 
 class Tarif_Form(FlaskForm):
     def validate_email(self,email):
@@ -674,11 +671,6 @@ class Tarif_Form(FlaskForm):
 
     modifier = SubmitField('Modifier')
 
-    
-    
-   
-
-
 class Facturation_Form(FlaskForm):
     Reference_client=IntegerField('Reference client',
                            render_kw={'readonly':True})
@@ -741,7 +733,6 @@ class Facturationex_Form(FlaskForm):
 
     submit = SubmitField('Générer')
 
-
 class Facturationind_Form(FlaskForm):
 
     Mission =StringField('Mission ID',
@@ -757,8 +748,165 @@ class Facturationind_Form(FlaskForm):
 
     submit = SubmitField('Facture')
 
-
 class Client_Form(FlaskForm):
+       
+    Type=SelectField('Type',
+                          choices=[ ('Particulier', 'Particulier'),('Professionnel', 'Professionnel')])
+
+
+    Societe =StringField('Société')
+
+    Sexe=SelectField('Titre',
+                             choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
+
+
+
+    nom = StringField('Nom *',  validators=[validators.InputRequired()])
+    
+    prenom = StringField('Prénom *',  validators=[validators.InputRequired()])
+    email =StringField('E-mail *',
+                           validators=[validators.InputRequired(),Email()])
+
+    Numero =StringField('Téléphone portable *',
+                           validators=[validatep,length(min=10 ,max=10)])
+
+    Adresse1=StringField('Adresse1 *')
+    
+    Adresse2=StringField('Adresse2')
+
+    CP=IntegerField('Code Postal *')
+    #                     ,  validators=[validators.InputRequired(),validatei])
+    
+    Ville=StringField('Ville *',
+                           validators=[validators.InputRequired()])
+    
+    Siret=StringField('Siret *')
+                          # validators=[validatep,length(min=14 ,max=14)])  
+
+    Pays=SelectField("Pays ", choices=[('France', 'France'), ('Belgique', 'Belgique')],
+                        validators=[validators.InputRequired()])
+
+    Reference=IntegerField("Reference")
+    
+    Date_Creation=StringField("Date Creation",
+                           render_kw={'readonly':True})
+
+    EtatClient=SelectField("Etat ", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
+                        validators=[validators.InputRequired()])
+
+    LoginExtranet = StringField("Login Extranet")
+
+    MdpExtranet = StringField("MdpExtranet")
+
+
+    Enseigne=StringField("Enseigne")
+
+    submit = SubmitField('Enregistrer')
+
+    modifier = SubmitField('Modifier')
+
+
+
+    def validate_username(self,username):
+        user = Client.query.filter_by(nom=username.data).first()
+
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
+    def validate_email(self,email):
+        email = Client.query.filter_by(email=email.data).first()
+
+        if email:
+            raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
+
+class Client_edit(FlaskForm):
+
+    def validate2(self,email,client):
+        if email !='':
+            email = Client.query.filter(and_(Client.email==email,Client.id!=client)).first()
+
+            if email:
+                return True
+        
+    def validate3(self,email,client):
+        if email !='':
+            email = prospect.query.filter(and_(prospect.email==email,prospect.id!=client)).first()
+
+            if email:
+                return True
+    
+    
+
+    Type=SelectField('Type *',
+                             choices=[('Professionnel', 'Professionnel'), ('Particulier', 'Particulier')],
+                             validators=[validators.InputRequired()])
+
+    Societe =StringField('Société *')
+                         #,validators=[validators.InputRequired(),length(min=4 ,max=20)])
+                           #validators=[validators.InputRequired()])
+
+    Sexe=SelectField('Titre *'
+                            ,validators=[validators.InputRequired()]
+                            ,choices=[('Monsieur', 'Monsieur',), ('Madame', 'Madame'),('Maître', 'Maître'), ('Mr et Mme', 'Mr et Mme'),('Société', 'Société'), ('Mademoiselle', 'Mademoiselle')])
+
+    # NOM =StringField('Nom et prénom *',validators=[validators.InputRequired(),length(min=4 ,max=20)]) 
+                           #validators=[validators.InputRequired()])
+    nom = StringField('Nom *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    prenom = StringField('Prénom *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    email =StringField('E-mail *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    Numero =IntegerField('Téléphone portable *',validators=[validators.InputRequired()])
+                           #validators=[validatep,length(min=9 ,max=9)])
+
+    Adresse1=StringField('Adresse1 *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+    
+    Adresse2=StringField('Adresse2 *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    CP=IntegerField('Code Postal *',validators=[validators.InputRequired()])
+                           #validators=[validatep,length(min=5 ,max=5)])
+    
+    Ville=StringField('Ville *',validators=[validators.InputRequired(),length(min=4 ,max=20)])
+                           #validators=[validators.InputRequired()])
+    
+
+    #Siret=IntegerField('Siret *',validators=[validators.InputRequired()])#,validatep])
+    Siret=IntegerField('Siret *')#,validatep,,validators=[validators.InputRequired()]])
+
+
+    Pays=SelectField("Pays *", choices=[('France', 'France'), ('Belgique', 'Belgique')],
+                        validators=[validators.InputRequired()])
+
+    Reference=IntegerField('Reference *',validators=[validators.InputRequired()])
+    
+    Date_Creation=StringField("Date Creation",
+                           render_kw={'readonly':True})
+
+    EtatClient=SelectField("Etat ",validators=[validators.InputRequired(),length(min=4 ,max=20)],choices=[('Actif', 'Actif',), ('Inactif', 'Inactif')]) 
+    
+    LoginExtranet = StringField("Login Extranet *", validators=[validators.InputRequired(),length(min=4 ,max=20)], render_kw={'readonly':True})
+
+    MdpExtranet = StringField("MdpExtranet *",validators=[validators.InputRequired(),length(min=4 ,max=20)], render_kw={'readonly':True})
+
+    client_id = HiddenField()
+
+    Enseigne=StringField("Enseigne ")
+              #, validators=[validators.InputRequired(),length(min=4 ,max=20)])
+
+    submit = SubmitField('Enregistrer')
+
+    modifier = SubmitField('Modifier')
+
+
+
+    def validate_username(self,username):
+        user = Client.query.filter_by(nom=username.data).first()
+
+        if user:
+            raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
+
+class Prospect_Form(FlaskForm):
        
     Type=SelectField('Type',
                           choices=[ ('Particulier', 'Particulier'),('Professionnel', 'Professionnel')])
@@ -801,7 +949,7 @@ class Client_Form(FlaskForm):
     Date_Creation=StringField("Date Creation",
                            render_kw={'readonly':True})
 
-    EtatClient=SelectField("Etat Client", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
+    EtatClient=SelectField("Etat ", choices=[('Actif', 'Actif'), ('Parti', 'Parti')],
                         validators=[validators.InputRequired()])
 
     LoginExtranet = StringField("Login Extranet")
@@ -829,8 +977,8 @@ class Client_Form(FlaskForm):
         if email:
             raise ValidationError('Cet e-mail est déjà utilisé par un autre utilisateur')
 
-class Client_edit(FlaskForm):
-
+class Prospect_edit(FlaskForm):
+    
     def validate2(self,email,client):
         if email !='':
             email = Client.query.filter(and_(Client.email==email,Client.id!=client)).first()
@@ -914,7 +1062,6 @@ class Client_edit(FlaskForm):
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
 
-
 class Negotiateur_Form(FlaskForm):
 
     def nego(self,email,cont):
@@ -961,10 +1108,7 @@ class Negotiateur_Form(FlaskForm):
 
         if user:
             raise ValidationError("Ce nom d'utilisateur est pris. Veuillez choisir un autre nom")
-
-    
-    
-
+   
 class Negotiateur_Form1(FlaskForm):  
 
     def validate_username(self,nom):
@@ -1009,10 +1153,6 @@ class Negotiateur_Form1(FlaskForm):
 
     modifier = SubmitField('Modifier')
 
-
-
-    
-
 class Suivi_Client(FlaskForm):
     def validate_email(self,email):
         email = Expert.query.filter(and_(Expert.trigramme==email.data,Expert.trigramme!='')).first() #.lower()
@@ -1027,8 +1167,6 @@ class Suivi_Client(FlaskForm):
                         validators=[validators.InputRequired()])
 
     submit = SubmitField('Enregistrer')
-
-
 
 class Mission_add(FlaskForm):
     def validate_email(self,email):
@@ -1216,7 +1354,6 @@ class Mission_add(FlaskForm):
 
     modifier = SubmitField('Modifier')
 
-
 class Mission_editForm(FlaskForm):
 
   
@@ -1402,7 +1539,6 @@ class Mission_editForm(FlaskForm):
 
     modifier = SubmitField('Modifier')
 
-
 class Agenda_form(FlaskForm):
 
     Titre_du_Rdv=StringField("Titre du Rdv",
@@ -1446,7 +1582,6 @@ class Agenda_form(FlaskForm):
     
     submit = SubmitField('Enregistrer')
 
-
 class Invitation_Agenda(FlaskForm):
 
     Expert_invite=StringField("Expert invite",
@@ -1466,6 +1601,7 @@ class Tarif_edit(FlaskForm):
     surface=IntegerField("surface *")
 
     submit = SubmitField('Enregistrer')
+
 class time(FlaskForm):
 
     Demarrer=DateField("Demarrer")
