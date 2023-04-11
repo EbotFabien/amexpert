@@ -76,11 +76,12 @@ class facturation_libre(FlaskForm):
     nom = StringField("Nom")
     prenom = StringField("Prenom")
     email = StringField("Email")
+    description = StringField("Description")
     cp = StringField("Code Postal")
     ville = StringField("Ville")
     adresse = StringField("Adresse")
     type_prest = SelectField('Type de Prestation',
-                             choices=[('EDL', 'EDL'), ('AUDIT ENERGETIQUE', 'AUDIT ENERGETIQUE'),('MANDAT DE REPRESENTATION','MANDAT DE REPRESENTATION')])
+                             choices=[('EDL', 'EDL'), ('AUDIT ENERGETIQUE', 'AUDIT ENERGETIQUE'),('MANDAT DE REPRESENTATION','MANDAT DE REPRESENTATION'),('AUTRE','AUTRE')])
     quantite = StringField("Quantite")
     ref_commande = StringField("Reference commande")
     intitule = StringField("Intitule de la Prestation")

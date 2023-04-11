@@ -264,6 +264,29 @@
                       </div> 
                     </div>
                 <hr/>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label" style="text-align: left;"><small>{{form.description.label(class="form-control-label")}}</small></label>
+                    </div>
+                    <div class="field-body">
+                      <div class="field"><!---->
+                          <div class="control">
+                           {% if form.description.errors %}
+                            {{form.description(class="input is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.description.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                            {% else %}
+                                {{form.description(class="input")}}
+                            {% endif %}
+                           </div>
+                            <p class="help">requis</p>
+                        </div>
+                      </div> 
+                    </div>
+                <hr/>
                     <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.type_prest.label(class="form-control-label")}}</small></label>
@@ -313,23 +336,23 @@
                             </div>
                     <div class="field is-horizontal">
                             <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.montant_ht.label(class="form-control-label")}}</small></label>
+                                <label class="label" style="text-align: left;"><small>{{form.prix_uni.label(class="form-control-label")}}</small></label>
                             </div>
                             <div class="field-body">
                               <div class="field"><!---->
                                   <div class="control">
-                                   {% if form.montant_ht.errors %}
-                                    {{form.montant_ht(class="input is-invalid",  placeholder="Données Alpha-numérique (100 charactères max)") }}
+                                   {% if form.prix_uni.errors %}
+                                    {{form.prix_uni(class="input is-invalid",  placeholder="Données Alpha-numérique (100 charactères max)") }}
                                 <div class="invalid-feedback">
-                                    {% for error in form.montant_ht.errors %}
+                                    {% for error in form.prix_uni.errors %}
                                         <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>
                                     {% else %}
-                                        {{form.montant_ht(class="input")}}
+                                        {{form.prix_uni(class="input")}}
                                     {% endif %}
                                   </div>
-                                    <p class="help"> Requis. Montant est requis</p>
+                                    <p class="help"> Requis. prix_uni est requis</p>
                                 </div>
                               </div>
                             </div>
@@ -358,28 +381,7 @@
                                 </div>
                                 </div>
                             </div>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.prix_uni.label(class="form-control-label")}}</small></label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field"><!---->
-                                    <div class="control">
-                                    {% if form.prix_uni.errors %}
-                                    {{form.prix_uni(class="input is-invalid",  placeholder="Données Alpha-numérique (100 charactères max)") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.prix_uni.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                                    {% else %}
-                                        {{form.prix_uni(class="input",  placeholder="Données Alpha-numérique (100 charactères max)")}}
-                                    {% endif %}
-                                    </div>
-                                    <p class="help">requis </p>
-                                </div>
-                                </div>
-                            </div>
+                        
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.ref_commande.label(class="form-control-label")}}</small></label>

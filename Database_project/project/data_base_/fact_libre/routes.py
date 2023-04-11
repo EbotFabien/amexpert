@@ -4,7 +4,7 @@ from Database_project.project.data_base_ import create_app
 from Database_project.project.data_base_.forms import facturation_libre
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 import os
 import base64
 
@@ -14,11 +14,12 @@ fact_l =Blueprint('fact_l',__name__)
 
 app= create_app()
 
-wkhtmltopdf =Wkhtmltopdf(app)
+wkhtmltopdf =10#Wkhtmltopdf(app)
 
 @fact_l.route('/search/facture', methods=['GET'])
 @login_required
 def search_fact():
+    db.create_all()
     if current_user.TYPE == 'Admin':
         table = request.args.get('table')
         search = "%{}%".format(request.args.get('keyword'))
@@ -77,6 +78,7 @@ def createlibre(id,Type):
                 intitule = form.intitule.data,
                 remise = form.remise.data,
                 details = form.details.data,
+                description=form.description.data,
                 
                 montant_ht =form.montant_ht.data,
                 montant_rem =form.montant_rem.data,
@@ -109,9 +111,14 @@ def voislibre():
 @login_required
 def fact_indi(id):
     facture=Facturation_libre.query.filter_by(id=id).first()
+    return render_template('manage/pages/factur_libre_indivi.html',facture=facture)
+
+@fact_l.route('/impri/facture/<int:id>/libre',methods=['GET','POST'])
+@login_required
+def fact_impri(id):
+    facture=Facturation_libre.query.filter_by(id=id).first()
     img=os.path.join('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
     with open(img, 'rb') as image_file:
             image= base64.b64encode(image_file.read()).decode()
     res=wkhtmltopdf.render_template_to_pdf('manage/pages/pint_libre.html', download=True, save=False,image=image,facture=facture)
     return res
-    #return render_template('manage/pages/factur_libre_indivi.html',facture=facture)
