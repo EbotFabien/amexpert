@@ -87,13 +87,11 @@ def createlibre(id,Type):
             db.session.add(Facturation)
             db.session.commit()
             date=str(Facturation.datefact)
-            fact=str(date[2:4])+'0000'+str(Facturation.id)+'-001'
-            if Facturation.type_prest == "EDL":
-                Facturation.no_fact="AED"+fact
-            if Facturation.type_prest == "AUDIT ENERGETIQUE":
-                Facturation.no_fact="AEN"+fact 
-            else:
-                Facturation.no_fact="ADI"+fact   
+            if Facturation.id <=9:
+                fact=str(date[2:4])+'0000'+str(Facturation.id)+'-001'
+            if Facturation.id >9:
+                fact=str(date[2:4])+'000'+str(Facturation.id)+'-001'
+            Facturation.no_fact="ADI"+fact   
             db.session.commit()
             #flash(f"Vous avez modifier avec success",'success')
             return redirect(url_for('fact_l.voislibre'))
