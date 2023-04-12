@@ -90,9 +90,9 @@ class facturation_libre(FlaskForm):
     details = SelectField('Details de Paiement',
                              choices=[('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois'),('15 jours a reception de facture', '15 jours a reception de facture'),('7 jours a reception de facture', '7 jours a reception de facture')])
     
-    montant_ht =DecimalField("Montant Total HT",
+    montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
-    montant_rem =DecimalField("Montant Total HT avec Remise ",
+    montant_rem =DecimalField("Montant Total HT avec Remise ",render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
     prix_uni =DecimalField("Prix Unitaire HTE",
                         validators=[validators.InputRequired()])

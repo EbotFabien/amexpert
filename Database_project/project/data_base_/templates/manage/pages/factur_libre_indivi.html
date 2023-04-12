@@ -1,298 +1,102 @@
-<!DOCTYPE html>
+{% extends 'manage/index.html' %} {% block manage_content %}
+<div style="" class="main-content">
 
-<html>
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Libre N°
+        </h2>
 
-<head>
-    <style>
-        @media print {
-            .new-page {
-                page-break-before: always;
-            }
-        }
-        
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #DDD;
-        }
-        
-        tr:hover {
-            background-color: #D6EEEE;
-        }
-        
-        * {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        
-        hr {
-            display: block;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-            margin-left: 2em;
-            margin-right: auto;
-            border-style: inset;
-            border-width: 3px;
-            width: 700px;
-        }
-        
-        .ticket3 {
-            width: 480px;
-            height: 150px;
-            /* margin-top: 40px; */
-            margin-left: 100px;
-            /* margin-right: auto;  */
-            border: 5px solid black;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .ticket {
-            width: 480px;
-            height: 200px;
-            /* margin-top: 40px; */
-            margin-left: 60px;
-            /* margin-right: auto;  */
-            border: 1px solid navy;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .ticket1 {
-            width: 300px;
-            height: 200px;
-            margin-top: 20px;
-            /* margin-left: auto; */
-            margin-right: auto;
-            border: 1px solid navy;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .left {
-            /* 
-      display: inline-block;
-      border-right: 1px dashed navy; */
-            height: 92%;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, auto);
-            grid-column-gap: 0px;
-            grid-row-gap: 10px;
-        }
-        
-        .rigthE {
-            /* display: inline-block;
-      border-right: 1px solid black;  */
-            height: 0%;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, auto);
-            grid-column-gap: 0px;
-            grid-row-gap: 10px;
-        }
-        /* .rightE{
-      display: inline-block;
-      height: 100%;
-      padding: 20px;
-       background-image: url('https://pdfmark.com/images/laughing.png');
-      background-repeat: no-repeat; 
-      background-size: 80px;
-      background-position: top 20px right 20px;
-    }  */
-        
-        html,
-        body,
-        td {
-            font-size: 13px;
-        }
-        
-        #items {
-            border-collapse: collapse;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #items th,
-        #items td {
-            padding: 5px;
-            border: 1px solid black;
-        }
-        
-        #items tr td {
-            text-align: right;
-            width: 100px;
-        }
-        
-        .showname {
-            font-size: 40px;
-            font-weight: bold;
-            color: #9900ff;
-        }
-        
-        #items tr td:first-child {
-            text-align: left;
-            width: auto;
-        }
-        
-        .container {
-            padding: auto;
-            height: 200px;
-        }
-        
-        .titre1 {
-            display: inline-block;
-            margin-left: 300px;
-        }
-        
-        .titre2 {
-            float: right;
-            margin-right: 250px;
-            font-size: 20px;
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        #content {
-            background-color: rgba(210, 210, 210, 0.5);
-            border: 1px solid #000;
-            padding: 0.5rem;
-            display: flex;
-        }
-        
-        #left,
-        #right {
-            background-color: rgba(10, 10, 10, 0.5);
-            border: 1px solid #fff;
-            padding: 0.5rem;
-            flex-grow: 1;
-            color: #fff;
-        }
-    </style>
-</head>
-
-<body>
-    <table style="width: 800px; margin-left: auto; margin-right: auto">
-        <tr>
-            <td style="vertical-align: top; text-align: left">
-                <!-- <td style="vertical-align: top; width: 50%"> -->
-
-
-            </td>
-
-        </tr>
-        <div class="container">
-            <div class="titre1">
-                <img src="" width="100" height="130"> <br>
-                <strong> ENERGY Ltd </strong><br><br> Facture / Invoice : {{facture.no_fact}} <br> Date:{{facture.datefact.strftime('%d/%m/%Y')}}<br>
+    </div>
+    <div class="tile is-ancestor is-vertical">
+        <div class="tile is-horizontal is-parent">
+            <div class="tile is-child box">
+                <h1 class="title is-5">FACTURER A :</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Reference du donneur d'ordre:</strong></li>
+                    <li><strong>Raison Social:</strong> </li>
+                    <li><strong>Numero Siret :</strong> </li>
+                    <li><strong>Numero TVA:</strong> </li>
+                </ul>
             </div>
-            <div class="titre2">
-
-                <p> <strong>TRUSTEXPERTISE</strong> <br> Registration / Enregistrement No <br> 25 Station <br>B147SR Birmingham <br>Royaume Uni - UK</p>
-
+            <div class="tile is-child box">
+                <h1 class="title is-5">Identité donneur d'Ordre</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Civilité:</strong>
+                    </li>
+                    <li><strong>Nom & Prenom:</strong>
+                    </li>
+                    <li><strong>Telephone:</strong> </li>
+                    <li><strong>Email :</strong></li>
+                </ul>
             </div>
         </div>
-        <tr>
-            <td style="vertical-align: top; padding-top: 20px; padding-bottom: 20px;">
-                <hr>
+        <div class="tile is-parent is-horizontal">
+            <div class="tile is-child box">
+                <h1 class="title is-5">ADRESSE</h1>
+                <hr/>
+                <ul>
+                    <li>
+                        <strong>Numero & Nom de la voie :</strong>
+                    </li>
+                    <li><strong>Code postal:</strong></li>
+                    <li><strong>Ville:</strong> </li>
 
+                </ul>
+            </div>
+            <div class="tile is-child box">
+                <h1 class="title is-5">STATUS PAIEMENT</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Mode de paiement:</strong></li>
+                    <li><strong>Date de paiement :</strong></li>
+                    <li><strong>Delai de paiement :</strong></li>
 
-                <div id="content">
-                    <div id="left">
-                        <div id="object1"><strong>Facture a : </strong> <br> Reference donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
-                            <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilite :{{facture.civilite}} <br> Nom & Prenom :{{facture.nom}}{{facture.prenom}} <br> Telephone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
-                            <strong>ADRESSE : </strong><br> Numero & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
+                </ul>
+            </div>
+        </div>
+        <br><br>
 
+        <h1>
+            <center> <strong> EDL REALISEE A VOTRE DEMANDE</strong></center>
+        </h1>
+        <div class="tile is-parent is-horizontal">
 
-
-
-                        </div>
-
-                    </div>
-
-                    <div id="right">
-                        <div id="object3">
-                            <strong>STATUS PAIEMENT</strong><br><br>
-                            <strong><br>Mode de paiement : {{facture.type_paye}} <br></strong>
-                            <strong>Delai de traitement :{{facture.datefact.strftime('%d/%m/%Y')}} </strong> <br>
-                            <strong>Date de paiement :{{facture.datepaye.strftime('%d/%m/%Y')}}</strong>
-                        </div>
-
-                    </div>
-                </div>
-
-                <hr>
-                <center>
-                    <h1>{{facture.type_prest}} realise a votre demande</h1>
-                </center>
-
+            <div class="tile is-child box">
                 <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
 
                     <tr>
-                        <hr>
-                        <strong>
-                        <th>Ref Commande</th>
-                        <th>Description</th>
-                        <th>Quantite</th>
-                        <th>Prix Unitaire  HT</th>
-                        <th>Montant  </th>
-              
-                     </strong>
+                        <th> Ref Commande</th>
+                        <th> Description</th>
+                        <th>Quantité </th>
+                        <th> Prix Unitaire € HT </th>
+                        <th> Montant € </th>
                     </tr>
                     <tr>
-
-                        <strong>
-                    <td>{{facture.ref_commande}}</td>
-                    <td>{{facture.description}}</td>
-                    <td>{{facture.quantite}}</td>
-                    <td>{{facture.prix_uni}} </td>
-                    <td>{{facture.montant_ht}}</td>
-              
-           </strong>
+                        <td>00000</td>
+                        <td>000000</td>
+                        <td>000000</td>
+                        <td>000000 </td>
+                        <td>000000 </td>
                     </tr>
 
                     <tr>
-                        <td colspan="3"></td>
+                        <td rowspan="3" colspan="3"></td>
                         <td><strong>Montant Total € HT</strong> </td>
-                        <td>{{facture.montant_ht}}</td>
+                        <td> </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
-                        </td>
                         <td><strong>Taxe en % </strong> </td>
-                        <td>{{facture.remise}}</td>
+                        <td> </td>
                     </tr>
                     <tr>
-
-                        <td colspan="3"></td>
                         <td><strong>Montant Total € en TTC  </strong> </td>
                         <td> </td>
-
-                        </strong>
                     </tr>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-</body>
-
-</html>
+{%endblock%}

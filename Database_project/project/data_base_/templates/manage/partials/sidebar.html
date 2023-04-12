@@ -39,12 +39,12 @@
             </li>
             <li class="{% if highlight == 'expert' %} active {% endif %} has-submenu" style="position: relative;">
                 <a href="#"><span class="menu_icon"><i class="fas fa-money-check"></i></span> <span class="menu_text">Facturation Libre</span>
-                <ul class="sub-menu">
-                    <li> <a href="{{url_for('fact_l.search_fact')}}" style="color: #000">Cree une facture libre</a></li>
-                    <li> <a href="{{url_for('fact_l.voislibre')}}" style="color: #000">Voir tous les facture libre</a></li>
+                <ul class="sub-menu">   
+                    <li> <a href="{{url_for('fact_l.search_fact')}}" style="color: #000">Creer une facture libre</a></li>
+            <li> <a href="{{url_for('fact_l.voislibre')}}" style="color: #000">Voir toutes les factures libres</a></li>
             </ul>
             </a>
-            
+
 
             </li>
             {% endif %}
@@ -53,7 +53,7 @@
                     {% if current_user.TYPE == "Admin" %}
                 <ul class="sub-menu">
                   <li> <a href="{{url_for('users.exportm')}}" style="color: #000">Exports Mission</a></li>
-	   </ul> {% endif %}
+            </ul> {% endif %}
             </a>
             </li>
             {% if current_user.TYPE == "Admin" %}
@@ -77,4 +77,3 @@
         </nav>
     </div>
 </section>
-
