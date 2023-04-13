@@ -32,7 +32,7 @@ def search_fact():
             else:
                 flash(f"Ce prestataire n'existe pas, assurez-vous qu'il est correct",'warning')
 
-                return redirect(url_for('users.search_fact')) 
+                return redirect(url_for('fact_l.search_fact')) 
         
         elif table == 'expert':
              
@@ -42,7 +42,7 @@ def search_fact():
             else:
                 flash(f"Ce prestataire n'existe pas, assurez-vous qu'il est correct",'warning')
 
-                return redirect(url_for('users.search_fact'))
+                return redirect(url_for('fact_l.search_fact'))
     return render_template('manage/pages/client_facture_libre.html')
 
 
@@ -104,6 +104,7 @@ def createlibre(id,Type):
 @fact_l.route('/vois/facture/libre' , methods=['GET','POST'])
 @login_required
 def voislibre():
+    db.create_all()
     facture=Facturation_libre.query.all()
     return render_template('manage/pages/tous_facture_libre.html',data=facture)
 

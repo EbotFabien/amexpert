@@ -2,7 +2,7 @@
 <div style="" class="main-content">
 
     <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Libre N°
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Libre N° : {{facture.no_fact}}
         </h2>
 
     </div>
@@ -24,10 +24,10 @@
                 <ul>
                     <li><strong>Civilité:</strong>
                     </li>
-                    <li><strong>Nom & Prenom:</strong>
+                    <li><strong>Nom & Prenom:{{facture.nom}}{{facture.prenom}}</strong>
                     </li>
-                    <li><strong>Telephone:</strong> </li>
-                    <li><strong>Email :</strong></li>
+                    <li><strong>Telephone: {{facture.numero}}</strong> </li>
+                    <li><strong>Email : {{facture.email}}</strong></li>
                 </ul>
             </div>
         </div>
@@ -37,10 +37,10 @@
                 <hr/>
                 <ul>
                     <li>
-                        <strong>Numero & Nom de la voie :</strong>
+                        <strong>Numero & Nom de la voie : {{facture.adresse}}</strong>
                     </li>
-                    <li><strong>Code postal:</strong></li>
-                    <li><strong>Ville:</strong> </li>
+                    <li><strong>Code postal: {{facture.cp}}</strong></li>
+                    <li><strong>Ville: {{facture.ville}}</strong> </li>
 
                 </ul>
             </div>
@@ -48,9 +48,9 @@
                 <h1 class="title is-5">STATUS PAIEMENT</h1>
                 <hr/>
                 <ul>
-                    <li><strong>Mode de paiement:</strong></li>
-                    <li><strong>Date de paiement :</strong></li>
-                    <li><strong>Delai de paiement :</strong></li>
+                    <li><strong>Mode de paiement: {{facture.type_paye}}</strong></li>
+                    <li><strong>Date de paiement : {{facture.datefact.strftime('%d/%m/%Y')}}</strong></li>
+                    <li><strong>Delai de paiement :{{facture.datepaye.strftime('%d/%m/%Y')}}</strong></li>
 
                 </ul>
             </div>
@@ -58,7 +58,7 @@
         <br><br>
 
         <h1>
-            <center> <strong> EDL REALISEE A VOTRE DEMANDE</strong></center>
+            <center> <strong> {{facture.type_prest}} REALISEE A VOTRE DEMANDE</strong></center>
         </h1>
         <div class="tile is-parent is-horizontal">
 
@@ -73,21 +73,21 @@
                         <th> Montant € </th>
                     </tr>
                     <tr>
-                        <td>00000</td>
-                        <td>000000</td>
-                        <td>000000</td>
-                        <td>000000 </td>
-                        <td>000000 </td>
+                        <td>{{facture.ref_commande}}</td>
+                        <td>{{facture.description}}</td>
+                        <td>{{facture.quantite}}</td>
+                        <td>{{facture.prix_uni}}</td>
+                        <td>{{facture.montant_ht}}</td>
                     </tr>
 
                     <tr>
                         <td rowspan="3" colspan="3"></td>
                         <td><strong>Montant Total € HT</strong> </td>
-                        <td> </td>
+                        <td>{{facture.montant_ht}}</td>
                     </tr>
                     <tr>
                         <td><strong>Taxe en % </strong> </td>
-                        <td> </td>
+                        <td>{{facture.remise}}</td>
                     </tr>
                     <tr>
                         <td><strong>Montant Total € en TTC  </strong> </td>

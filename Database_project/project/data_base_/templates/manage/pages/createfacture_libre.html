@@ -10,7 +10,7 @@
     <div class="table-container" style="">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
             <header class="card-header" style="border-bottom: 1px solid #d4d4cc; box-shadow:none;">
-                <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i></span></p>
+                <p class="card-header-title"><span class="icon"><i class="fas fa-user"></i> </span>{{data.nom}} {{data.prenom}}</p>
             </header>
 
             <div class="">
@@ -38,7 +38,7 @@
                                             {% for error in form.nom.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.nom(class="input",value=data.nom)}} {% endif %}
+                                        {% else %} {{form.nom(class="input",value=data.nom, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
@@ -57,7 +57,7 @@
                                             {% for error in form.prenom.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.prenom(class="input",value=data.prenom)}} {% endif %}
+                                        {% else %} {{form.prenom(class="input",value=data.prenom, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
@@ -76,9 +76,9 @@
                                             {% for error in form.numero.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.numero(class="input",value=data.numero)}} {% endif %}
+                                        {% else %} {{form.numero(class="input",value=data.numero, placeholder="Données numérique")}} {% endif %}
                                     </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
+                                    <p class="help"> Non requis</p>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                                             {% for error in form.civilite.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.civilite(class="input", placeholder="Données Alpha-numérique : 10%")}} {% endif %}
+                                        {% else %} {{form.civilite(class="input", placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
@@ -136,7 +136,7 @@
                                             {% for error in form.email.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.email(class="input",value=data.email)}} {% endif %}
+                                        {% else %} {{form.email(class="input",value=data.email, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help">Veuillez remplir ce champ</p>
                                 </div>
@@ -156,9 +156,9 @@
                                             {% for error in form.adresse.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.adresse(class="input",value=his.adresse1)}} {% endif %}
+                                        {% else %} {{form.adresse(class="input",value=his.adresse1, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
+                                    <p class="help"> Non requis</p>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                             {% for error in form.ville.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.ville(class="input",value=his.ville)}} {% endif %}
+                                        {% else %} {{form.ville(class="input",value=his.ville, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Non requis</p>
                                 </div>
@@ -195,7 +195,7 @@
                                             {% for error in form.cp.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.cp(class="input",value=data.cp)}} {% endif %}
+                                        {% else %} {{form.cp(class="input",value=data.cp, placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Requis. Le code postal est requis</p>
                                 </div>
@@ -225,7 +225,7 @@
                                         </div>
                                         {% else %} {{form.type_phys(class="input",value=typo)}} {% endif %}
                                     </div>
-                                    <p class="help">requis</p>
+                                    <p class="help">Requis</p>
                                 </div>
                             </div>
                         </div>
@@ -243,9 +243,9 @@
                                             {% for error in form.description.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.description(class="input")}} {% endif %}
+                                        {% else %} {{form.description(class="input", placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
-                                    <p class="help">requis</p>
+                                    <p class="help">Requis</p>
                                 </div>
                             </div>
                         </div>
@@ -285,9 +285,9 @@
                                             {% for error in form.quantite.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.quantite(class="input",id="qte", placeholder="Données Alpha-numérique")}} {% endif %}
+                                        {% else %} {{form.quantite(class="input",id="qte", placeholder="Données numérique")}} {% endif %}
                                     </div>
-                                    <p class="help">Non requis</p>
+                                    <p class="help">Requis.</p>
                                 </div>
                             </div>
                         </div>
@@ -304,9 +304,9 @@
                                             {% for error in form.prix_uni.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.prix_uni(class="input",id="prix_u")}} {% endif %}
+                                        {% else %} {{form.prix_uni(class="input",id="prix_u",placeholder="exemple 0.00")}} {% endif %}
                                     </div>
-                                    <p class="help"> Requis. prix_uni est requis</p>
+                                    <p class="help"> Requis. </p>
                                 </div>
                             </div>
                         </div>
@@ -326,9 +326,9 @@
                                             {% for error in form.intitule.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.intitule(class="input")}} {% endif %}
+                                        {% else %} {{form.intitule(class="input", placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
-                                    <p class="help">requis </p>
+                                    <p class="help">Non requis </p>
                                 </div>
                             </div>
                         </div>
@@ -346,7 +346,7 @@
                                             {% for error in form.ref_commande.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.ref_commande(class="input")}} {% endif %}
+                                        {% else %} {{form.ref_commande(class="input", placeholder="Données Alphabetiques")}} {% endif %}
                                     </div>
                                     <p class="help"> Non requis </p>
                                 </div>
@@ -372,7 +372,7 @@
                                             {% for error in form.montant_ht.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.montant_ht(class="input",id="mtn_ht")}} {% endif %}
+                                        {% else %} {{form.montant_ht(class="input",id="mtn_ht",placeholder="exemple 0.00")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
@@ -392,7 +392,7 @@
                                             {% for error in form.remise.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.remise(class="input", id="rems")}} {% endif %}
+                                        {% else %} {{form.remise(class="input", id="rems",placeholder="exemple 0.00")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir</p>
                                 </div>
@@ -411,7 +411,7 @@
                                             {% for error in form.montant_rem.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.montant_rem(class="input", id="mtn_rems")}} {% endif %}
+                                        {% else %} {{form.montant_rem(class="input", id="mtn_rems",placeholder="exemple 0.00")}} {% endif %}
                                     </div>
                                     <p class="help">Veuillez remplir ce champ</p>
                                 </div>

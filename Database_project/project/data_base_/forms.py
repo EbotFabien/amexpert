@@ -88,7 +88,7 @@ class facturation_libre(FlaskForm):
     remise = StringField("Remise en %",
                         validators=[validators.InputRequired()])
     details = SelectField('Details de Paiement',
-                             choices=[('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois'),('15 jours a reception de facture', '15 jours a reception de facture'),('7 jours a reception de facture', '7 jours a reception de facture')])
+                             choices=[('7 jours a reception de facture', '7 jours a reception de facture'),('15 jours a reception de facture', '15 jours a reception de facture'),('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois')])
     
     montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
