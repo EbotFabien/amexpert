@@ -3,8 +3,8 @@
 
 
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Toutes les factures libres</h2>
-        <a href="{{url_for('fact_l.search_fact')}}" title="Ajouter une Facture Libre" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.25rem;">Toutes les factures Avoir</h2>
+        <a href="{{url_for('fact_a.search_fact')}}" title="Ajouter une Facture Libre" class="button is-primary is-small"><i class="fas fa-user-plus"></i></a>
     </div>
 
     <section class="tile" style="margin-top: 10px;">
@@ -46,8 +46,8 @@
                             <td>{{mission.datepaye.strftime('%d/%m/%Y')}}</td>
                             <td>{{mission.quantite}}</td>
                             <td>{{mission.type_paye}}</td>
-                            <td> <a href="{{url_for('fact_l.fact_indi', id=mission.id)}}" title="Voir details Factures" class="cb button is-small is-primary is-fullwidth"><i class="fa fa-eye" style="text-align: center"></i></a> </td>
-                            <td> <a href="{{url_for('fact_l.fact_impri', id=mission.id)}}" title="imprimer Factures" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-print" style="text-align: center"></i></a> </td>
+                            <td> <a href="{{url_for('fact_a.fact_indi', id=mission.id)}}" title="Voir details Factures" class="cb button is-small is-primary is-fullwidth"><i class="fa fa-eye" style="text-align: center"></i></a> </td>
+                            <td> <a href="{{url_for('fact_a.fact_impri', id=mission.id)}}" title="imprimer Factures" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-print" style="text-align: center"></i></a> </td>
 
                         </tr>
                         {%endfor%}

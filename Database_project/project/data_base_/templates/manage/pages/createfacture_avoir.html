@@ -212,18 +212,18 @@
 
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.type_phys.label(class="form-control-label")}}</small></label>
+                                <label class="label" style="text-align: left;"><small>{{form.facture.label(class="form-control-label")}}</small></label>
                             </div>
                             <div class="field-body">
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.type_phys.errors %} {{form.type_phys(class="input is-invalid",value=typo) }}
+                                        {% if form.facture.errors %} {{form.facture(class="input is-invalid",value=nro) }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.type_phys.errors %}
+                                            {% for error in form.facture.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.type_phys(class="input",value=typo)}} {% endif %}
+                                        {% else %} {{form.facture(class="input",value=nro)}} {% endif %}
                                     </div>
                                     <p class="help">Requis</p>
                                 </div>

@@ -1,9 +1,10 @@
 from flask import current_app
 from Database_project.project.data_base_ import  db,login_manager
 
-from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 #from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import  TimedJSONWebSignatureSerializer as Serializer
 #from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
+
 
 from datetime import datetime
 from sqlalchemy import ForeignKeyConstraint,ForeignKey,UniqueConstraint
@@ -703,6 +704,7 @@ class Facturation_libre(db.Model):
     intitule = db.Column(db.String,default='')
     remise = db.Column(db.String,default='')
     details = db.Column(db.String,default='')
+    description = db.Column(db.String,default='')
     datefact=db.Column(db.DateTime(),default=datetime.utcnow)
     montant_ht =db.Column(db.DECIMAL(65,2),default=0.00)
     montant_rem =db.Column(db.DECIMAL(65,2),default=0.00)

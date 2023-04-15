@@ -38,8 +38,43 @@
                     <!-- One "tab" for each step in the form: -->
                     <div class="tab">
                         <h1 style="size:100px;"><b>IDENTITE CLIENT</b> </h1>
-                        <hr>
-                        <hr>
+
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.Sexe.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.Sexe.errors %} {{form.Siret(class="input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Sexe.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.Sexe(class="input")}} {% endif %}
+                                    </div>
+                                    <p class="help"> Veuillez remplir ce champ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.EtatClient.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.EtatClient.errors %} {{form.EtatClient(class="input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.EtatClient.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.EtatClient(class="input")}} {% endif %}
+                                    </div>
+                                    <p class="help"> Veuillez remplir ce champ</p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.nom.label(class="form-control-label")}}</small></label></div>
@@ -47,7 +82,7 @@
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.nom.errors %} {{form.Siret(class="input is-invalid", placeholder="Entrez votre Nom.") }}
+                                        {% if form.nom.errors %} {{form.Siret(class="input is-invalid", placeholder="Entrez votre Nom") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.nom.errors %}
                                             <span>{{ error }}</span> {% endfor %}
@@ -58,7 +93,6 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.prenom.label(class="form-control-label")}}</small></label></div>
@@ -95,9 +129,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <hr>
-                        <hr/>
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.email.label(class="form-control-label")}}</small></label></div>
@@ -115,70 +146,12 @@
                                 </div>
                             </div>
                         </div>
-                        <hr/>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.Ville.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.Ville.errors %} {{form.Ville(class="input is-invalid", placeholder="Données Alphabetiques ") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Ville.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.Ville(class="input", placeholder="Données Alphabetiques ")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.EtatClient.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.EtatClient.errors %} {{form.EtatClient(class="input is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.EtatClient.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.EtatClient(class="input")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.Sexe.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.Sexe.errors %} {{form.Siret(class="input is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Sexe.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.Sexe(class="input")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
 
                     </div>
 
                     <div class="tab">
-                        <h1><b>COORDONNE SOCIETE</b> </h1>
-                        <br><br>
+                        <h1><b>COORDONNEES SOCIETE</b> </h1>
+
 
                         <div class="field is-horizontal">
                             <div class="field-label is-normal ">
@@ -198,48 +171,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <br>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.CP.errors %} {{form.CP(class="input is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.CP.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.CP(class="input", placeholder="00000")}} {% endif %}
-                                    </div>
-                                    <p class="help">Veuillez remplir ce champ</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <br>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.Adresse1.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.Adresse1.errors %} {{form.Adresse1(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.Adresse1.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.Adresse1(class="input", placeholder="Données Alpha-numérique (100 charactères max)")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Veuillez remplir ce champ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.Pays.label(class="form-control-label")}}</small></label></div>
@@ -258,7 +189,61 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.Ville.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.Ville.errors %} {{form.Ville(class="input is-invalid", placeholder="Données Alphabetiques ") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Ville.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.Ville(class="input", placeholder="Données Alphabetiques ")}} {% endif %}
+                                    </div>
+                                    <p class="help"> Veuillez remplir ce champ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.CP.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.CP.errors %} {{form.CP(class="input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.CP.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.CP(class="input", placeholder="00000")}} {% endif %}
+                                    </div>
+                                    <p class="help">Veuillez remplir ce champ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.Adresse1.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.Adresse1.errors %} {{form.Adresse1(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.Adresse1.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.Adresse1(class="input", placeholder="Données Alpha-numérique (100 charactères max)")}} {% endif %}
+                                    </div>
+                                    <p class="help"> Veuillez remplir ce champ</p>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="field is-horizontals hide">
                             <div class="field-label is-normal">
@@ -267,19 +252,17 @@
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.Enseigne.errors %} {{form.Enseigne(class="input is-invalid", placeholder="Données Alpha-numérique (100 charactères max)") }}
+                                        {% if form.Enseigne.errors %} {{form.Enseigne(class="input is-invalid", value="enseigne" ) }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Enseigne.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.Enseigne(class="input", placeholder="Données Alpha-numérique (100 charactères max)")}} {% endif %}
+                                        {% else %} {{form.Enseigne(class="input", value="enseigne" )}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
                             </div>
                         </div>
-                        <br>
-
                         <div class="field is-horizontals hide">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.Societe.label(class="form-control-label")}}</small></label></div>
@@ -291,13 +274,12 @@
                                             {% for error in form.Societe.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.Societe(class="input", placeholder="Données Alpha-numérique (100 caractères max)")}} {% endif %}
+                                        {% else %} {{form.Societe(class="input", value="Societe", placeholder="Données Alpha-numérique (100 caractères max)")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
                             </div>
                         </div>
-                        <br>
                         <div class="field is-horizontals hide">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.Siret.label(class="form-control-label")}}</small></label></div>
@@ -305,12 +287,12 @@
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.Siret.errors %} {{form.Siret(class="input is-invalid", placeholder="Données numérique à 14 chiffres. example '75271334700041'") }}
+                                        {% if form.Siret.errors %} {{form.Siret(class="input is-invalid", value="0000000000000") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.Siret.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.Siret(class="input", placeholder="Données numérique à 14 chiffres. example '75271334700041'")}} {% endif %}
+                                        {% else %} {{form.Siret(class="input", value="0000000000000")}} {% endif %}
                                     </div>
                                     <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
@@ -328,14 +310,15 @@
 
                     <div style="overflow:auto;">
                         <div style="float:right;">
-                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">précedent</button>
+                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Suivant</button>
                         </div>
                     </div>
                     <!-- Circles which indicates the steps of the form: -->
                     <div style="text-align:center;margin-top:40px;">
                         <span class="step"></span>
                         <span class="step"></span>
+
 
                     </div>
 

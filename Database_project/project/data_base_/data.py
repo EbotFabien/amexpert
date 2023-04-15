@@ -1601,7 +1601,7 @@ def Missions2(loc):
             ID_INTERV =IV ,
             
             Reference_LOCATAIRE	 =  sheet["S"][i].value ,
-	    old =sheet["U"][i].value, 
+	        old =sheet["U"][i].value, 
             Adresse1_Bien	 = sheet["V"][i].value ,  
             Adresse2_Bien	 = sheet["W"][i].value , 
             CP_Bien	 = regex1(sheet["X"][i].value,'M') ,  
@@ -1649,6 +1649,8 @@ def Missions2(loc):
              )
             db.session.add(mission)
             db.session.commit() 
+            print(sheet["BK"][i].value)
+            print(mission.surface_logement1)
         else:
            print(2250)
 
