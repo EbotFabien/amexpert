@@ -713,6 +713,40 @@ class Facturation_libre(db.Model):
     def __repr__(self):
         return '<Facturation_libre %r>' %self.id
 
+class Facturation_avoir(db.Model):
+    __table_args__ = {'extend_existing': True}
+
+    __tablename__ = 'Facturation_avoir'
+    id = db.Column(db.Integer,primary_key=True)
+    identite=db.Column(db.Integer)
+    identite_fact=db.Column(db.Integer)
+    type_phys = db.Column(db.String,default='')
+    no_fact = db.Column(db.String,default='')
+    tri = db.Column(db.String,default='')
+    civilite = db.Column(db.String,default='')
+    numero = db.Column(db.String,default='')
+    nom = db.Column(db.String,default='')
+    prenom = db.Column(db.String,default='')
+    email = db.Column(db.String,default='')
+    cp = db.Column(db.String,default='')
+    ville = db.Column(db.String,default='')
+    adresse = db.Column(db.String,default='')
+    type_prest = db.Column(db.String,default='')
+    quantite = db.Column(db.String,default='')
+    ref_commande = db.Column(db.String,default='')
+    intitule = db.Column(db.String,default='')
+    remise = db.Column(db.String,default='')
+    details = db.Column(db.String,default='')
+    datefact=db.Column(db.DateTime(),default=datetime.utcnow)
+    montant_ht =db.Column(db.DECIMAL(65,2),default=0.00)
+    montant_rem =db.Column(db.DECIMAL(65,2),default=0.00)
+    prix_uni =db.Column(db.DECIMAL(65,2),default=0.00)
+    datepaye=db.Column(db.DateTime(),default=datetime.utcnow)
+    type_paye = db.Column(db.String,default='')
+    
+    def __repr__(self):
+        return '<Facturation_avoir %r>' %self.id
+
 class expert_facturation(db.Model):
     __table_args__ = {'extend_existing': True}
 
