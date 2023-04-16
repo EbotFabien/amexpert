@@ -37,7 +37,9 @@ def create_app(config_class=Config):
 
     from Database_project.project.data_base_.routes import users
     from Database_project.project.data_base_.fact_libre.routes import fact_l
+    from Database_project.project.data_base_.fact_avoir.routes import fact_a
     app.register_blueprint(users)
     app.register_blueprint(fact_l)
+    app.register_blueprint(fact_a)
 
     return app
