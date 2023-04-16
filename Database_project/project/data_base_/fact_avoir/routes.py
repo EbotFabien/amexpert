@@ -24,7 +24,7 @@ def search_fact():
         key=request.args.get('keyword')
         key=request.args.get('keyword')
         if table == 'client':
-            client = facturation_client.query.filter(or_(facturation_client.Montant_HT==,facturation_client.Date_de_creation==,facturation_client.n_facture==)).first()
+            client = 22#facturation_client.query.filter(or_(facturation_client.Montant_HT==,facturation_client.Date_de_creation==,facturation_client.n_facture==)).first()
             if client is not None:
                 return redirect(url_for('fact_a.createavoir',id=client.id)) 
             
