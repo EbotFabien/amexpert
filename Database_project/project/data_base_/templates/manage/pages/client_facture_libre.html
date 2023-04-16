@@ -1,7 +1,7 @@
 {% extends 'manage/index.html' %} {% block manage_content %}
 <div style="" class="main-content">
     <div class="display-flex justify-content-space-between" style="margin-top: 20px;">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Creation Facturation Libre</h2>
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;"> rechercher Facture</h2>
     </div>
     <div class="table-container" style="">
         <div class="card" style="box-shadow: none; padding: 0px; border: 1px solid #d4d4cc;">
@@ -20,57 +20,93 @@
                 <form method="GET" class="form-padding" action="{{url_for('fact_l.search_fact')}}" enctype="multipart/form-data">
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label" style="text-align: left;"><small>Facturation Libre</small></label></div>
+                            <label class="label"><small> De :</small></label></div>
                         <div class="field-body">
                             <div class="field">
                                 <!---->
                                 <div class="control">
-                                    <div class="w-">
-                                        <div class="select is-small is-fullwidth">
-                                            <select name="table" class="not">
-                                                  <option value="client">Client Particulier</option>
-                                                  <option value="client">Client Professionel</option>
-                                                  <option value="expert">Planificateur EDL</option>
-                                                  <option value="expert">Agent de Secteur EDL</option>
-                                                  <option value="expert">Agent de Constat EDL</option>
-                                                </select>
-                                        </div>
-                                    </div>
+                                    <input class="input is-small" name="date_A" type="date">
                                 </div>
-                                <p class="help">Veuillez choisir la type de prestataire</p>
+
+
+                                <p class="help">Veuillez choisir votre date</p>
                             </div>
                         </div>
+                        <div class="field-label is-normal">
+                            <label class="label"><small> Montant : </small></label></div>
                         <div class="field-body">
                             <div class="field">
                                 <!---->
                                 <div class="control">
-                                    <input class="input is-small" name="keyword" value="{{search}}" placeholder="Nom expert,Nom Bailleur" type="text">
+                                    <input class="input is-small" name="mtn" readonly id="mtn" type="text">
                                 </div>
-                                <p class="help">Veuillez entre le nom du prestataire</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal"></div>
-                        <div class="field-body">
-                            <div class="field">
                                 <div class="control">
-
-                                    <input type="submit" class="button is-primary is-small" value="Recherche">
-
+                                    <input class="slide" name="range_mtn" id="pi_input" type="range" min="0" max="20000">
+                                    <span class="help">Veuillez choisir le montant entre 0 à 20000</span>
                                 </div>
+
                             </div>
                         </div>
-
-
                     </div>
+            </div>
 
-                </form>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"><small> A : </small></label></div>
+                <div class="field-body">
+                    <div class="field">
+                        <!---->
+                        <div class="control">
+                            <input class="input is-small" name="date_A" type="date">
+                        </div>
+                        <p class="help">Veuillez choisir votre date </p>
+                    </div>
+                </div>
+
+                <div class="field-label is-normal">
+                    <label class="label"><small> Client : </small></label></div>
+                <div class="field-body">
+                    <div class="field">
+                        <!---->
+                        <div class="control">
+                            <input class="input is-small" name="client" type="text">
+                        </div>
+                        <p class="help">Veuillez entrer le nom du client</p>
+                    </div>
+                </div>
             </div>
         </div>
+        <hr>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal"></div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control" style="width: 400px; float: center;">
+
+                        <input type="submit" class="button is-primary is-small" value="Rechercher">
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        </form>
     </div>
 </div>
+</div>
+</div>
+<script>
+    const value_mtn = document.querySelector("#mtn")
+    const input = document.querySelector("#pi_input")
+
+    input.addEventListener('click', function() {
+        console.log('valeur' + value_mtn.value);
+        console.log('range ' + input.value)
+        value_mtn.value = input.value
+    })
+</script>
 
 {%endblock%}
 <!--doctype html>
