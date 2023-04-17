@@ -19,35 +19,40 @@
                     <thead>
                         <tr>
                             <th scope="col">id</th>
-                            <!-- <th scope="col" title="Details_du_rendezvous">dd-rdv</th> -->
                             <th scope="col">Numero Facture</th>
-                            <th scope="col">Nom du Bailleur</th>
-                            <th scope="col">Date</th>
+                            <th scope="col">societe du Bailleur</th>
+                            <th scope="col">nom du Bailleur</th>
                             <th scope="col">Montant</th>
-                            <th> Avoir</th>
+                            <th scope="col">Date</th>
+                            <th></th>
+                            <th></th>
 
                         </tr>
                     </thead>
                     <tbody>
-
+                        {%for data in facture %}
                         <tr>
-                            <th scope="row"></th>
-                            <td></td>
-                            <td></td>
-                            <td>ras</td>
-                            <td></td>
-                            <td>
-                                <a href="{{url_for('users.show_tarif', id=tarif.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidt" style="text-align: center"><i class="fa fa-eye"></i></a>
-
+                            <th scope="row">{{data.id}}</th>
+                            <td>{{data.n_facture}}</td>
+                            <td>{{data.client__data_.societe}}</td>
+                            <td>{{data.client__data_.nom}}</td>
+                            <td>{{data.Montant_HT}}</td>
+                            <td>{{data.Date_de_creation.strftime('%d. %m. %Y')}}</td>
+                            <td style="">
+                                <a href="{{url_for('users.show_fac', id=data.id)}}" title="voir tout les details" class="button is-small is-primary is-fullwidth" style="text-align: center"><i class="fa fa-eye"></i></a>
+                                
                             </td>
-                            {%endif%}
+                            <td>
+                                <a href="{{url_for('fact_a.linkavoir', id=data.id)}}"  title="Creer avoir" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-pen" style="text-align: center"></i></a>
+                            </td> 
+                        
                         </tr>
                         {%endfor%}
                     </tbody>
                 </table>
             </div>
         </div>
-    </section>
+    </section> 
 </div>
 <!-- <script type="text/javascript">
     $(document).ready(function() {
