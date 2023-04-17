@@ -26,7 +26,8 @@ def search_fact():
         if table == 'client':
             client = 22#facturation_client.query.filter(or_(facturation_client.Montant_HT==,facturation_client.Date_de_creation==,facturation_client.n_facture==)).first()
             if client is not None:
-                return redirect(url_for('fact_a.createavoir',id=client.id)) 
+                #return redirect(url_for('fact_a.createavoir',id=client.id)) 
+                return render_template('manage/pages/List_Facture.html',facture=client)
             
             else:
                 flash(f"Cette facture  n'existe pas, assurez-vous qu'il est correct",'warning')
@@ -34,6 +35,8 @@ def search_fact():
                 return redirect(url_for('fact_a.search_fact')) 
         
     return render_template('manage/pages/client_facture_avoir.html')
+
+
 
 
 @fact_a.route('/facture/libre/<int:id>/' , methods=['GET','POST'])
