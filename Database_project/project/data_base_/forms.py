@@ -71,11 +71,11 @@ class facturation_libre(FlaskForm):
     type_phys = StringField("Type de Prestataire",
                         validators=[validators.InputRequired()])
     trigramme = StringField("Trigramme")
-    civilite = StringField("Civilite")
-    numero = StringField("Numero")
-    facture = StringField("Numero Facture")
+    civilite = StringField("Civilité")
+    numero = StringField("Numéro Téléphone")
+    facture = StringField("Numéro Facture")
     nom = StringField("Nom")
-    prenom = StringField("Prenom")
+    prenom = StringField("Prénom")
     email = StringField("Email")
     description = StringField("Description")
     cp = StringField("Code Postal")
@@ -84,20 +84,20 @@ class facturation_libre(FlaskForm):
     type_prest = SelectField('Type de Prestation',
                              choices=[('EDL', 'EDL'), ('AUDIT ENERGETIQUE', 'AUDIT ENERGETIQUE'),('MANDAT DE REPRESENTATION','MANDAT DE REPRESENTATION'),('AUTRE','AUTRE')])
     quantite = StringField("Quantite")
-    ref_commande = StringField("Reference commande")
-    intitule = StringField("Intitule de la Prestation")
-    remise = StringField("Remise en %",
+    ref_commande = StringField("Référence commande")
+    intitule = StringField("Intitulé de la Prestation")
+    remise = StringField("Rémise en %",
                         validators=[validators.InputRequired()])
-    details = SelectField('Details de Paiement',
+    details = SelectField('Delai de Paiement',
                              choices=[('7 jours a reception de facture', '7 jours a reception de facture'),('15 jours a reception de facture', '15 jours a reception de facture'),('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois')])
     
     montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
-    montant_rem =DecimalField("Montant Total HT avec Remise ",render_kw={'readonly':True},
+    montant_rem =DecimalField("Montant Total HT avec Rémise ",render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
     prix_uni =DecimalField("Prix Unitaire HTE",
                         validators=[validators.InputRequired()])
-    datepaye=DateField('Date Payement',
+    datepaye=DateField('Date de Facturation',
                     format='%Y-%m-%d',
                     validators=[validators.InputRequired()]
                    )
