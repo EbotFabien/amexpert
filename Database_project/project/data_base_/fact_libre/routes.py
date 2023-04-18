@@ -1,10 +1,10 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory,jsonify
-from Database_project.project.data_base_.Models import db,Facturation_libre,Client,Expert,Client_History,Expert_History
+from Database_project.project.data_base_.Models import db,Facturation_libre,Client,Expert,Client_History,Expert_History,Facturation_avoir
 from Database_project.project.data_base_ import create_app
 from Database_project.project.data_base_.forms import facturation_libre
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
-from flask_wkhtmltopdf import Wkhtmltopdf
+# flask_wkhtmltopdf import Wkhtmltopdf
 import os
 import base64
 
@@ -14,7 +14,7 @@ fact_l =Blueprint('fact_l',__name__)
 
 app= create_app()
 
-wkhtmltopdf =Wkhtmltopdf(app)
+wkhtmltopdf =2#Wkhtmltopdf(app)
 
 @fact_l.route('/search/facture', methods=['GET'])
 @login_required
@@ -98,6 +98,57 @@ def createlibre(id,Type):
             #flash(f"Vous avez modifier avec success",'success')
             return redirect(url_for('fact_l.voislibre'))
     return render_template('manage/pages/createfacture_libre.html',form=form,data=data,his=data_his,typo=Type)
+
+@fact_l.route('/facture/libre/avoir/link/<int:id>/' , methods=['GET','POST'])
+@login_required
+def linkavoir(id):
+    return redirect(url_for('fact_l.createavoir', id=id)) 
+
+@fact_l.route('/facture/libre/avoir/<int:id>/' , methods=['GET','POST'])
+@login_required
+def createavoir(id):
+    if current_user:
+        form = facturation_libre()
+        facture=Facturation_libre.query.filter_by(id=id).first()
+        data = Client.query.filter_by(id=facture.client).first()
+        data_his = Client_History.query.filter_by(client_id=facture.client).first()
+        
+        
+        if form.validate_on_submit():
+            
+            Facturation=Facturation_avoir(identite=facture.client,
+                type_phys = facture.type_phys,
+                identite_fact=id,
+                no_fact = form.facture.data,
+                tri = form.trigramme.data,
+                civilite = form.civilite.data,
+                numero = form.numero.data,
+                nom = form.nom.data,
+                prenom = form.prenom.data,
+                email = form.email.data,
+                cp = form.cp.data,
+                ville = form.ville.data,
+                adresse = form.adresse.data,
+                type_prest = form.type_prest.data,
+                quantite = form.quantite.data,
+                ref_commande = form.ref_commande.data,
+                intitule = form.intitule.data,
+                remise = form.remise.data,
+                details = form.details.data,
+                description=form.description.data,
+                
+                montant_ht =form.montant_ht.data,
+                montant_rem =form.montant_rem.data,
+                prix_uni =form.prix_uni.data,
+                datepaye=form.datepaye.data,
+                type_paye = form.type_paye.data
+            )
+            db.session.add(Facturation)
+            db.session.commit()
+            
+            #flash(f"Vous avez modifier avec success",'success')
+            return redirect(url_for('fact_a.voisavoir'))
+    return render_template('manage/pages/createfacture_avoir.html',form=form,data=data,his=data_his,nro=facture.n_facture)
 
 
 
