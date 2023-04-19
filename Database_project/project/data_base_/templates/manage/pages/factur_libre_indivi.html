@@ -49,16 +49,19 @@
                 <hr/>
                 <ul>
                     <li><strong>Mode de paiement: {{facture.type_paye}}</strong></li>
-                    <li><strong>Date de paiement : {{facture.datefact.strftime('%d/%m/%Y')}}</strong></li>
-                    <li><strong>Delai de paiement :{{facture.datepaye.strftime('%d/%m/%Y')}}</strong></li>
-
+                    {% if facture.type_paye =='Lien de Paiement' %}
+                    lien
+                    {% else %}
+                    <li><strong>IBAN: GB56 REVO 0099 6900 1819 94 </strong></li>
+                    {% endif %}
+                    <li><strong>Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</strong></li>
                 </ul>
             </div>
         </div>
         <br><br>
 
         <h1>
-            <center> <strong> {{facture.type_prest}} REALISEE A VOTRE DEMANDE</strong></center>
+            <center> <strong> {{facture.intitule}}</strong></center>
         </h1>
         <div class="tile is-parent is-horizontal">
 
@@ -67,7 +70,7 @@
 
                     <tr>
                         <th> Ref Commande</th>
-                        <th> Description</th>
+                        <th> Description</th> 
                         <th>Quantité </th>
                         <th> Prix Unitaire € HT </th>
                         <th> Montant € </th>
@@ -86,13 +89,22 @@
                         <td>{{facture.montant_ht}}</td>
                     </tr>
                     <tr>
-                        <td><strong>Taxe en % </strong> </td>
+                        <td><strong>Remise en % </strong> </td>
                         <td>{{facture.remise}}</td>
                     </tr>
                     <tr>
-                        <td><strong>Montant Total € en TTC  </strong> </td>
-                        <td> </td>
+                        <td><strong>Montant Total € Remise</strong> </td>
+                        <td>{{facture.montant_rem}} </td>
                     </tr>
+                    <tr>
+                        <td><strong>Taxe en % </strong> </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montant TTC € </strong> </td>
+                        <td></td>
+                    </tr>
+                    
                 </table>
             </div>
         </div>

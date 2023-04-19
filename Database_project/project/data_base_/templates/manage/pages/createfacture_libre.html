@@ -234,27 +234,27 @@
                             </div>
                         </div>
 
-
-                        <!--  <div class="field is-horizontal">
+                        <div class="field is-horizontal">
                             <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.type_phys.label(class="form-control-label")}}</small></label>
+                                <label class="label" style="text-align: left;"><small>{{form.type_prest.label(class="form-control-label")}}</small></label>
                             </div>
                             <div class="field-body">
                                 <div class="field">
-                                   
+                                    
                                     <div class="control">
-                                        {% if form.type_phys.errors %} {{form.type_phys(class="input is-invalid",value=typo) }}
+                                        {% if form.type_prest.errors %} {{form.type_prest(class="input is-invalid", placeholder="") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.type_phys.errors %}
+                                            {% for error in form.type_prest.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.type_phys(class="input",value=typo)}} {% endif %}
+                                        {% else %} {{form.type_prest(class="input", placeholder="")}} {% endif %}
                                     </div>
-                                    <p class="help">Requis</p>
+                                    <p class="help">requis</p>
                                 </div>
                             </div>
                         </div>
-                        <hr/> -->
+                        <hr/>
+
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.description.label(class="form-control-label")}}</small></label>
@@ -295,26 +295,6 @@
                             </div>
                         </div>
 
-                        <!--    <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.type_prest.label(class="form-control-label")}}</small></label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    
-                                    <div class="control">
-                                        {% if form.type_prest.errors %} {{form.type_prest(class="input is-invalid", placeholder="") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.type_prest.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.type_prest(class="input", placeholder="")}} {% endif %}
-                                    </div>
-                                    <p class="help">requis</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/> -->
 
 
                         <div class="field is-horizontal">

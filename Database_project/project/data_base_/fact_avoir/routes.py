@@ -52,7 +52,7 @@ def createavoir(id):
                 intitule = form.intitule.data,
                 remise = form.remise.data,
                 details = form.details.data,
-                description=form.description.data,
+                #description=form.description.data,
                 
                 montant_ht =form.montant_ht.data,
                 montant_rem =form.montant_rem.data,
@@ -64,7 +64,7 @@ def createavoir(id):
             db.session.commit()
             
             #flash(f"Vous avez modifier avec success",'success')
-            return redirect(url_for('fact_a.voisavoir'))
+            return redirect(url_for('fact_a.voisavoir2'))
     return render_template('manage/pages/createfacture_avoir.html',form=form,data=data,his=data_his,nro=facture.n_facture)
 
 
@@ -82,10 +82,11 @@ def voisavoir2():
     facture=Facturation_avoir.query.filter(Facturation_avoir.type_phys=='factureclient').all()
     return render_template('manage/pages/tous_facture_avoir.html',data=facture)
 
-@fact_a.route('/vois/facture/<int:id>/libre',methods=['GET','POST'])
+@fact_a.route('/vois/facture/<int:id>/avoir',methods=['GET','POST'])
 @login_required
 def fact_indi(id):
     facture=Facturation_avoir.query.filter_by(id=id).first()
+    print(facture)
     return render_template('manage/pages/factur_libre_indivi.html',facture=facture)
 
 

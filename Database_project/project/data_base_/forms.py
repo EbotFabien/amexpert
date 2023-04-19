@@ -66,10 +66,6 @@ class rectify_Form(FlaskForm):
 
 class facturation_libre(FlaskForm):
     	   
-    identite=HiddenField()
-
-    type_phys = StringField("Type de Prestataire",
-                        validators=[validators.InputRequired()])
     trigramme = StringField("Trigramme")
     civilite = StringField("Civilité")
     numero = StringField("Numéro Téléphone")
@@ -88,7 +84,7 @@ class facturation_libre(FlaskForm):
     intitule = StringField("Intitulé de la Prestation")
     remise = StringField("Rémise en %",
                         validators=[validators.InputRequired()])
-    details = SelectField('Delai de Paiement',
+    details = SelectField('Details de Paiement',
                              choices=[('7 jours a reception de facture', '7 jours a reception de facture'),('15 jours a reception de facture', '15 jours a reception de facture'),('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois')])
     
     montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},

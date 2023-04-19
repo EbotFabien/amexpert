@@ -1,36 +1,71 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
     <style>
-        @media print {
-            .new-page {
-                page-break-before: always;
-            }
-        }
-        
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #DDD;
-        }
-        
-        tr:hover {
-            background-color: #D6EEEE;
-        }
-        
-        * {
+        body {
             font-family: Arial, Helvetica, sans-serif;
         }
         
-        hr {
+        p,
+        td,
+        th {
+            font-size: 13px;
+        }
+        
+        p,
+        h6,
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .pdf__container {
+            width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .main__header {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
+            display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 10px;
+        }
+        
+        .left__header__section {
+            font-size: 13px;
+        }
+        
+        .right__header__section {
+            text-align: right;
+            margin-top: 100px;
+            margin-right: 200px;
+        }
+        
+        .right__header__section p {
+            margin-bottom: 6px;
+        }
+        
+        .secondary__header {
+            position: relative;
+            padding: 10px 5px 20px;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        .secondary__header__hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -38,261 +73,158 @@
             margin-right: auto;
             border-style: inset;
             border-width: 3px;
-            width: 700px;
+            width: 900px;
         }
         
-        .ticket3 {
-            width: 480px;
-            height: 150px;
-            /* margin-top: 40px; */
-            margin-left: 100px;
-            /* margin-right: auto;  */
-            border: 5px solid black;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .ticket {
-            width: 480px;
-            height: 200px;
-            /* margin-top: 40px; */
-            margin-left: 60px;
-            /* margin-right: auto;  */
-            border: 1px solid navy;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .ticket1 {
-            width: 300px;
-            height: 200px;
-            margin-top: 20px;
-            /* margin-left: auto; */
-            margin-right: auto;
-            border: 1px solid navy;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            position: relative;
-        }
-        
-        .left {
-            /* 
-      display: inline-block;
-      border-right: 1px dashed navy; */
-            height: 92%;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, auto);
-            grid-column-gap: 0px;
-            grid-row-gap: 10px;
-        }
-        
-        .rigthE {
-            /* display: inline-block;
-      border-right: 1px solid black;  */
-            height: 0%;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, auto);
-            grid-column-gap: 0px;
-            grid-row-gap: 10px;
-        }
-        /* .rightE{
-      display: inline-block;
-      height: 100%;
-      padding: 20px;
-       background-image: url('https://pdfmark.com/images/laughing.png');
-      background-repeat: no-repeat; 
-      background-size: 80px;
-      background-position: top 20px right 20px;
-    }  */
-        
-        html,
-        body,
-        td {
-            font-size: 13px;
-        }
-        
-        #items {
-            border-collapse: collapse;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #items th,
-        #items td {
-            padding: 5px;
-            border: 1px solid black;
-        }
-        
-        #items tr td {
-            text-align: right;
-            width: 100px;
-        }
-        
-        .showname {
-            font-size: 40px;
-            font-weight: bold;
-            color: #9900ff;
-        }
-        
-        #items tr td:first-child {
-            text-align: left;
-            width: auto;
-        }
-        
-        .container {
-            padding: auto;
-            height: 200px;
-        }
-        
-        .titre1 {
-            display: inline-block;
-            margin-left: 300px;
-        }
-        
-        .titre2 {
-            float: right;
-            margin-right: 250px;
-            font-size: 20px;
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        #content {
-            background-color: rgba(210, 210, 210, 0.5);
-            border: 1px solid #000;
-            padding: 0.5rem;
+        .secondary__header__content {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
             display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            column-gap: 10px;
         }
         
-        #left,
-        #right {
-            background-color: rgba(10, 10, 10, 0.5);
-            border: 1px solid #fff;
-            padding: 0.5rem;
-            flex-grow: 1;
-            color: #fff;
+        .left__side {
+            border: 1px solid navy;
+            padding: 10px;
+            /*  width: 250px; */
+            width: 400px;
+        }
+        
+        .right__side {
+            font-size: 13px;
+            border: 1px solid navy;
+            padding: 5px 10px;
+            /* width: 468px;*/
+            width: 600px;
+        }
+        
+        .tertiary__header {
+            border-bottom: 1px solid #DDD;
+            padding-top: 50px;
+        }
+        
+        .amount__section {
+            width: 490px;
+            /*margin: 5px auto;*/
+            padding-top: 170px;
+        }
+        
+        .amount__section__content {
+            padding: 10px;
+            border: 5px solid black;
+            height: 200px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        td,
+        th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        td:not(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(9), :nth-child(10), :nth-child(11)) {
+            word-break: break-all;
+        }
+        
+        @media print {
+            .new-page {
+                page-break-before: always;
+            }
         }
     </style>
 </head>
 
 <body>
-    <table style="width: 800px; margin-left: auto; margin-right: auto">
-        <tr>
-            <td style="vertical-align: top; text-align: left">
-                <!-- <td style="vertical-align: top; width: 50%"> -->
-
-
-            </td>
-
-        </tr>
-        <div class="container">
-            <div class="titre1">
-                <img src="data:;base64,{{image}}" width="100" height="130"> <br>
-                <strong> ENERGY Ltd </strong><br><br> Facture / Invoice : {{facture.no_fact}} <br> Date:{{facture.datefact.strftime('%d/%m/%Y')}}<br>
+    <section class="pdf__container">
+        <header class="main__header">
+            <div class="left__header__section">
+                <img src="data:;base64,{{image}}" width="200" height="230" />
+                <br>
+                <p style="font-size: 30px;"> <strong>ENERGY  Ltd</strong></p>
+                <br />
+                <p style="font-size: 15px;"> Facture / Invoice : {{facture.no_fact}} <br /> Date:{{facture.datefact.strftime('%d/%m/%Y')}}</p> <br />
             </div>
-            <div class="titre2">
-
-                <p> <strong>TRUSTEXPERTISE</strong> <br> Registration / Enregistrement No <br> 25 Station <br>B147SR Birmingham <br>Royaume Uni - UK</p>
-
+            <div class="right__header__section">
+                <p style="font-size: 30px;"> <strong>TRUSTEXPERTISE Ltd</strong> <br></p>
+                <p style="font-size: 20px;"> Registration / Enregistrement No <br> 25 Station <br>B147SR Birmingham <br>Royaume Uni - UK</p>
             </div>
-        </div>
-        <tr>
-            <td style="vertical-align: top; padding-top: 20px; padding-bottom: 20px;">
-                <hr>
+        </header>
+        <header class="secondary__header">
+            <hr class="secondary__header__hr" />
+            <div class="secondary__header__content">
+                <div class="left__side">
+                    <strong>Facture a : </strong> <br> Référence donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
+                    <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilité :{{facture.civilite}} <br> Nom & Prénom :{{facture.nom}}{{facture.prenom}} <br> Téléphone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
+                    <strong>ADRESSE : </strong><br> Numéro & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
+                </div>
+                <div class="right__side">
 
-
-                <div id="content">
-                    <div id="left">
-                        <div id="object1"><strong>Facture a : </strong> <br> Reference donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
-                            <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilite :{{facture.civilite}} <br> Nom & Prenom :{{facture.nom}}{{facture.prenom}} <br> Telephone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
-                            <strong>ADRESSE : </strong><br> Numero & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
-
-
-
-
-                        </div>
-
-                    </div>
-
-                    <div id="right">
-                        <div id="object3">
-                            <strong>STATUS PAIEMENT</strong><br><br>
-                            <strong><br>Mode de paiement : {{facture.type_paye}} <br></strong>
-                            <strong>Delai de traitement :{{facture.datefact.strftime('%d/%m/%Y')}} </strong> <br>
-                            <strong>Date de paiement :{{facture.datepaye.strftime('%d/%m/%Y')}}</strong>
-                        </div>
-
+                    <div class="secondary__header__content">
+                        <p style="margin: 80px 40px; font-size: 15px;"> <strong>STATUS PAIEMENT</strong><br>
+                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>lien<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br>{% endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</p>
                     </div>
                 </div>
+        </header>
 
-                <hr>
-                <center>
-                    <h1>{{facture.type_prest}} realise a votre demande</h1>
-                </center>
 
-                <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
 
-                    <tr>
-                        <hr>
-                        <strong>
-                        <th>Ref Commande</th>
-                        <th>Description</th>
-                        <th>Quantite</th>
-                        <th>Prix Unitaire  HT</th>
-                        <th>Montant  </th>
-              
-                     </strong>
-                    </tr>
-                    <tr>
+        <center>
+            <h1 style="font-size: 40px;">{{facture.intitule}} </h1>
+        </center>
 
-                        <strong>
-                    <td>{{facture.ref_commande}}</td>
-                    <td>{{facture.description}}</td>
-                    <td>{{facture.quantite}}</td>
-                    <td>{{facture.prix_uni}} </td>
-                    <td>{{facture.montant_ht}}</td>
-              
-           </strong>
-                    </tr>
+        <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto"> 
 
-                    <tr>
-                        <td colspan="3"></td>
-                        <td><strong>Montant Total € HT</strong> </td>
-                        <td>{{facture.montant_ht}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                        </td>
-                        <td><strong>Taxe en % </strong> </td>
-                        <td>{{facture.remise}}</td>
-                    </tr>
-                    <tr>
+            <tr style="background-color: orange;">
+                <th><strong> Ref Commande</strong></th>
+                <th><strong> Description</strong></th>
+                <th><strong> Quantité </strong></th>
+                <th><strong> Prix Unitaire € HT </strong></th>
+                <th><strong> Montant € </strong></th>
+            </tr>
+            <tr>
+                <td>{{facture.ref_commande}}</td>
+                <td>{{facture.description}}</td>
+                <td>{{facture.quantite}}</td>
+                <td>{{facture.prix_uni}} </td>
+                <td>{{facture.montant_ht}}</td>
+            </tr>
 
-                        <td colspan="3"></td>
-                        <td><strong>Montant Total € en TTC  </strong> </td>
-                        <td>{{facture.montant_rem}}</td>
-
-                        </strong>
-                    </tr>
-                </table>
-
+            <tr>
+                <td rowspan="3" colspan="3"></td>
+                <td style="background-color: orange;"><strong>Montant Total € HT</strong> </td>
+                <td>{{facture.montant_ht}}</td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>Remise en % </strong> </td>
+                <td>{{facture.remise}}</td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>Montant Total € Remise  </strong> </td>
+                <td>{{facture.montant_rem}} </td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>Taxe en % </strong> </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>Montant TTC € </strong> </td>
+                <td></td>
+            </tr>
+            
+        </table>
+    </section>
 </body>
 
-</html>
+</html><!--réalisé à votre demande-->

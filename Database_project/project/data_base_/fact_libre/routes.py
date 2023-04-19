@@ -56,7 +56,7 @@ def search_facta():
         if search !=None:
             client1 = Facturation_libre.query.filter_by(no_fact=search).first()
             if client1:
-                return render_template('manage/pages/List_Facture.html',facture=client1)
+                return render_template('manage/pages/List_Facture.html',mission=client1)
                 
             else:
                 flash(f"Cette facture  n'existe pas, assurez-vous qu'il est correct",'warning')
@@ -82,7 +82,7 @@ def createlibre(id,Type):
         if form.validate_on_submit():
             
             Facturation=Facturation_libre(identite=id,
-                type_phys = form.type_phys.data,
+                type_phys = Type,
                 no_fact = " ",
                 tri = form.trigramme.data,
                 civilite = form.civilite.data,
@@ -131,13 +131,17 @@ def createavoir(id):
     if current_user:
         form = facturation_libre()
         facture=Facturation_libre.query.filter_by(id=id).first()
-        data = Client.query.filter_by(id=facture.client).first()
-        data_his = Client_History.query.filter_by(client_id=facture.client).first()
+        if facture.type_phys == "client":
+            data = Client.query.filter_by(id=facture.identite).first()
+            data_his = Client_History.query.filter_by(client_id=facture.identite).first()
+        if facture.type_phys == "expert":
+            data = Expert.query.filter_by(id=facture.identite).first()
+            data_his = Expert_History.query.filter_by(client_id=facture.identite).first()
         
         
         if form.validate_on_submit():
             
-            Facturation=Facturation_avoir(identite=facture.client,
+            Facturation=Facturation_avoir(identite=facture.identite,
                 type_phys = facture.type_phys,
                 identite_fact=id,
                 no_fact = form.facture.data,
@@ -156,7 +160,7 @@ def createavoir(id):
                 intitule = form.intitule.data,
                 remise = form.remise.data,
                 details = form.details.data,
-                description=form.description.data,
+                #description=form.description.data,
                 
                 montant_ht =form.montant_ht.data,
                 montant_rem =form.montant_rem.data,
@@ -169,7 +173,7 @@ def createavoir(id):
             
             #flash(f"Vous avez modifier avec success",'success')
             return redirect(url_for('fact_a.voisavoir'))
-    return render_template('manage/pages/createfacture_avoir.html',form=form,data=data,his=data_his,nro=facture.n_facture)
+    return render_template('manage/pages/createfacture_avoir.html',form=form,data=data,his=data_his,nro=facture.no_fact)
 
 
 
