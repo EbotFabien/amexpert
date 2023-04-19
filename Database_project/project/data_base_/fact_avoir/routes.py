@@ -14,32 +14,6 @@ app= create_app()
 
 wkhtmltopdf =2#Wkhtmltopdf(app)
 
-@fact_a.route('/search/facture/avoir', methods=['GET'])
-@login_required
-def search_fact():
-    db.create_all()
-    if current_user.TYPE == 'Admin':
-        table = request.args.get('range_mtn')
-        search = "%{}%".format(request.args.get('keyword'))
-        date1=request.args.get('date_1')
-        date2=request.args.get('date_2')
-        print(table)
-        print(search)
-        print(date1)
-        print(date2)
-        client1 = Client.query.filter(and_(or_(Client.nom.contains(str(search)),Client.prenom.contains(str(search)),Client.email.contains(str(search)),Client.numero.contains(str(search)),Client.societe.contains(str(search))),Client.visibility==True)).first()
-        if client1:
-            client =facturation_client.query.filter(and_(facturation_client.Montant_HT<=float(table),facturation_client.client==client1.id,facturation_client.Date_de_creation>=date1,facturation_client.Date_de_creation<=date2)).all()
-            if client is not None:
-                #return redirect(url_for('fact_a.createavoir',id=client.id))  ,
-                return render_template('manage/pages/List_Facture.html',facture=client)
-            
-            else:
-                flash(f"Cette facture  n'existe pas, assurez-vous qu'il est correct",'warning')
-
-                return redirect(url_for('fact_a.search_fact')) 
-        
-    return render_template('manage/pages/client_facture_avoir.html')
 
 
 @fact_a.route('/facture/libre/link/<int:id>/' , methods=['GET','POST'])
@@ -98,7 +72,14 @@ def createavoir(id):
 @login_required
 def voisavoir():
     db.create_all()
-    facture=Facturation_avoir.query.all()
+    facture=Facturation_avoir.query.filter(Facturation_avoir.type_phys!='factureclient').all()
+    return render_template('manage/pages/tous_facture_avoir.html',data=facture)
+
+@fact_a.route('/vois/facture/avoir/client' , methods=['GET','POST'])
+@login_required
+def voisavoir2():
+    db.create_all()
+    facture=Facturation_avoir.query.filter(Facturation_avoir.type_phys=='factureclient').all()
     return render_template('manage/pages/tous_facture_avoir.html',data=facture)
 
 @fact_a.route('/vois/facture/<int:id>/libre',methods=['GET','POST'])

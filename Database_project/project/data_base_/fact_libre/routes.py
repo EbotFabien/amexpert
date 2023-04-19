@@ -46,6 +46,27 @@ def search_fact():
     return render_template('manage/pages/client_facture_libre.html')
 
 
+@fact_l.route('/search/facture/avoir', methods=['GET'])
+@login_required
+def search_facta():
+    db.create_all()
+    if current_user.TYPE == 'Admin':
+        search = request.args.get('keyword')
+        print(search)
+        if search !=None:
+            client1 = Facturation_libre.query.filter_by(no_fact=search).first()
+            if client1:
+                return render_template('manage/pages/List_Facture.html',facture=client1)
+                
+            else:
+                flash(f"Cette facture  n'existe pas, assurez-vous qu'il est correct",'warning')
+
+                return redirect(url_for('fact_l.search_facta')) 
+        
+    return render_template('manage/pages/client_facture_avoir.html')
+
+
+
 @fact_l.route('/facture/libre/<int:id>/<string:Type>' , methods=['GET','POST'])
 @login_required
 def createlibre(id,Type):
@@ -158,6 +179,8 @@ def voislibre():
     db.create_all()
     facture=Facturation_libre.query.all()
     return render_template('manage/pages/tous_facture_libre.html',data=facture)
+
+
 
 @fact_l.route('/vois/facture/<int:id>/libre',methods=['GET','POST'])
 @login_required

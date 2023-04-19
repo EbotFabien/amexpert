@@ -21,6 +21,7 @@
                     <li> <a href="{{url_for('users.facturationa')}}" style="color: #000">Factures client générées</a></li>
                 <li> <a href="{{url_for('users.choosev', Type='month')}}" style="color: #000">Facturation client mensuel</a></li>
                 <li> <a href="{{url_for('users.chooseindc')}}" style="color: #000">creer Facture Manuel </a></li>
+                <li> <a href="{{url_for('fact_a.voisavoir2')}}" style="color: #000">Voir toutes les factures avoirs</a></li>
             </ul>
             </a>
             </li>
@@ -40,8 +41,8 @@
             <li class="{% if highlight == 'expert' %} active {% endif %} has-submenu" style="position: relative;">
                 <a href="#"><span class="menu_icon"><i class="fas fa-money-check"></i></span> <span class="menu_text">Facturation Libre</span>
                 <ul class="sub-menu">   
-                    <li> <a href="{{url_for('fact_a.voisavoir')}}" style="color: #000">Voir toutes les factures avoirs</a></li>
             <li> <a href="{{url_for('fact_l.voislibre')}}" style="color: #000">Voir toutes les factures libres</a></li>
+            <li> <a href="{{url_for('fact_a.voisavoir')}}" style="color: #000">Voir toutes les factures avoirs</a></li>
             </ul>
             </a>
 
