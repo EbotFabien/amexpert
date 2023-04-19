@@ -91,8 +91,9 @@ class facturation_libre(FlaskForm):
                         validators=[validators.InputRequired()])
     montant_rem =DecimalField("Montant Total HT avec Rémise ",render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
-    prix_uni =DecimalField("Prix Unitaire HTE",
+    prix_uni =DecimalField("Prix Unitaire HT €",
                         validators=[validators.InputRequired()])
+    lien_paiement =StringField("Lien de Paiement")
     datepaye=DateField('Date de Facturation',
                     format='%Y-%m-%d',
                     validators=[validators.InputRequired()]
@@ -100,6 +101,7 @@ class facturation_libre(FlaskForm):
     type_paye = SelectField('Type de Paiement',
                              choices=[('Virement Bancaire', 'Virement Bancaire'), ('Lien de Paiement', 'Lien de Paiement')])
     
+   
     submit = SubmitField('Valider')
 
 

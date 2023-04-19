@@ -438,38 +438,76 @@
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.datepaye.errors %} {{form.datepaye(class="input is-invalid", placeholder="Données Alpha-numériques") }}
+                                        {% if form.datepaye.errors %} {{form.datepaye(class="input is-invalid",id="lien",id="lien", placeholder="Données Alpha-numériques") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.datepaye.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.datepaye(class="input", placeholder="Données Alpha-numériques")}} {% endif %}
+                                        {% else %} {{form.datepaye(class="input", id="lien",placeholder="Données Alpha-numériques")}} {% endif %}
                                     </div>
-                                    <p class="help"> Non requis</p>
+
                                 </div>
                             </div>
                         </div>
                         <hr/>
-                        <div class="field is-horizontal">
+                        <!--  <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.type_paye.label(class="form-control-label")}}</small></label>
                             </div>
                             <div class="field-body">
                                 <div class="field">
+                                    
+                        <div class="control">
+                            {% if form.type_paye.errors %} {{form.type_paye(class="input is-invalid", placeholder="Données Alpha-numériques") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.type_paye.errors %}
+                                <span>{{ error }}</span> {% endfor %}
+                            </div>
+                            {% else %} {{form.type_paye(class="input", ngerplaceholder="Données Alpha-numériques")}} {% endif %}
+                        </div>
+                        <p class="help"> Non requis</p>
+                    </div>
+            </div>
+        </div> -->
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal ">
+                                <label class="label" style="text-align: left;"><small>{{form.type_paye.label(class="form-control-label")}}</small></label></div>
+                            <div class="field-body">
+                                <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.type_paye.errors %} {{form.type_paye(class="input is-invalid", placeholder="Données Alpha-numériques") }}
+                                        {% if form.type_paye.errors %} {{form.type_paye(class="input is-invalid",onchange="showHideEle(this, 'views','Lien de paiement')") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.type_paye.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.type_paye(class="input", placeholder="Données Alpha-numériques")}} {% endif %}
+                                        {% else %} {{form.type_paye(class="input",onchange="showHideEle(this, 'views','Lien de paiement')")}} {% endif %}
                                     </div>
-                                    <p class="help"> Non requis</p>
+                                    <p class="help"> Veuillez remplir ce champ</p>
                                 </div>
                             </div>
                         </div>
-                        <hr/>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label" style="text-align: left;"><small>{{form.lien_paiement.label(class="form-control-label")}}</small></label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <!---->
+                                    <div class="control">
+                                        {% if form.lien_paiement.errors %} {{form.lien_paiement(class="input is-invalid", ) }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.lien_paiement.errors %}
+                                            <span>{{ error }}</span> {% endfor %}
+                                        </div>
+                                        {% else %} {{form.lien_paiement(class="input")}} {% endif %}
+                                    </div>
+                                    <p class="help"> Veuillez remplir</p>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
 
 
@@ -497,6 +535,61 @@
                             </div>
                         </div> -->
                     </div>
+                    <script>
+                        let quantit = document.getElementById("qte");
+                        let pri = document.getElementById("prix_u");
+                        let mtn = document.getElementById("mtn_ht");
+                        let remise = document.getElementById("rems");
+                        let mtn_rems = document.getElementById("mtn_rems");
+                        let timeout = null;
+
+                        pri.addEventListener('keyup', function(e) {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(function() {
+                                console.log('quantité:', quantit.value);
+                                console.log("prix :" + mtn.value)
+                                let result = pri.value * quantit.value
+                                console.log(result)
+
+                                mtn.value = result;
+
+                            }, 1000);
+
+                        });
+
+                        remise.addEventListener('keyup', function(e) {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(function() {
+
+                                let taux_remise = mtn.value * remise.value / 100;
+                                let res = mtn.value - taux_remise;
+                                mtn_rems.value = res;
+                                console.log(mtn_rems.value)
+                            }, 1000)
+                        })
+
+
+
+
+
+                        function showHideEle(selectSrc, targetEleId, triggerValue) {
+                            console.log("fd")
+                            let dive = document.getElementById('main-wrapper')
+
+                            if (selectSrc.value == triggerValue) {
+
+                                document.getElementById(targetEleId).style.display = "none";
+
+                            } else {
+                                let aff = document.getElementById(targetEleId).type = "text"
+
+                                //aff.style.display = "inline-block";
+                                dive.style.display = 'block'
+                                console.log(selectSrc.value)
+                                console.log(aff)
+                            }
+                        }
+                    </script>
                 </form>
 
 
@@ -520,39 +613,7 @@
 </div>
 <!-- /.container-fluid -->
 
-<script>
-    let quantit = document.getElementById("qte");
-    let pri = document.getElementById("prix_u");
-    let mtn = document.getElementById("mtn_ht");
-    let remise = document.getElementById("rems");
-    let mtn_rems = document.getElementById("mtn_rems");
-    let timeout = null;
 
-    pri.addEventListener('keyup', function(e) {
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-            console.log('quantité:', quantit.value);
-            console.log("prix :" + mtn.value)
-            let result = pri.value * quantit.value
-            console.log(result)
-
-            mtn.value = result;
-
-        }, 1000);
-
-    });
-
-    remise.addEventListener('keyup', function(e) {
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-
-            let taux_remise = mtn.value * remise.value / 100;
-            let res = mtn.value - taux_remise;
-            mtn_rems.value = res;
-            console.log(mtn_rems.value)
-        }, 1000)
-    })
-</script>
 {%endblock%}
 
 <!--Mes ajouts du du 24-9-2022 -->
