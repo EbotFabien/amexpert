@@ -173,7 +173,7 @@
 
                     <div class="secondary__header__content">
                         <p style="margin: 80px 40px; font-size: 15px;"> <strong>STATUS PAIEMENT</strong><br>
-                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>lien<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br>{% endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</p>
+                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>Lien de Payement:{{facture.lien_paiement}}<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br>{% endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</p>
                     </div>
                 </div>
         </header>

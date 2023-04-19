@@ -50,7 +50,7 @@
                 <ul>
                     <li><strong>Mode de paiement: {{facture.type_paye}}</strong></li>
                     {% if facture.type_paye =='Lien de Paiement' %}
-                    lien
+                    <li><strong>Lien de Payement:{{facture.lien_paiement}}</strong></li>
                     {% else %}
                     <li><strong>IBAN: GB56 REVO 0099 6900 1819 94 </strong></li>
                     {% endif %}

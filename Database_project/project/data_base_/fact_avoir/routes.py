@@ -52,7 +52,8 @@ def createavoir(id):
                 intitule = form.intitule.data,
                 remise = form.remise.data,
                 details = form.details.data,
-                #description=form.description.data,
+                lien_paiement=form.lien_paiement.data,
+                description=form.description.data,
                 
                 montant_ht =form.montant_ht.data,
                 montant_rem =form.montant_rem.data,
