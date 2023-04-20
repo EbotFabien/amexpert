@@ -151,8 +151,7 @@
         <header class="main__header">
             <div class="left__header__section">
                 <img src="data:;base64,{{image}}" width="200" height="230" />
-                <br>
-                <p style="font-size: 30px;"> <strong>ENERGY  Ltd</strong></p>
+
                 <br />
                 <p style="font-size: 15px;"> Facture / Invoice : {{facture.no_fact}} <br /> Date:{{facture.datefact.strftime('%d/%m/%Y')}}</p> <br />
             </div>
@@ -165,7 +164,7 @@
             <hr class="secondary__header__hr" />
             <div class="secondary__header__content">
                 <div class="left__side">
-                    <strong>Facture a : </strong> <br> Référence donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
+                    <strong>Facture à : </strong> <br> Référence donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
                     <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilité :{{facture.civilite}} <br> Nom & Prénom :{{facture.nom}}{{facture.prenom}} <br> Téléphone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
                     <strong>ADRESSE : </strong><br> Numéro & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
                 </div>
@@ -173,7 +172,9 @@
 
                     <div class="secondary__header__content">
                         <p style="margin: 80px 40px; font-size: 15px;"> <strong>STATUS PAIEMENT</strong><br>
-                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>Lien de Payement:{{facture.lien_paiement}}<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br>{% endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</p>
+                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>Lien de Payement:{{facture.lien_paiement}}<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br> BIC / SWIFT : REVOGB21 <br>{%
+                            endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}
+                        </p>
                     </div>
                 </div>
         </header>
@@ -184,7 +185,7 @@
             <h1 style="font-size: 40px;">{{facture.intitule}} </h1>
         </center>
 
-        <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto"> 
+        <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
 
             <tr style="background-color: orange;">
                 <th><strong> Ref Commande</strong></th>
@@ -202,7 +203,7 @@
             </tr>
 
             <tr>
-                <td rowspan="3" colspan="3"></td>
+                <td rowspan="5" colspan="3"></td>
                 <td style="background-color: orange;"><strong>Montant Total € HT</strong> </td>
                 <td>{{facture.montant_ht}}</td>
             </tr>
@@ -218,13 +219,17 @@
                 <td style="background-color: orange;"><strong>Taxe en % </strong> </td>
                 <td></td>
             </tr>
+
             <tr>
                 <td style="background-color: orange;"><strong>Montant TTC € </strong> </td>
                 <td></td>
             </tr>
-            
+
+
         </table>
     </section>
 </body>
 
-</html><!--réalisé à votre demande-->
+</html>
+
+<!--réalisé à votre demande-->
