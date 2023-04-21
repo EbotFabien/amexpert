@@ -1,7 +1,7 @@
 from flask import Flask,render_template,url_for,flash,redirect,request,Blueprint,make_response,send_from_directory,jsonify
 from Database_project.project.data_base_.Models import db,Facturation_libre,Client,Expert,Client_History,Expert_History,Facturation_avoir
 from Database_project.project.data_base_ import create_app
-from Database_project.project.data_base_.forms import facturation_libre
+from Database_project.project.data_base_.forms import facturation_libre,facturation_avoir
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
 from flask_wkhtmltopdf import Wkhtmltopdf
@@ -130,7 +130,7 @@ def linkavoir(id):
 @login_required
 def createavoir(id):
     if current_user:
-        form = facturation_libre()
+        form = facturation_avoir()
         facture=Facturation_libre.query.filter_by(id=id).first()
         if facture.type_phys == "client":
             data = Client.query.filter_by(id=facture.identite).first()
@@ -146,7 +146,6 @@ def createavoir(id):
                 type_phys = facture.type_phys,
                 identite_fact=id,
                 no_fact = form.facture.data,
-                tri = form.trigramme.data,
                 civilite = form.civilite.data,
                 numero = form.numero.data,
                 nom = form.nom.data,
@@ -155,19 +154,17 @@ def createavoir(id):
                 cp = form.cp.data,
                 ville = form.ville.data,
                 adresse = form.adresse.data,
-                type_prest = form.type_prest.data,
                 quantite = form.quantite.data,
                 ref_commande = form.ref_commande.data,
                 intitule = form.intitule.data,
-                remise = form.remise.data,
-                details = form.details.data,
                 lien_paiement=form.lien_paiement.data,
                 description=form.description.data,
+                societe = form.societe.data,
+                tva = form.tva.data,
+                siret = form.siret.data,
                 
                 montant_ht =form.montant_ht.data,
-                montant_rem =form.montant_rem.data,
                 prix_uni =form.prix_uni.data,
-                datepaye=form.datepaye.data,
                 type_paye = form.type_paye.data
             )
             db.session.add(Facturation)

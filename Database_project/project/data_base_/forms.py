@@ -84,7 +84,7 @@ class facturation_libre(FlaskForm):
     intitule = StringField("Intitulé de la Prestation")
     remise = StringField("Rémise en %",
                         validators=[validators.InputRequired()])
-    details = SelectField('Details de Paiement',
+    details = SelectField('Delai de Paiement',
                              choices=[('7 jours a reception de facture', '7 jours a reception de facture'),('15 jours a reception de facture', '15 jours a reception de facture'),('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois')])
     
     montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
@@ -98,6 +98,39 @@ class facturation_libre(FlaskForm):
                     format='%Y-%m-%d',
                     validators=[validators.InputRequired()]
                    )
+    type_paye = SelectField('Type de Paiement',
+                             choices=[('Virement Bancaire', 'Virement Bancaire'), ('Lien de Paiement', 'Lien de Paiement')])
+    
+   
+    submit = SubmitField('Valider')
+
+
+class facturation_avoir(FlaskForm):
+    	   
+    
+    civilite = StringField("Civilité")
+    numero = StringField("Numéro Téléphone")
+    facture = StringField("Numéro Facture")
+    nom = StringField("Nom")
+    prenom = StringField("Prénom")
+    email = StringField("Email")
+    description = StringField("Description")
+    cp = StringField("Code Postal")
+    ville = StringField("Ville")
+    adresse = StringField("Adresse")
+    quantite = StringField("Quantite")
+    intitule = StringField("Intitulé de la Prestation")
+    societe = StringField("Societe")
+    tva = StringField("Tva")
+    siret = StringField("Siret")
+    
+    montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
+                        validators=[validators.InputRequired()])
+   
+    prix_uni =DecimalField("Prix Unitaire HT €",
+                        validators=[validators.InputRequired()])
+    lien_paiement =StringField("Lien de Paiement")
+    
     type_paye = SelectField('Type de Paiement',
                              choices=[('Virement Bancaire', 'Virement Bancaire'), ('Lien de Paiement', 'Lien de Paiement')])
     
