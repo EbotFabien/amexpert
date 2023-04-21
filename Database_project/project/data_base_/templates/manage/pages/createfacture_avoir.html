@@ -137,7 +137,7 @@
                                 </div>
                             </div>
                         </div>
-
+a
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.adresse.label(class="form-control-label")}}</small></label></div>
@@ -374,37 +374,17 @@
                         <hr/>
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.remise.label(class="form-control-label")}}</small></label>
-                            </div>
+                                <label class="label" style="text-align: left;"><small>{{form.tva.label(class="form-control-label")}}</small></label></div>
                             <div class="field-body">
                                 <div class="field">
                                     <!---->
                                     <div class="control">
-                                        {% if form.remise.errors %} {{form.remise(class="input is-invalid", id="rems") }}
+                                        {% if form.tva.errors %} {{form.tva(class="input is-invalid") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.remise.errors %}
+                                            {% for error in form.tva.errors %}
                                             <span>{{ error }}</span> {% endfor %}
                                         </div>
-                                        {% else %} {{form.remise(class="input", id="rems",placeholder="exemple 0.00")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Veuillez remplir</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.montant_rem.label(class="form-control-label")}}</small></label></div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.montant_rem.errors %} {{form.montant_rem(class="input is-invalid", id="mtn_rems") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.montant_rem.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.montant_rem(class="input", id="mtn_rems",placeholder="exemple 0.00")}} {% endif %}
+                                        {% else %} {{form.tva(class="input",placeholder="exemple 0.00")}} {% endif %}
                                     </div>
                                     <p class="help">Veuillez remplir ce champ</p>
                                 </div>
@@ -417,46 +397,6 @@
 
                     <button class="accordion">MODALITE PAIEMENT</button>
                     <div class="panel">
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.details.label(class="form-control-label")}}</small></label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.details.errors %} {{form.details(class="input is-invalid", placeholder="Données Alpha-numériques") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.details.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.details(class="input", placeholder="Données Alpha-numériques")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Non requis</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="label" style="text-align: left;"><small>{{form.datepaye.label(class="form-control-label")}}</small></label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <!---->
-                                    <div class="control">
-                                        {% if form.datepaye.errors %} {{form.datepaye(class="input is-invalid", placeholder="Données Alpha-numériques") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.datepaye.errors %}
-                                            <span>{{ error }}</span> {% endfor %}
-                                        </div>
-                                        {% else %} {{form.datepaye(class="input", placeholder="Données Alpha-numériques")}} {% endif %}
-                                    </div>
-                                    <p class="help"> Non requis</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
                         <div class="field is-horizontal">
                             <div class="field-label is-normal">
                                 <label class="label" style="text-align: left;"><small>{{form.type_paye.label(class="form-control-label")}}</small></label>
@@ -544,7 +484,7 @@
 
 <!-- Content Row -->
 </div>
-<!-- /.container-fluid -->
+<!-- /.container-fluid --> 
 
 <script>
     let quantit = document.getElementById("qte");

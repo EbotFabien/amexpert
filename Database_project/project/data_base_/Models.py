@@ -742,6 +742,7 @@ class Facturation_avoir(db.Model):
     prix_uni =db.Column(db.DECIMAL(65,2),default=0.00)
     datepaye=db.Column(db.DateTime(),default=datetime.utcnow)
     type_paye = db.Column(db.String,default='')
+    type_phys = db.Column(db.String,default='')
     lien_paiement=db.Column(db.String,default='')
     description=db.Column(db.String,default='')
     

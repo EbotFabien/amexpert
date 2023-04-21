@@ -28,7 +28,7 @@
                             <th scope="col">Nom</th>
                             <th scope="col">Adresse</th>
                             <th scope="col">No_Fact</th>
-                            <th scope="col">Date_payé</th>
+                            <th scope="col">Date_creé</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Type Paiement</th>
                             <th scope="col"></th>
@@ -43,7 +43,7 @@
                             <td>{{mission.nom}}</td>
                             <td>{{mission.adresse}}</td>
                             <td>{{mission.no_fact}}</td>
-                            <td>{{mission.datepaye.strftime('%d/%m/%Y')}}</td>
+                            <td>{{mission.datefact.strftime('%d/%m/%Y')}}</td>
                             <td>{{mission.quantite}}</td>
                             <td>{{mission.type_paye}}</td>
                             <td> <a href="{{url_for('fact_a.fact_indi', id=mission.id)}}" title="Voir details Factures" class="cb button is-small is-primary is-fullwidth"><i class="fa fa-eye" style="text-align: center"></i></a> </td>

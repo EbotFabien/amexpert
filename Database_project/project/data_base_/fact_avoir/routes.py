@@ -4,7 +4,7 @@ from Database_project.project.data_base_ import create_app
 from Database_project.project.data_base_.forms import facturation_libre,facturation_avoir
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 import os
 import base64
 
@@ -12,7 +12,7 @@ fact_a =Blueprint('fact_a',__name__)
 
 app= create_app()
 
-wkhtmltopdf =Wkhtmltopdf(app)
+wkhtmltopdf =1#Wkhtmltopdf(app)
 
 
 
@@ -25,12 +25,12 @@ def linkavoir(id):
 @login_required
 def createavoir(id):
     if current_user:
-        form = facturation_avoir()
+        form = facturation_libre()
         facture=facturation_client.query.filter_by(id=id).first()
         data = Client.query.filter_by(id=facture.client).first()
         data_his = Client_History.query.filter_by(client_id=facture.client).first()
         
-        
+        print(form.data)
         if form.validate_on_submit():
             
             Facturation=Facturation_avoir(identite=facture.client,
@@ -46,7 +46,6 @@ def createavoir(id):
                 ville = form.ville.data,
                 adresse = form.adresse.data,
                 quantite = form.quantite.data,
-                ref_commande = form.ref_commande.data,
                 intitule = form.intitule.data,
                 lien_paiement=form.lien_paiement.data,
                 description=form.description.data,

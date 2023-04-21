@@ -1,0 +1,106 @@
+{% extends 'manage/index.html' %} {% block manage_content %}
+<div style="" class="main-content">
+
+    <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Libre N° : {{facture.no_fact}}
+        </h2>
+
+    </div>
+    <div class="tile is-ancestor is-vertical">
+        <div class="tile is-horizontal is-parent">
+            <div class="tile is-child box">
+                <h1 class="title is-5">FACTURER A :</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Reference du donneur d'ordre:</strong></li>
+                    <li><strong>Raison Social:</strong> </li>
+                    <li><strong>Numero Siret :</strong> </li>
+                    <li><strong>Numero TVA:</strong> </li>
+                </ul>
+            </div>
+            <div class="tile is-child box">
+                <h1 class="title is-5">Identité donneur d'Ordre</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Civilité:</strong>
+                    </li>
+                    <li><strong>Nom & Prenom:{{facture.nom}}{{facture.prenom}}</strong>
+                    </li>
+                    <li><strong>Telephone: {{facture.numero}}</strong> </li>
+                    <li><strong>Email : {{facture.email}}</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tile is-parent is-horizontal">
+            <div class="tile is-child box">
+                <h1 class="title is-5">ADRESSE</h1>
+                <hr/>
+                <ul>
+                    <li>
+                        <strong>Numero & Nom de la voie : {{facture.adresse}}</strong>
+                    </li>
+                    <li><strong>Code postal: {{facture.cp}}</strong></li>
+                    <li><strong>Ville: {{facture.ville}}</strong> </li>
+
+                </ul>
+            </div>
+            <div class="tile is-child box">
+                <h1 class="title is-5">STATUS PAIEMENT</h1>
+                <hr/>
+                <ul>
+                    <li><strong>Mode de paiement: {{facture.type_paye}}</strong></li>
+                    {% if facture.type_paye =='Lien de Paiement' %}
+                    <li><strong>Lien de Payement:{{facture.lien_paiement}}</strong></li>
+                    {% else %}
+                    <li><strong>IBAN: GB56 REVO 0099 6900 1819 94 </strong></li>
+                    {% endif %}
+                    <li><strong>Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}</strong></li>
+                </ul>
+            </div>
+        </div>
+        <br><br>
+
+        <h1>
+            <center> <strong> {{facture.intitule}}</strong></center>
+        </h1>
+        <div class="tile is-parent is-horizontal">
+
+            <div class="tile is-child box">
+                <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
+
+                    <tr>
+                        <th> Description</th> 
+                        <th>Quantité </th>
+                        <th> Prix Unitaire € HT </th>
+                        <th> TVA</th>
+                        <th> Montant € </th>
+                    </tr>
+                    <tr>
+                        <td>{{facture.description}}</td>
+                        <td>{{facture.quantite}}</td>
+                        <td>{{facture.prix_uni}}</td>
+                        <td>{{facture.tva}}</td>
+                        <td>{{facture.montant_ht}}</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" colspan="3"></td>
+                        <td><strong>Montant Total € HT</strong> </td>
+                        <td>{{facture.montant_ht}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TVA </strong> </td>
+                        <td>{{facture.tva}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montant Total TTC € </strong> </td>
+                        <td></td>
+                    </tr>    
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
