@@ -106,8 +106,8 @@ class facturation_libre(FlaskForm):
 
 
 class facturation_avoir(FlaskForm):
-    	   
     
+    trigramme = StringField("Trigramme")
     civilite = StringField("Civilité")
     numero = StringField("Numéro Téléphone")
     facture = StringField("Numéro Facture")
@@ -118,21 +118,26 @@ class facturation_avoir(FlaskForm):
     cp = StringField("Code Postal")
     ville = StringField("Ville")
     adresse = StringField("Adresse")
-    quantite = StringField("Quantite")
-    intitule = StringField("Intitulé de la Prestation")
     societe = StringField("Societe")
+    quantite = StringField("Quantite")
     tva = StringField("Tva")
     siret = StringField("Siret")
+    intitule = StringField("Intitulé de l'avoir")
+    details = SelectField('Delai de Paiement',
+                             choices=[('7 jours a reception de facture', '7 jours a reception de facture'),('15 jours a reception de facture', '15 jours a reception de facture'),('30 jours fin de mois', '30 jours fin de mois'), ('45 jours fin de mois', '45 jours fin de mois')])
     
     montant_ht =DecimalField("Montant Total HT", render_kw={'readonly':True},
                         validators=[validators.InputRequired()])
-   
     prix_uni =DecimalField("Prix Unitaire HT €",
                         validators=[validators.InputRequired()])
     lien_paiement =StringField("Lien de Paiement")
-    
+    datepaye=DateField('Date de Facturation',
+                    format='%Y-%m-%d',
+                    validators=[validators.InputRequired()]
+                   )
     type_paye = SelectField('Type de Paiement',
                              choices=[('Virement Bancaire', 'Virement Bancaire'), ('Lien de Paiement', 'Lien de Paiement')])
+
     
    
     submit = SubmitField('Valider')

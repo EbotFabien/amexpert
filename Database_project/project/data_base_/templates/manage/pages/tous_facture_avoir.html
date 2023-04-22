@@ -47,7 +47,7 @@
                             <td>{{mission.quantite}}</td>
                             <td>{{mission.type_paye}}</td>
                             <td> <a href="{{url_for('fact_a.fact_indi', id=mission.id)}}" title="Voir details Factures" class="cb button is-small is-primary is-fullwidth"><i class="fa fa-eye" style="text-align: center"></i></a> </td>
-                            <td> <a href="{{url_for('fact_a.fact_impri', id=mission.id)}}" title="imprimer Factures" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-print" style="text-align: center"></i></a> </td>
+                            <td> <a href="{{url_for('fact_a.impri_avoir', id=mission.id)}}" title="imprimer Factures" class="cb button is-outlined-black is-small is-fullwidth"><i class="fa fa-print" style="text-align: center"></i></a> </td>
 
                         </tr>
                         {%endfor%}

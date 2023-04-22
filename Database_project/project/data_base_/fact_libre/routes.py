@@ -130,7 +130,7 @@ def linkavoir(id):
 @login_required
 def createavoir(id):
     if current_user:
-        form = facturation_avoir()
+        form =facturation_avoir()
         facture=Facturation_libre.query.filter_by(id=id).first()
         if facture.type_phys == "client":
             data = Client.query.filter_by(id=facture.identite).first()
@@ -155,7 +155,6 @@ def createavoir(id):
                 ville = form.ville.data,
                 adresse = form.adresse.data,
                 quantite = form.quantite.data,
-                ref_commande = form.ref_commande.data,
                 intitule = form.intitule.data,
                 lien_paiement=form.lien_paiement.data,
                 description=form.description.data,
@@ -200,3 +199,4 @@ def fact_impri(id):
             image= base64.b64encode(image_file.read()).decode()
     res=wkhtmltopdf.render_template_to_pdf('manage/pages/pint_libre.html', download=True, save=False,image=image,facture=facture)
     return res
+

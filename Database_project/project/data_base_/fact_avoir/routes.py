@@ -84,15 +84,15 @@ def voisavoir2():
 def fact_indi(id):
     facture=Facturation_avoir.query.filter_by(id=id).first()
     print(facture)
-    return render_template('manage/pages/factur_libre_indivi.html',facture=facture)
+    return render_template('manage/pages/factur_avoir_indivi.html',facture=facture)
 
 
-@fact_a.route('/impri/facture/<int:id>/libre',methods=['GET','POST'])
+@fact_a.route('/impri/facture/<int:id>/avoir',methods=['GET','POST'])
 @login_required
-def fact_impri(id):
-    facture=Facturation_avoir.query.filter_by(id=id).first()
+def impri_avoir(id):
+    facture=Facturation_libre.query.filter_by(id=id).first()
     img=os.path.join('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
     with open(img, 'rb') as image_file:
             image= base64.b64encode(image_file.read()).decode()
-    res=wkhtmltopdf.render_template_to_pdf('manage/pages/pint_libre.html', download=True, save=False,image=image,facture=facture)
+    res=wkhtmltopdf.render_template_to_pdf('manage/pages/print_avoir.html', download=True, save=False,image=image,facture=facture)
     return res

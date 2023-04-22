@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        p,
+        td,
+        th {
+            font-size: 13px;
+        }
+        
+        p,
+        h6,
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .pdf__container {
+            width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .main__header {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
+            display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 10px;
+        }
+        
+        .left__header__section {
+            font-size: 13px;
+        }
+        
+        .right__header__section {
+            text-align: right;
+            margin-top: 100px;
+            margin-right: 200px;
+        }
+        
+        .right__header__section p {
+            margin-bottom: 6px;
+        }
+        
+        .secondary__header {
+            position: relative;
+            padding: 10px 5px 20px;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        .secondary__header__hr {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: 2em;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 3px;
+            width: 900px;
+        }
+        
+        .secondary__header__content {
+            display: -webkit-box;
+            /* display: -webkit-flex; */
+            display: flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -webkit-box-pack: justify;
+            /* wkhtmltopdf uses this one */
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            column-gap: 10px;
+        }
+        
+        .left__side {
+            border: 1px solid navy;
+            padding: 10px;
+            /*  width: 250px; */
+            width: 400px;
+        }
+        
+        .right__side {
+            font-size: 13px;
+            border: 1px solid navy;
+            padding: 5px 10px;
+            /* width: 468px;*/
+            width: 600px;
+        }
+        
+        .tertiary__header {
+            border-bottom: 1px solid #DDD;
+            padding-top: 50px;
+        }
+        
+        .amount__section {
+            width: 490px;
+            /*margin: 5px auto;*/
+            padding-top: 170px;
+        }
+        
+        .amount__section__content {
+            padding: 10px;
+            border: 5px solid black;
+            height: 200px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        td,
+        th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        td:not(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(9), :nth-child(10), :nth-child(11)) {
+            word-break: break-all;
+        }
+        
+        @media print {
+            .new-page {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="pdf__container">
+        <header class="main__header">
+            <div class="left__header__section">
+                <img src="data:;base64,{{image}}" width="200" height="230" />
+
+                <br />
+                <p style="font-size: 15px;"> Facture / Invoice : {{facture.no_fact}} <br /> Date:{{facture.datefact.strftime('%d/%m/%Y')}}</p> <br />
+            </div>
+            <div class="right__header__section">
+                <p style="font-size: 30px;"> <strong>TRUSTEXPERTISE Ltd</strong> <br></p>
+                <p style="font-size: 20px;"> Registration / Enregistrement No <br> 25 Station <br>B147SR Birmingham <br>Royaume Uni - UK</p>
+            </div>
+        </header>
+        <header class="secondary__header">
+            <hr class="secondary__header__hr" />
+            <div class="secondary__header__content">
+                <div class="left__side">
+                    <strong>Facture à : </strong> <br> Référence donneur d'ordre : <br> Raison sociale: <br> Numero Siret : <br> Numero TVA : <br> <br> <br>
+                    <strong>IDENTITE DONNEUR D'ORDRE : </strong> <br>Civilité :{{facture.civilite}} <br> Nom & Prénom :{{facture.nom}}{{facture.prenom}} <br> Téléphone :{{facture.numero}} <br> Email :{{facture.email}} <br><br><br>
+                    <strong>ADRESSE : </strong><br> Numéro & Nom de la voie :{{facture.adresse}} <br> code Postal :{{facture.cp}} <br>ville :{{facture.ville}} <br>
+                </div>
+                <div class="right__side">
+
+                    <div class="secondary__header__content">
+                        <p style="margin: 80px 40px; font-size: 15px;"> <strong>STATUS PAIEMENT</strong><br>
+                            <br>Mode de paiement : {{facture.type_paye}}<br>{% if facture.type_paye =='Lien de Paiement' %}<br>Lien de Payement:{{facture.lien_paiement}}<br>{% else %}<br>IBAN: GB56 REVO 0099 6900 1819 94 <br> BIC / SWIFT : REVOGB21 <br>{%
+                            endif %}<br> Date de Facture :{{facture.datefact.strftime('%d/%m/%Y')}}
+                        </p>
+                    </div>
+                </div>
+        </header>
+
+
+
+        <center>
+            <h1 style="font-size: 40px;">{{facture.intitule}} </h1>
+        </center>
+
+        <table border="1px solid black" style="width: 800px; margin-left: auto; margin-right: auto">
+
+            <tr style="background-color: orange;">
+                <th><strong> Description</strong></th>
+                <th><strong> Quantité </strong></th>
+                <th><strong> Prix Unitaire € HT </strong></th>
+                <th><strong> TVA</strong></th>
+                <th><strong> Montant € </strong></th>
+            </tr>
+            <tr>
+                <td>{{facture.description}}</td>
+                <td>{{facture.quantite}}</td>
+                <td>{{facture.prix_uni}} </td>
+                <td>{{facture.tva}}</td>
+                <td>{{facture.montant_ht}}</td>
+            </tr>
+
+            <tr>
+                <td rowspan="5" colspan="3"></td>
+                <td style="background-color: orange;"><strong>Montant Total € HT</strong> </td>
+                <td>{{facture.montant_ht}}</td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>TVA </strong> </td>
+                <td>{{facture.tva}}</td>
+            </tr>
+            <tr>
+                <td style="background-color: orange;"><strong>Montant Total TTC €  </strong> </td>
+                <td></td>
+            </tr>
+
+
+        </table>
+    </section>
+</body>
+
+</html>
+
+<!--réalisé à votre demande-->
