@@ -25,7 +25,7 @@ def linkavoir(id):
 @login_required
 def createavoir(id):
     if current_user:
-        form = facturation_libre()
+        form = facturation_avoir()
         facture=facturation_client.query.filter_by(id=id).first()
         data = Client.query.filter_by(id=facture.client).first()
         data_his = Client_History.query.filter_by(client_id=facture.client).first()
@@ -93,6 +93,7 @@ def impri_avoir(id):
     img=os.path.join('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
     with open(img, 'rb') as image_file:
             image= base64.b64encode(image_file.read()).decode()
+    
     res=wkhtmltopdf.render_template_to_pdf('manage/pages/print_avoir.html', download=True, save=False,image=image,facture=facture)
     return res
 
