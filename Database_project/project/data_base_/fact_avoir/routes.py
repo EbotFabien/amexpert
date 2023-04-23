@@ -4,7 +4,7 @@ from Database_project.project.data_base_ import create_app
 from Database_project.project.data_base_.forms import facturation_libre,facturation_avoir
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
-#from flask_wkhtmltopdf import Wkhtmltopdf
+from flask_wkhtmltopdf import Wkhtmltopdf
 import os
 import base64
 
@@ -12,7 +12,7 @@ fact_a =Blueprint('fact_a',__name__)
 
 app= create_app()
 
-wkhtmltopdf =2#Wkhtmltopdf(app)
+wkhtmltopdf =Wkhtmltopdf(app)
 
 
 
