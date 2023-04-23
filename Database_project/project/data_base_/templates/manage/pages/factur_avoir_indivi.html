@@ -2,7 +2,7 @@
 <div style="" class="main-content">
 
     <div class="display-flex justify-content-space-between" style="margin-top: 20px; margin-bottom: 10px">
-        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Libre N° : {{facture.no_fact}}
+        <h2 class="title" style="color: #112A46;font-weight: 500; font-size: 1.5rem;">Facture Avoir N° : {{facture.no_fact}}
         </h2>
 
     </div>
@@ -14,8 +14,8 @@
                 <ul>
                     <li><strong>Reference du donneur d'ordre:</strong></li>
                     <li><strong>Raison Social:</strong> </li>
-                    <li><strong>Numero Siret :</strong> </li>
-                    <li><strong>Numero TVA:</strong> </li>
+                    <li><strong>Numero Siret : {{facture.siret}}</strong> </li>
+                    <li><strong>Numero TVA: {{facture.tva}}</strong> </li>
                 </ul>
             </div>
             <div class="tile is-child box">
@@ -28,6 +28,7 @@
                     </li>
                     <li><strong>Telephone: {{facture.numero}}</strong> </li>
                     <li><strong>Email : {{facture.email}}</strong></li>
+                    <li><strong>Societe : {{facture.societe}}</strong></li>
                 </ul>
             </div>
         </div>
@@ -41,6 +42,7 @@
                     </li>
                     <li><strong>Code postal: {{facture.cp}}</strong></li>
                     <li><strong>Ville: {{facture.ville}}</strong> </li>
+                    
 
                 </ul>
             </div>
@@ -89,13 +91,14 @@
                         <td>{{facture.montant_ht}}</td>
                     </tr>
                     <tr>
+                        <td><strong>Montant Total TTC € </strong> </td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td><strong>TVA </strong> </td>
                         <td>{{facture.tva}}</td>
                     </tr>
-                    <tr>
-                        <td><strong>Montant Total TTC € </strong> </td>
-                        <td></td>
-                    </tr>    
+                        
                     
                 </table>
             </div>

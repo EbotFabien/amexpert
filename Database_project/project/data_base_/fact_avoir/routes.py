@@ -4,7 +4,7 @@ from Database_project.project.data_base_ import create_app
 from Database_project.project.data_base_.forms import facturation_libre,facturation_avoir
 from flask_login import login_user,current_user,logout_user,login_required,LoginManager
 from sqlalchemy import or_, and_, desc,asc
-from flask_wkhtmltopdf import Wkhtmltopdf
+#from flask_wkhtmltopdf import Wkhtmltopdf
 import os
 import base64
 
@@ -12,7 +12,7 @@ fact_a =Blueprint('fact_a',__name__)
 
 app= create_app()
 
-wkhtmltopdf =Wkhtmltopdf(app)
+wkhtmltopdf =2#Wkhtmltopdf(app)
 
 
 
@@ -83,16 +83,18 @@ def voisavoir2():
 @login_required
 def fact_indi(id):
     facture=Facturation_avoir.query.filter_by(id=id).first()
-    print(facture)
     return render_template('manage/pages/factur_avoir_indivi.html',facture=facture)
 
 
 @fact_a.route('/impri/facture/<int:id>/avoir',methods=['GET','POST'])
 @login_required
 def impri_avoir(id):
-    facture=Facturation_libre.query.filter_by(id=id).first()
+    facture=Facturation_avoir.query.filter_by(id=id).first()
     img=os.path.join('/work/www/AmexpertDoc/amexpert/Database_project/project/data_base_/', 'static', 'images','logo',"logo.png")
     with open(img, 'rb') as image_file:
             image= base64.b64encode(image_file.read()).decode()
     res=wkhtmltopdf.render_template_to_pdf('manage/pages/print_avoir.html', download=True, save=False,image=image,facture=facture)
     return res
+
+
+
